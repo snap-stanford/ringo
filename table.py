@@ -8,13 +8,13 @@ class Table:
 
 	def __init__(self, name):
 		self.name = name
-		self.attributes = []
+		self.columns = []
 		self.types = []
 		self.data = []
 
-	def set_attributes(self, attributes):
-		for attr in attributes:
-			self.attributes.append(attr)
+	def setColumnNames(self, columns):
+		for col in columns:
+			self.columns.append(col)
 
 	def load(self, filename):
 		"""
@@ -31,15 +31,15 @@ class Table:
 				attr = xmlrow.attributes
 				for i in range(attr.length):
 					name = attr.item(i).name
-					if not name in self.attributes:
+					if not name in self.columns:
 						# Add column to the table
 						elt = Table.str2elt(attr.item(i).value)
-						self.attributes.append(name)
+						self.columns.append(name)
 						self.types.append(type(elt))
 						for r in self.data:
 							r.append(None)
 				row = []
-				row = [xmlrow.getAttribute(name) for name in self.attributes]
+				row = [xmlrow.getAttribute(name) for name in self.columns]
 				self.addrow(row)
 		else:
 			# Assume the input is a TSV file
@@ -47,13 +47,13 @@ class Table:
 			init = True
 			for row in data:
 				if init:
-					self.attributes = ['']*len(row)
+					self.columns = ['']*len(row)
 					self.types = [type(None)]*len(row)
 					init = False
 				self.addrow([cell.decode('unicode-escape') for cell in row])
 
 	def addrow(self, strrow):
-		assert len(strrow) == len(self.attributes)
+		assert len(strrow) == len(self.columns)
 		row = []
 		for i in range(len(strrow)):
 			e = Table.str2elt(strrow[i])
@@ -91,10 +91,30 @@ class Table:
 	def ithrow(self, data, i):
 		return data[i]
 
-	def columnbyattr(self, data, attr):
+	def jthcolumn(self, data, j):
 		result = {}
 		for row in data:
-			result.add(row[attr])
+			result.add(row[j])
+
+		return result
+
+	def getRows(self, condition):		
+		col = condition.column
+		op = condition.operator
+		value = condition.value
+		result = []
+
+		for row in self.data:
+			if op == '==' and row[col] == value:
+				result.append(row)
+			if op == '>' and row[col] > value:
+				result.append(row)
+			if op == '>=' and row[col] >= value:
+				result.append(row)
+			if op == '<' and row[col] < value:
+				result.append(row)
+			if op == '<=' and row[col] <= value:
+				result.append(row)
 
 		return result
 
