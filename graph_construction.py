@@ -1,20 +1,11 @@
+import table
 
-def select(table, attributes, condition):
-	result = {}
-
-	for row in table:
-		if row.condition == condition:
-			result.add(row)
-
+def select(table, condition):
+	result = table.getTuples(condition)
 	return result
 
-def project(table, attributes, condition):
-	result = {}
-
-	for col in table:
-		if col.condition == condition:
-			result.add(row)
-
+def project(table, columns):
+	result = table.getColumns(columns)
 	return result
 
 def group(table, attributes, aggregation_attributes, aggregation_function):
@@ -38,3 +29,6 @@ def union(table1, table2, condition):
 			result.add(condition)
 
 	return result
+
+def join(table1, table2, condition):
+	

@@ -2,9 +2,9 @@
 class Node:
 	def __init__(self, id, attributes):
 		self.id = id
-		self.attributes = []
-		for attr in attributes:
-			self.attributes.append(attr)
+		self.attributes = {}
+		for attr, value in attributes.iteritems():
+			self.attributes[attr] = value
 
 	def getId(self):
 		return self.id

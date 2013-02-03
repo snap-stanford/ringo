@@ -1,21 +1,21 @@
 
 class Edge:
-	def __init__(self, id, node1, node2, attributes):
+	def __init__(self, id, nodeid1, nodeid2, attributes):
 		self.id = id
-		self.node1 = node1
-		self.node2 = node2
-		self.attributes = []
-		for attr in attributes:
-			self.attributes.append(attr)
+		self.nodeid1 = nodeid1
+		self.nodeid2 = nodeid2
+		self.attributes = {}
+		for attr, value in attributes.iteritems():
+			self.attributes[attr] = value
 
 	def getId(self):
 		return self
 
-	def getNode1(self):
-		return self.node1
+	def getNodeid1(self):
+		return self.nodeid1
 
-	def getNode2(self):
-		return self.node2
+	def getNodeid2(self):
+		return self.nodeid2
 
 	def getAttributes(self):
 		return self.attributes

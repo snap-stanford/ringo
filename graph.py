@@ -12,6 +12,6 @@ class Graph:
 		self.nodes[node.getId()] = node;
 
 	def addEdge(self, edge):
-		edges = self.nodes[edge.getNode1().getId()];
-		edges[edge.getNode2().getId()] = attributes;
+		edges = self.nodes[edge.getNode1()];
+		edges[edge.getNode2()] = attributes;
 

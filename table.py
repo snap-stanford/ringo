@@ -3,6 +3,7 @@ import csv
 import os
 import time
 from xml.dom.minidom import parse
+import condition
 
 class Table:
 
@@ -98,23 +99,12 @@ class Table:
 
 		return result
 
-	def getRows(self, condition):		
-		col = condition.column
-		op = condition.operator
-		value = condition.value
+	def getTuples(self, conditions, col):
 		result = []
-
+		# apply all conditions
 		for row in self.data:
-			if op == '==' and row[col] == value:
-				result.append(row)
-			if op == '>' and row[col] > value:
-				result.append(row)
-			if op == '>=' and row[col] >= value:
-				result.append(row)
-			if op == '<' and row[col] < value:
-				result.append(row)
-			if op == '<=' and row[col] <= value:
-				result.append(row)
+			if condition.eval(row[col]):
+				result.add(row)
 
 		return result
 
