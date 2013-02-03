@@ -7,12 +7,12 @@ class Table:
 
 	def __init__(self, name):
 		self.name = name
-		self.attributes = []
+		self.columns = []
 		self.data = []
 
-	def set_attributes(self, attributes):
-		for attr in attributes:
-			self.attributes.append(attr)
+	def setColumnNames(self, columns):
+		for col in columns:
+			self.columns.append(col)
 
 	def load(self, filename):
 		"""
@@ -59,9 +59,30 @@ class Table:
 	def ithrow(self, data, i):
 		return data[i]
 
-	def columnbyattr(self, data, attr):
+	def jthcolumn(self, data, j):
 		result = {}
 		for row in data:
-			result.add(row[attr])
+			result.add(row[j])
 
 		return result
+
+	def getRows(self, condition):		
+		col = condition.column
+		op = condition.operator
+		value = condition.value
+		result = []
+
+		for row in self.data:
+			if op == '==' and row[col] == value:
+				result.append(row)
+			if op == '>' and row[col] > value:
+				result.append(row)
+			if op == '>=' and row[col] >= value:
+				result.append(row)
+			if op == '<' and row[col] < value:
+				result.append(row)
+			if op == '<=' and row[col] <= value:
+				result.append(row)
+
+		return result
+
