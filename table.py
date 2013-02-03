@@ -15,6 +15,10 @@ class Table:
 			self.columns.append(col)
 
 	def load(self, filename):
+<<<<<<< HEAD
+=======
+		def load(self, filename):
+>>>>>>> Added Node and Edge classes and added getRows by condition
 		"""
 		Load data from either XML or TSV file
 		"""
