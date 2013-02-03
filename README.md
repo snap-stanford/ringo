@@ -14,3 +14,24 @@ Plan of Action:
 
 Assumptions:
 1.  Data set includes schema of data
+2.	Data comes in as .xml files 
+3.	Data is of three basic types: float, string and dates
+
+Issues:
+1. 	TSV format not well defined, encode escape working with python
+2.	Memory management
+3.	Indexes? performance matters
+
+What's done:
+1. Basic class definitions for
+	- table
+	- graph
+	- node
+	- edge
+	- condition
+	- value
+2.	Basic get functions for class fields
+3.	graphconstruction.py has basic relational algebra primitives defined and 
+	some of them are implemented
+
+

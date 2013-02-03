@@ -7,7 +7,6 @@ class Graph:
 		for id, node in nodes.iteritems():
 			self.nodes[id] = node
 
-
 	def addNode(self, node):
 		self.nodes[node.getId()] = node;
 

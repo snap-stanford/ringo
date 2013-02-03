@@ -15,7 +15,6 @@ def group(table, attributes, aggregation_attributes, aggregation_function):
 		for attr in aggregation_attributes:
 			aggregation_function(row)
 
-
 	return result
 
 def union(table1, table2, condition):
@@ -31,4 +30,12 @@ def union(table1, table2, condition):
 	return result
 
 def join(table1, table2, condition):
+
+def rename:
+
+def intersect:
+
+def diff:
+
+def makeGraph(table1, table2, table3):
 	
