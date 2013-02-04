@@ -2,16 +2,22 @@
 import csv
 import os
 import time
-from xml.dom.minidom import parse
 import condition
+import string
+from xml.dom.minidom import parse
 
 class Table:
 
-	def __init__(self, name):
-		self.name = name
+	def __init__(self, filename=None, name=None):
 		self.columns = []
 		self.types = []
 		self.data = []
+		self.dumpcnt = 0
+		self.name = None
+		if not filename is None:
+			self.load(filename)
+		if not name is None:
+			self.name = name
 
 	def setColumnNames(self, columns):
 		for col in columns:
@@ -27,6 +33,7 @@ class Table:
 			# Parse the XML file
 			dom = parse(f)
 			f.close()
+			self.name = dom.documentElement.tagName
 			xmlrows = dom.getElementsByTagName('row')
 			for xmlrow in xmlrows:
 				attr = xmlrow.attributes
@@ -85,6 +92,26 @@ class Table:
 				strrow.append(Table.elt2str(cell))
 			wr.writerow(strrow)
 		f.close()
+
+	def dump(self,n=float('inf'),reset=False):
+		"""
+		Dumps n rows of the table to console.
+		If reset=True, the dump starts over from the 1st row
+		"""
+		if reset:
+			self.dumpcnt = 0
+		colwidth = 17
+		join = lambda l: '| '+' | '.join(l)+' |'
+		dump = join([string.center(name[:colwidth],colwidth) for name in self.columns])
+		sep = '+'*len(dump)
+		dump = sep+'\n'+dump+'\n'+sep
+		for i in [x+self.dumpcnt for x in range(n)]:
+			if i >= len(self.data):
+				break
+			dump += '\n'+join([string.ljust(Table.elt2str(e)[:colwidth],colwidth) for e in self.data[i]])
+			self.dumpcnt += 1
+		dump += '\n'+sep
+		print dump
 
 	def name(self):
 		return self.name
