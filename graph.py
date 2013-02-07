@@ -1,7 +1,7 @@
 
 class Graph:
 
-	def __init__(self, name, nodes):
+	def __init__(self, name, nodes, graphType):
 		self.name = name
 		self.nodes = {}
 		for id, node in nodes.iteritems():
@@ -10,7 +10,7 @@ class Graph:
 	def addNode(self, node):
 		self.nodes[node.getId()] = node;
 
-	def addEdge(self, edge):
-		edges = self.nodes[edge.getNode1()];
-		edges[edge.getNode2()] = attributes;
+	def addEdge(self, node1, edge):
+		edges = self.nodes[node1];
+		edges[edge.getDest()] = attributes;
 

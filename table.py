@@ -141,7 +141,8 @@ class Table:
 			table.data = filter(lambda row:condition.eval(row[col]),self.data)
 		return table
 
-	def aggregate(self, aggregator, col):
+	def aggregate(self, attributes, col, aggregator):
+		
 		if not len(self.data):
 			return []
 		row = self.data[0]

@@ -1,74 +1,33 @@
 import table
+import gsql
 
-def select(table, condition):
-	result = table.getTuples(condition)
-	return result
-
-def project(table, columns):
-	result = table.getColumns(columns)
-	return result
-
-def group(table, attributes, aggregation_attributes, aggregation_function):
-	result = []
-
+def makeGraph(table, attr1, attr2, graphType):
+	nodes = {}
 	for row in table:
-		for attr in aggregation_attributes:
-			result.append(table.aggregate(aggregation_function, attr))
+		node1 = table.getElem(row, attr1)
+		node2 = table.getElem(row, attr2)
+		edges = nodes[node1]
+		edge = Edge(node2, [])
+		if edge not in edges:
+			edges[node2] = edge
+		nodes[node1] = edges
 
-	return result
+	graph = Graph(table, nodes, graphType)
+	return graph
 
-def union(table1, table2, condition):
-	result = {}
-	for row in table1.getTuples(condition):
-		result.add(row)
+t1 = Table("posts.xml")
+t2 = select(t1, "PostTypeId", "=", 1)
+t3 = select(t1, "PostTypeId", "=", 2)
+t4 = project(t2, ["Id", "OwnerUserId"])
+t5 = project(t3, ["ParentId", "OwnerUserId"])
+t6 = rename(t5, "ParentId", "Id")
+t7 = rename(t4, "OwnerUserId", "UserId1")
+t8 = rename(t6, "OwnerUserId", "UserId2")
+t9 = join(t7, t8)
+t10 = group(t9, ["UserId1", "UserId2"], "count", "Count")
 
-	for row in table2.getTuples(condition):
-		result.add(condition)
+makeGraph(t10, "UserId1", "UserId2", "directed")
 
-	return result
 
-def join(table1, table2, col):
-	result = []
-	for row in table1:
-		newrow = []
-		for row2 in table2:
-			if (row1[col] == row2[col]):
-				for elem in row1:
-					newrow.append(elem)
-				for elem in row2:
-					if elem != row2[col]:
-						newrow.append(elem)
-		if len(newrow) > 0:
-			result.append(newrow)
 
-	return result
 
-def rename(table, oldattr, newattr):
-	table.setAttr(oldattr, newattr)
-
-def intersect(table1, table2, condition):
-	result = []
-	intermediate = []
-	for row in table1.getTuples(condition):
-		intermediate.add(row)
-
-	for row in table2.getTuples(condition):
-		if row in intermediate:
-			result.add(row)
-
-	return result
-
-def diff(table1, table2, condition):
-	result = []
-	intermediate = []
-	for row in table1.getTuples(condition):
-		intermediate.add(row)
-
-	for row in table2.getTuples(condition):
-		if row not in intermediate:
-			result.add(row)
-
-	return result
-
-def makeGraph(table1, table2, table3):
-	
