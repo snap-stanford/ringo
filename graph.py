@@ -5,8 +5,7 @@ class Graph:
 	# self.edges: stores edges with adjacency list:
 	#			{NodeId:{OutEdges}}, OutEdges={DestNodeId:EdgeAttributes}
 
-	def __init__(self, name, graphType):
-		self.name = name
+	def __init__(self, graphType):
 		self.nodes = {} # dictionary {NodeId:Attributes}
 		self.edges = {} # dictionary {EdgeId:Attributes} (EdgeId is managed by the graph object itself)
 		self.adjlist = {} # list of dictionaries: [Edge_1, Edge_2, ...] with Edge_i={Destination:EdgeId}
@@ -15,7 +14,9 @@ class Graph:
 		self.type = graphType # 'directed' or 'undirected'. TODO: add 'multiedge'
 
 	def addNode(self, nodeId, attributes):
-		self.nodes[nodeId] = attributes;
+		if not nodeId in self.nodes:
+			self.nodes[nodeId] = {}
+		self.nodes[nodeId].update(attributes)
 
 	def removeNode(self, nodeId):
 		if nodeId in self.nodes:
@@ -34,13 +35,17 @@ class Graph:
 		self.numedges += 1
 		return newEdgeId
 
-	def addEdge(self, origin, destination, attr):
-		# origin: ID of origin node
+	def addEdge(self, source, destination, attr):
+		# source: ID of source node
 		# destination: ID of destination node
 		# attr: attributes of edge
-		if not origin in self.adjlist:
-			self.adjlist[origin] = {}
-		adjlist = self.adjlist[origin]
+		if not source in self.nodes:
+			self.nodes[source] = {}
+		if not destination in self.nodes:
+			self.nodes[destination] = {}
+		if not source in self.adjlist:
+			self.adjlist[source] = {}
+		adjlist = self.adjlist[source]
 		if not destination in adjlist:
 			edgeId = self.getNewEdgeId()
 			adjlist[destination] = edgeId
@@ -52,20 +57,20 @@ class Graph:
 		if self.type == 'undirected':
 			if not destination in self.adjlist:
 				self.adjlist[destination] = {}
-			self.adjlist[destination][origin] = edgeId
+			self.adjlist[destination][source] = edgeId
 		elif self.type == 'directed':
 			if not destination in self.radjlist:
 				self.radjlist[destination] = {}
-			self.radjlist[destination][origin] = edgeId
+			self.radjlist[destination][source] = edgeId
 
-	def removeEdge(self, origin, destination):
-		if origin in self.adjlist:
-			if destination in self.adjlist[origin]:
-				adjlist = self.adjlist[origin]
+	def removeEdge(self, source, destination):
+		if source in self.adjlist:
+			if destination in self.adjlist[source]:
+				adjlist = self.adjlist[source]
 				edgeId = adjlist[destination]
 				del self.edges[edgeId]
 				adjlist.remove(destination)
 				if self.type == 'undirected':
-					del self.adjlist[destination][origin]
+					del self.adjlist[destination][source]
 				elif self.type == 'directed':
-					del self.radjlist[destination][origin]
+					del self.radjlist[destination][source]

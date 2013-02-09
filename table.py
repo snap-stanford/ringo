@@ -6,6 +6,7 @@ import string
 import value
 import aggregator
 import pdb
+import types
 from operator import __and__
 from value import Value
 from xml.dom.minidom import parse
@@ -127,8 +128,11 @@ class Table:
 	def getRow(self, i):
 		return self.data[i]
 
-	def getColumn(self, j):
+	def getColumnById(self, j):
 		return [row[j] for row in self.data]
+
+	def getColumnByAttr(self, attribute):
+		return self.getColumnById(self.columns.index(attribute))
 
 	def numRows(self):
 		return len(self.data)
@@ -138,29 +142,35 @@ class Table:
 
 	def newTable(self):
 		table = Table(name=self.name)
-		table.columns = self.columns
-		table.types = self.types
+		table.columns = self.columns[:]
+		table.types = self.types[:]
 		return table
 
 	def copy(self):
 		table = self.newTable()
-		table.data = [row[:] for row in table.data]
+		table.data = [row[:] for row in self.data]
+		return table
 
-	def getTuples(self, condition, col):
+	def select(self, col, condition):
 		table = self.newTable()
-		f = lambda row: reduce(__and__,[c.eval(row[col]) for c in condition])
+		colIdx = self.colIndex(col)
+		f = lambda row: reduce(__and__,[c.eval(row[colIdx]) for c in condition])
 		try:
 			table.data = [row[:] for row in (filter(f,self.data))]
 		except TypeError:
 			# only one condition
-			table.data = [row[:] for row in (filter(lambda row:condition.eval(row[col]),self.data))]
+			table.data = [row[:] for row in (filter(lambda row:condition.eval(row[colIdx]),self.data))]
 		return table
 
-	def aggregate(self, attributes, col, aggregation_function):
+	def group(self, attributes, aggregation_attr, aggregation_function):
 		t = self.newTable()
 		agg = aggregator.Aggregator(aggregation_function)
-		indexes = self.colIndexes(attributes)
-		colindex = self.columns.index(col)
+		indexes = self.colIndex(attributes)
+		if not aggregation_attr in t.columns:
+			assert aggregation_function == "cnt"
+			t.columns.append(aggregation_attr)
+			t.types.append(types.FloatType)
+		colindex = t.columns.index(aggregation_attr)
 		groups = {}
 		for row in self.data:
 			key = tuple(row[i] for i in indexes)
@@ -169,11 +179,16 @@ class Table:
 			groups[key].append(row)
 		for key in groups:
 			newrow = list(groups[key][0])
-			newrow[colindex] = agg.calc([row[colindex] for row in groups[key]])
+			if aggregation_function == "cnt":
+				newrow.append(0)
+				aggValues = [1]*len(groups[key])
+			else:
+				aggValues = [row[colindex] for row in groups[key]]
+			newrow[colindex] = agg.calc(aggValues)
 			t.data.append(newrow)
 		return t
 
-	def getColumns(self, attributes):
+	def getProjection(self, attributes):
 		table = Table(name=self.name)
 		indexes = tuple(self.columns.index(att) for att in attributes)
 		table.columns = attributes
@@ -182,17 +197,20 @@ class Table:
 			table.data.append([row[i] for i in indexes])
 		return table
 
-	def colIndexes(self, attributes):
-		return tuple(self.columns.index(att) for att in attributes)
+	def colIndex(self, attribute):
+		if isinstance(attribute,basestring):
+			return self.columns.index(attribute)
+		else:
+			return tuple(self.columns.index(att) for att in attribute)
 
 	def getTypes(self, attributes):
-		return tuple(self.types[i] for i in self.colIndexes(attributes))
+		return list(self.types[i] for i in self.colIndex(attributes))
 
 	def getElmtsAtIdx(self, row, indexes):
 		return [row[i] for i in indexes]
 
 	def getElmts(self, row, attributes):
-		indexes = self.colIndexes(attributes)
+		indexes = self.colIndex(attributes)
 		return self.getElmtsAtIdx(row, indexes)
 
 	def join(self, table, columns=[]):
@@ -201,10 +219,10 @@ class Table:
 		common = list(colset1.intersection(colset2))
 		addcol1 = list(colset1.difference(colset2))
 		addcol2 = list(colset2.difference(colset1))
-		commonIdx1 = self.colIndexes(common)
-		commonIdx2 = table.colIndexes(common)
-		addcol1Idx = self.colIndexes(addcol1)
-		addcol2Idx = table.colIndexes(addcol2)
+		commonIdx1 = self.colIndex(common)
+		commonIdx2 = table.colIndex(common)
+		addcol1Idx = self.colIndex(addcol1)
+		addcol2Idx = table.colIndex(addcol2)
 
 		t = Table()
 		t.columns = common+addcol1+addcol2
@@ -222,6 +240,12 @@ class Table:
 
 	def rename(self, oldattr, newattr):
 		t = self.copy()
-		for old,new in zip(oldattr,newattr):
-			t.columns[t.columns.index(old)] = new
+		oldIdx = self.colIndex(oldattr)
+		if isinstance(oldattr,basestring):
+			# Rename one attribute
+			t.columns[oldIdx] = newattr
+		else:
+			# Rename list of attributes
+			for idx,new in zip(oldIdx,newAttr):
+				t.columns[idx] = new
 		return t

@@ -2,13 +2,13 @@ import table
 
 # select based on one condition
 def select(table, attr, condition):
-	return table.getTuples(condition, attr)
+	return table.select(attr, condition)
 
 def project(table, columns):
-	return table.getColumns(columns)
+	return table.getProjection(columns)
 
 def group(table, attributes, aggr_attribute, aggregation_function):
-	return table.aggregate(attributes, aggr_attribute, aggregation_function)
+	return table.group(attributes, aggr_attribute, aggregation_function)
 
 def union(table1, table2, condition):
 	result = {}
@@ -27,7 +27,7 @@ def join(table1, table2, common=[]):
 
 def rename(table, oldattr, newattr):
 	# Can rename several attribute names at once
-	table.rename(oldattr, newattr)
+	return table.rename(oldattr, newattr)
 
 def intersect(table1, table2, condition):
 	result = []
