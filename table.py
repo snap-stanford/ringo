@@ -3,8 +3,11 @@ import csv
 import os
 import condition
 import string
-import time
+import value
+import aggregator
+import pdb
 from operator import __and__
+from value import Value
 from xml.dom.minidom import parse
 
 class Table:
@@ -42,13 +45,12 @@ class Table:
 					name = attr.item(i).name
 					if not name in self.columns:
 						# Add column to the table
-						elt = Table.getValue(attr.item(i).value)
+						elt = Value(attr.item(i).value)
 						self.columns.append(name)
-						self.types.append(type(elt))
+						self.types.append(elt.getType())
 						for r in self.data:
-							r.append(None)
-				row = []
-				row = [xmlrow.getAttribute(name) for name in self.columns]
+							r.append(Value())
+				row = [unicode(xmlrow.getAttribute(name)) for name in self.columns]
 				self.addrow(row)
 		else:
 			# Assume the input is a TSV file
@@ -65,23 +67,23 @@ class Table:
 		assert len(strrow) == len(self.columns)
 		row = []
 		for i in range(len(strrow)):
-			val = Table.getValue(strrow[i])
+			val = Value(strrow[i])
 			#print str(val.getType())+' et '+str(self.types[i])
-			if self.types[i] == type(None):
+			if self.types[i] is type(None):
 				# Initialize type
-				self.types[i] = type(val)
+				self.types[i] = val.getType()
 				row.append(val)
-			elif type(val) is self.types[i] or type(val) is None:
+			elif val.getType() == self.types[i] or val.getType() is type(None):
 				row.append(val)
 			else:
-				print len(self.data)
-				# Convert all other values in the column back to string
-				# TODO : handle more fine-grained type fallback (eg Float to Int)
-				row.append(strrow[i])
-				for r in self.data:
-					if not type(r[i]) is None:
-						r[i] = Table.getUnicode(r[i])
-				self.types[i] = unicode
+				row.append(Value(val=strrow[i]))
+				if self.types[i] != unicode:
+					# Convert all other values in the column back to string
+					# TODO : handle more fine-grained fallback (eg Float to Int)
+					for r in self.data:
+						if not r[i].getType() is type(None):
+							r[i] = Value(val=unicode(r[i]))
+					self.types[i] = unicode
 		self.data.append(row)
 
 	def write(self, filename):
@@ -93,15 +95,17 @@ class Table:
 		for row in self.data:
 			strrow = []
 			for cell in row:
-				strrow.append(Table.getString(cell))
+				strrow.append(unicode(cell).encode('unicode-escape'))
 			wr.writerow(strrow)
 		f.close()
 
-	def dump(self,n=float('inf'),reset=False):
+	def dump(self,n=-1,reset=False):
 		"""
 		Dumps n rows of the table to console.
 		If reset=True, the dump starts over from the 1st row
 		"""
+		if n == -1:
+			n = self.numRows()
 		if reset:
 			self.dumpcnt = 0
 		colwidth = 17
@@ -112,7 +116,7 @@ class Table:
 		for i in [x+self.dumpcnt for x in range(n)]:
 			if i >= len(self.data):
 				break
-			dump += '\n'+join([string.ljust(Table.getString(val)[:colwidth],colwidth) for val in self.data[i]])
+			dump += '\n'+join([string.ljust(str(val)[:colwidth],colwidth) for val in self.data[i]])
 			self.dumpcnt += 1
 		dump += '\n'+sep
 		print dump
@@ -126,6 +130,12 @@ class Table:
 	def getColumn(self, j):
 		return [row[j] for row in self.data]
 
+	def numRows(self):
+		return len(self.data)
+
+	def numColumns(self):
+		return len(self.columns)
+
 	def newTable(self):
 		table = Table(name=self.name)
 		table.columns = self.columns
@@ -136,50 +146,34 @@ class Table:
 		table = self.newTable()
 		f = lambda row: reduce(__and__,[c.eval(row[col]) for c in condition])
 		try:
-			table.data = filter(f,self.data)
+			table.data = [row[:] for row in (filter(f,self.data))]
 		except TypeError:
-			table.data = filter(lambda row:condition.eval(row[col]),self.data)
+			# only one condition
+			table.data = [row[:] for row in (filter(lambda row:condition.eval(row[col]),self.data))]
 		return table
 
-	def aggregate(self, attributes, col, aggregator):
-		
-		if not len(self.data):
-			return []
-		row = self.data[0]
-		row[col] = aggregator.calc(self.getColumn(col))
-		return row
-
-	def getColumns(self, columns):
-		table = Table(name=self.name)
-		table.columns = [self.columns[i] for i in columns]
-		table.types = [self.types[i] for i in columns]
+	def aggregate(self, attributes, col, aggregation_function):
+		t = self.newTable()
+		agg = aggregator.Aggregator(aggregation_function)
+		indexes = tuple(self.columns.index(att) for att in attributes)
+		colindex = self.columns.index(col)
+		groups = {}
 		for row in self.data:
-			table.data.append([row[i] for i in columns])
+			key = tuple(row[i] for i in indexes)
+			if not key in groups:
+				groups[key] = []
+			groups[key].append(row)
+		for key in groups:
+			newrow = list(groups[key][0])
+			newrow[colindex] = agg.calc([row[colindex] for row in groups[key]])
+			t.data.append(newrow)
+		return t
+
+	def getColumns(self, attributes):
+		table = Table(name=self.name)
+		indexes = tuple(self.columns.index(att) for att in attributes)
+		table.columns = attributes
+		table.types = [self.types[i] for i in indexes]
+		for row in self.data:
+			table.data.append([row[i] for i in indexes])
 		return table
-
-	@staticmethod
-	def getValue(strval):
-		if strval == '':
-			return None
-		try:
-			return float(strval)
-		except ValueError:
-			try:
-				# TODO: use datetime module to keep milliseconds
-				spl = strval.split('.')
-				return time.strptime(spl[0],'%Y-%m-%dT%H:%M:%S')
-			except ValueError:
-					return strval
-
-	@staticmethod
-	def getUnicode(val):
-		if val is None:
-			return ''
-		elif type(val) is time.struct_time:
-			return time.strftime('%Y-%m-%dT%H:%M:%S',val)
-		else:
-			return unicode(val)
-
-	@staticmethod
-	def getString(val):
-		return Table.getUnicode(val).encode('unicode-escape')

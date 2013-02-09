@@ -1,5 +1,6 @@
 
 import time
+import types
 
 class Value:
 	
@@ -9,18 +10,27 @@ class Value:
 		if not strval is None:
 			if strval == '':
 				self.val = None
-			try:
-				self.val = float(strval)
-			except ValueError:
+			else:
 				try:
-					# TODO: use datetime module to keep milliseconds
-					spl = strval.split('.')
-					self.val = time.strptime(spl[0],'%Y-%m-%dT%H:%M:%S')
+					self.val = float(strval)
 				except ValueError:
-					self.val = strval
+					try:
+						# TODO: use datetime module to keep milliseconds
+						spl = strval.split('.')
+						self.val = time.strptime(spl[0],'%Y-%m-%dT%H:%M:%S')
+					except ValueError:
+						self.val = strval
 
 	def getType(self):
 		return type(self.val)
+
+	def getZero(self):
+		if self.getType() is types.FloatType:
+			return Value(val=0)
+		elif self.getType() is types.StringType or self.getType() is types.UnicodeType:
+			return Value(val='')
+		elif self.getType() is time.struct_time:
+			return Value(val=time.gmtime(0))
 
 	def __repr__(self):
 		return str(self)
@@ -75,33 +85,45 @@ class Value:
 	def __add__(self, other):
 		# TODO: do we want this behavior for strings and dates?
 		if self.__class__ == other.__class__:
+			if other.getType() is type(None):
+				other = self.getZero()
 			return Value(val=self.val + other.val)
 		else:
 			return Value(val=self.val + other)
 
 	def __sub__(self, other):
 		if self.__class__ == other.__class__:
+			if other.getType() is type(None):
+				other = self.getZero()
 			return Value(val=self.val - other.val)
 		else:
 			return Value(val=self.val - other)
 
 	def __mul__(self, other):
 		if self.__class__ == other.__class__:
+			if other.getType() is type(None):
+				other = self.getZero()
 			return Value(val=self.val * other.val)
 		else:
 			return Value(val=self.val * other)
 
 	def __div__(self, other):
 		if self.__class__ == other.__class__:
+			if other.getType() is type(None):
+				other = self.getZero()
 			return Value(val=self.val / other.val)
 		else:
 			return Value(val=self.val / other)
 
 	def __radd__(self, other):
-		if self.__class__ == other.__class__:
-			return Value(val=self.val + other.val)
-		else:
-			return Value(val=self.val + other)
+		return self.__add__(other)
+		#if self.__class__ == other.__class__:
+		#	return Value(val=self.val + other.val)
+		#else:
+		#	return Value(val=self.val + other)
+
+	def __hash__(self):
+		return hash(self.val)
 
 	# TODO: Remove these functions
 

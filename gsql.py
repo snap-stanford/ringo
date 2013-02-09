@@ -5,13 +5,10 @@ def select(table, attr, condition):
 	return table.getTuples(condition, attr)
 
 def project(table, columns):
-	result = table.getColumns(columns)
-	return result
+	return table.getColumns(columns)
 
-# group by merchant then by customer
 def group(table, attributes, aggr_attribute, aggregation_function):
-	result = table.aggregate(attributes, aggr_attribute, aggregation_function)
-	return result
+	return table.aggregate(attributes, aggr_attribute, aggregation_function)
 
 def union(table1, table2, condition):
 	result = {}
