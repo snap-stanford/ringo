@@ -21,33 +21,13 @@ def union(table1, table2, condition):
 	return result
 
 def join(table1, table2, common=[]):
-	result = []
-
-	if len(common) == 0:
-		common = set(table1.getColumns()).intersection(set(table2.getColumns()))
-
-	for row in table1:
-		newrow = []
-		for row2 in table2:
-			for col in common:
-				valid = 1
-				if table1.getElem(row1, col) != table2.getElem(row, col):
-					valid = 0
-				if valid == 1:
-
-				for elem in row1:
-					newrow.append(elem)
-				for col in table2.getColumns():
-					if col not in common:
-						newrow.append(table2.getElem(row2, col))
-
-		if len(newrow) > 0:
-			result.append(newrow)
-
-	return result
+	# Pushed the logic in table.py to prevent messing
+	# too much with row indexes outside the Table class
+	return table1.join(table2,common)
 
 def rename(table, oldattr, newattr):
-	table.setAttrName(oldattr, newattr)
+	# Can rename several attribute names at once
+	table.rename(oldattr, newattr)
 
 def intersect(table1, table2, condition):
 	result = []

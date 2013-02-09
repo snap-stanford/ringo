@@ -142,6 +142,10 @@ class Table:
 		table.types = self.types
 		return table
 
+	def copy(self):
+		table = self.newTable()
+		table.data = [row[:] for row in table.data]
+
 	def getTuples(self, condition, col):
 		table = self.newTable()
 		f = lambda row: reduce(__and__,[c.eval(row[col]) for c in condition])
@@ -155,7 +159,7 @@ class Table:
 	def aggregate(self, attributes, col, aggregation_function):
 		t = self.newTable()
 		agg = aggregator.Aggregator(aggregation_function)
-		indexes = tuple(self.columns.index(att) for att in attributes)
+		indexes = self.colIndexes(attributes)
 		colindex = self.columns.index(col)
 		groups = {}
 		for row in self.data:
@@ -177,3 +181,47 @@ class Table:
 		for row in self.data:
 			table.data.append([row[i] for i in indexes])
 		return table
+
+	def colIndexes(self, attributes):
+		return tuple(self.columns.index(att) for att in attributes)
+
+	def getTypes(self, attributes):
+		return tuple(self.types[i] for i in self.colIndexes(attributes))
+
+	def getElmtsAtIdx(self, row, indexes):
+		return [row[i] for i in indexes]
+
+	def getElmts(self, row, attributes):
+		indexes = self.colIndexes(attributes)
+		return self.getElmtsAtIdx(row, indexes)
+
+	def join(self, table, columns=[]):
+		colset1 = set(self.columns)
+		colset2 = set(table.columns)
+		common = list(colset1.intersection(colset2))
+		addcol1 = list(colset1.difference(colset2))
+		addcol2 = list(colset2.difference(colset1))
+		commonIdx1 = self.colIndexes(common)
+		commonIdx2 = table.colIndexes(common)
+		addcol1Idx = self.colIndexes(addcol1)
+		addcol2Idx = table.colIndexes(addcol2)
+
+		t = Table()
+		t.columns = common+addcol1+addcol2
+		if self.getTypes(common) != table.getTypes(common):
+			print 'Warning: attempting to join on incompatible types'
+		t.types = self.getTypes(common+addcol1)+table.getTypes(addcol2)
+		for row1 in self.data:
+			for row2 in table.data:
+				elmts1 = [row1[i] for i in commonIdx1]
+				elmts2 = [row2[i] for i in commonIdx2]
+				if elmts1 == elmts2:
+					row = elmts1+self.getElmtsAtIdx(row1,addcol1Idx)+table.getElmtsAtIdx(row2,addcol2Idx)
+					t.data.append(row)
+		return t
+
+	def rename(self, oldattr, newattr):
+		t = self.copy()
+		for old,new in zip(oldattr,newattr):
+			t.columns[t.columns.index(old)] = new
+		return t
