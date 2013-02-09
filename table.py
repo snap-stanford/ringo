@@ -3,9 +3,8 @@ import csv
 import os
 import condition
 import string
-import value
+import time
 from operator import __and__
-from value import Value
 from xml.dom.minidom import parse
 
 class Table:
@@ -43,11 +42,11 @@ class Table:
 					name = attr.item(i).name
 					if not name in self.columns:
 						# Add column to the table
-						elt = Value(attr.item(i).value)
+						elt = Table.getValue(attr.item(i).value)
 						self.columns.append(name)
-						self.types.append(elt.getType())
+						self.types.append(type(elt))
 						for r in self.data:
-							r.append(Value())
+							r.append(None)
 				row = []
 				row = [xmlrow.getAttribute(name) for name in self.columns]
 				self.addrow(row)
@@ -66,21 +65,22 @@ class Table:
 		assert len(strrow) == len(self.columns)
 		row = []
 		for i in range(len(strrow)):
-			val = Value(strrow[i])
+			val = Table.getValue(strrow[i])
 			#print str(val.getType())+' et '+str(self.types[i])
 			if self.types[i] == type(None):
 				# Initialize type
-				self.types[i] = val.getType()
+				self.types[i] = type(val)
 				row.append(val)
-			elif val.getType() is self.types[i] or val.getType() is None:
+			elif type(val) is self.types[i] or type(val) is None:
 				row.append(val)
 			else:
+				print len(self.data)
 				# Convert all other values in the column back to string
 				# TODO : handle more fine-grained type fallback (eg Float to Int)
-				row.append(Value(val=strrow[i]))
+				row.append(strrow[i])
 				for r in self.data:
-					if not r[i].getType() is None:
-						r[i] = Value(val=unicode(r[i]))
+					if not type(r[i]) is None:
+						r[i] = Table.getUnicode(r[i])
 				self.types[i] = unicode
 		self.data.append(row)
 
@@ -93,7 +93,7 @@ class Table:
 		for row in self.data:
 			strrow = []
 			for cell in row:
-				strrow.append(unicode(cell).encode('unicode-escape'))
+				strrow.append(Table.getString(cell))
 			wr.writerow(strrow)
 		f.close()
 
@@ -112,7 +112,7 @@ class Table:
 		for i in [x+self.dumpcnt for x in range(n)]:
 			if i >= len(self.data):
 				break
-			dump += '\n'+join([string.ljust(str(val)[:colwidth],colwidth) for val in self.data[i]])
+			dump += '\n'+join([string.ljust(Table.getString(val)[:colwidth],colwidth) for val in self.data[i]])
 			self.dumpcnt += 1
 		dump += '\n'+sep
 		print dump
@@ -156,3 +156,30 @@ class Table:
 		for row in self.data:
 			table.data.append([row[i] for i in columns])
 		return table
+
+	@staticmethod
+	def getValue(strval):
+		if strval == '':
+			return None
+		try:
+			return float(strval)
+		except ValueError:
+			try:
+				# TODO: use datetime module to keep milliseconds
+				spl = strval.split('.')
+				return time.strptime(spl[0],'%Y-%m-%dT%H:%M:%S')
+			except ValueError:
+					return strval
+
+	@staticmethod
+	def getUnicode(val):
+		if val is None:
+			return ''
+		elif type(val) is time.struct_time:
+			return time.strftime('%Y-%m-%dT%H:%M:%S',val)
+		else:
+			return unicode(val)
+
+	@staticmethod
+	def getString(val):
+		return Table.getUnicode(val).encode('unicode-escape')
