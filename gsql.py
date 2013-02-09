@@ -1,8 +1,8 @@
 import table
 
-def select(table, condition):
-	result = table.getTuples(condition)
-	return result
+# select based on one condition
+def select(table, attr, condition):
+	return table.getTuples(condition, attr)
 
 def project(table, columns):
 	result = table.getColumns(columns)
@@ -23,14 +23,16 @@ def union(table1, table2, condition):
 
 	return result
 
-def join(table1, table2):
+def join(table1, table2, common=[]):
 	result = []
 
-	commonCols = intersect(table1.getColumns(), table2.getColumns())
+	if len(common) == 0:
+		common = set(table1.getColumns()).intersection(set(table2.getColumns()))
+
 	for row in table1:
 		newrow = []
 		for row2 in table2:
-			for col in commonCols:
+			for col in common:
 				valid = 1
 				if table1.getElem(row1, col) != table2.getElem(row, col):
 					valid = 0
@@ -39,7 +41,7 @@ def join(table1, table2):
 				for elem in row1:
 					newrow.append(elem)
 				for col in table2.getColumns():
-					if col not in commonCols:
+					if col not in common:
 						newrow.append(table2.getElem(row2, col))
 
 		if len(newrow) > 0:
@@ -65,10 +67,10 @@ def intersect(table1, table2, condition):
 def diff(table1, table2, condition):
 	result = []
 	intermediate = []
-	for row in table1.getTuples(condition):
+	for row in table2.getTuples(condition):
 		intermediate.add(row)
 
-	for row in table2.getTuples(condition):
+	for row in table1.getTuples(condition):
 		if row not in intermediate:
 			result.add(row)
 
