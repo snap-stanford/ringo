@@ -25,25 +25,20 @@ def CG1():
 	t4 = join(t2,t3,["Id"],["ParentId"],["OwnerUserId"],["OwnerUserId"],["Id","UserId1","UserId2"])
 	t5 = group(t4, ["UserId1", "UserId2"], "Count", "cnt")
 	return makeGraph(t5, "UserId1", "UserId2", "directed")
+
 #	---------------------------------------------
 #		Graph 2 : Voting Graph
 #	---------------------------------------------
-
 # Query: "select P.OwnerUserId as UserId1, 
 # V.UserId as UserId2, count(UserId1) as Count from posts P, votes V where V.VoteTypeId = 2 
 # group by UserId1, UserId2" 
 def CG2():
-	t1 = table.Table("posts.xml") #["Id","PostTypeId","OwnerUserId",...] 
-	t2 = table.Table("votes.xml") #["PostId","VoteTypeId","UserId",...]  
+	t1 = table.Table("data/posts.xml") #["Id","PostTypeId","OwnerUserId",...] 
+	t2 = table.Table("data/votes.xml") #["PostId","VoteTypeId","UserId",...]  
 	t3 = select(t2,"VoteTypeId", Condition("==", 2))
-	t4 = project(t1,["Id","OwnerUserId"])
-	t5 = project(t3,["PostId", "UserId"])
-	t6 = rename(t5,"UserId", "UserId1")
-	t7 = rename(t4,"OwnerUserId", "UserId2")
-	t8 = rename(t6,"PostId","Id")
-	t9 = join(t7,t8)
-	t10 = group(t9,["UserId1","UserId2"],"Count","cnt")
-	return makeGraph(t10,"UserId1","UserId2","directed")
+	t4 = join(t3,t1,["PostId"],["Id"],["UserId"],["OwnerUserId"],["Id","UserId1","UserId2"])
+	t5 = group(t4,["UserId1","UserId2"], "Count","cnt")
+	return makeGraph(t5,"UserId1","UserId2","directed")
 
 #	---------------------------------------------
 #		Graph 3 : Comments Graph
@@ -52,13 +47,7 @@ def CG2():
 # Query: "select P.OwnerUserId as UserId1, C.UserId as UserId2 from posts P, 
 # comments C group by UserId1, UserId2"
 def CG3():
-	t1 = table.Table("posts.xml") #["Id","PostTypeId","OwnerUserId",...]   
-	t2 = table.Table("comments.xml") #["PostId","UserId","Text",...]
-	t3 = project(t1,["Id","OwnerUserId"])
-	t4 = project(t2,["PostId","UserId","Text"])
-	t5 = rename(t4,"UserId", "UserId1")
-	t6 = rename(t3,"OwnerUserId", "UserId2")
-	t7 = rename(t5,"PostId", "Id")
-	t8 = join(t6,t7)
-	return makeGraph(t8,"UserId1","UserId2","directed")
-
+	t1 = table.Table("data/posts.xml") #["Id","PostTypeId","OwnerUserId",...]   
+	t2 = table.Table("data/comments.xml") #["PostId","UserId","Text",...]
+	t3 = join(t2,t1,["PostId"],["Id"],["UserId"],["OwnerUserId"],["Id","UserId1","UserId2"])
+	return makeGraph(t3,"UserId1","UserId2","multiedge")

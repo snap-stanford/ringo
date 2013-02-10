@@ -39,6 +39,8 @@ class Graph:
 		# source: ID of source node
 		# destination: ID of destination node
 		# attr: attributes of edge
+
+		# Create nodes if necessary
 		if not source in self.nodes:
 			self.nodes[source] = {}
 		if not destination in self.nodes:
@@ -46,24 +48,45 @@ class Graph:
 		if not source in self.adjlist:
 			self.adjlist[source] = {}
 		adjlist = self.adjlist[source]
-		if not destination in adjlist:
+
+		# Create or find edge
+		if self.type == 'multiedge':
+			if not destination in adjlist:
+				adjlist[destination] = []
 			edgeId = self.getNewEdgeId()
-			adjlist[destination] = edgeId
+			adjlist[destination].append(edgeId)
 		else:
-			edgeId = adjlist[destination]
+			if not destination in adjlist:
+				edgeId = self.getNewEdgeId()
+				adjlist[destination] = edgeId
+			else:
+				edgeId = adjlist[destination]
+
+		# Write edge attributes
 		if not edgeId in self.edges:
 			self.edges[edgeId] = {}
 		self.edges[edgeId].update(attr)
+
+		# Write reverse edge
 		if self.type == 'undirected':
 			if not destination in self.adjlist:
 				self.adjlist[destination] = {}
 			self.adjlist[destination][source] = edgeId
-		elif self.type == 'directed':
+		else:
 			if not destination in self.radjlist:
 				self.radjlist[destination] = {}
-			self.radjlist[destination][source] = edgeId
+			radjlist = self.radjlist[destination]
+			if self.type == 'multiedge':
+				if not source in radjlist:
+					radjlist[source] = []
+				radjlist[source].append(edgeId)
+			elif self.type == 'directed':
+				radjlist[source] = edgeId
 
 	def removeEdge(self, source, destination):
+		if self.type == 'multiedge':
+			raise NotImplementedError
+			# In the multiedge case, remove all edges between source and destination
 		if source in self.adjlist:
 			if destination in self.adjlist[source]:
 				adjlist = self.adjlist[source]
@@ -74,3 +97,6 @@ class Graph:
 					del self.adjlist[destination][source]
 				elif self.type == 'directed':
 					del self.radjlist[destination][source]
+
+	def removeEdgeById(self, edgeId):
+		raise NotImplementedError

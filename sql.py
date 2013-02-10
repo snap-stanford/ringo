@@ -1,4 +1,5 @@
 import table
+import pdb
 
 # select based on one condition
 def select(table, attr, condition):
@@ -37,11 +38,12 @@ def join(table1, table2, joinAttr1, joinAttr2, extraAttr1, extraAttr2, finalname
 	newExtraAttr2 = []
 	for name in extraAttr2:
 		if name in extraAttr1:
-			newExtraAttr2 += name+'2'
+			newExtraAttr2.append(name+'2')
 		else:
-			newExtraAttr2 += name
+			newExtraAttr2.append(name)
 	t2 = t2.rename(joinAttr2+extraAttr2,joinAttr1+newExtraAttr2,False)
 	tjoin = t1.join(t2)
+	pdb.set_trace()
 	if not finalnames is None:
 		tjoin = tjoin.rename(tjoin.columns,finalnames,False)
 	return tjoin
