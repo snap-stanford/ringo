@@ -1,6 +1,6 @@
 import table
 import graph
-from gsql import select, project, rename, join, group
+from sql import select, project, rename, join, group
 from condition import Condition
 
 def makeGraph(table, srcAttr, destAttr, graphType):
@@ -22,14 +22,9 @@ def CG1():
 	t1 = table.Table("data/posts.xml")
 	t2 = select(t1, "PostTypeId", Condition("==", 1))
 	t3 = select(t1, "PostTypeId", Condition("==", 2))
-	t4 = project(t2, ["Id", "OwnerUserId"])
-	t5 = project(t3, ["ParentId", "OwnerUserId"])
-	t6 = rename(t5, "ParentId", "Id")
-	t7 = rename(t4, "OwnerUserId", "UserId1")
-	t8 = rename(t6, "OwnerUserId", "UserId2")
-	t9 = join(t7,t8)
-	t10 = group(t9, ["UserId1", "UserId2"], "Count", "cnt")
-	return makeGraph(t10, "UserId1", "UserId2", "directed")
+	t4 = join(t2,t3,["Id"],["ParentId"],["OwnerUserId"],["OwnerUserId"],["Id","UserId1","UserId2"])
+	t5 = group(t4, ["UserId1", "UserId2"], "Count", "cnt")
+	return makeGraph(t5, "UserId1", "UserId2", "directed")
 #	---------------------------------------------
 #		Graph 2 : Voting Graph
 #	---------------------------------------------

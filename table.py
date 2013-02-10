@@ -188,7 +188,7 @@ class Table:
 			t.data.append(newrow)
 		return t
 
-	def getProjection(self, attributes):
+	def project(self, attributes):
 		table = Table(name=self.name)
 		indexes = tuple(self.columns.index(att) for att in attributes)
 		table.columns = attributes
@@ -213,17 +213,18 @@ class Table:
 		indexes = self.colIndex(attributes)
 		return self.getElmtsAtIdx(row, indexes)
 
-	def join(self, table, columns=[]):
+	def join(self, table):
+		# Initialize index list to join more efficiently
 		colset1 = set(self.columns)
 		colset2 = set(table.columns)
 		common = list(colset1.intersection(colset2))
 		addcol1 = list(colset1.difference(colset2))
 		addcol2 = list(colset2.difference(colset1))
-		commonIdx1 = self.colIndex(common)
-		commonIdx2 = table.colIndex(common)
+		joinIdx1 = self.colIndex(common)
+		joinIdx2 = table.colIndex(common)
 		addcol1Idx = self.colIndex(addcol1)
 		addcol2Idx = table.colIndex(addcol2)
-
+		# Join
 		t = Table()
 		t.columns = common+addcol1+addcol2
 		if self.getTypes(common) != table.getTypes(common):
@@ -231,21 +232,21 @@ class Table:
 		t.types = self.getTypes(common+addcol1)+table.getTypes(addcol2)
 		for row1 in self.data:
 			for row2 in table.data:
-				elmts1 = [row1[i] for i in commonIdx1]
-				elmts2 = [row2[i] for i in commonIdx2]
+				elmts1 = [row1[i] for i in joinIdx1]
+				elmts2 = [row2[i] for i in joinIdx2]
 				if elmts1 == elmts2:
 					row = elmts1+self.getElmtsAtIdx(row1,addcol1Idx)+table.getElmtsAtIdx(row2,addcol2Idx)
 					t.data.append(row)
 		return t
 
-	def rename(self, oldattr, newattr):
-		t = self.copy()
+	def rename(self, oldattr, newattr, copy=True):
+		t = self.copy() if copy else self
 		oldIdx = self.colIndex(oldattr)
 		if isinstance(oldattr,basestring):
 			# Rename one attribute
 			t.columns[oldIdx] = newattr
 		else:
 			# Rename list of attributes
-			for idx,new in zip(oldIdx,newAttr):
+			for idx,new in zip(oldIdx,newattr):
 				t.columns[idx] = new
 		return t
