@@ -5,12 +5,13 @@ class Graph:
 	# self.edges: stores edges with adjacency list:
 	#			{NodeId:{OutEdges}}, OutEdges={DestNodeId:EdgeAttributes}
 
-	def __init__(self, graphType):
+	def __init__(self, graphType, selfloop=True):
 		self.nodes = {} # dictionary {NodeId:Attributes}
 		self.edges = {} # dictionary {EdgeId:Attributes} (EdgeId is managed by the graph object itself)
 		self.adjlist = {} # list of dictionaries: [Edge_1, Edge_2, ...] with Edge_i={Destination:EdgeId}
 		self.radjlist = {} # Stores reverse edges in directed graphs. Used to remove nodes efficiently
 		self.numedges = 0
+		self.selfloop = selfloop
 		self.type = graphType # 'directed' or 'undirected'. TODO: add 'multiedge'
 
 	def addNode(self, nodeId, attributes):
@@ -48,6 +49,10 @@ class Graph:
 		if not source in self.adjlist:
 			self.adjlist[source] = {}
 		adjlist = self.adjlist[source]
+
+		# Check if edge is self-loop
+		if (source == destination) and not self.selfloop:
+			return
 
 		# Create or find edge
 		if self.type == 'multiedge':
@@ -100,3 +105,16 @@ class Graph:
 
 	def removeEdgeById(self, edgeId):
 		raise NotImplementedError
+
+	def addNodes(self, table, nodeattr, attributes=[]):
+		idIdx = table.colIndex(nodeattr)
+		for row in table.data:
+			attrDict = table.getAttrDict(row,attributes)
+			self.addNode(row[idIdx],attrDict)
+
+	def addEdges(self, table, srcAttr, destAttr, attributes=[]):
+		srcIdx = table.colIndex(srcAttr)
+		destIdx = table.colIndex(destAttr)
+		for row in table.data:
+			attrDict = table.getAttrDict(row,attributes)
+			self.addEdge(row[srcIdx],row[destIdx],attrDict)

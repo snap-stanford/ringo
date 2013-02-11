@@ -8,7 +8,7 @@ def select(table, attr, condition):
 def project(table, columns):
 	return table.project(columns)
 
-def group(table, attributes, aggr_attribute, aggregation_function):
+def group(table, attributes, aggr_attribute=None, aggregation_function=None):
 	return table.group(attributes, aggr_attribute, aggregation_function)
 
 def union(table1, table2, condition):
@@ -43,22 +43,9 @@ def join(table1, table2, joinAttr1, joinAttr2, extraAttr1, extraAttr2, finalname
 			newExtraAttr2.append(name)
 	t2 = t2.rename(joinAttr2+extraAttr2,joinAttr1+newExtraAttr2,False)
 	tjoin = t1.join(t2)
-	pdb.set_trace()
 	if not finalnames is None:
 		tjoin = tjoin.rename(tjoin.columns,finalnames,False)
 	return tjoin
-	#colset1 = set(table1.columns)
-	#colset2 = set(table2.columns)
-	#notJoined1 = colset1.difference(set(joinAttr1))
-	#notJoined2 = colset2.difference(set(joinAttr2))
-	#assert len(rename1) == len(tuple(notJoined1))
-	#assert len(rename2) == len(tuple(notJoined2))
-	## Keep columns in right order when renaming
-	#oldnames1 = joinAttr1 + [name for name in table1.columns if name in notJoined1]
-	#oldnames2 = joinAttr2 + [name for name in table2.columns if name in notJoined2]
-	#t1 = table1.rename(oldnames1,joinAttrNames+rename1)
-	#t2 = table2.rename(oldnames2,joinAttrNames+rename2)
-	#return t1.join(t2)
 
 def rename(table, oldattr, newattr):
 	# Can rename several attribute names at once

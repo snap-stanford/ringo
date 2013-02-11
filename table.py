@@ -162,29 +162,40 @@ class Table:
 			table.data = [row[:] for row in (filter(lambda row:condition.eval(row[colIdx]),self.data))]
 		return table
 
-	def group(self, attributes, aggregation_attr, aggregation_function):
-		t = self.newTable()
-		agg = aggregator.Aggregator(aggregation_function)
-		indexes = self.colIndex(attributes)
-		if not aggregation_attr in t.columns:
-			assert aggregation_function == "cnt"
-			t.columns.append(aggregation_attr)
-			t.types.append(types.FloatType)
-		colindex = t.columns.index(aggregation_attr)
+	def group(self, attributes, aggregation_attr=None, aggregation_function=None):
+		aggregate = not aggregation_attr is None
+		# Project table
+		tproj = self.project(attributes)
+		# Find values for aggregation
+		if aggregate:
+			agg = aggregator.Aggregator(aggregation_function)
+			if not aggregation_attr in self.columns:
+				assert aggregation_function == "cnt"	
+				aggregationCol = [0]*self.numRows()
+			else:
+				aggregationCol = self.getColumnByAttr(aggregation_attr)
+		# Find groups of rows
 		groups = {}
-		for row in self.data:
-			key = tuple(row[i] for i in indexes)
+		for i in range(tproj.numRows()):
+			row = tproj.data[i]
+			key = tuple(row)
 			if not key in groups:
 				groups[key] = []
-			groups[key].append(row)
-		for key in groups:
-			newrow = list(groups[key][0])
-			if aggregation_function == "cnt":
-				newrow.append(0)
-				aggValues = [1]*len(groups[key])
+			if aggregate:
+				groups[key].append(aggregationCol[i])
+		# Create final table
+		t = tproj.newTable()
+		if aggregate:
+			t.columns.append(aggregation_attr)
+			if not aggregation_attr in self.columns:
+				t.types.append(types.FloatType)
 			else:
-				aggValues = [row[colindex] for row in groups[key]]
-			newrow[colindex] = agg.calc(aggValues)
+				t.types.append(self.types[t.columns.index(aggregation_attr)])
+		# Fill-in rows
+		for key in groups:
+			newrow = list(key)
+			if aggregate:
+				newrow.append(agg.calc(groups[key]))
 			t.data.append(newrow)
 		return t
 
@@ -250,3 +261,10 @@ class Table:
 			for idx,new in zip(oldIdx,newattr):
 				t.columns[idx] = new
 		return t
+
+	def getAttrDict(self, row, attributes):
+		attrIdx = self.colIndex(attributes)
+		attrDict = {}
+		for attr,idx in zip(attributes,attrIdx):
+			attrDict[attr] = row[idx]
+		return attrDict
