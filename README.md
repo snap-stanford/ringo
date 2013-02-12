@@ -34,7 +34,7 @@ What's done:
 3.	Pipeline to read data and output graph
 4.	Things to think about
 	I. abstraction from sql level
-		- functions like selectandjoin on two tables given using attributes for selection and join
+		- functions like selectandjoin on two tables given attributes for selection and join
 		Example: user calls MakeGraph(files with data, schema, optional type of graph expected)
 			MakeGraph reads data from files into tables. Identifies common attributes to join on
 			Decides logic to select nodes and edges. Calls 
