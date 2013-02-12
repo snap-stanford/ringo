@@ -12,12 +12,12 @@ from condition import Condition
 # and P2.PostTypeId = 2 group by UserId1, UserId2"
 def CG1():
 	t1 = table.Table("data/posts.xml")
-	t2 = select(t1, "PostTypeId", Condition("==", 1))
-	t3 = select(t1, "PostTypeId", Condition("==", 2))
-	t4 = join(t2,t3,["Id"],["ParentId"],["OwnerUserId"],["OwnerUserId"],["Id","UserId1","UserId2"])
+	t2 = select(t1, "PostTypeId", Condition("==", 1)) #Questions
+	t3 = select(t1, "PostTypeId", Condition("==", 2)) #Answers
+	t4 = join(t3,t2,["ParentId"],["Id"],["OwnerUserId"],["OwnerUserId"],["Id","UserId1","UserId2"])
 	t5 = group(t4, ["UserId1", "UserId2"], "Count", "cnt")
 	g = graph.Graph("directed")
-	g.addNodes(t1,"OwnerUserId",[])
+	g.addNodes(t1,"OwnerUserId")
 	g.addEdges(t5,"UserId1","UserId2",["Count"])
 	return g
 
@@ -104,5 +104,29 @@ def CG7():
 def CG8():
 	raise NotImplementedError
 	t1 = table.Table("data/posthistory.xml")
-	t2 = group(t1,["PostId","UserId","Date"])
+	t2 = group(t1,["UserId"],["PostId","Date"],"list")
+	t3 = order(t2,"PostId","Date") # In each row, order postIds by date
+	t4 = expand(t2,"PostId","PostId1","PostId2") # Generate table with one row for each consecutive pair of postIds in each row of the original table
+	g = graph.Graph("directed",False)
+	g.addNodes(t1,"PostId")
+	g.addEdges(t4,"PostId1","PostId2")
+	return g
 
+#	---------------------------------------------
+#		Graph 9 : Badges Graph
+#	---------------------------------------------
+# Query: "select P.OwnerUserId as UserId1, 
+# V.UserId as UserId2, count(UserId1) as Count from posts P, votes V where V.VoteTypeId = 2 
+# group by UserId1, UserId2" 
+def CG9():
+	t1 = table.Table("data/badges.xml") #[UserId","Name"...]
+	t2 = table.Table("data/posts.xml") #["Id","PostTypeId","OwnerUserId",...]
+	t3 = join(t1,t2,["UserId"],["OwnerUserId"],["Name"],["PostTypeId","ParentId","Id"])
+	t4 = select(t3, "PostTypeId", Condition("==", 1)) #Questions
+	t5 = select(t3, "PostTypeId", Condition("==", 2)) #Answers
+	t6 = join(t5,t4,["ParentId"],["Id"],["Name"],["Name"],["Id","Badge1","Badge2"])
+	t7 = group(t6,["Badge1","Badge2"],"Count","cnt")
+	g = graph.Graph("directed")
+	g.addNodes(t1,"Name")
+	g.addEdges(t7,"Badge1","Badge2",["Count"])
+	return g

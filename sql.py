@@ -32,7 +32,6 @@ def join(table1, table2, joinAttr1, joinAttr2, extraAttr1, extraAttr2, finalname
 
 	# Rename columns
 	assert len(joinAttr1) == len(joinAttr2)
-	assert len(extraAttr1) == len(extraAttr2)
 	t1 = table1.project(joinAttr1+extraAttr1)
 	t2 = table2.project(joinAttr2+extraAttr2)
 	newExtraAttr2 = []

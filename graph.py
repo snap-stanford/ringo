@@ -1,3 +1,5 @@
+import string
+import pdb
 
 class Graph:
 
@@ -13,10 +15,14 @@ class Graph:
 		self.numedges = 0
 		self.selfloop = selfloop
 		self.type = graphType # 'directed' or 'undirected'. TODO: add 'multiedge'
+		self.dumpcnt = 0
 
 	def addNode(self, nodeId, attributes):
 		if not nodeId in self.nodes:
 			self.nodes[nodeId] = {}
+			self.adjlist[nodeId] = {}
+			if not self.type== 'undirected':
+				self.radjlist[nodeId] = {}
 		self.nodes[nodeId].update(attributes)
 
 	def removeNode(self, nodeId):
@@ -118,3 +124,21 @@ class Graph:
 		for row in table.data:
 			attrDict = table.getAttrDict(row,attributes)
 			self.addEdge(row[srcIdx],row[destIdx],attrDict)
+
+	def numNodes(self):
+		return len(self.nodes)
+
+	def dump(self, n=-1, reset=False):
+		if n==-1:
+			n = self.self.numNodes()
+		if reset:
+			self.dumpcnt = 0
+		nodewidth = 7
+		nodes = self.nodes.keys()
+		for i in [x+self.dumpcnt for x in range(n)]:
+			if i >= len(nodes):
+				break
+			output = string.ljust(unicode(nodes[i])[:nodewidth],nodewidth) + "--> "
+			output += ', '.join([unicode(destKey) for destKey in self.adjlist[nodes[i]].keys()])
+			self.dumpcnt += 1
+			print output
