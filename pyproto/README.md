@@ -66,4 +66,8 @@ What's done:
 
 			I believe the result(s) of MakeGraphs could be fed to the analysis framework to test how good the graphs are and the feedback passed back to MakeGraph. That way MakeGraph would run multiple times to output the best graphs after some number
 			of runs.
-
+5.	New graphs (content-based): use tags for posts; looking at graphs using some other datasets like Twitter, Citation networks
+6.	Look at standard database primitives and implement
+7.	Implementing date graph - implementing expand function
+8.	Distance based graphs
+9.	Draw a list of equivalent sequences of sql primitives that can be used to construct graphs
