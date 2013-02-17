@@ -66,7 +66,23 @@ Next Steps:
 
 ISSUES:
 1. 	select function should take multiple conditions. Likewise getTuples in table should support multiple conditions
-2. 	Projection and renaming should be done inside select so that we don't carry around too much data to join step
+	In order to have conditions take in the attribute on which the condition is
+	applied, Condition is now constructed as (attr, op, value).
+2. 	Projection should be done inside select so that we don't carry around too much data to join step. Renaming can be done 
+	on the tables returned by select.
 3. 	We need join conditions. Separate from Conditions. A JoinCondition should have the attr A in table 1 that match attr B
 	in table 2.
-	
+4.	Content-based graphs are mostly based on distance metric, at the very least Jaccard distance.
+5.	Additional primitives to implement: order by(sort), unique, bag intersection, bag union, bag difference
+6	Equivalence laws:
+	(I)	Selection:
+		select(R, condition) union/difference select(S, condition) = select (R union/difference S, condition)
+		select(R intersect S, condition) = select(R, condition) intersect S
+		select(R join S, condition) = select(R, condition) join select(S, condition)
+		unique(R join S) = unique(R) join unique(S)
+		unique(select(R, condition)) = select(unique(R), condition)
+		unique(group(R, attrs)) = group(R, attrs)
+		select(R, cond1) join select(S, cond2) = select(R join S, cond1, cond2)
+		
+
+
