@@ -32,37 +32,37 @@ class Table:
 		"""
 		Load data from either XML or TSV file
 		"""
-		f = open(filename, 'r')
-		_,ext = os.path.splitext(filename);
-		if ext=='.xml':
-			# Parse the XML file
-			dom = parse(f)
-			f.close()
-			self.name = dom.documentElement.tagName
-			xmlrows = dom.getElementsByTagName('row')
-			for xmlrow in xmlrows:
-				attr = xmlrow.attributes
-				for i in range(attr.length):
-					name = attr.item(i).name
-					if not name in self.columns:
-						# Add column to the table
-						elt = Value(attr.item(i).value)
-						self.columns.append(name)
-						self.types.append(elt.getType())
-						for r in self.data:
-							r.append(Value())
-				row = [unicode(xmlrow.getAttribute(name)) for name in self.columns]
-				self.addrow(row)
-		else:
-			# Assume the input is a TSV file
-			data = csv.reader(f,delimiter='\t')
-			init = True
-			for row in data:
-				if init:
-					self.columns = ['']*len(row)
-					self.types = [type(None)]*len(row)
-					init = False
-				self.addrow([cell.decode('unicode-escape') for cell in row])
+		with open(filename, 'r') as f:
+			_,ext = os.path.splitext(filename);
+			if ext=='.xml':
+				# Parse the XML file
+				dom = parse(f)
+				f.close()
+				self.name = dom.documentElement.tagName
+				xmlrows = dom.getElementsByTagName('row')
+				for xmlrow in xmlrows:
+					attr = xmlrow.attributes
+					for i in range(attr.length):
+						name = attr.item(i).name
+						if not name in self.columns:
+							# Add column to the table
+							elt = Value(attr.item(i).value)
+							self.columns.append(name)
+							self.types.append(elt.getType())
+							for r in self.data:
+								r.append(Value())
+					row = [unicode(xmlrow.getAttribute(name)) for name in self.columns]
+					self.addrow(row)
+			else:
+				# Assume the input is a TSV file
+				data = csv.reader(f,delimiter='\t')
+				init = True
+				for row in data:
+					if init:
+						self.columns = ['']*len(row)
+						self.types = [type(None)]*len(row)
+						init = False
+					self.addrow([cell.decode('unicode-escape') for cell in row])
 
 	def addrow(self, strrow):
 		assert len(strrow) == len(self.columns)
@@ -162,41 +162,98 @@ class Table:
 			table.data = [row[:] for row in (filter(lambda row:condition.eval(row[colIdx]),self.data))]
 		return table
 
-	def group(self, attributes, aggregation_attr=None, aggregation_function=None):
-		aggregate = not aggregation_attr is None
+	def group(self, attributes, aggattrlist=None, aggfunclist=None):
+		if not isinstance(aggattrlist,list):
+			assert not isinstance(aggfunclist,list)
+			aggattrlist = [aggattrlist]
+			aggfunclist = [aggfunclist]
+		if not isinstance(aggfunclist,list):
+			# Assume the aggregation function is the same for all aggregation attributes
+			aggfunclist = [aggfunclist]*len(aggattrlist)
 		# Project table
 		tproj = self.project(attributes)
 		# Find values for aggregation
-		if aggregate:
-			agg = aggregator.Aggregator(aggregation_function)
-			if not aggregation_attr in self.columns:
-				assert aggregation_function == "cnt"	
-				aggregationCol = [0]*self.numRows()
+		assert len(aggattrlist) == len(aggfunclist)
+		#aggregators = [aggregator.Aggregator(aggfunc) for aggfunc in aggattrlist]
+		agg = aggregator.Aggregator(aggfunclist)
+		aggCols = []
+		for aggattr,aggfunc in zip(aggattrlist,aggfunclist):
+			if not aggattr in self.columns:
+				assert aggfunc == "cnt"	
+				aggCols.append([0]*self.numRows())
 			else:
-				aggregationCol = self.getColumnByAttr(aggregation_attr)
-		# Find groups of rows
+				aggCols.append(self.getColumnByAttr(aggattr))
+		# Find groups of rows, and corresponding list of aggregation attributes
 		groups = {}
 		for i in range(tproj.numRows()):
 			row = tproj.data[i]
 			key = tuple(row)
 			if not key in groups:
 				groups[key] = []
-			if aggregate:
-				groups[key].append(aggregationCol[i])
+			groups[key].append([col[i] for col in aggCols])
+			# groups[key] is a list of lists: each inner list is the list of
+			# aggregation values corresponding to this row
 		# Create final table
 		t = tproj.newTable()
-		if aggregate:
-			t.columns.append(aggregation_attr)
-			if not aggregation_attr in self.columns:
-				t.types.append(types.FloatType)
-			else:
-				t.types.append(self.types[t.columns.index(aggregation_attr)])
+		t.columns += aggattrlist
+		for index,attr in enumerate(self.columns):
+			if attr in aggattrlist:
+				t.types.append(self.types[index])
 		# Fill-in rows
 		for key in groups:
-			newrow = list(key)
-			if aggregate:
-				newrow.append(agg.calc(groups[key]))
+			aggvals = agg.calc(groups[key])
+			newrow = list(key) + aggvals
 			t.data.append(newrow)
+		return t
+
+	def order(self,attrlist,attrsort):
+		if not isinstance(attrlist,list):
+			attrlist = [attrlist]
+		t = self.newTable()
+		index = [self.columns.index(attr) for attr in attrlist+[attrsort]]
+		for row in self.data:
+			newrow = row[:]
+			tuples = zip(*[newrow[idx].val for idx in index])
+			tuples.sort(key=lambda tuple:tuple[-1])
+			sortedattr = zip(*tuples)
+			for i in range(len(index)):
+				newrow[index[i]] = Value(val=tuple(sortedattr[i]))
+			t.data.append(newrow)
+		return t
+
+	def expand(self,attrlist=None):
+		if attrlist is None:
+			# Expand all columns where values are lists or tuples
+			if len(self.data):
+				attrlist = []
+				for val,attr in zip(self.data[0],self.columns):
+					if isinstance(val.val,(list,tuple)):
+						attrlist.append(attr)
+		if not isinstance(attrlist,list):
+			attrlist = [attrlist]
+		t = Table(name=self.name)
+		for index,attr in enumerate(self.columns):
+			if not attr in attrlist:
+				t.columns.append(attr)
+				t.types.append(self.types[index])
+		index = [self.columns.index(attr) for attr in attrlist]
+		for row in self.data:
+			tuples = zip(*[row[idx].val for idx in index])
+			for i in range(len(tuples)-1):
+				t1 = tuples[i]
+				t2 = tuples[i+1]
+				newrow = []
+				for idx,val in enumerate(row):
+					if not self.columns[idx] in attrlist:
+						newrow.append(val)
+				newrow += list(t1+t2)
+				t.data.append(newrow)
+		for idx,attr in zip(index,attrlist):
+			t.columns.append(attr+'1')
+			t.types.append(self.types[idx])
+		for idx,attr in zip(index,attrlist):
+			t.columns.append(attr+'2')
+			t.types.append(self.types[idx])
 		return t
 
 	def project(self, attributes):

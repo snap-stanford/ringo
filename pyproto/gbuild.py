@@ -1,6 +1,6 @@
 import table
 import graph
-from sql import select, project, rename, join, group
+from sql import select, project, rename, join, group, order, expand
 from condition import Condition
 
 #	---------------------------------------------
@@ -102,11 +102,10 @@ def CG7():
 #	--------------------------------------------------------------
 
 def CG8():
-	raise NotImplementedError
 	t1 = table.Table("data/posthistory.xml")
-	t2 = group(t1,["UserId"],["PostId","Date"],"list")
-	t3 = order(t2,"PostId","Date") # In each row, order postIds by date
-	t4 = expand(t2,"PostId","PostId1","PostId2") # Generate table with one row for each consecutive pair of postIds in each row of the original table
+	t2 = group(t1,["UserId"],["PostId","CreationDate"],"list")
+	t3 = order(t2,"PostId","CreationDate") # In each row, order postIds by date
+	t4 = expand(t3) # Generate table with one row for each consecutive pair of postIds in each row of the original table
 	g = graph.Graph("directed",False)
 	g.addNodes(t1,"PostId")
 	g.addEdges(t4,"PostId1","PostId2")

@@ -11,6 +11,12 @@ def project(table, columns):
 def group(table, attributes, aggr_attribute=None, aggregation_function=None):
 	return table.group(attributes, aggr_attribute, aggregation_function)
 
+def order(table,attrlist,attrsort):
+	return table.order(attrlist,attrsort)
+
+def expand(table,attrlist=None):
+	return table.expand(attrlist)
+
 def union(table1, table2, condition):
 	result = {}
 	for row in table1.getTuples(condition):
