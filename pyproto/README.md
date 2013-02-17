@@ -22,17 +22,7 @@ Issues:
 2.	Memory management
 3.	Indexes? performance matters
 
-What's done:
-1. Basic class definitions for
-	- table
-	- graph
-	- node
-	- edge
-	- condition
-	- value
-2.	basic sql functions: select, join, group
-3.	Pipeline to read data and output graph
-4.	Things to think about
+Things to think about
 	I. abstraction from sql level
 		- functions like selectandjoin on two tables given attributes for selection and join
 		Example: user calls MakeGraph(files with data, schema, optional type of graph expected)
@@ -66,8 +56,17 @@ What's done:
 
 			I believe the result(s) of MakeGraphs could be fed to the analysis framework to test how good the graphs are and the feedback passed back to MakeGraph. That way MakeGraph would run multiple times to output the best graphs after some number
 			of runs.
-5.	New graphs (content-based): use tags for posts; looking at graphs using some other datasets like Twitter, Citation networks
-6.	Look at standard database primitives and implement
-7.	Implementing date graph - implementing expand function
-8.	Distance based graphs
-9.	Draw a list of equivalent sequences of sql primitives that can be used to construct graphs
+Next Steps:
+1.	New graphs (content-based): use tags for posts; looking at graphs using some other datasets like Twitter, Citation networks
+2.	Look at standard database primitives and implement
+3.	Implementing date graph - implementing expand function
+4.	Distance based graphs
+5.	Draw a list of equivalent sequences of sql primitives that can be used to construct graphs
+
+
+ISSUES:
+1. 	select function should take multiple conditions. Likewise getTuples in table should support multiple conditions
+2. 	Projection and renaming should be done inside select so that we don't carry around too much data to join step
+3. 	We need join conditions. Separate from Conditions. A JoinCondition should have the attr A in table 1 that match attr B
+	in table 2.
+	
