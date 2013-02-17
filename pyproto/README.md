@@ -62,7 +62,12 @@ Next Steps:
 3.	Implementing date graph - implementing expand function
 4.	Distance based graphs
 5.	Draw a list of equivalent sequences of sql primitives that can be used to construct graphs
+6.	Abstraction: 
+	(I) 	select, join and group on same table
+	(II)	select, join and group on different tables
 
+	Graph createGraph(table, SelectConditions, JoinConditions);
+	Graph createGraph2(table1, table2, SelectConditions1, SelectConditions2, JoinConditions);
 
 ISSUES:
 1. 	select function should take multiple conditions. Likewise getTuples in table should support multiple conditions
@@ -84,5 +89,12 @@ ISSUES:
 		unique(group(R, attrs)) = group(R, attrs)
 		select(R, cond1) join select(S, cond2) = select(R join S, cond1, cond2)
 		
-
+This week's division of work
+Martin:
+	Make changes to existing code to address issues 1-3
+	Mold sql primitives to see if they fit into gsql abstractions
+	Update google doc
+Dilli:
+	Find content-based graphs that can be created using existing primitives
+	Find distance-based graphs and think about what needs to be done to support them
 
