@@ -2,8 +2,14 @@ import table
 import pdb
 
 # select based on one condition
-def select(table, attr, condition):
-	return table.select(attr, condition)
+def select(table, condition=[], attributes=[], newnames=None):
+	t = table.select(condition)
+	if len(attributes):
+		t = t.project(attributes)
+	if not newnames is None:
+		assert len(attributes) == len(newnames)
+		t.rename(attributes,newnames)
+	return t
 
 def project(table, columns):
 	return table.project(columns)
@@ -27,34 +33,33 @@ def union(table1, table2, condition):
 
 	return result
 
-def join(table1, table2, joinAttr1, joinAttr2, extraAttr1, extraAttr2, finalnames=None):
-	# Pushed some logic in table.py to prevent messing
-	# too much with row indexes outside the Table class
-	#
-	# finalnames allows to specify the attribute names in the final table.
-	# If finalnames=None, then the default columns are:
-	#     joinAttr1 + extraAttr1 + extraAttr2'
-	# where extraAttr2' is a modified version of extraAttr2 that is not conflicting with extraAttr1
+def join(table1, table2, joinconditions, finalnames=None):
+	# finalnames allows to specify the attribute names in the final table, in the following order:
+	# 1) common attributes, 2) other attributes in table 1, 3) other attributes in table 2
 
 	# Rename columns
-	assert len(joinAttr1) == len(joinAttr2)
-	t1 = table1.project(joinAttr1+extraAttr1)
-	t2 = table2.project(joinAttr2+extraAttr2)
-	newExtraAttr2 = []
-	for name in extraAttr2:
-		if name in extraAttr1:
-			newExtraAttr2.append(name+'2')
-		else:
-			newExtraAttr2.append(name)
-	t2 = t2.rename(joinAttr2+extraAttr2,joinAttr1+newExtraAttr2,False)
+	joinattr1 = [attr for attr,_ in joinconditions]
+	joinattr2 = [attr for _,attr in joinconditions]
+	t1 = table1.copy()
+	t2 = table2.copy()
+	# Prevent conflicts in attribute names
+	for attr1 in table1.columns:
+		for attr2 in table2.columns:
+			if attr1 == attr2 and not (attr1 in joinattr1 or attr2 in joinattr2):
+				t1.rename(attr1,attr1+'1') # Unsafe. There could be another attribute with this name
+				t2.rename(attr2,attr2+'2')
+	if not isinstance(joinconditions,list):
+		joinconditions = [joinconditions]
+	for attr1,attr2 in joinconditions:
+		t2.rename(attr2,attr1)
 	tjoin = t1.join(t2)
 	if not finalnames is None:
-		tjoin = tjoin.rename(tjoin.columns,finalnames,False)
+		tjoin.rename(tjoin.columns,finalnames)
 	return tjoin
 
 def rename(table, oldattr, newattr):
 	# Can rename several attribute names at once
-	return table.rename(oldattr, newattr)
+	return table.rename(oldattr, newattr, True)
 
 def intersect(table1, table2, condition):
 	result = []

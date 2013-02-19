@@ -151,18 +151,18 @@ class Table:
 		table.data = [row[:] for row in self.data]
 		return table
 
-	def select(self, col, condition):
+	def select(self, condition):
+		if not isinstance(condition,list):
+			condition = [condition]
+		for c in condition:
+			c.configureForTable(self)
 		table = self.newTable()
-		colIdx = self.colIndex(col)
-		f = lambda row: reduce(__and__,[c.eval(row[colIdx]) for c in condition])
-		try:
-			table.data = [row[:] for row in (filter(f,self.data))]
-		except TypeError:
-			# only one condition
-			table.data = [row[:] for row in (filter(lambda row:condition.eval(row[colIdx]),self.data))]
+		f = lambda row: reduce(__and__,[c.eval(row) for c in condition],True)
+		table.data = [row[:] for row in (filter(f,self.data))]
 		return table
 
 	def group(self, attributes, aggattrlist=None, aggfunclist=None):
+		# TODO: handle case whith no aggregation function (just remove duplicate rows)
 		if not isinstance(aggattrlist,list):
 			assert not isinstance(aggfunclist,list)
 			aggattrlist = [aggattrlist]
@@ -258,6 +258,7 @@ class Table:
 
 	def project(self, attributes):
 		table = Table(name=self.name)
+		attributes = list(set(attributes))
 		indexes = tuple(self.columns.index(att) for att in attributes)
 		table.columns = attributes
 		table.types = [self.types[i] for i in indexes]
@@ -307,7 +308,7 @@ class Table:
 					t.data.append(row)
 		return t
 
-	def rename(self, oldattr, newattr, copy=True):
+	def rename(self, oldattr, newattr, copy=False):
 		t = self.copy() if copy else self
 		oldIdx = self.colIndex(oldattr)
 		if isinstance(oldattr,basestring):

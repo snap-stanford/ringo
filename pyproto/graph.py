@@ -42,7 +42,7 @@ class Graph:
 		self.numedges += 1
 		return newEdgeId
 
-	def addEdge(self, source, destination, attr):
+	def addEdge(self, source, destination, attr=[]):
 		# source: ID of source node
 		# destination: ID of destination node
 		# attr: attributes of edge

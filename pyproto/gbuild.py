@@ -1,5 +1,6 @@
 import table
 import graph
+import gsql
 from sql import select, project, rename, join, group, order, expand
 from condition import Condition
 
@@ -12,13 +13,13 @@ from condition import Condition
 # and P2.PostTypeId = 2 group by UserId1, UserId2"
 def CG1():
 	t1 = table.Table("data/posts.xml")
-	t2 = select(t1, "PostTypeId", Condition("==", 1)) #Questions
-	t3 = select(t1, "PostTypeId", Condition("==", 2)) #Answers
-	t4 = join(t3,t2,["ParentId"],["Id"],["OwnerUserId"],["OwnerUserId"],["Id","UserId1","UserId2"])
-	t5 = group(t4, ["UserId1", "UserId2"], "Count", "cnt")
+	t2 = select(t1, Condition("PostTypeId","==", 1), ["Id","OwnerUserId"])
+	t3 = select(t1, Condition("PostTypeId","==", 2), ["ParentId","OwnerUserId"])
+	t4 = join(t2,t3,[("Id","ParentId")])
+	t5 = group(t4, ["OwnerUserId1", "OwnerUserId2"], "Count", "cnt")
 	g = graph.Graph("directed")
 	g.addNodes(t1,"OwnerUserId")
-	g.addEdges(t5,"UserId1","UserId2",["Count"])
+	g.addEdges(t5,"OwnerUserId1","OwnerUserId2",["Count"])
 	return g
 
 #	---------------------------------------------
@@ -29,14 +30,15 @@ def CG1():
 # group by UserId1, UserId2" 
 def CG2():
 	t1 = table.Table("data/posts.xml") #["Id","PostTypeId","OwnerUserId",...] 
-	t2 = table.Table("data/votes.xml") #["PostId","VoteTypeId","UserId",...]  
-	t3 = select(t2,"VoteTypeId", Condition("==", 2))
-	t4 = join(t3,t1,["PostId"],["Id"],["UserId"],["OwnerUserId"],["Id","UserId1","UserId2"])
-	t5 = group(t4,["UserId1","UserId2"], "Count","cnt")
+	t2 = table.Table("data/votes.xml") #["PostId","VoteTypeId","UserId",...]
+	t3 = select(t1, attributes=["Id","OwnerUserId"])
+	t4 = select(t2, Condition("VoteTypeId", "==", 2),["PostId","UserId"])
+	t5 = join(t4,t3,[("PostId","Id")])
+	t6 = group(t5,["UserId","OwnerUserId"], "Count","cnt")
 	g = graph.Graph("directed")
 	g.addNodes(t1,"OwnerUserId")
 	g.addNodes(t2,"UserId")
-	g.addEdges(t5,"UserId1","UserId2",["Count"])
+	g.addEdges(t6,"UserId","OwnerUserId",["Count"])
 	return g
 
 #	---------------------------------------------
@@ -48,11 +50,13 @@ def CG2():
 def CG3():
 	t1 = table.Table("data/posts.xml") #["Id","PostTypeId","OwnerUserId",...]   
 	t2 = table.Table("data/comments.xml") #["PostId","UserId","Text",...]
-	t3 = join(t2,t1,["PostId"],["Id"],["UserId"],["OwnerUserId"],["Id","UserId1","UserId2"])
+	t3 = select(t1, attributes=["Id","OwnerUserId"])
+	t4 = select(t2, attributes=["PostId","UserId"])
+	t5 = join(t4,t3,[("PostId","Id")])
 	g = graph.Graph("multiedge")
 	g.addNodes(t1,"OwnerUserId")
 	g.addNodes(t2,"UserId")
-	g.addEdges(t3,"UserId1","UserId2")
+	g.addEdges(t5,"UserId","OwnerUserId")
 	return g
 
 #	--------------------------------------------------------------
@@ -60,28 +64,20 @@ def CG3():
 #	--------------------------------------------------------------
 
 def CG4(thresh):
-	t1 = table.Table("data/comments.xml")
-	t2 = join(t1,t1,["PostId"],["PostId"],["UserId"],["UserId"],["PostId","UserId1","UserId2"])
-	t3 = group(t2,["UserId1","UserId2"],"Count","cnt")
-	t4 = select(t3,"Count",Condition(">=",thresh))
-	g = graph.Graph("undirected",False)
-	g.addNodes(t1,"UserId")
-	g.addEdges(t4,"UserId1","UserId2",["Count"])
-	return g
+	t = table.Table("data/comments.xml")
+	node = gsql.NodeDescription("UserId")
+	edge = gsql.EdgeDescription(("PostId","PostId"),"undirected",thresh)
+	return gsql.link1(t,node,node,edge)
 
 #	--------------------------------------------------------------
 #		Graph 5 : Common Commenters (similar to Common Voters)
 #	--------------------------------------------------------------
 
 def CG5(thresh):
-	t1 = table.Table("data/comments.xml")
-	t2 = join(t1,t1,["UserId"],["UserId"],["PostId"],["PostId"],["UserId","PostId1","PostId2"])
-	t3 = group(t2,["PostId1","PostId2"],"Count","cnt")
-	t4 = select(t3,"Count",Condition(">=",thresh))
-	g = graph.Graph("undirected",False)
-	g.addNodes(t1,"PostId")
-	g.addEdges(t4,"PostId1","PostId2",["Count"])
-	return g
+	t = table.Table("data/comments.xml")
+	node = gsql.NodeDescription("PostId")
+	edge = gsql.EdgeDescription(("UserId","UserId"),"undirected",thresh)
+	return gsql.link1(t,node,node,edge)
 
 #	--------------------------------------------------------------
 #		Graph 7 : Same Editors
@@ -90,16 +86,17 @@ def CG5(thresh):
 def CG7():
 	t1 = table.Table("data/posthistory.xml")
 	t2 = group(t1,["PostId","UserId"])
-	t3 = join(t2,t2,["UserId"],["UserId"],["PostId"],["PostId"],["UserId","PostId1","PostId2"])
+	t3 = select(t1,attributes=["PostId","UserId"])
+	t3 = join(t2,t2,[("UserId","UserId")])
 	t4 = group(t3,["PostId1","PostId2"])
 	g = graph.Graph("undirected",False)
 	g.addNodes(t1,"PostId")
 	g.addEdges(t4,"PostId1","PostId2")
 	return g
 
-#	--------------------------------------------------------------
+#	----------------------------------------------
 #		Graph 8 : Dates
-#	--------------------------------------------------------------
+#	----------------------------------------------
 
 def CG8():
 	t1 = table.Table("data/posthistory.xml")
@@ -121,8 +118,8 @@ def CG9():
 	t1 = table.Table("data/badges.xml") #[UserId","Name"...]
 	t2 = table.Table("data/posts.xml") #["Id","PostTypeId","OwnerUserId",...]
 	t3 = join(t1,t2,["UserId"],["OwnerUserId"],["Name"],["PostTypeId","ParentId","Id"])
-	t4 = select(t3, "PostTypeId", Condition("==", 1)) #Questions
-	t5 = select(t3, "PostTypeId", Condition("==", 2)) #Answers
+	t4 = select(t3, Condition("PostTypeId", "==", 1)) #Questions
+	t5 = select(t3, Condition("PostTypeId", "==", 2)) #Answers
 	t6 = join(t5,t4,["ParentId"],["Id"],["Name"],["Name"],["Id","Badge1","Badge2"])
 	t7 = group(t6,["Badge1","Badge2"],"Count","cnt")
 	g = graph.Graph("directed")
