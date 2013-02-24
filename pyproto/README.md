@@ -93,8 +93,71 @@ This week's division of work
 Martin:
 	Make changes to existing code to address issues 1-3
 	Mold sql primitives to see if they fit into gsql abstractions
+		Graph createGraph(table, SelectConditions, JoinConditions);
+		Graph createGraph2(table1, table2, SelectConditions1, SelectConditions2, JoinConditions);
+
 	Update google doc
 Dilli:
 	Find content-based graphs that can be created using existing primitives
 	Find distance-based graphs and think about what needs to be done to support them
+
+# User interface
+ringo = new Ringo()
+node1 = NodeDescription(file, condition)
+node2 = NodeDescription(file, condition)
+edges = EdgeDescription([JoinCondition])
+graph = ringo.createGraph(node1, node2, edges)
+
+# createGraph implementation
+ringo.createGraph (node1, node2, edges)
+	file1 = node1.file
+	file2 = node2.file
+	attrs1 = []
+	attrs2 = []
+	attrs1.append(node1.condition.attr)
+	if (file1 == file2):
+		attrs1.append(node2.condition.attr)
+		for cond in edges.conditions:
+			attr1.append(cond.attr1)
+			attrs1.append(cond.attr2)
+
+		table = Table(file1, attrs1)
+		table2 = select(table, node1.condition)
+		table3 = select(table, node2.condition)
+		table4 = join(table2, table3, edges.conditions)
+		nodes = addNodes(table4, node1.condition.attr, node2.condition.attr)
+		addEdges(table4, nodes)
+	else
+		attrs2.append(node2.condition.attr)
+		for cond in edges.conditions:
+			if cond.file == file1 and cond.file2 is None:
+				attrs1.append(cond.attr1)
+				attrs1.append(cond.attr2)
+			elif cond.file == file1 and cond.file2 is not None:
+				attrs1.append(cond.attr1)
+				attrs2.append(cond.attr2)
+			else
+				attrs2.append(cond.attr1)
+				attrs2.append(cond.attr2)
+			
+		table = Table(file1, attrs1)
+		table2 = Table(file2, attrs2)
+		table3 = select(table, node1.condition)
+		table4 = select(table2, node2.condition)
+		table5 = join(table3, table4, edges.conditions)
+		nodes = addNodes(table5, node1.condition.attr, node2.condition.attr)
+		addEdges(table5, nodes)
+
+# notes
+
+class Condition:
+	attr, op, value
+
+class JoinCondition
+	file1, file2
+	attr1, attr2
+	op
+
+
+
 
