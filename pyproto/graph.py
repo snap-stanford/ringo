@@ -112,18 +112,18 @@ class Graph:
 	def removeEdgeById(self, edgeId):
 		raise NotImplementedError
 
-	def addNodes(self, table, nodeattr, attributes=[]):
-		idIdx = table.colIndex(nodeattr)
+	def addNodes(self, table, nodeIdx, attributes=[]):
+		pos = table.getPos(nodeIdx)
 		for row in table.data:
 			attrDict = table.getAttrDict(row,attributes)
-			self.addNode(row[idIdx],attrDict)
+			self.addNode(row[pos],attrDict)
 
-	def addEdges(self, table, srcAttr, destAttr, attributes=[]):
-		srcIdx = table.colIndex(srcAttr)
-		destIdx = table.colIndex(destAttr)
+	def addEdges(self, table, srcIdx, destIdx, attributes=[]):
+		srcPos = table.getPos(srcIdx)
+		destPos = table.getPos(destIdx)
 		for row in table.data:
 			attrDict = table.getAttrDict(row,attributes)
-			self.addEdge(row[srcIdx],row[destIdx],attrDict)
+			self.addEdge(row[srcPos],row[destPos],attrDict)
 
 	def numNodes(self):
 		return len(self.nodes)

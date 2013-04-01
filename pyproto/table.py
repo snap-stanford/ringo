@@ -1,4 +1,3 @@
-
 import csv
 import os
 import condition
@@ -7,26 +6,78 @@ import value
 import aggregator
 import pdb
 import types
+import copy
+import util
+import gsql
 from operator import __and__
 from value import Value
 from xml.dom.minidom import parse
 
+class AttributeStore:
+	def __init__(self):
+		self.attrDict = {}
+		self.idxDict = {}
+		self.types = {}
+		self.currIdx = 0
+	def addAttr(self,name,ty):
+		self.attrDict[self.currIdx] = name
+		self.types[self.currIdx] = ty
+		if not name in self.idxDict:
+			self.idxDict[name] = []
+		self.idxDict[name].append(self.currIdx)
+		self.currIdx += 1
+		return self.currIdx - 1
+	def getIndexes(self,attr):
+		return self.idxDict[attr]
+	def getAttr(self,idx):
+		return self.attrDict[idx]
+	def getType(self,idx):
+		return self.types[idx]
+	def setName(self,idx,name):
+		self.idxDict[self.attrDict[idx]].remove(idx)
+		self.attrDict[idx] = name
+		if not self.idxDict[name]:
+			self.idxDict[name] = []
+		self.idxDict[name].append(idx)
+	def setType(self,idx,ty):
+		self.types[i] = ty
+	def copy(self):
+		attrStore = AttributeStore()
+		attrStore.attrDict = copy.deepcopy(self.attrDict)
+		attrStore.idxDict = copy.deepcopy(self.idxDict)
+		attrStore.types = copy.deepcopy(self.types)
+		attrStore.currIdx = self.currIdx
+		return attrStore
+
+class TableStructureError(Exception):
+	def __init__(self,message):
+		self.message = message
+	def __repr__(self):
+		return repr(self.message)
+class TableAttrNotFoundError(Exception):
+	def __init__(self,message):
+		self.message = message
+	def __repr__(self):
+		return repr(self.message)
+
 class Table:
 
-	def __init__(self, filename=None, name=None):
+	defaultAttributeStore = AttributeStore()
+
+	def __init__(self, filename=None, name=None, attrStore=None):
 		self.columns = []
-		self.types = []
 		self.data = []
 		self.dumpcnt = 0
 		self.name = None
+		if attrStore is None:
+			 # Attribute Store is shared between tables
+			self.attrStore = Table.defaultAttributeStore
+		else:
+			self.attrStore = attrStore
 		if not filename is None:
 			self.load(filename)
 		if not name is None:
 			self.name = name
-
-	def setColumnNames(self, columns):
-		for col in columns:
-			self.columns.append(col)
 
 	def load(self, filename):
 		"""
@@ -44,47 +95,61 @@ class Table:
 					attr = xmlrow.attributes
 					for i in range(attr.length):
 						name = attr.item(i).name
-						if not name in self.columns:
+						if not name in self.attrs():
 							# Add column to the table
 							elt = Value(attr.item(i).value)
-							self.columns.append(name)
-							self.types.append(elt.getType())
+							index = self.attrStore.addAttr(name,elt.getType())
+							self.columns.append(index)
 							for r in self.data:
 								r.append(Value())
-					row = [unicode(xmlrow.getAttribute(name)) for name in self.columns]
+					row = [unicode(xmlrow.getAttribute(name)) for name in self.attrs()]
 					self.addrow(row)
 			else:
 				# Assume the input is a TSV file
 				data = csv.reader(f,delimiter='\t')
-				init = True
+				if len(data):
+					for i in range(len(data[0])):
+						self.attrStore('<untitled>'+str(i),None)
 				for row in data:
-					if init:
-						self.columns = ['']*len(row)
-						self.types = [type(None)]*len(row)
-						init = False
 					self.addrow([cell.decode('unicode-escape') for cell in row])
 
+	def newTable(self):
+		table = Table(name=self.name)
+		# The new table shares the same attribute store, but attributes are duplicated
+		table.attrStore = self.attrStore
+		newAttrs = []
+		for attr in self.columns:
+			index = self.attrStore.addAttr(self.attrStore.getAttr(attr),self.getType(attr))
+			newAttrs.append(index)
+		table.columns = newAttrs
+		return table
+		
+	def copy(self):
+		table = self.newTable()
+		table.data = [row[:] for row in self.data]
+		idxmap = dict(zip(self.columns,table.columns))
+		return table,idxmap
 	def addrow(self, strrow):
 		assert len(strrow) == len(self.columns)
 		row = []
 		for i in range(len(strrow)):
 			val = Value(strrow[i])
 			#print str(val.getType())+' et '+str(self.types[i])
-			if self.types[i] is type(None):
+			if self.getType(i) is type(None):
 				# Initialize type
-				self.types[i] = val.getType()
+				self.setType(i,val.getType())
 				row.append(val)
-			elif val.getType() == self.types[i] or val.getType() is type(None):
+			elif val.getType() == self.getType(i) or val.getType() is type(None):
 				row.append(val)
 			else:
 				row.append(Value(val=strrow[i]))
-				if self.types[i] != unicode:
+				if self.getType(i) != unicode:
 					# Convert all other values in the column back to string
 					# TODO : handle more fine-grained fallback (eg Float to Int)
 					for r in self.data:
 						if not r[i].getType() is type(None):
 							r[i] = Value(val=unicode(r[i]))
-					self.types[i] = unicode
+					self.setType(i,unicode)
 		self.data.append(row)
 
 	def write(self, filename):
@@ -111,7 +176,7 @@ class Table:
 			self.dumpcnt = 0
 		colwidth = 17
 		join = lambda l: '| '+' | '.join(l)+' |'
-		dump = join([string.center(name[:colwidth],colwidth) for name in self.columns])
+		dump = join([string.center(name[:colwidth],colwidth) for name in self.attrs()])
 		sep = '+'*len(dump)
 		dump = sep+'\n'+dump+'\n'+sep
 		for i in [x+self.dumpcnt for x in range(n)]:
@@ -122,71 +187,127 @@ class Table:
 		dump += '\n'+sep
 		print dump
 
+	def attrs(self):
+		for idx in self.columns:
+			yield self.attrStore.getAttr(idx)
+	def types(self):
+		for idx in self.columns:
+			yield self.attrStore.getType(idx)
 	def name(self):
 		return self.name
+	def getAttr(self,idx):
+		return self.attrStore.getAttr(idx)
+	def getType(self,idx):
+		return self.attrStore.getType(idx)
+	def getAllIdxForAttr(self,attr):
+		return [idx for idx,name in zip(self.columns,self.attrs()) if name == attr]
+	def getIndex(self,attr):
+		attrlist, = util.makelist(attr)
+		result = []
+		for a in attrlist:
+			indexes = self.getAllIdxForAttr(a)
+			if len(indexes) > 1:
+				raise TableStructureError('Ambiguous attribute name')
+			elif len(indexes) <= 0:
+				raise TableAttrNotFoundError('Attribute not found in table')
+			result.append(indexes[0])
+		if isinstance(attr,basestring):
+			return result[0]
+		return result
+	def getPos(self,index):
+		# TODO: raise error if index not found
+		indexlist, = util.makelist(index)
+		positions = [-1]*len(indexlist)
+		for i,idx1 in enumerate(indexlist):
+			for pos,idx2 in enumerate(self.columns):
+				if idx1 == idx2:
+					positions[i] = pos
+		if isinstance(index,(list,tuple)):
+			return positions
+		else:
+			return positions[0]
+	def hasAttr(self,attr):
+		try:
+			idx = self.getIndex(attr)
+		except TableAttrNotFoundError:
+			return False
+		return True
+	def addAttr(self,attr,ty=type(None),val=Value(None)):
+		if val.getType() != type(None):
+			ty = val.getType()
+		index = self.attrStore.addAttr(attr,ty)
+		self.columns.append(index)
+		for row in self.data:
+			row.append(val)
+		return index
+
+	def setAttrName(self,oldname,newname):
+		idx = self.getIndex(oldname)
+		self.attrStore.setName(idx,newname)
+	def setNames(self,names):
+		assert len(self.columns) == len(names)
+		for idx,name in zip(self.columns,names):
+			self.attrStore.setName(idx,name)
+	def setType(self,idx,ty):
+		self.attrStore.setType(idx,ty)
 
 	def getRow(self, i):
 		return self.data[i]
-
-	def getColumnById(self, j):
+	def getColumnByPos(self, j):
 		return [row[j] for row in self.data]
-
-	def getColumnByAttr(self, attribute):
-		return self.getColumnById(self.columns.index(attribute))
+	def getColumn(self,idx):
+		return self.getColumnByPos(self.columns.index(idx))
+	def getColumnByAttr(self, attr):
+		return self.getColumn(self.getIndex(attr))
 
 	def numRows(self):
 		return len(self.data)
-
 	def numColumns(self):
 		return len(self.columns)
 
-	def newTable(self):
-		table = Table(name=self.name)
-		table.columns = self.columns[:]
-		table.types = self.types[:]
-		return table
-
-	def copy(self):
-		table = self.newTable()
-		table.data = [row[:] for row in self.data]
-		return table
-
-	def select(self, condition):
-		if not isinstance(condition,list):
-			condition = [condition]
+	def select(self, condition, projIdx=None):
+		if projIdx == None:
+			projIdx = self.columns
+		condition,projIdx = util.makelist(condition,projIdx)
 		for c in condition:
 			c.configureForTable(self)
 		table = self.newTable()
 		f = lambda row: reduce(__and__,[c.eval(row) for c in condition],True)
 		table.data = [row[:] for row in (filter(f,self.data))]
-		return table
+		newProjIdx = [newIdx for oldIdx,newIdx in zip(self.columns,table.columns) if oldIdx in projIdx]
+		tfinal,_ = table.project(newProjIdx)
+		idxmap = dict(zip(projIdx,tfinal.columns))
+		return tfinal,idxmap
 
-	def group(self, attributes, aggattrlist=None, aggfunclist=None):
-		# TODO: handle case whith no aggregation function (just remove duplicate rows)
-		if not isinstance(aggattrlist,list):
-			assert not isinstance(aggfunclist,list)
-			aggattrlist = [aggattrlist]
-			aggfunclist = [aggfunclist]
-		if not isinstance(aggfunclist,list):
-			# Assume the aggregation function is the same for all aggregation attributes
-			aggfunclist = [aggfunclist]*len(aggattrlist)
-		# Project table
-		tproj = self.project(attributes)
+	def project(self, attrIdx):
+		# Duplicate columns are removed
+		attrIdx = list(set(attrIdx))
+		positions = self.getPos(attrIdx)
+		table = Table(name=self.name)
+		for idx in attrIdx:
+			table.addAttr(self.getAttr(idx),self.getType(idx))
+		for row in self.data:
+			table.data.append([row[i] for i in positions])
+		idxmap = dict(zip(attrIdx,table.columns))
+		return table,idxmap
+
+	def group(self, attrIdx, count=False, aggrAttrIdx=[], aggrFunc=[]):
+		#TODO: remove attributes of intermediary tables in attribute store
+		attrIdx,aggrAttrIdx,aggrFunc = util.makelist(attrIdx,aggrAttrIdx,aggrFunc)
+		assert len(aggrAttrIdx) == len(aggrFunc)
+		tmptable,idxmap = self.copy()
+		aggrAttrIdx = util.mapIdx(aggrAttrIdx,idxmap)
+		if count:
+			cntIdx = tmptable.addAttr(gsql.WEIGHT_ATTR_NAME,val=Value(val=1))
+			aggrAttrIdx.append(cntIdx)
+			aggrFunc.append('cnt')
 		# Find values for aggregation
-		assert len(aggattrlist) == len(aggfunclist)
-		#aggregators = [aggregator.Aggregator(aggfunc) for aggfunc in aggattrlist]
-		agg = aggregator.Aggregator(aggfunclist)
-		aggCols = []
-		for aggattr,aggfunc in zip(aggattrlist,aggfunclist):
-			if not aggattr in self.columns:
-				assert aggfunc == "cnt"	
-				aggCols.append([0]*self.numRows())
-			else:
-				aggCols.append(self.getColumnByAttr(aggattr))
+		agg = aggregator.Aggregator(aggrFunc)
+		aggCols = [tmptable.getColumn(idx) for idx in aggrAttrIdx]
 		# Find groups of rows, and corresponding list of aggregation attributes
+		tproj,_ = tmptable.project(attrIdx)
 		groups = {}
-		for i in range(tproj.numRows()):
-			row = tproj.data[i]
+		for i,row in enumerate(tproj.data):
 			key = tuple(row)
 			if not key in groups:
 				groups[key] = []
@@ -194,16 +315,48 @@ class Table:
 			# groups[key] is a list of lists: each inner list is the list of
 			# aggregation values corresponding to this row
 		# Create final table
-		t = tproj.newTable()
-		t.columns += aggattrlist
-		for index,attr in enumerate(self.columns):
-			if attr in aggattrlist:
-				t.types.append(self.types[index])
-		# Fill-in rows
+		tfinal,_ = tmptable.project(attrIdx+aggrAttrIdx)
 		for key in groups:
 			aggvals = agg.calc(groups[key])
 			newrow = list(key) + aggvals
-			t.data.append(newrow)
+			tfinal.data.append(newrow)
+		idxmap = dict(zip(attrIdx+aggrAttrIdx,tfinal.columns))
+		return tfinal,idxmap
+
+	def join(self, table, joinconditions):
+		joinIdx1 = [idx for idx,_ in joinconditions]
+		joinIdx2 = [idx for _,idx in joinconditions]
+		addIdx1 = [idx for idx in self.columns if not idx in joinIdx1]
+		addIdx2 = [idx for idx in table.columns if not idx in joinIdx2]
+		t = self.newTable()
+		for attr in addIdx2:
+			t.addAttr(attr,table.getType(attr))
+		joinPos1 = self.getPos(joinIdx1)
+		joinPos2 = table.getPos(joinIdx2)
+		addPos1 = self.getPos(addIdx1)
+		addPos2 = table.getPos(addIdx2)
+		for row1 in self.data:
+			for row2 in table.data:
+				elmts1 = [row1[i] for i in joinPos1]
+				elmts2 = [row2[i] for i in joinPos2]
+				if elmts1 == elmts2:
+					row = elmts1 + [row1[i] for i in addPos1] + [row2[i] for i in addPos2]
+					t.data.append(row)
+		idxmap = dict(zip(joinIdx1+addIdx1+addIdx2,t.columns)+zip(joinIdx2,t.columns[:len(joinIdx2)]))
+		return t,idxmap
+
+###################### CODE BELOW HAS NOT BEEN REWRITTEN YET ############################
+
+	def rename(self, oldattr, newattr, copy=False):
+		t = self.copy() if copy else self
+		oldIdx = self.colIndex(oldattr)
+		if isinstance(oldattr,basestring):
+			# Rename one attribute
+			t.columns[oldIdx] = newattr
+		else:
+			# Rename list of attributes
+			for idx,new in zip(oldIdx,newattr):
+				t.columns[idx] = new
 		return t
 
 	def order(self,attrlist,attrsort):
@@ -256,16 +409,6 @@ class Table:
 			t.types.append(self.types[idx])
 		return t
 
-	def project(self, attributes):
-		table = Table(name=self.name)
-		attributes = list(set(attributes))
-		indexes = tuple(self.columns.index(att) for att in attributes)
-		table.columns = attributes
-		table.types = [self.types[i] for i in indexes]
-		for row in self.data:
-			table.data.append([row[i] for i in indexes])
-		return table
-
 	def colIndex(self, attribute):
 		if isinstance(attribute,basestring):
 			return self.columns.index(attribute)
@@ -281,44 +424,6 @@ class Table:
 	def getElmts(self, row, attributes):
 		indexes = self.colIndex(attributes)
 		return self.getElmtsAtIdx(row, indexes)
-
-	def join(self, table):
-		# Initialize index list to join more efficiently
-		colset1 = set(self.columns)
-		colset2 = set(table.columns)
-		common = list(colset1.intersection(colset2))
-		addcol1 = list(colset1.difference(colset2))
-		addcol2 = list(colset2.difference(colset1))
-		joinIdx1 = self.colIndex(common)
-		joinIdx2 = table.colIndex(common)
-		addcol1Idx = self.colIndex(addcol1)
-		addcol2Idx = table.colIndex(addcol2)
-		# Join
-		t = Table()
-		t.columns = common+addcol1+addcol2
-		if self.getTypes(common) != table.getTypes(common):
-			print 'Warning: attempting to join on incompatible types'
-		t.types = self.getTypes(common+addcol1)+table.getTypes(addcol2)
-		for row1 in self.data:
-			for row2 in table.data:
-				elmts1 = [row1[i] for i in joinIdx1]
-				elmts2 = [row2[i] for i in joinIdx2]
-				if elmts1 == elmts2:
-					row = elmts1+self.getElmtsAtIdx(row1,addcol1Idx)+table.getElmtsAtIdx(row2,addcol2Idx)
-					t.data.append(row)
-		return t
-
-	def rename(self, oldattr, newattr, copy=False):
-		t = self.copy() if copy else self
-		oldIdx = self.colIndex(oldattr)
-		if isinstance(oldattr,basestring):
-			# Rename one attribute
-			t.columns[oldIdx] = newattr
-		else:
-			# Rename list of attributes
-			for idx,new in zip(oldIdx,newattr):
-				t.columns[idx] = new
-		return t
 
 	def getAttrDict(self, row, attributes):
 		attrIdx = self.colIndex(attributes)

@@ -2,6 +2,7 @@ import sql
 import graph
 import condition
 import pdb
+import util
 
 WEIGHT_ATTR_NAME = "Weight"
 
@@ -36,60 +37,37 @@ class EdgeDescription:
         self.dataAttr = dataAttr
 
 def link1(table,nodeDesc1,nodeDesc2,edgeDesc):
-    # Create new graph and add nodes
-    g = graph.Graph(edgeDesc.type,False)
-    g.addNodes(table,nodeDesc1.idAttr)
-    g.addNodes(table,nodeDesc2.idAttr)
-
-    # Transform table to get edges
-    nodeDesc2 = nodeDesc2.copy()
-    # Are there meaningful examples with only one table, where the edge data is
-    # already in the initial table? Most likely it is generated (for example, 
-    # a weight can be generated during the grouping operation)
+    # Get attributes indexes
+    node1Idx = table.getIndex(nodeDesc1.idAttr)
+    node2Idx = table.getIndex(nodeDesc2.idAttr)
     relationAttr1 = [attr for attr,_ in edgeDesc.relation]
     relationAttr2 = [attr for _,attr in edgeDesc.relation]
-    assert not (nodeDesc1.idAttr in relationAttr1 or nodeDesc2.idAttr in relationAttr2)
-    projlist1 = [nodeDesc1.idAttr] + relationAttr1 + nodeDesc1.dataAttr
-    projlist2 = [nodeDesc2.idAttr] + relationAttr2 + nodeDesc2.dataAttr
-    t1 = sql.select(table, nodeDesc1.filter, projlist1)
-    t2 = sql.select(table, nodeDesc2.filter, projlist2)
-
-    # Make sure the nodeDesc attribute names won't be changed when joining
-    # TODO: don't autorename in join, raise exceptions instead
-    # TODO: The code below both too complicated and unsafe: in final implementation, maintain an attribute store, common to all tables
-    if nodeDesc1.idAttr == nodeDesc2.idAttr:
-        attr = nodeDesc1.idAttr
-        newAttr1 = attr+'1'
-        t1.rename(attr,newAttr1)
-        nodeDesc1.rename(attr,newAttr1)
-        #edgeDesc.rename(attr,newAttr1)
-        newAttr2 = attr+'2'
-        t2.rename(attr,newAttr2)
-        nodeDesc2.rename(attr,newAttr2)
-        #edgeDesc.rename(attr,newAttr2)
-    for index,attr in enumerate(t1.columns):
-        if attr == nodeDesc2.idAttr:
-            newAttr = attr+'_'
-            t1.rename(attr,newAttr) #(unsafe because the renamed attribute could be used somewhere else (e.g. in node data or relation)
-    for index,attr in enumerate(t2.columns):
-        if attr == nodeDesc1.idAttr:
-            newAttr = attr+'_'
-            t2.rename(attr,newAttr)
-    t3 = sql.join(t1,t2,edgeDesc.relation)
-
+    node1RelIdx = table.getIndex(relationAttr1)
+    node2RelIdx = table.getIndex(relationAttr2)
+    node1DataIdx = table.getIndex(nodeDesc1.dataAttr)
+    node2DataIdx = table.getIndex(nodeDesc2.dataAttr)
+    # Create new graph and add nodes
+    g = graph.Graph(edgeDesc.type,False)
+    g.addNodes(table,node1Idx)
+    g.addNodes(table,node2Idx)
+    # Tranform table
+    assert not (node1Idx in node1RelIdx or node2Idx in node2RelIdx)
+    projlist1 = [node1Idx] + node1RelIdx + node1DataIdx
+    projlist2 = [node2Idx] + node2RelIdx + node2DataIdx
+    for cond in nodeDesc1.filter+nodeDesc2.filter:
+        cond.configureForTable(table)
+    t1,idxmap1 = table.select(nodeDesc1.filter, projlist1)
+    t2,idxmap2 = table.select(nodeDesc2.filter, projlist2)
+    t3,idxmap3 = t1.join(t2,zip(util.mapIdx(node1RelIdx,idxmap1),util.mapIdx(node2RelIdx,idxmap2)))
     if edgeDesc.threshold:
-        # We will probably want a more general kind of weight
-        t4 = sql.group(t3,[nodeDesc1.idAttr,nodeDesc2.idAttr],WEIGHT_ATTR_NAME,"cnt")
+        t4,idxmap4 = t3.group([util.mapIdx(node1Idx,idxmap1,idxmap3),util.mapIdx(node2Idx,idxmap2,idxmap3)],True)
+        t5,idxmap5 = t4.select(condition.Condition(WEIGHT_ATTR_NAME,">=",edgeDesc.threshold))
+        idxmap = util.mergeIdxmap(idxmap4,idxmap5)
     else:
-        t4 = sql.group(t3,[nodeDesc1.idAttr,nodeDesc2.idAttr])
-
-    t5 = sql.select(t4,condition.Condition(WEIGHT_ATTR_NAME,">=",edgeDesc.threshold))
-
-    # Add edges to graph
-    if edgeDesc.threshold:
-        g.addEdges(t4,nodeDesc1.idAttr,nodeDesc2.idAttr,[WEIGHT_ATTR_NAME])
-    else:
-        g.addEdges(t4,nodeDesc1.idAttr,nodeDesc2.idAttr)
+        t5,idxmap = t3.group([util.mapIdx(node1Idx,idxmap1,idxmap3),util.mapIdx(node2Idx,idxmap2,idxmap3)],False)
+    # Add edges
+    g.addEdges(t5,util.mapIdx(node1Idx,idxmap1,idxmap3,idxmap),util.mapIdx(node2Idx,idxmap2,idxmap3,idxmap))
+    pdb.set_trace()
     return g
 
 # Node description:

@@ -6,4 +6,8 @@
 
 *.xml
 
-test.py
+shorten.sh
+shfile.sh
+
+*.sublime-workspace
+*.sublime-project
