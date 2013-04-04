@@ -11,11 +11,6 @@ class TableNotFoundError(Exception):
     self.name = name
   def __str__(self):
     return 'Table not found: ' + str(self.name)
-class ColumnNotFoundError(Exception):
-  def __init__(self,name):
-    self.name = name
-  def __str__(self):
-    return 'Column not found: ' + str(self.name)
 
 class Ringo:
   """
@@ -39,44 +34,29 @@ class Ringo:
   def setWorkingTable(self,name):
     self.wtable = self.getTable(name)
   def setWorkingColumn(self,name):
-    if self.wtable is None:
-      raise WorkingTableError()
+    self.checkwtable()
     if self.wtable.hasLabel(name):
       self.wcol = name
     else:
-      raise ColumnNotFoundError(name)
-
-  def tableNames(self):
-    return [t.name for t in self.tables]
-  def getTable(self,name):
-    for t in self.tables:
-      if t.name == name:
-        return t
-    raise TableNotFoundError(name)
+      raise tb.ColumnNotFoundError(name)
 
   def dump(self,n=-1,reset=False):
-    if self.wtable is None:
-      raise WorkingTableError()
+    self.checkwtable()
     self.wtable.dump(n,reset)
 
   def label(self,col,label):
-    idx = self.wtable.getColIndex(label)
-    if not idx is None:
-      self.wtable.addLabel(col,label)
+    self.wtable.addLabel(col,label)
 
   def select(self,expr):
     self.wtable.select(expr)
 
   def join(self,name,col):
-    if self.wtable is None:
-      raise WorkingTableError()
-    if self.wcol is None:
-      raise WorkingColumnError()
+    self.checkwcontext()
     wcolidx = self.wtable.getColIndex(self.wcol)
     table2 = self.getTable(name)
     colidx = table2.getColIndex(col)
     if colidx is None:
-      raise ColumnNotFoundError(col)
+      raise tb.ColumnNotFoundError(col)
     # Compute result of join in a new table
     jointable = tb.Table()
     jointable.cols = self.wtable.cols + table2.cols
@@ -94,3 +74,46 @@ class Ringo:
     # Update working table and working column
     self.wcol = col
     self.wtable = jointable
+
+  def callAppendOp(self,method,newcolname,*cols):
+    self.checkwtable()
+    self.wtable.appendOp(method,newcolname,*cols)
+    self.setWorkingColumn(newcolname)
+
+  def group(self,newcolname,*cols):
+    self.callAppendOp("group",newcolname,*cols)
+
+  def order(self,newcolname,*cols):
+    self.callAppendOp("order",newcolname,*cols)
+
+  def number(self,newcolname,*cols):
+    self.callAppendOp("number",newcolname,*cols)
+
+  def count(self,newcolname,*cols):
+    self.callAppendOp("count",newcolname,*cols)
+
+  def next(self,groupcol,ordercol,valnext):
+    self.checkwcontext()
+    self.wtable.next(self.wcol,groupcol,ordercol,valnext)
+    self.setWorkingColumn(valnext)
+
+  def unique(self,*cols):
+    self.checkwtable()
+    self.wtable.unique(*cols)
+
+  # Internal functions
+  def tableNames(self):
+    return [t.name for t in self.tables]
+  def getTable(self,name):
+    for t in self.tables:
+      if t.name == name:
+        return t
+    raise TableNotFoundError(name)
+  def checkwtable(self):
+    if self.wtable is None:
+      raise WorkingTableError()
+  def checkwcontext(self):
+    self.checkwtable()
+    if self.wcol is None:
+      raise WorkingColumnError()
+

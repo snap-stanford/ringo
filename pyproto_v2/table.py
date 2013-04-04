@@ -4,6 +4,12 @@ import cond
 import string
 import types as ty
 
+class ColumnNotFoundError(Exception):
+  def __init__(self,name):
+    self.name = name
+  def __str__(self):
+    return 'Column not found: ' + str(self.name)
+
 class Table:
   """
   Used to load and transform tables
@@ -31,8 +37,9 @@ class Table:
       for xmlrow in xmlrows:
         row = [None]*self.numcols()
         for name,val in xmlrow.attributes.items():
-          idx = self.getColIndex(name)
-          if idx is None:
+          try:
+            idx = self.getColIndex(name)
+          except ColumnNotFoundError:
             idx = len(self.cols)
             row.append(None)
             # Add new column to the table
@@ -93,7 +100,7 @@ class Table:
     for i in [x+self.dumpcnt for x in range(n)]:
       if i >= len(self.data):
         break
-      dump += makedumprow([string.ljust(str(val)[:colwidth],colwidth) for val in self.data[i]])
+      dump += makedumprow([string.ljust(unicode(val)[:colwidth],colwidth) for val in self.data[i]])
       self.dumpcnt += 1
     dump += sep
     print dump
@@ -104,6 +111,7 @@ class Table:
       if name in labels:
         return idx
       idx += 1
+    raise ColumnNotFoundError(name)
   def labels(self):
     return set.union(*self.cols)
   def hasLabel(self,name):
@@ -119,8 +127,7 @@ class Table:
     for c in self.cols:
       c.discard(label)
     idx = self.getColIndex(col)
-    if not idx is None:
-      self.cols[idx].add(label)
+    self.cols[idx].add(label)
 
   def select(self,expr):
     c = cond.Condition(expr)
@@ -137,3 +144,79 @@ class Table:
       for label in self.cols[i]:
         rdict[label] = val
     return rdict
+
+  def appendOp(self,method,newcolname,*cols):
+    # appendOp appends a new column to the table and then calls the specified method
+    # (group, order, number or count)
+    indexes = [self.getColIndex(c) for c in cols]
+    self.cols.append(set([newcolname]))
+    self.types.append(ty.IntType)
+    getattr(self,method)(indexes)
+
+  def group(self,indexes):
+    tupledict = {}
+    groupcnt = 0
+    for row in self.data:
+      tup = tuple(row[i] for i in indexes)
+      if not tup in tupledict:
+        groupcnt += 1
+        tupledict[tup] = groupcnt
+      row.append(tupledict[tup])
+
+  def order(self,indexes):
+    tuplelist = [tuple(row[i] for i in indexes) for row in self.data]
+    order = [elt[0] for elt in sorted(enumerate(tuplelist), key=lambda x:x[1])]
+    for pos,idx in enumerate(order):
+      self.data[idx].append(pos+1)
+
+  def number(self,indexes):
+    tupledict = {}
+    for row in self.data:
+      tup = tuple(row[i] for i in indexes)
+      if not tup in tupledict:
+        tupledict[tup] = 0
+      tupledict[tup] += 1
+      row.append(tupledict[tup])
+
+  def count(self,indexes):
+    tupledict = {}
+    for row in self.data:
+      tup = tuple(row[i] for i in indexes)
+      if not tup in tupledict:
+        tupledict[tup] = 0
+      tupledict[tup] += 1
+    for row in self.data:
+      tup = tuple(row[i] for i in indexes)
+      row.append(tupledict[tup])
+
+  def next(self,wcol,groupcol,ordercol,valnext):
+    wcolidx = self.getColIndex(wcol)
+    groupidx = self.getColIndex(groupcol)
+    orderidx = self.getColIndex(ordercol)
+    self.cols.append(set([valnext]))
+    self.types.append(self.types[wcolidx])
+    tupledict = {}
+    for pos,row in enumerate(self.data):
+      group = row[groupidx]
+      if not group in tupledict:
+        tupledict[group] = []
+      tupledict[group].append((pos,row[orderidx],row[wcolidx]))
+    for tuples in tupledict.values():
+      tuples.sort(key=lambda x: x[1])
+      for i in range(len(tuples)-1):
+        pos = tuples[i][0]
+        nextval = tuples[i+1][2]
+        self.data[pos].append(nextval)
+      pos = tuples[len(tuples)-1][0]
+      self.data[pos].append(None)
+
+  def unique(self,*cols):
+    indexes = [self.getColIndex(c) for c in cols]
+    tupleset = set()
+    # iterating backwards to remove rows on the fly
+    for i in xrange(len(self.data)-1,-1,-1):
+      tup = tuple(self.data[i][j] for j in indexes)
+      if tup in tupleset:
+        del self.data[i]
+      else:
+        tupleset.add(tup)
