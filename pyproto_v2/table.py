@@ -112,6 +112,8 @@ class Table:
         return idx
       idx += 1
     raise ColumnNotFoundError(name)
+  def getColIndexes(self,names):
+    return [self.getColIndex(name) for name in names]
   def labels(self):
     return set.union(*self.cols)
   def hasLabel(self,name):
@@ -148,7 +150,7 @@ class Table:
   def appendOp(self,method,newcolname,*cols):
     # appendOp appends a new column to the table and then calls the specified method
     # (group, order, number or count)
-    indexes = [self.getColIndex(c) for c in cols]
+    indexes = self.getColIndexes(cols)
     self.cols.append(set([newcolname]))
     self.types.append(ty.IntType)
     getattr(self,method)(indexes)
@@ -211,7 +213,7 @@ class Table:
       self.data[pos].append(None)
 
   def unique(self,*cols):
-    indexes = [self.getColIndex(c) for c in cols]
+    indexes = self.getColIndexes(cols)
     tupleset = set()
     # iterating backwards to remove rows on the fly
     for i in xrange(len(self.data)-1,-1,-1):

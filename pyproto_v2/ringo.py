@@ -1,4 +1,6 @@
 import table as tb
+import graph as gr
+import copy
 
 class WorkingTableError(Exception):
   def __str__(self):
@@ -6,13 +8,27 @@ class WorkingTableError(Exception):
 class WorkingColumnError(Exception):
   def __str__(self):
     return 'Working column not set'
+class SourceTableError(Exception):
+  def __str__(self):
+    return 'Source table not set'
+class SourceColumnError(Exception):
+  def __str__(self):
+    return 'Source column not set'
 class TableNotFoundError(Exception):
   def __init__(self,name):
     self.name = name
   def __str__(self):
     return 'Table not found: ' + str(self.name)
+class ReservedNameError(Exception):
+  def __str__(self,name):
+    return str(self.name) + ' is a reserved name'
+class GraphNotDefinedError(Exception):
+  def __str__(self):
+    return 'Graph not defined'
 
 class Ringo:
+  SRC_COL_LABEL = '__srccol'
+
   """
   Main class - allows the user to import a dataset and create graphs
   """
@@ -20,8 +36,9 @@ class Ringo:
     self.tables = []
     self.wtable = None # Working table name
     self.wcol = None # Working column label
-    self.nodetable = None # Table obtained after applying the node description
+    self.srctable = None # Table obtained after applying the node description
                           # to the initial working table
+    self.graph = None # Output graph
 
   def load(self,filename):
     t = tb.Table(filename)
@@ -39,12 +56,22 @@ class Ringo:
       self.wcol = name
     else:
       raise tb.ColumnNotFoundError(name)
+  def setSourceContext(self):
+    self.checkwcontext()
+    self.wtable.addLabel(self.wcol,self.SRC_COL_LABEL)
+    self.srctable = copy.deepcopy(self.wtable)
 
-  def dump(self,n=-1,reset=False):
+  def tdump(self,n=-1,reset=False):
     self.checkwtable()
     self.wtable.dump(n,reset)
+  def gdump(self,n=-1,reset=False):
+    if self.graph is None:
+      raise GraphNotDefinedError()
+    self.graph.dump(n,reset)
 
   def label(self,col,label):
+    if label == self.SRC_COL_LABEL:
+      raise ReservedNameError(self.SRC_COL_LABEL)
     self.wtable.addLabel(col,label)
 
   def select(self,expr):
@@ -101,6 +128,25 @@ class Ringo:
     self.checkwtable()
     self.wtable.unique(*cols)
 
+  def link(self,name):
+    self.setWorkingColumn(name)
+
+  def makegraph(self,gtype='directed',nodeattr=[],edgeattr=[],destnodeattr=[]):
+    self.checkwcontext()
+    self.checksrccontext()
+    self.graph = gr.Graph(gtype)
+    srcidx = self.wtable.getColIndex(self.SRC_COL_LABEL)
+    destidx = self.wtable.getColIndex(self.wcol)
+    nodeattridx = self.wtable.getColIndexes(nodeattr)
+    edgeattridx = self.wtable.getColIndexes(edgeattr)
+    destattridx = self.wtable.getColIndexes(destnodeattr)
+    for row in self.wtable.data:
+      srcnode = row[srcidx]
+      destnode = row[destidx]
+      self.graph.addnode(srcnode,[row[i] for i in nodeattridx])
+      self.graph.addnode(destnode,[row[i] for i in destattridx])
+      self.graph.addedge(srcnode,destnode,[row[i] for i in edgeattridx])
+
   # Internal functions
   def tableNames(self):
     return [t.name for t in self.tables]
@@ -116,4 +162,7 @@ class Ringo:
     self.checkwtable()
     if self.wcol is None:
       raise WorkingColumnError()
+  def checksrccontext(self):
+    if self.srctable is None:
+      raise SourceTableError()
 
