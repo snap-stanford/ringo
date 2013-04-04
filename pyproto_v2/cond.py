@@ -4,7 +4,7 @@ import utils
 
 class Condition:
   """
-  Class used to filter rows in a table
+  Condition parsing for the "select" operation
   """
   def __init__(self,cond):
     self.cond = cond
