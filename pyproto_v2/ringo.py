@@ -40,6 +40,8 @@ class Ringo:
                           # to the initial working table
     self.graph = None # Output graph
 
+  ####### API FUNCTIONS #######
+
   def load(self,filename):
     t = tb.Table(filename)
     # it would be nicer to check if a table with this name already exists before reading
@@ -47,40 +49,19 @@ class Ringo:
     if not t.name in self.tableNames():
       self.tables.append(t)
 
-  # Set working table and working column by name
-  def setWorkingTable(self,name):
-    self.wtable = self.getTable(name)
-  def setWorkingColumn(self,name):
-    self.checkwtable()
-    if self.wtable.hasLabel(name):
-      self.wcol = name
-    else:
-      raise tb.ColumnNotFoundError(name)
-  def setSourceContext(self):
-    self.checkwcontext()
-    self.wtable.addLabel(self.wcol,self.SRC_COL_LABEL)
-    self.srctable = copy.deepcopy(self.wtable)
-
-  def tdump(self,n=-1,reset=False):
-    self.checkwtable()
-    self.wtable.dump(n,reset)
-  def gdump(self,n=-1,reset=False):
-    if self.graph is None:
-      raise GraphNotDefinedError()
-    self.graph.dump(n,reset)
-
-  def label(self,col,label):
+  def label(self,label):
     if label == self.SRC_COL_LABEL:
       raise ReservedNameError(self.SRC_COL_LABEL)
-    self.wtable.addLabel(col,label)
+    self.checkwcontext()
+    self.wtable.addLabel(self.wcol,label)
 
   def select(self,expr):
     self.wtable.select(expr)
 
-  def join(self,name,col):
+  def join(self,tname,col):
     self.checkwcontext()
     wcolidx = self.wtable.getColIndex(self.wcol)
-    table2 = self.getTable(name)
+    table2 = self.getTable(tname)
     colidx = table2.getColIndex(col)
     if colidx is None:
       raise tb.ColumnNotFoundError(col)
@@ -104,6 +85,9 @@ class Ringo:
 
   def callAppendOp(self,method,newcolname,*cols):
     self.checkwtable()
+    if len(cols) == 0:
+      self.checkwcol()
+      cols = [self.wcol]
     self.wtable.appendOp(method,newcolname,*cols)
     self.setWorkingColumn(newcolname)
 
@@ -124,9 +108,9 @@ class Ringo:
     self.wtable.next(self.wcol,groupcol,ordercol,valnext)
     self.setWorkingColumn(valnext)
 
-  def unique(self,*cols):
-    self.checkwtable()
-    self.wtable.unique(*cols)
+  def unique(self):
+    self.checkwcontext()
+    self.wtable.unique(self.wcol)
 
   def link(self,name):
     self.setWorkingColumn(name)
@@ -147,7 +131,31 @@ class Ringo:
       self.graph.addnode(destnode,[row[i] for i in destattridx])
       self.graph.addedge(srcnode,destnode,[row[i] for i in edgeattridx])
 
-  # Internal functions
+  ##### UTILITY FUNCTIONS #####
+
+  # Pretty printing for the working table and the graph
+  def tdump(self,n=-1,reset=False,*cols):
+    self.checkwtable()
+    self.wtable.dump(n,reset,*cols)
+  def gdump(self,n=-1,reset=False):
+    if self.graph is None:
+      raise GraphNotDefinedError()
+    self.graph.dump(n,reset)
+  def dump(self):
+    self.tdump(-1,True,self.SRC_COL_LABEL,self.wcol)
+    self.gdump(-1,True)
+  def setWorkingTable(self,name):
+    self.wtable = copy.deepcopy(self.getTable(name))
+  def setWorkingColumn(self,name):
+    self.checkwtable()
+    if self.wtable.hasLabel(name):
+      self.wcol = name
+    else:
+      raise tb.ColumnNotFoundError(name)
+  def setSourceContext(self):
+    self.checkwcontext()
+    self.wtable.addLabel(self.wcol,self.SRC_COL_LABEL)
+    self.srctable = copy.deepcopy(self.wtable)
   def tableNames(self):
     return [t.name for t in self.tables]
   def getTable(self,name):
@@ -158,10 +166,12 @@ class Ringo:
   def checkwtable(self):
     if self.wtable is None:
       raise WorkingTableError()
-  def checkwcontext(self):
-    self.checkwtable()
+  def checkwcol(self):
     if self.wcol is None:
       raise WorkingColumnError()
+  def checkwcontext(self):
+    self.checkwtable()
+    self.checkwcol()
   def checksrccontext(self):
     if self.srctable is None:
       raise SourceTableError()

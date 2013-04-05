@@ -75,20 +75,24 @@ class Table:
               pass
           self.types[i] = ty.UnicodeType
 
-  def dump(self,n=-1,reset=False):
+  def dump(self,n=-1,reset=False,*cols):
     """
     Dumps n rows of the table to console.
     If n is not given, the full table is dumped.
     If reset=True, the dump starts over from the 1st row.
     """
+    if len(cols) == 0:
+      colidx = range(len(self.cols))
+    else:
+      colidx = self.getColIndexes(cols) 
     if n == -1:
-      n = self.numRows()
+      n = self.numrows()
     if reset:
       self.dumpcnt = 0
     colwidth = 17
     makedumprow = lambda l: '| '+' | '.join(l)+' |\n'
     # Build the header by arranging column labels in rows
-    labels = map(list,self.cols)
+    labels = map(list,[self.cols[i] for i in colidx])
     maxnumlabels = max(map(len,labels))
     labels = [l+['']*(maxnumlabels-len(l)) for l in labels]
     labelrows = zip(*labels)
@@ -100,7 +104,7 @@ class Table:
     for i in [x+self.dumpcnt for x in range(n)]:
       if i >= len(self.data):
         break
-      dump += makedumprow([string.ljust(unicode(val)[:colwidth],colwidth) for val in self.data[i]])
+      dump += makedumprow([string.ljust(unicode(self.data[i][j])[:colwidth],colwidth) for j in colidx])
       self.dumpcnt += 1
     dump += sep
     print dump

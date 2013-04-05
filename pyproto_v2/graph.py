@@ -101,7 +101,6 @@ class Graph:
 		newNodeId = self.numnodes
 		self.numnodes += 1
 		return newNodeId
-
 	def getNewEdgeId(self):
 		newEdgeId = self.numedges
 		self.numedges += 1
