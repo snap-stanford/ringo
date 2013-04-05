@@ -84,10 +84,6 @@ What the user calls:
 	ringo = ringo.Ringo(files)
 	graph = ringo.makegraph(starttable, nodedesc, edgedesc, nodeAttrs, edgeAttrs, addNodeAttrs, type)
 
-want something like
-
-	graph = ringo.makegraph(starttable,  graphdesc, src, dst, nodeattrs, edgeattrs)
-
 Ringo: Class
 	tables		# all data
 	wtable		# working table built along the way by applying nodedesc and edgedesc
@@ -112,5 +108,15 @@ Expressions for select and join
 	join: implicit equijoin
 			We could make it a boolean conjunction and/or disjunction of join conditions
 				joinCondition: columnName1 operator columnName2
+
+------
+TODO:
+------
+want something like
+
+	graph = ringo.makegraph(starttable,  graphdesc, src, dst, nodeattrs, edgeattrs)
+
+Do preprocessing on data to convert xml files into Tab separated values
+Test with entire data
 
 
