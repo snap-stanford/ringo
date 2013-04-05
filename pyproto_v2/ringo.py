@@ -42,12 +42,13 @@ class Ringo:
 
   ####### API FUNCTIONS #######
 
-  def load(self,filename):
-    t = tb.Table(filename)
-    # it would be nicer to check if a table with this name already exists before reading
-    # the whole file (requires finding the table name without parsing the full XML document)
-    if not t.name in self.tableNames():
-      self.tables.append(t)
+  def load(self,*filenames):
+    for f in filenames:
+      t = tb.Table(f)
+      # it would be nicer to check if a table with this name already exists before reading
+      # the whole file (requires finding the table name without parsing the full XML document)
+      if not t.name in self.tableNames():
+        self.tables.append(t)
 
   def label(self,label):
     if label == self.SRC_COL_LABEL:

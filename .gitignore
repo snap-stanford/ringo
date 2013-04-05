@@ -4,7 +4,7 @@
 
 *.pyc
 
-*.xml
+pyproto/data/*.xml
 
 shorten.sh
 shfile.sh
