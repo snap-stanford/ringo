@@ -8,12 +8,15 @@ class WorkingTableError(Exception):
 class WorkingColumnError(Exception):
   def __str__(self):
     return 'Working column not set'
-class SourceTableError(Exception):
+#class SourceTableError(Exception):
+#  def __str__(self):
+#    return 'Source table not set'
+#class SourceColumnError(Exception):
+#  def __str__(self):
+#    return 'Source column not set'
+class SourceError(Exception):
   def __str__(self):
-    return 'Source table not set'
-class SourceColumnError(Exception):
-  def __str__(self):
-    return 'Source column not set'
+    return "Source not set"
 class TableNotFoundError(Exception):
   def __init__(self,name):
     self.name = name
@@ -116,20 +119,25 @@ class Ringo:
   def link(self,name):
     self.setWorkingColumn(name)
 
-  def makegraph(self,gtype='directed',nodeattr=[],edgeattr=[],destnodeattr=[]):
+  #def makegraph(self,gtype='directed',nodeattr=[],edgeattr=[],destnodeattr=[]):
+  def makegraph(self,gtype='directed',nodeattr=[],edgeattr=[]):
     self.checkwcontext()
-    self.checksrccontext()
+    #self.checksrccontext()
+    self.checksource()
     self.graph = gr.Graph(gtype)
     srcidx = self.wtable.getColIndex(self.SRC_COL_LABEL)
     destidx = self.wtable.getColIndex(self.wcol)
     nodeattridx = self.wtable.getColIndexes(nodeattr)
     edgeattridx = self.wtable.getColIndexes(edgeattr)
-    destattridx = self.wtable.getColIndexes(destnodeattr)
+    #destattridx = self.wtable.getColIndexes(destnodeattr)
     for row in self.wtable.data:
       srcnode = row[srcidx]
       destnode = row[destidx]
       self.graph.addnode(srcnode,[row[i] for i in nodeattridx])
-      self.graph.addnode(destnode,[row[i] for i in destattridx])
+      #self.graph.addnode(destnode,[row[i] for i in destattridx])
+      self.graph.addnode(destnode) # If destnode does not yet exist in the graph, the node
+                                   # is created without attributes. If destnode also exists
+                                   # in the source column, then the attributes will be updated.
       self.graph.addedge(srcnode,destnode,[row[i] for i in edgeattridx])
 
   ##### UTILITY FUNCTIONS #####
@@ -145,6 +153,7 @@ class Ringo:
   def dump(self):
     self.tdump(-1,True,self.SRC_COL_LABEL,self.wcol)
     self.gdump(-1,True)
+
   def setWorkingTable(self,name):
     self.wtable = copy.deepcopy(self.getTable(name))
   def setWorkingColumn(self,name):
@@ -153,10 +162,14 @@ class Ringo:
       self.wcol = name
     else:
       raise tb.ColumnNotFoundError(name)
-  def setSourceContext(self):
-    self.checkwcontext()
+  #def setSourceContext(self):
+  #  self.checkwcontext()
+  #  self.wtable.addLabel(self.wcol,self.SRC_COL_LABEL)
+  #  self.srctable = copy.deepcopy(self.wtable)
+  def setSource(self,table,col):
+    self.setWorkingTable(table)
+    self.setWorkingColumn(col)
     self.wtable.addLabel(self.wcol,self.SRC_COL_LABEL)
-    self.srctable = copy.deepcopy(self.wtable)
   def tableNames(self):
     return [t.name for t in self.tables]
   def getTable(self,name):
@@ -173,7 +186,8 @@ class Ringo:
   def checkwcontext(self):
     self.checkwtable()
     self.checkwcol()
-  def checksrccontext(self):
-    if self.srctable is None:
-      raise SourceTableError()
+  def checksource(self):
+    self.checkwtable()
+    if not self.wtable.hasLabel(self.SRC_COL_LABEL):
+      raise SourceError()
 

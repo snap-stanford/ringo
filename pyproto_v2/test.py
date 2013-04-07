@@ -24,11 +24,12 @@ import pdb
 def QAGraph():
   rg = ringo.Ringo()
   rg.load('data/posts.xml')
-  rg.setWorkingTable('posts')
-  rg.setWorkingColumn('OwnerUserId')
+  rg.setSource('posts','OwnerUserId')
+  #rg.setWorkingTable('posts')
+  #rg.setWorkingColumn('OwnerUserId')
   rg.label('UserId1')
   rg.select('PostTypeId == 2')
-  rg.setSourceContext()
+  #rg.setSourceContext()
   rg.link('ParentId')
   rg.join('posts','Id')
   rg.select('PostTypeId == 1')
@@ -42,5 +43,6 @@ def QAGraph():
   rg.link('UserId2')
   rg.makegraph()
   rg.dump()
+  pdb.set_trace()
 
 QAGraph()

@@ -3,7 +3,7 @@ import string
 class Graph:
 
 	def __init__(self, gtype):
-		self.nodes = {} # dictionary {NodeId:Attributes}
+		self.nodes = {} # dictionary {NodeId:Attributes} (Attributes is a dictionary {AttrName:Value})
 		self.edges = {} # dictionary {EdgeId:Attributes} (EdgeId is managed by the graph object itself)
 		self.nodeIdDict = {} # dictionary {NodeTuple:NodeId}
 		self.rNodeIdDict = {} # reverse dictionary
@@ -14,7 +14,7 @@ class Graph:
 		self.type = gtype # 'directed' or 'undirected'.
 		self.dumpcnt = 0
 
-	def addnode(self, node, attributes):
+	def addnode(self, node, attributes={}):
 		if not node in self.nodeIdDict:
 			nodeId = self.getNewNodeId()
 			self.nodeIdDict[node] = nodeId

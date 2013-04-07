@@ -1,0 +1,9 @@
+- Check what happens with two different kinds of nodes (conflicting IDs/tuples?)
+- Change implementation: merge NodeDescription and EdgeDescription together. In the end, call
+
+    makegraph(starttable,gdesc,srccol,destcol,nodeattr,edgeattr)
+
+Create programs, run them
+See if the program is useful!! (more graph examples?)
+Try to check the speed - ~10Mb/s would be ok
+Don't care about data formatting (?? but still work with TSV files - make your life easy)
