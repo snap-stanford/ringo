@@ -1,5 +1,6 @@
 import ringo
 import pdb
+import table
 
 #### SIMPLE FUNCTIONALITY TESTING ####
 #r = ringo.Ringo()

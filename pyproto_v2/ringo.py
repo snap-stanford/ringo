@@ -29,7 +29,7 @@ class GraphNotDefinedError(Exception):
   def __str__(self):
     return 'Graph not defined'
 
-class Ringo:
+class Ringo(object):
   SRC_COL_LABEL = '__srccol'
 
   """

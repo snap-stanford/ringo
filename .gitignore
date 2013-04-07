@@ -5,6 +5,7 @@
 *.pyc
 
 pyproto/data/*.xml
+TODO.txt
 
 shorten.sh
 shfile.sh

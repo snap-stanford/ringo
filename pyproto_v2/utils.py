@@ -1,6 +1,6 @@
 import time
 
-class Date():
+class Date(object):
   def __init__(self,string):
     self.val = time.strptime(string.split('.')[0],'%Y-%m-%dT%H:%M:%S')
   def __str__(self):
@@ -9,3 +9,15 @@ class Date():
     return unicode(str(self))
   def __repr__(self):
     return str(self)
+  def __eq__(self,other):
+    return self.val == other.val
+  def __ne__(self,other):
+    return self.val != other.val
+  def __le__(self,other):
+    return self.val <= other.val
+  def __ge__(self,other):
+    return self.val >= other.val
+  def __lt__(self,other):
+    return self.val < other.val
+  def __gt__(self,other):
+    return self.val > other.val

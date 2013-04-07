@@ -1,6 +1,6 @@
 import string
 
-class Graph:
+class Graph(object):
 
 	def __init__(self, gtype):
 		self.nodes = {} # dictionary {NodeId:Attributes} (Attributes is a dictionary {AttrName:Value})

@@ -1,8 +1,11 @@
 import xml.dom.minidom as xml
+import elementtree.ElementTree as ET
 import utils
 import cond
 import string
 import types as ty
+import csv
+import os
 
 class ColumnNotFoundError(Exception):
   def __init__(self,name):
@@ -10,14 +13,14 @@ class ColumnNotFoundError(Exception):
   def __str__(self):
     return 'Column not found: ' + str(self.name)
 
-class Table:
+class Table(object):
   """
   Used to load and transform tables
   """
   def __init__(self,filename=None):
     self.initvars()
     if not filename is None:
-      self.load(filename)
+        self.load(filename)
 
   def initvars(self):
     self.cols = [] # list of columns - each column is represented by a set of labels
@@ -25,30 +28,10 @@ class Table:
     self.data = [] # list of rows
     self.dumpcnt = 0
 
-  def load(self,filename):
+  def initTypes(self):
     """
-    Load data from XML file. Erases all existing data in the table
+    Finds type of each column and converts values accordingly
     """
-    self.initvars()
-    with open(filename, 'r') as f:
-      dom = xml.parse(f)
-      self.name = dom.documentElement.tagName
-      xmlrows = dom.getElementsByTagName('row')
-      for xmlrow in xmlrows:
-        row = [None]*self.numcols()
-        for name,val in xmlrow.attributes.items():
-          try:
-            idx = self.getColIndex(name)
-          except ColumnNotFoundError:
-            idx = len(self.cols)
-            row.append(None)
-            # Add new column to the table
-            self.cols.append(set([name]))
-            for oldrow in self.data:
-              oldrow.append(None)
-          row[idx] = val
-        self.data.append(row)
-    # Find type of each column and convert values accordingly
     self.types = [ty.NoneType]*self.numcols()
     for row in self.data:
       for i in range(self.numcols()):
@@ -73,7 +56,94 @@ class Table:
               continue
             except ValueError:
               pass
+          row[i] = unicode(val)
           self.types[i] = ty.UnicodeType
+
+  def load(self,filename):
+    """
+    Load data from file. Erases all existing data in the table.
+    """
+    basename = os.path.basename(filename)
+    self.name, ext = os.path.splitext(basename)
+    if ext == '.xml':
+      self.load_xml(filename)
+    elif ext == '.tsv':
+      self.load_tsv(filename)
+    else:
+      print 'Error: only .xml and .tsv files are supported'
+
+  def load_xml(self,filename):
+    """
+    Load data from XML file. Erases all existing data in the table
+    """
+    self.initvars()
+    source = iter(ET.iterparse(filename, events = ('start','end')))
+    self.name = source.next()[1].tag
+    for event,elem in source:
+      if event == 'end' and elem.tag == 'row':
+        row = [None]*self.numcols()
+        for name,val in elem.attrib.items():
+          try:
+            idx = self.getColIndex(name)
+          except ColumnNotFoundError:
+            idx = len(self.cols)
+            row.append(None)
+            # Add new column to the table
+            self.cols.append(set([name]))
+            for oldrow in self.data:
+              oldrow.append(None)
+          row[idx] = val
+        self.data.append(row)
+    self.initTypes()
+
+  def load_xml_batch(self,filename):
+    self.initvars()
+    with open(filename, 'r') as f:
+      dom = xml.parse(f)
+      self.name = dom.documentElement.tagName
+      xmlrows = dom.getElementsByTagName('row')
+      for xmlrow in xmlrows:
+        row = [None]*self.numcols()
+        for name,val in xmlrow.attributes.items():
+          try:
+           idx = self.getColIndex(name)
+          except ColumnNotFoundError:
+            idx = len(self.cols)
+            row.append(None)
+            # Add new column to the table
+            self.cols.append(set([name]))
+            for oldrow in self.data:
+              oldrow.append(None)
+          row[idx] = val
+        self.data.append(row)
+    self.initTypes()
+
+  def load_tsv(self,filename):
+    self.initvars()
+    with open(filename, 'r') as f:
+      data = csv.reader(f,delimiter='\t')
+      colnames = data.next()
+      self.cols = [set([cell.decode('unicode-escape')]) for cell in colnames]
+      for row in data:
+        self.data.append([None if cell == '' else cell.decode('unicode-escape') for cell in row])
+    self.initTypes()
+
+  def write_tsv(self, filename):
+    """
+    Write the data to a TSV file
+    """
+    f = open(filename,'wb')
+    wr = csv.writer(f,delimiter='\t',quoting=csv.QUOTE_ALL)
+    colrow = []
+    for col in self.cols:
+      colrow.append('<undefined>' if len(col) == 0 else unicode(iter(col).next()).encode('unicode-escape'))
+    wr.writerow(colrow)
+    for row in self.data:
+      strrow = []
+      for cell in row:
+        strrow.append('' if cell is None else unicode(cell).encode('unicode-escape'))
+      wr.writerow(strrow)
+    f.close()
 
   def dump(self,n=-1,reset=False,*cols):
     """
