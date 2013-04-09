@@ -63,6 +63,10 @@ class Ringo(object):
     self.wtable.select(expr)
 
   def join(self,tname,col):
+    self.dist(tname,col,'eucl',0)
+
+  def dist(self,tname,col,metric,threshold):
+    # TODO: This could be moved into table.py
     self.checkwcontext()
     wcolidx = self.wtable.getColIndex(self.wcol)
     table2 = self.getTable(tname)
@@ -73,11 +77,16 @@ class Ringo(object):
     jointable = tb.Table()
     jointable.cols = self.wtable.cols + table2.cols
     jointable.types = self.wtable.types + table2.types
+    distMethod = getattr(self,metric)
+    # First remove rows with a None value in either of the two columns:
+    self.wtable.removeNoneInCol(self.wcol)
+    table2.removeNoneInCol(col)
+    # Create output table with double loop
     for row1 in self.wtable.data:
       for row2 in table2.data:
         # Note: if the user attempts to join two columns with incompatible types,
         # the result will be empty
-        if row1[wcolidx] == row2[colidx]:
+        if distMethod(row1[wcolidx],row2[colidx]) <= threshold:
           jointable.data.append(row1 + row2)
     # Remove duplicate labels
     addlabels = table2.labels()
@@ -121,9 +130,10 @@ class Ringo(object):
 
   #def makegraph(self,gtype='directed',nodeattr=[],edgeattr=[],destnodeattr=[]):
   def makegraph(self,gtype='directed',nodeattr=[],edgeattr=[]):
-    self.checkwcontext()
-    #self.checksrccontext()
     self.checksource()
+    self.checkwcontext()
+    self.wtable.removeNoneInCol(self.wcol) # Remove "None" destinations
+    #self.checksrccontext()
     self.graph = gr.Graph(gtype)
     srcidx = self.wtable.getColIndex(self.SRC_COL_LABEL)
     destidx = self.wtable.getColIndex(self.wcol)
@@ -140,6 +150,10 @@ class Ringo(object):
                                    # in the source column, then the attributes will be updated.
       self.graph.addedge(srcnode,destnode,[row[i] for i in edgeattridx])
 
+  ##### METRICS (DISTANCE-BASED GRAPHS) ######
+  def eucl(self,val1,val2):
+    return abs(val1-val2)
+
   ##### UTILITY FUNCTIONS #####
 
   # Pretty printing for the working table and the graph
@@ -150,9 +164,9 @@ class Ringo(object):
     if self.graph is None:
       raise GraphNotDefinedError()
     self.graph.dump(n,reset)
-  def dump(self):
-    self.tdump(-1,True,self.SRC_COL_LABEL,self.wcol)
-    self.gdump(-1,True)
+  def dump(self,ntable=-1,ngraph=-1,reset=True):
+    self.tdump(ntable,reset,self.SRC_COL_LABEL,self.wcol)
+    self.gdump(ngraph,reset)
 
   def setWorkingTable(self,name):
     self.wtable = copy.deepcopy(self.getTable(name))
@@ -170,6 +184,7 @@ class Ringo(object):
     self.setWorkingTable(table)
     self.setWorkingColumn(col)
     self.wtable.addLabel(self.wcol,self.SRC_COL_LABEL)
+    self.wtable.removeNoneInCol(self.wcol)  # Remove "None" sources
   def tableNames(self):
     return [t.name for t in self.tables]
   def getTable(self,name):

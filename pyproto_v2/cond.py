@@ -27,24 +27,36 @@ class Condition:
     return self.evalnode(node,rowdict)
   def evalnoderight(self,node,rowdict):
     if not isinstance(node,list):
-      return node
+      # Comparisons of the form Attribute1 <op> Attribute2 are considered
+      # before comparisons of the form Attribute1 <op> Value
+      # TODO: give a syntactic way of forcing a comparison of the form Attribute1 <op> Value when ambiguous
+      try:
+        return rowdict[node]
+      except KeyError:
+        return node
     return self.evalnode(node,rowdict)
   def evalnode(self,node,rowdict):
+    # This function is used for both comparison and boolean operators.
+    # (TODO: it should be possible to treat them differently, to improve readability)
     err = 'Wrong node format'
     if len(node) != 3:
       raise Exception(err)
     vleft = self.evalnodeleft(node[0],rowdict)
     vright = self.evalnoderight(node[2],rowdict)
     # Convert the given string value to the appropriate type
-    if isinstance(vleft,bool) and not isinstance(vright,bool):
-      raise Exception(err)
-    try:
-      if isinstance(vleft,(int,float)):
-        vright = float(vright)
-      if isinstance(vleft,utils.Date):
-        vright = utils.Date(vright)
-    except ValueError:
-      raise Exception(err)
+    if vleft == None or vright == None:
+      return False # Remove rows with None values
+    if isinstance(vleft,bool):
+      if not isinstance(vright,bool):
+        raise Exception(err)
+    else:
+      try:
+        if isinstance(vleft,(int,float)):
+          vright = float(vright)
+        if isinstance(vleft,utils.Date):
+          vright = utils.Date(vright)
+      except ValueError:
+        raise Exception(err)
     return {'&&':op.__and__,
             '||':op.__or__,
             '==':op.eq,

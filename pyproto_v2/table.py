@@ -6,6 +6,7 @@ import string
 import types as ty
 import csv
 import os
+import pdb
 
 class ColumnNotFoundError(Exception):
   def __init__(self,name):
@@ -33,19 +34,27 @@ class Table(object):
     Finds type of each column and converts values accordingly
     """
     self.types = [ty.NoneType]*self.numcols()
-    for row in self.data:
+    for k,row in enumerate(self.data):
       for i in range(self.numcols()):
         val = row[i]
         typ = self.types[i]
         if not val is None:
-          if typ in [ty.NoneType,ty.IntType] and val.isdigit():
-            row[i] = int(val)
+          if typ in [ty.NoneType,ty.IntType]:
+            if val.isdigit():
+              row[i] = int(val)
+            if val.startswith('-') and val[1:].isdigit():
+              row[i] = -int(val[1:])
             self.types[i] = ty.IntType
             continue
           if typ in [ty.NoneType,ty.IntType,ty.FloatType]:
               try:
                 row[i] = float(val)
-                self.types[i] = ty.FloatType
+                if not typ == ty.FloatType:
+                  self.types[i] = ty.FloatType
+                  # Convert already existing values
+                  for j in range(k):
+                    elt = self.data[j][i]
+                    self.data[j][i] = None if elt is None else float(elt)
                 continue
               except ValueError:
                 pass
@@ -57,7 +66,12 @@ class Table(object):
             except ValueError:
               pass
           row[i] = unicode(val)
-          self.types[i] = ty.UnicodeType
+          if not typ == ty.UnicodeType:
+            self.types[i] = ty.UnicodeType
+            # Convert already existing values
+            for j in range(k):
+              elt = self.data[j][i]
+              self.data[j][i] = None if elt is None else unicode(elt)
 
   def load(self,filename):
     """
@@ -211,6 +225,12 @@ class Table(object):
     for i in xrange(len(self.data)-1,-1,-1):
       rowdict = self.getRowDict(self.data[i])
       if not c.eval(rowdict):
+        del self.data[i]
+
+  def removeNoneInCol(self,col):
+    colidx = self.getColIndex(col)
+    for i in xrange(len(self.data)-1,-1,-1):
+      if self.data[i][colidx] is None:
         del self.data[i]
 
   def getRowDict(self,row):

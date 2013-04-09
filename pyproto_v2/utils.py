@@ -21,3 +21,12 @@ class Date(object):
     return self.val < other.val
   def __gt__(self,other):
     return self.val > other.val
+  def __hash__(self):
+    return hash(self.val)
+  def __cmp__(self,other):
+    if self < other:
+      return -1
+    elif self > other:
+      return 1
+    else:
+      return 0
