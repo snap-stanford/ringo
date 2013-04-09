@@ -1,6 +1,9 @@
 import ringo
 import pdb
 import table
+import time
+import glob
+import os
 
 #### SIMPLE FUNCTIONALITY TESTING ####
 #r = ringo.Ringo()
@@ -23,7 +26,7 @@ import table
 
 #### SAMPLE GRAPHS ####
 def QAGraph():
-  pdb.set_trace()
+  start = time.clock()
   rg = ringo.Ringo()
   rg.load('data/posts.xml')
   rg.setSource('posts','OwnerUserId')
@@ -47,6 +50,7 @@ def QAGraph():
   rg.dump()
 
 def CommentsGraph():
+  start = time.clock()
   rg = ringo.Ringo()
   rg.load('data/comments.xml','data/posts.xml')
   rg.setSource('comments','UserId')
@@ -99,6 +103,7 @@ def CommonVoters():
   rg.dump(30,30)
 
 def SameEditors():
+  start = time.clock()
   rg = ringo.Ringo()
   rg.load('data/posthistory.xml')
   rg.setSource('posthistory','PostId')
@@ -115,6 +120,7 @@ def SameEditors():
   rg.dump(30,30)
 
 def Dates():
+  start = time.clock()
   rg = ringo.Ringo()
   rg.load('data/posthistory.xml')
   rg.setSource('posthistory','PostId')
@@ -129,6 +135,7 @@ def Dates():
   rg.dump(30,30)
 
 def BadgesGraph():
+  start = time.clock()
   rg = ringo.Ringo()
   rg.load('data/badges.xml','data/posts.xml')
   rg.setSource('badges','Name')
@@ -151,11 +158,40 @@ def BadgesGraph():
   rg.link('Badge2')
   rg.makegraph()
   rg.dump(30,30)
-  pdb.set_trace()
 
-#QAGraph()
+def convert_files():
+  files = glob.glob("../../data_full/*.xml")
+  for f in files:
+    name, ext = os.path.splitext(f)
+    if ext == ".xml":
+      rg = ringo.Ringo()
+      print 'Importing file ' + f + '...'
+      rg.load(f)
+      print "Writing .tsv file for " + f + "..."
+      rg.tables[0].write_tsv(name + ".tsv")
+
+def import_bench_xml():
+  import_bench_ext("xml")
+
+def import_bench_tsv():
+  import_bench_ext("tsv")
+
+def import_bench_ext(ext):
+  files = glob.glob("../../data_full/*." + ext)
+  for f in files:
+    print 'Importing file ' + f + '...'
+    rg = ringo.Ringo()
+    rg.load(f)
+    print str(os.path.getsize(f)) + ' bytes, ' + str(rg.tables[0].numrows()) + ' rows'
+    #print 'Setting up source... (i.e. copying initial table)'
+    #rg.setSource(rg.tables[0].name,iter(rg.tables[0].cols[0]).next())
+
+
+
+QAGraph()
 #CommentsGraph()
 #CommonComments()
 #SameEditors()
 #Dates()
-BadgesGraph()
+#BadgesGraph()
+#import_bench_tsv()

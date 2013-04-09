@@ -1,6 +1,10 @@
 import table as tb
 import graph as gr
 import copy
+import time
+import inspect
+import string
+import pdb
 
 class WorkingTableError(Exception):
   def __str__(self):
@@ -31,6 +35,7 @@ class GraphNotDefinedError(Exception):
 
 class Ringo(object):
   SRC_COL_LABEL = '__srccol'
+  DEBUG = True
 
   """
   Main class - allows the user to import a dataset and create graphs
@@ -46,24 +51,36 @@ class Ringo(object):
   ####### API FUNCTIONS #######
 
   def load(self,*filenames):
+    start = time.clock()
     for f in filenames:
       t = tb.Table(f)
       # it would be nicer to check if a table with this name already exists before reading
       # the whole file (requires finding the table name without parsing the full XML document)
       if not t.name in self.tableNames():
         self.tables.append(t)
+    if self.DEBUG:
+      self.showtime(start)
 
   def label(self,label):
+    start = time.clock()
     if label == self.SRC_COL_LABEL:
       raise ReservedNameError(self.SRC_COL_LABEL)
     self.checkwcontext()
     self.wtable.addLabel(self.wcol,label)
+    if self.DEBUG:
+      self.showtime(start)
 
   def select(self,expr):
+    start = time.clock()
     self.wtable.select(expr)
+    if self.DEBUG:
+      self.showtime(start)
 
   def join(self,tname,col):
+    start = time.clock()
     self.dist(tname,col,'eucl',0)
+    if self.DEBUG:
+      self.showtime(start)
 
   def dist(self,tname,col,metric,threshold):
     # TODO: This could be moved into table.py
@@ -105,31 +122,53 @@ class Ringo(object):
     self.setWorkingColumn(newcolname)
 
   def group(self,newcolname,*cols):
+    start = time.clock()
     self.callAppendOp("group",newcolname,*cols)
+    if self.DEBUG:
+      self.showtime(start)
 
   def order(self,newcolname,*cols):
+    start = time.clock()
     self.callAppendOp("order",newcolname,*cols)
+    if self.DEBUG:
+      self.showtime(start)
 
   def number(self,newcolname,*cols):
+    start = time.clock()
     self.callAppendOp("number",newcolname,*cols)
+    if self.DEBUG:
+      self.showtime(start)
 
   def count(self,newcolname,*cols):
+    start = time.clock()
     self.callAppendOp("count",newcolname,*cols)
+    if self.DEBUG:
+      self.showtime(start)
 
   def next(self,groupcol,ordercol,valnext):
+    start = time.clock()
     self.checkwcontext()
     self.wtable.next(self.wcol,groupcol,ordercol,valnext)
     self.setWorkingColumn(valnext)
+    if self.DEBUG:
+      self.showtime(start)
 
   def unique(self):
+    start = time.clock()
     self.checkwcontext()
     self.wtable.unique(self.wcol)
+    if self.DEBUG:
+      self.showtime(start)
 
   def link(self,name):
+    start = time.clock()
     self.setWorkingColumn(name)
+    if self.DEBUG:
+      self.showtime(start)
 
   #def makegraph(self,gtype='directed',nodeattr=[],edgeattr=[],destnodeattr=[]):
   def makegraph(self,gtype='directed',nodeattr=[],edgeattr=[]):
+    start = time.clock()
     self.checksource()
     self.checkwcontext()
     self.wtable.removeNoneInCol(self.wcol) # Remove "None" destinations
@@ -149,6 +188,8 @@ class Ringo(object):
                                    # is created without attributes. If destnode also exists
                                    # in the source column, then the attributes will be updated.
       self.graph.addedge(srcnode,destnode,[row[i] for i in edgeattridx])
+    if self.DEBUG:
+      self.showtime(start)
 
   ##### METRICS (DISTANCE-BASED GRAPHS) ######
   def eucl(self,val1,val2):
@@ -181,10 +222,13 @@ class Ringo(object):
   #  self.wtable.addLabel(self.wcol,self.SRC_COL_LABEL)
   #  self.srctable = copy.deepcopy(self.wtable)
   def setSource(self,table,col):
+    start = time.clock()
     self.setWorkingTable(table)
     self.setWorkingColumn(col)
     self.wtable.addLabel(self.wcol,self.SRC_COL_LABEL)
     self.wtable.removeNoneInCol(self.wcol)  # Remove "None" sources
+    if self.DEBUG:
+      self.showtime(start)
   def tableNames(self):
     return [t.name for t in self.tables]
   def getTable(self,name):
@@ -205,4 +249,10 @@ class Ringo(object):
     self.checkwtable()
     if not self.wtable.hasLabel(self.SRC_COL_LABEL):
       raise SourceError()
+  def showtime(self,start):
+    method = str(inspect.stack()[1][3])
+    message = string.ljust(method,10) + ': ' + str(time.clock() - start) + ' seconds'
+    if not self.wtable is None:
+      message += ' (' + str(self.wtable.numrows()) + ' rows in working table)'
+    print message
 
