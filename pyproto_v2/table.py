@@ -6,7 +6,7 @@ import string
 import types as ty
 import csv
 import os
-import pdb
+import copy
 
 class ColumnNotFoundError(Exception):
   def __init__(self,name):
@@ -82,6 +82,8 @@ class Table(object):
     if ext == '.xml':
       self.load_xml(filename)
     elif ext == '.tsv':
+      self.load_tsv_fast(filename)
+    elif ext == '.tsvs':
       self.load_tsv(filename)
     else:
       print 'Error: only .xml and .tsv files are supported'
@@ -142,6 +144,15 @@ class Table(object):
         self.data.append([None if cell == '' else cell.decode('unicode-escape') for cell in row])
     self.initTypes()
 
+  def load_tsv_fast(self,filename):
+    self.initvars()
+    with open(filename, 'r') as f:
+      header = f.next()
+      self.cols = [set([cell.decode('unicode-escape')]) for cell in header.split('\t')]
+      for line in f:
+        self.data.append([None if val == '' else val.decode('unicode-escape') for val in line.split('\t')])
+    self.initTypes()
+
   def write_tsv(self, filename):
     """
     Write the data to a TSV file
@@ -158,6 +169,17 @@ class Table(object):
         strrow.append('' if cell is None else unicode(cell).encode('unicode-escape'))
       wr.writerow(strrow)
     f.close()
+
+  def write_tsv_fast(self, filename):
+    """
+    Write the data to a TSV file without quotation marks
+    """
+    # TODO (without quotation marks)
+    with open(filename, 'wb') as f:
+      colnames = ['<undefined>' if len(col) == 0 else unicode(iter(col).next()).encode('unicode-escape') for col in self.cols]
+      f.write('\t'.join(colnames)+'\n')
+      for row in self.data:
+        f.write('\t'.join(['' if cell is None else unicode(cell).encode('unicode-escape') for cell in row])+'\n')
 
   def dump(self,n=-1,reset=False,*cols):
     """
@@ -193,6 +215,15 @@ class Table(object):
     dump += sep
     print dump
 
+  def copy(self):
+    t = self.__class__()
+    t.cols = copy.deepcopy(self.cols)
+    t.types = copy.deepcopy(self.types)
+    t.dumpcnt = 0
+    for row in self.data:
+      t.data.append(row)
+    return t
+
   def getColIndex(self,name):
     idx = 0
     for labels in self.cols:
@@ -218,14 +249,22 @@ class Table(object):
       c.discard(label)
     idx = self.getColIndex(col)
     self.cols[idx].add(label)
+    return idx; # Return column index
 
   def select(self,expr):
     c = cond.Condition(expr)
+    data = []
+    for row in self.data:
+      rowdict = self.getRowDict(row)
+      if c.eval(rowdict):
+        data.append(row)
+    self.data = data
+
     # iterating backwards to remove rows on the fly
-    for i in xrange(len(self.data)-1,-1,-1):
-      rowdict = self.getRowDict(self.data[i])
-      if not c.eval(rowdict):
-        del self.data[i]
+    #for i in xrange(len(self.data)-1,-1,-1):
+    #  rowdict = self.getRowDict(self.data[i])
+    #  if not c.eval(rowdict):
+    #    del self.data[i]
 
   def removeNoneInCol(self,col):
     colidx = self.getColIndex(col)

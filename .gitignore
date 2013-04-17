@@ -3,6 +3,7 @@
 *.tsv
 
 *.pyc
+*.profile
 
 pyproto/data/*.xml
 TODO.txt

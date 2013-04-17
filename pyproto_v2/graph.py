@@ -1,8 +1,12 @@
 import string
 
+class GraphTypeChangeError(Exception):
+  def __str__(self):
+    return 'Type can only be changed while the graph has no edges'
+
 class Graph(object):
 
-	def __init__(self, gtype):
+	def __init__(self, gtype='directed'):
 		self.nodes = {} # dictionary {NodeId:Attributes} (Attributes is a dictionary {AttrName:Value})
 		self.edges = {} # dictionary {EdgeId:Attributes} (EdgeId is managed by the graph object itself)
 		self.nodeIdDict = {} # dictionary {NodeTuple:NodeId}
@@ -30,6 +34,8 @@ class Graph(object):
 	def addedge(self, src, dest, attr=[]):
 		# Create edge (edges cannot be updated, if addedge is called twice
 		# with the same source and destination, then the graph is multiedge)
+		if not dest in self.nodeIdDict:
+			self.addnode(dest)
 		srcId = self.nodeIdDict[src]
 		destId = self.nodeIdDict[dest]
 		edgeId = self.getNewEdgeId()
@@ -79,6 +85,11 @@ class Graph(object):
 						del self.adjlist[destId][srcId]
 					elif self.type == 'directed':
 						del self.radjlist[destId][srcId]
+
+	def setType(self, gtype):
+		if self.numedges > 0:
+			raise GraphTypeChangeError()
+		self.type = gtype
 
 	def dump(self, n=-1, reset=False):
 		if n==-1:

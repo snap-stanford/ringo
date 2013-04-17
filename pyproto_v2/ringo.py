@@ -44,7 +44,7 @@ class Ringo(object):
     self.tables = []
     self.wtable = None # Working table name
     self.wcol = None # Working column label
-    self.srctable = None # Table obtained after applying the node description
+    #self.srctable = None # Table obtained after applying the node description
                           # to the initial working table
     self.graph = None # Output graph
 
@@ -58,6 +58,13 @@ class Ringo(object):
       # the whole file (requires finding the table name without parsing the full XML document)
       if not t.name in self.tableNames():
         self.tables.append(t)
+    if self.DEBUG:
+      self.showtime(start)
+
+  def start(self,table,col):
+    start = time.clock()
+    self.setWorkingTable(table)
+    self.setWorkingColumn(col)
     if self.DEBUG:
       self.showtime(start)
 
@@ -76,9 +83,47 @@ class Ringo(object):
     if self.DEBUG:
       self.showtime(start)
 
-  def join(self,tname,col):
+  def join_slow(self,tname,col):
     start = time.clock()
     self.dist(tname,col,'eucl',0)
+    if self.DEBUG:
+      self.showtime(start)
+
+  def join(self,tname,col):
+    start = time.clock()
+    # TODO: This could be moved into table.py
+    self.checkwcontext()
+    wcolidx = self.wtable.getColIndex(self.wcol)
+    table2 = self.getTable(tname)
+    colidx = table2.getColIndex(col)
+    if colidx is None:
+      raise tb.ColumnNotFoundError(col)
+    # Compute result of join in a new table
+    jointable = tb.Table()
+    jointable.cols = self.wtable.cols + table2.cols
+    jointable.types = self.wtable.types + table2.types
+    # First remove rows with a None value in either of the two columns:
+    self.wtable.removeNoneInCol(self.wcol)
+    table2.removeNoneInCol(col)
+    # Use dictionary to map the values from table2 to their row index
+    table2vals = {}
+    for idx,row in enumerate(table2.data):
+      val = row[colidx]
+      if not val in table2vals:
+        table2vals[val] = []
+      table2vals[val].append(idx)
+    for row in self.wtable.data:
+      val = row[wcolidx]
+      if val in table2vals:
+        for idx in table2vals[val]:
+          jointable.data.append(row + table2.data[idx])
+    # Remove duplicate labels
+    addlabels = table2.labels()
+    for i in range(len(self.wtable.cols)):
+      jointable.cols[i] = jointable.cols[i].difference(addlabels)
+    # Update working table and working column
+    self.wcol = col
+    self.wtable = jointable
     if self.DEBUG:
       self.showtime(start)
 
@@ -91,27 +136,27 @@ class Ringo(object):
     if colidx is None:
       raise tb.ColumnNotFoundError(col)
     # Compute result of join in a new table
-    jointable = tb.Table()
-    jointable.cols = self.wtable.cols + table2.cols
-    jointable.types = self.wtable.types + table2.types
+    outputTable = tb.Table()
+    outputTable.cols = self.wtable.cols + table2.cols
+    outputTable.types = self.wtable.types + table2.types
     distMethod = getattr(self,metric)
     # First remove rows with a None value in either of the two columns:
     self.wtable.removeNoneInCol(self.wcol)
     table2.removeNoneInCol(col)
-    # Create output table with double loop
+    # Use double loop to compare all pairs (slow!)
     for row1 in self.wtable.data:
       for row2 in table2.data:
-        # Note: if the user attempts to join two columns with incompatible types,
+        # Note: if the user attempts to compare two columns with incompatible types,
         # the result will be empty
         if distMethod(row1[wcolidx],row2[colidx]) <= threshold:
-          jointable.data.append(row1 + row2)
+          outputTable.data.append(row1 + row2)
     # Remove duplicate labels
     addlabels = table2.labels()
     for i in range(len(self.wtable.cols)):
-      jointable.cols[i] = jointable.cols[i].difference(addlabels)
+      outputTable.cols[i] = outputTable.cols[i].difference(addlabels)
     # Update working table and working column
     self.wcol = col
-    self.wtable = jointable
+    self.wtable = outputTable
 
   def callAppendOp(self,method,newcolname,*cols):
     self.checkwtable()
@@ -167,26 +212,19 @@ class Ringo(object):
       self.showtime(start)
 
   #def makegraph(self,gtype='directed',nodeattr=[],edgeattr=[],destnodeattr=[]):
-  def makegraph(self,gtype='directed',nodeattr=[],edgeattr=[]):
+  def makegraph(self,gtype='directed',edgeattr=[]):
     start = time.clock()
     self.checksource()
     self.checkwcontext()
-    self.wtable.removeNoneInCol(self.wcol) # Remove "None" destinations
-    #self.checksrccontext()
-    self.graph = gr.Graph(gtype)
     srcidx = self.wtable.getColIndex(self.SRC_COL_LABEL)
     destidx = self.wtable.getColIndex(self.wcol)
-    nodeattridx = self.wtable.getColIndexes(nodeattr)
     edgeattridx = self.wtable.getColIndexes(edgeattr)
     #destattridx = self.wtable.getColIndexes(destnodeattr)
+    self.graph.setType(gtype)
     for row in self.wtable.data:
       srcnode = row[srcidx]
       destnode = row[destidx]
-      self.graph.addnode(srcnode,[row[i] for i in nodeattridx])
-      #self.graph.addnode(destnode,[row[i] for i in destattridx])
-      self.graph.addnode(destnode) # If destnode does not yet exist in the graph, the node
-                                   # is created without attributes. If destnode also exists
-                                   # in the source column, then the attributes will be updated.
+      # If the destination node doesn't exist yet, it is added to the graph (without attributes)
       self.graph.addedge(srcnode,destnode,[row[i] for i in edgeattridx])
     if self.DEBUG:
       self.showtime(start)
@@ -210,23 +248,25 @@ class Ringo(object):
     self.gdump(ngraph,reset)
 
   def setWorkingTable(self,name):
-    self.wtable = copy.deepcopy(self.getTable(name))
+    #self.wtable = copy.deepcopy(self.getTable(name))
+    self.wtable = self.getTable(name).copy()
   def setWorkingColumn(self,name):
     self.checkwtable()
     if self.wtable.hasLabel(name):
       self.wcol = name
+      self.wtable.removeNoneInCol(self.wcol)  # Remove rows with "None" value
     else:
       raise tb.ColumnNotFoundError(name)
-  #def setSourceContext(self):
-  #  self.checkwcontext()
-  #  self.wtable.addLabel(self.wcol,self.SRC_COL_LABEL)
-  #  self.srctable = copy.deepcopy(self.wtable)
-  def setSource(self,table,col):
+  def setSource(self,attributes=[]):
     start = time.clock()
-    self.setWorkingTable(table)
-    self.setWorkingColumn(col)
-    self.wtable.addLabel(self.wcol,self.SRC_COL_LABEL)
-    self.wtable.removeNoneInCol(self.wcol)  # Remove "None" sources
+    self.checkwcontext()
+    srcidx = self.wtable.addLabel(self.wcol,self.SRC_COL_LABEL)
+    # self.srctable = copy.deepcopy(self.wtable) # This allows to use the current working table again in the future
+    # Add source nodes to graph
+    self.graph = gr.Graph()
+    attridx = self.wtable.getColIndexes(attributes)
+    for row in self.wtable.data:
+      self.graph.addnode(row[srcidx],[row[i] for i in attridx])
     if self.DEBUG:
       self.showtime(start)
   def tableNames(self):

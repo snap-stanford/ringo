@@ -64,4 +64,4 @@ class Condition:
             '>=':op.ge,
             '<=':op.le,
             '>':op.gt,
-            '<':op.lt}.get(node[1])(vleft,vright)
+            '<':op.lt}.get(node[1])(vleft,vright) #TODO : lazy evaluation!
