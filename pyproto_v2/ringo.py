@@ -35,7 +35,7 @@ class GraphNotDefinedError(Exception):
 
 class Ringo(object):
   SRC_COL_LABEL = '__srccol'
-  DEBUG = True
+  DEBUG = False
 
   """
   Main class - allows the user to import a dataset and create graphs
@@ -50,14 +50,15 @@ class Ringo(object):
 
   ####### API FUNCTIONS #######
 
-  def load(self,*filenames):
+  def load(self,filename,tablename=None):
     start = time.clock()
-    for f in filenames:
-      t = tb.Table(f)
-      # it would be nicer to check if a table with this name already exists before reading
-      # the whole file (requires finding the table name without parsing the full XML document)
-      if not t.name in self.tableNames():
-        self.tables.append(t)
+    t = tb.Table(filename)
+    if tablename != None:
+      t.name = tablename
+    # it would be nicer to check if a table with this name already exists before reading
+    # the whole file (requires finding the table name without parsing the full XML document)
+    if not t.name in self.tableNames():
+      self.tables.append(t)
     if self.DEBUG:
       self.showtime(start)
 

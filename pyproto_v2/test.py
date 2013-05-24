@@ -35,7 +35,8 @@ def QAGraph():
 
 def CommentsGraph():
   rg = ringo.Ringo()
-  rg.load('data/comments.xml','data/posts.xml')
+  rg.load('data/comments.xml')
+  rg.load('data/posts.xml')
   rg.start('comments','UserId')
   rg.setSource()
   rg.label('UserId1')
@@ -122,7 +123,8 @@ def DatesGraph():
 
 def BadgesGraph():
   rg = ringo.Ringo()
-  rg.load('data/badges.xml','data/posts.xml')
+  rg.load('data/badges.xml')
+  rg.load('data/posts.xml')
   rg.start('badges','Name')
   rg.setSource()
   rg.label('Badge1')
