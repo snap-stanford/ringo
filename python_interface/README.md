@@ -1,7 +1,8 @@
 Ringo Interface
 ===============
 
-The Ringo module is a user-friendly interface for graph creation and analysis.
+To run the tests, use
 
-The main job of the Ringo module is to compile queries into a 
-sequence of operations to be executed by a graph creation engine.
+<code>python test.tsv</code>
+
+These tests require the PANDAS library.

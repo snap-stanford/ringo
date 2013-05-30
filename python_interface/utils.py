@@ -34,36 +34,10 @@ def get_free_prefix(strings):
   return prefix
 
 def get_name_for_table(filename):
-  tablename, _ = os.path.splitext(filename)
+  basename = os.path.basename(filename)
+  tablename, _ = os.path.splitext(basename)
   tablename = "_".join(tablename.split("."))
   return "_".join(tablename.split(" "))
-
-"""
-def get_quote(string):
-  if len(string) >= 2 and string[0] == "\"" and string[-1] == "\"":
-    return string[1:-1]
-
-def get_number(string):
-  try:
-    return float(string)
-  except ValueError:
-    pass
-"""
-
-"""
-def make_token(string):
-  string = string.strip()
-  if string[0] == "\"" and string[-1] == "\"":
-    return string[1:-1]
-  else:
-    try:
-      return int(string)
-    except ValueError:
-      try:
-        return float(string)
-      except ValueError:
-        return string
-"""
 
 def get_tokens(string):
   string = string.rstrip()
