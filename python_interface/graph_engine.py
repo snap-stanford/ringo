@@ -7,6 +7,6 @@ class GraphEngine(object):
   __metaclass__ = abc.ABCMeta
   
   @abc.abstractmethod
-  def load(self, filename, tablename = None):
-    """Load table. Returns True if table was successfully loaded, False otherwise."""
+  def make_graph(self, instr_file):
+    """Creates a graph from the given instruction file"""
     return

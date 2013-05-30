@@ -1,10 +1,12 @@
 *.DS_Store
 
-*.tsv
-
+pyproto_v2/*.tsv
+pyproto_v2/*/*.tsv
+pyproto_v2/*/*.tsvs
+*.i
 *.pyc
 *.profile
-
+python_interface/sandbox/
 pyproto/data/*.xml
 TODO.txt
 
