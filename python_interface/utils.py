@@ -34,7 +34,8 @@ def get_free_prefix(strings):
   return prefix
 
 def get_name_for_table(filename):
-  tablename, _ = os.path.splitext(filename)
+  basename = os.path.basename(filename)
+  tablename, _ = os.path.splitext(basename)
   tablename = "_".join(tablename.split("."))
   return "_".join(tablename.split(" "))
 

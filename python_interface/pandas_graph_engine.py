@@ -281,7 +281,7 @@ class PandasGraphEngine(ge.GraphEngine):
     Builds graph from final working table, using the specified flags and attribute parameters
     Note: this function is just a placeholder for the moment
     """
-    print "Final graph has " + str(len(self.wtable.dataframe.index)) + " edges"
+    print "Created graph with " + str(len(self.wtable.dataframe.index)) + " edges"
 
   def make_graph(self, instr_file):
     """Creates a graph from the given instruction file"""
