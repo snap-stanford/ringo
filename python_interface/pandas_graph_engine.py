@@ -197,21 +197,26 @@ class PandasGraphEngine(ge.GraphEngine):
   """
   def __init__(self):
     self.tables = {}
-    self.labels = {}
     self.wtable = None
+    self.reset()
+
+  def __uniquify(self):
+    """Calls unique() if the flag IS_MULTIGRAPH is not present"""
+    if self.src_col is None or self.dst_col is None:
+      return
+    if self.uniquified == False:
+      if not self.is_multigraph:
+        # Keep at most one edge between any two nodes
+        self.wtable.unique(self.src_col, self.dst_col)
+      self.uniquified = True
+
+  def reset(self):
     self.is_multigraph = False
     self.bipartite = False
     self.directed = False
-    self.finalized_path = False
-
-  def __finalize_path(self):
-    """Calls unique() if the flag IS_MULTIGRAPH is not present"""
-    if not self.is_multigraph:
-      self.wtable.unique(self.src_col, self.dst_col)
-    self.finalized_path = True
-
-  def reset(self):
-    self.__init__() # Maybe we could keep tables in memory
+    self.uniquified = False
+    self.src_col = None
+    self.dst_col = None
 
   def load(self, filename, tablename = None):
     if tablename is None:
@@ -239,24 +244,23 @@ class PandasGraphEngine(ge.GraphEngine):
     self.wtable.join(col1, self.tables[tablename], col2)
 
   def select(self, *tree):
-    if not self.finalized_path:
-      self.__finalize_path()
+    self.__uniquify()
     self.wtable.select(tree)
 
   def count(self, result_col, *cols):
-    if not self.finalized_path:
-      self.__finalize_path()
+    self.__uniquify()
     self.wtable.count(result_col, *cols)
 
   def group(self, result_col, *cols):
-    if not self.finalized_path:
-      self.__finalize_path()
+    self.__uniquify()
     self.wtable.group(result_col, *cols)
 
   def order(self, result_col, *cols):
-    if not self.finalized_path:
-      self.__finalize_path()
+    self.__uniquify()
     self.wtable.order(result_col, *cols)
+    
+  def unique(self, *cols):
+    self.wtable.unique(*cols)
 
   def set_src(self, src, *attr):
     self.src_col = src
@@ -267,26 +271,30 @@ class PandasGraphEngine(ge.GraphEngine):
   def set_edge_attr(self, *attr):
     pass
 
+  def set_flag(self, flag, value):
+    if flag == 'IS_MULTIGRAPH':
+      self.is_multigraph = value
+    elif flag == 'BIPARTITE':
+      self.bipartite = value
+    elif flag == 'DIRECTED':
+      self.directed = value
+
   def set_flags(self, *flags):
     for fl in flags:
-      if fl == 'IS_MULTIGRAPH':
-        self.is_multigraph = True
-      elif fl == 'BIPARTITE':
-        self.bipartite = True
-      elif fl == 'DIRECTED':
-        self.directed = True
+      self.set_flag(fl, True)
 
   def build_graph(self):
     """
-    Builds graph from final working table, using the specified flags and attribute parameters
+    Builds a graph from the final working table, using the specified flags and attribute parameters
     Note: this function is just a placeholder for the moment
     """
-    print "Created graph with " + str(len(self.wtable.dataframe.index)) + " edges"
+    self.__uniquify()
+    print "Created graph with " + str(self.size()) + " edges"
 
   def make_graph(self, instr_file):
     """Creates a graph from the given instruction file"""
     err_msg = "couldn't read instructions"
-    self.finalized_path = False
+    self.uniquified = False
     with utils.ringo_open(instr_file, err_msg) as f:
       # Execute query
       try:
@@ -310,3 +318,15 @@ class PandasGraphEngine(ge.GraphEngine):
         raise InvalidInstructionException('Incomplete query')
       self.build_graph()
     return
+
+  def dump(self, num):
+    if not self.wtable is None and not self.wtable.dataframe is None:
+      df = self.wtable.dataframe.head(num)
+      df.columns = map(lambda x: self.wtable.labels[x][0] if len(self.wtable.labels[x]) > 0 else "<undefined>",df.columns)
+      print df
+      return True
+    return False
+
+  def size(self):
+    if not self.wtable is None:
+      return len(self.wtable.dataframe.index)

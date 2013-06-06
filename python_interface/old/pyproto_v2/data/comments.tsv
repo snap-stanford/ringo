@@ -1,0 +1,999 @@
+CreationDate	Text	UserId	Score	PostId	Id
+2010-07-20T19:24:43.013	I would recommend you be a bit more specific about what kind of answer you are looking for. If you are looking for a heuristic answer or a more mathematically rigorous one.	16	4	2	1
+2010-07-20T19:24:44.963	Fantastic answer!	10		9	2
+2010-07-20T19:26:09.357	I like this so far, but maybe add a bit on uncountable to distinguish the difference.	16	3	9	3
+2010-07-20T19:27:07.983	Oh, I figured as so. I remember learning about this a while ago with the graph as presentation. Thanks.	40		17	5
+2010-07-20T19:28:16.077	It is much better than an approximation: it gives the exact value for all $n$	55		17	8
+2010-07-20T19:29:17.900	You've missed out many types of number: complex numbers, imaginary numbers, integers, rationals, hyper-reals, quaternions, etc.\n\nGood question though :)	35	2	20	10
+2010-07-20T19:32:12.010	I see. That's the problem I notice in equations I was looking at before, the approximation kills the "closeness" to the number as the variable gets larger. I essentially see this as the solution, too bad I have to wait 7 minutes to accept yours as the answer.\n\nBut, cheers, thanks.	40		17	11
+2010-07-20T19:34:12.770	@Fanfan: Thanks, corrected.	38		17	12
+2010-07-20T19:36:22.330	As good an answer as any. It works that way because that's how the operation is defined :)	35	1	42	13
+2010-07-20T19:37:22.450	Define 'flattening factor' please.	56	1	18	14
+2010-07-20T19:37:46.820	A really good book on the subject was written by David Wallace Foster, [Everything and More: A Compact History of Infinity](http://www.amazon.co.uk/Everything-More-Compact-History-Infinity/dp/0753818825/ref=ntt_at_ep_dpt_10)	49	1	35	15
+2010-07-20T19:38:37.830	Your definitions of rationals, irrationals, and reals are interdependent, of course. You're relying on the intuitive understanding of reals it seems, which is fair enough at this level...	56		40	16
+2010-07-20T19:39:37.937	That's a really good answer, thanks :D	22		9	17
+2010-07-20T19:40:13.363	I'm not sure what the tags are for this	54		20	18
+2010-07-20T19:40:56.577	I know, I'm having trouble coming up with a zero-interdependency definition.	38		40	19
+2010-07-20T19:41:44.767	By the way, if you want an approximation, you can neglect the second term, because $|1-\\varphi|<1$, and get $F(n)={\\varphi^n \\over {\\sqrt 5}}$ ; actually if you round that to the next integer you get the correct value.	55	2	17	20
+2010-07-20T19:42:52.813	Some definitions of natural numbers include 0.	72	6	40	22
+2010-07-20T19:44:58.843	There is no angle between two points...  Do you mean the angle between the points at the origin?  Maybe?	38	9	59	23
+2010-07-20T19:47:42.350	"versine of the spheroid's angular eccentricity"	17		18	24
+2010-07-20T19:48:09.820	I'm guessing that most fence posts are at the edge of a field, which makes this a far more interesting problem.	49	2	51	25
+2010-07-20T19:48:34.017	Should be community wiki, since it's asking for a sorted list of resources?	28		3	26
+2010-07-20T19:49:03.297	The actual process of using Benford's Law consists of checking the distribution of the numbers, if the numbers are tampered with they show a diffferent distribution. People inventing numbers do this in a biased way, different from how numbers show up in real life.	77	1	63	27
+2010-07-20T19:49:49.287	@John: I don't think it's possible unless you construct the reals analytically, and that's fairly involved/beyond the level of the question. So yeah, don't blame you at all!	56	1	40	28
+2010-07-20T19:50:02.110	Regarding the 3d space problem, you will basically need to measure the angle in spherical co-ordinates, so two angles. This is after adding in the twin requirements of an origin point and origin vector to measure angle from (as alluded to in the previous comment)	35		59	30
+2010-07-20T19:51:10.110	@FordBuchanan: Correct. I've updated the question to (hopefully) make that clear. Sorry for the confusion!	59		51	31
+2010-07-20T19:53:49.103	I can't edit yet, could someone edit "grash" to "grasp"? Thanks.	71		5	32
+2010-07-20T19:54:58.820	this is exactly the approach that I specified would not be helpful in my question =/	51	2	42	33
+2010-07-20T19:55:10.427	I'm so sorry about that! I changed the formatting, it's a lot easier to read now! \n\nAntisymmetric is treated by my book as, "Points to, but cannot point back. There may be reflexive loops."\n\nAsymmetric is the same, except there are no reflexive loops. \n\nAs you can see, these kinds of explanations are meaningless for me. Yours seems to have some tangent property I can understand! +1	44		66	34
+2010-07-20T19:55:53.687	-1. Uhh, everyone knows this answer is nonsense, right? And is just upvoting it for a lark?	28	9	23	36
+2010-07-20T19:56:42.483	You did not specify that any approach wouldn't be helpful in your question. Read and learn, please. Also, it's generally not good etiquette to down-vote answers to your own questions.	56		42	37
+2010-07-20T19:57:45.990	Yes, it's safe to assume a given origin (0,0).	24		59	38
+2010-07-20T19:57:49.080	The equation is essentially symmetric. I don't see what the issue is, you seem to already have it reasoned out.	56		74	39
+2010-07-20T19:58:10.903	Reason for down-vote please?	56		64	40
+2010-07-20T20:03:12.640	-1. This is not a proof at all! Why is 1/3=0.333...? Seriously folks, for the private beta, let's try to maintain a little correctiness.	28	13	31	41
+2010-07-20T20:03:28.783	-1. Not a proof, see my comments on all the other duplicate answers.	28	8	25	42
+2010-07-20T20:03:36.740	Like myself, you assumed the post should be in the center of the field. I deleted my answer because of this mistake. The problem has been reformulated.	16		64	43
+2010-07-20T20:04:09.313	Please note that the multiplicative group of a field (obviously) does not contain the zero from the field in question as there is no inverse.	77	4	80	45
+2010-07-20T20:04:21.403	Decimals numbers have a commonplace interpretation, I don't think that's the issue, to be picky.	56		49	47
+2010-07-20T20:05:14.380	@BBischof: Fair enough. It wasn't originally stated though, so not really worth a down-vote?	56		64	48
+2010-07-20T20:06:06.343	If you talk a little about limits you can get rid of that dependency :/	16		40	49
+2010-07-20T20:08:05.483	A rotation matrix can be represented in 9 floats rather than 16. Also, in regards to computer graphics, smooth interpolation between two quaternions is easy compared to rotation matrices.	66	2	78	50
+2010-07-20T20:08:53.030	@Scott *why* isn't it? I don't mid being proved wrong, if you can *prove* it.	17	1	25	51
+2010-07-20T20:10:21.403	Yes, this is a point that must be made!	16		80	52
+2010-07-20T20:11:43.133	@Scott Also, that proof happens to appear on the Wikipedia page for 0.999... too, so I'd suggest you "fix it" there, after you've provided your own answer.	17	2	25	53
+2010-07-20T20:12:45.330	@Scott: Sure it is. You can prove it easily by long division. This is about algorithms for mathematical methods really.	56	1	31	54
+2010-07-20T20:13:44.517	Fix the answer or delete yours and I will remove the downvote?	16		64	55
+2010-07-20T20:16:31.763	do we want to allow/encourage questions that could easily be homework questions? I know we're not MathOverflow and we don't need research-level questions, but to me it still seems like there are better places for homework help (the line being much thinner here than it is on MO). (Rowland, I'm not looking to disparage this as a homework question, it's just asked a lot like one).	76		18	57
+2010-07-20T20:17:07.193	@Scott: Might help to stop whining and post what you think is the 'correct' answer then.	56	1	31	58
+2010-07-20T20:20:00.540	A great example in my opinion is using it to solve a maze, breadth-first search from the starting position makes it particularly easy.\n\nFrom there you can "add in" more aspects of it once you get them into it, if you wanted to find the shortest route out of the maze you could extend it into a simple application of Djiksta's algorithm.	34	1	88	59
+2010-07-20T20:21:39.647	Please use http://meta.math.stackexchange.com/ to discuss what's approprate. Thanks! :)	66		18	60
+2010-07-20T20:21:50.440	"List of X" questions generally [are frowned upon](http://meta.stackoverflow.com/questions/57226/should-we-have-a-list-of-x-close-reason).	92	2	81	61
+2010-07-20T20:23:09.313	Finite ones do, but infinite ones don't!  The whole reason that this question confuses people is that defining what an infinite decimal *means* is difficult and confusing!	8	18	49	62
+2010-07-20T20:23:47.723	@Katie I'd be flattered if you think I was of homework age - as it happens, this was inspired from a software engineering problem I was having, and having never been taught geometry beyond spherical geometry, I was struggling to get my head around the terms. For reference, I wanted this is to generate the bits I need to feed in to do a Helmert transformation.	17		18	63
+2010-07-20T20:24:07.550	I think this particular case is useful and acceptable. I'm waiting to flag homework questions that have specific values in mind.\n\nAnd a great answer could go into some good detail here, not just provide a formula.	82	1	18	64
+2010-07-20T20:24:29.110	Whatever proof you could give that 1/3 = .3333...  would also prove directly that 1 = .999999...	8	5	25	65
+2010-07-20T20:26:26.950	@Katie also, I was being guided by the joint top most on-topic question at http://area51.stackexchange.com/proposals/3355?phase=definition which relates quite strongly, and is possibly easier to find an algorithm for	17		18	66
+2010-07-20T20:26:30.850	You may want to take a look at python's http://code.google.com/p/mpmath/ or other libraries that advertise a "multiple precision" feature. Also, this may be a better question for stack overflow instead, since it's more of a computer science thing.	66		97	67
+2010-07-20T20:28:19.723	Seriously people what's with all the duplicates?  Check and see if someone has already given your answer first!	8	7	11	69
+2010-07-20T20:28:50.020	@Noah That'd be long division, right?	17	2	25	70
+2010-07-20T20:33:22.067	But how do you know that long division works?  How do you know the pattern goes on forever?  You can do long division for 1/1 and get .999999...  Try it out!	8	4	25	71
+2010-07-20T20:33:28.633	I think you're counting from the wrong end...	28	7	101	72
+2010-07-20T20:33:59.883	This problem is actually small enough to use a BigNum implementation, like BigInteger in .NET 4.0.	38		101	73
+2010-07-20T20:35:15.760	Yes, any question that asks users to create a list or poll should definitely be made community wiki. I converted this question.	69		3	74
+2010-07-20T20:37:03.587	@Morrison: What do you mean? The smallest numbers always start at the right?\n\n@Gietzen: I think I'll try that with my next approach, thanks for the idea.	44		101	75
+2010-07-20T20:46:05.000	Oh, wow, Tim Harford!  :)	85		4	76
+2010-07-20T20:49:34.353	@Jon: Nope, I'm not interested in a library, there is no such library for the language I'm writing in (yet). I need the mathematical algorithm.	92		97	77
+2010-07-20T20:51:27.623	Your non-trite answer is "By definition, they produce mutually orthogonal vectors".  I specifically stated that I was aware of the definition of cross product that explicitly stated that the result is mutually orthogonal.  This is not the definition I am asking about; I am asking about why the Matrix Determinant definition of the cross product (which has no mention of orthogonality) produces an orthogonal vector.\n\nPerhaps I should have clarified more that I was asking specifically about the matrix definition of the cross product, and not the definition that explicitly stated orthogonality	51		42	78
+2010-07-20T20:51:47.547	Yes you're right. I'd like to quote Robert Cartaino (http://math.stackexchange.com/questions/3/list-of-interesting-math-podcasts) on this one: "[...] *any question that asks users to create a list or poll should definitely be made community wiki* [...]". I think it would interesting to compile a list of math blogs that do not require research-level math skills to be followed, since I personally find it quite difficult to find such Math blogs. In the end the community or a moderator has to decide if this question shall be closed; I for one do not hope that it gets closed :)	79	2	81	79
+2010-07-20T20:53:53.033	You might also want to look into http://en.wikipedia.org/wiki/1_%E2%88%92_2_%2B_3_%E2%88%92_4_%2B_%C2%B7_%C2%B7_%C2%B7	51	5	107	80
+2010-07-20T20:55:33.543	@Noah Now that's getting very philosophical, if you're questioning whether a decimal notation is equivalent to a fraction or not.	17		25	81
+2010-07-20T20:56:12.340	\u2207 is not gradient. \u2207 is the [nabla operator](http://en.wikipedia.org/wiki/Nabla_symbol), which has no meaning in and of itself.	92		112	82
+2010-07-20T20:57:38.187	I think it's pretty standard to define infinite decimals as the infinite series where the terms are the individual digits divided by the appropriate power of the base.  That is, 0.99999... = 9/10 + 9/10^2 + 9/10^3 + ...	72	3	49	84
+2010-07-20T20:59:26.793	You're also assuming that you can multiply 0.9999... by 10 and get 9.9999... (or, rather, that arithmetic with infinite decimals works normally), which is not at all unreasonable to assume.	72	5	44	85
+2010-07-20T20:59:30.320	Community wiki, as there is no one answer?	49	1	113	86
+2010-07-20T21:00:21.830	Ah, I thought I checked it when I posted. Edited.	66		113	87
+2010-07-20T21:04:44.067	Perhaps you should also request the answers to include why the particular post is a fallacy. In this case, line 5 is wrong since a=b implies a-b = 0, and so you can't divide out (a-b)	50		113	88
+2010-07-20T21:05:45.203	"First" is ambiguous. Ten leftmost or ten rightmost? I believe the people at Project Euler want the former.	92		101	89
+2010-07-20T21:10:52.163	I did my best to avoid `0.00000...`, but this made the calculations not as strikingly simple as I'd have liked to.	92		110	91
+2010-07-20T21:12:41.103	It depends on what you mean by paradox. Traditionally, the use has allowed for using 'paradox' to refer to any severe failure of intuition (and I think 'the number of balls in the box depends on how you numbered them' certainly qualifies!)	73	1	114	92
+2010-07-20T21:15:00.573	Just to nitpick, there **is** a bijection between the set of decimal expansions and reals because they are sets with the same cardinality. It's just that the natural map taking expansions to real numbers isn't injective.	31	6	31	94
+2010-07-20T21:15:08.763	Why is this tagged off topic? Surely if it needs this tag then it should be closed...	108		3	95
+2010-07-20T21:15:59.920	In the same way, it's often convenient for a variety of reasons *not* to consider hte unit ideal as prime (e.g. for unique factorization in Dedekind domains).	536	2	122	97
+2010-07-20T21:18:19.657	@Simon: Good clarification point, you're absolutely right.	56		31	98
+2010-07-20T21:18:47.503	are you looking for more "classic fake proofs" of this type, or something along the lines of "common misconceptions in mathematics"?	76	1	113	99
+2010-07-20T21:21:17.863	Use whatever method you used to prove sum of two Gaussian is a Gaussian to prove Z = Y-X.	96	2	74	100
+2010-07-20T21:21:38.347	Sure, this just about tells you what an introductory course to calculus might involve, but is far to specific to describe the subject as a whole.	56		127	101
+2010-07-20T21:22:28.583	See [Catenary](http://en.wikipedia.org/wiki/Catenary) for more analysis on the curve that is mentioned in this answer.	51	5	124	102
+2010-07-20T21:25:46.383	@Katie Good point, I just updated the title.	66		113	103
+2010-07-20T21:30:52.737	But that's exactly my point, taking the limit of series (and in fact, determining when such a limit exists) is a difficult and confusing concept!	8	6	49	104
+2010-07-20T21:32:43.627	Let me say a word about why 1/3 = .33333... is not obvious at all.  What does it mean to say that some number is 1/3?  Well division is the operation that undoes multiplication, so it means that it's a number that when you multiply by 3 you get 1.  Well what happens when you multiply .3333... times 3?  You get .9999...  So *unless you already know* that .99999...=1 then you can't prove that 1/3 = .3333...  The fact that .9999...=1 is *more basic* than the fact that 1/3 = .33333....!	8	17	11	105
+2010-07-20T21:38:41.490	0^0 shouldn't be undefined. It should be 1.	30	14	135	107
+2010-07-20T21:40:43.317	Actually, the exact side length is the square root of 50, which is irrational.	536	4	139	108
+2010-07-20T21:40:59.853	0^0 is 1. http://www.wolframalpha.com/input/?i=lim+x^x+as+x-%3E0.  Not because wolframalpha says so, but the proof is there for you to see.	71		135	109
+2010-07-20T21:42:05.720	Could you send it to a social science journal instead? :-)	31	5	136	110
+2010-07-20T21:42:45.487	You can also reverse your observation (which as Dan explains is very easy to show) to get the slightly harder result that 1+3+5+...+(2n-1) = n^2.	8	1	136	111
+2010-07-20T21:43:38.903	@justin-l, Effectively you are asking why the algebraic definition produces the same answer as the geometric definition.	113		42	112
+2010-07-20T21:46:18.887	My teacher said no estimating :(	73	2	145	113
+2010-07-20T21:46:46.657	Actually, yes =)  Thank you for clarifying; that's actually a lot clearer than my question was.	51		42	114
+2010-07-20T21:47:02.990	Really? Why does that work?	73	2	146	115
+2010-07-20T21:47:26.327	Correct me if I'm wrong, but it seems like this would be better suited for MathOverflow.net?	82	1	128	116
+2010-07-20T21:48:14.737	@Coltin: Wolframalpha doesn't say that `0^0` is 1. If you enter `0^0` it says "indeterminate". It only says that `lim x^x as x->0` is 1, which is perfectly true, but entirely besides the point.	11	4	135	117
+2010-07-20T21:55:10.897	I've been using NRich with my sons and I've found it excellent.	113	2	100	119
+2010-07-20T21:59:36.760	This leaves me with a square with area (7-7 sqrt(2))^2; am I doing this right?	51		146	120
+2010-07-20T22:09:12.057	true, only 9 are needed for a rotation matrix. And point two makes the point about interpolation :)	35		78	121
+2010-07-20T22:11:04.770	It works because the diagonal of the inner square is equal to the side of the outer square. The ratio of the diagonal to the side of any square is root 2, so the ratio of the diagonals of the two squares is root 2, so the ratio of the areas is 2.	113	1	146	122
+2010-07-20T22:12:04.893	And now you just need to expand your explanation to include x^i and then explain why e^(i*pi) + 1 = 0 :)	35		141	123
+2010-07-20T22:14:16.747	But that's just the definition of pi of course...	8	3	141	125
+2010-07-20T22:17:26.980	Nick, I don't think it's research-level. Since many people committing to this site expressed a desire for an MO-like site that would admit questions in pure math at, say, an undergraduate level, I think it should stay here.	76		128	126
+2010-07-20T22:18:00.723	This isn't just philosophical, why isn't 1/3 = ...33333367.  (That's going infinitely to the left and with the decimal point at the right.  Decimals going infinitely to the left work just as well formally as ones going to the right.)	8	8	25	127
+2010-07-20T22:18:33.110	In your last sentence, beginning "If a function is continuous at...", I think you mean "If a function is differentiable at..."	72		151	128
+2010-07-20T22:18:36.230	The example given isn't fallacious or fake, it is perfectly acceptable apart from relying on an undefined operation (division by 0). It is however a great example of *why* division by 0 is left undefined, namely that it makes the arithmetic system inconsistent and therefore you can prove anything (such as 1 = 2)	35		113	129
+2010-07-20T22:20:19.240	You might want to say something about in what way you think real numbers are "real" and "valid."  The real numbers (unlike say the rational numbers or the computable numbers) are a purely mathematical abstraction.	8	18	154	130
+2010-07-20T22:22:52.623	@Isaac: oops! You're right, of course. Corrected.	31		151	131
+2010-07-20T22:25:41.387	Fwiw, I think this question would also be ok at MO.	8	5	155	132
+2010-07-20T22:28:14.630	Given that both Mathematica and MatLab are fairly expensive and Wolfram Alpha (http://www.wolframalpha.com/) is free, I'd suggest starting with Wolfram Alpha (which may or may not lead you into Mathematica), and switching to a desktop application when you hit the limits of what Wolfram Alpha can do.  (This doesn't actually answer your question, though.)	72	2	153	133
+2010-07-20T22:29:33.410	What is your opinion about learning how to use Excel properly? Using a spreadsheet to explore complicated behaviors (multiple iterations, function evaluations over a multidimensional domain, etc.) can be far more enlightening than simply staring at the output of a Matlab script. \n\nThe spreadsheet also has the advantage of forcing one to carefully consider their question - I often find that the most important question is "What relationship am I really concerned with?".	121		153	134
+2010-07-20T22:29:53.880	You lost me at that last step. What does the ratio of the diagonals have to do with anything?	73		146	135
+2010-07-20T22:29:54.143	Mathematically, limits are not approximations at all.	72	1	161	136
+2010-07-20T22:33:20.397	It sounds like it would be part of Analysis, which deals with things like differentiability, continuous functions and the like. It's also worth noting that new operations can actually change what is representable in a closed form (for example, before logs were invented/discovered then functions involving them obviously couldn't be formulated in a closed form).	35		155	137
+2010-07-20T22:37:31.797	workmad3 - new operations do, of course, change what is representable in a closed form. For example, if we invent notation for a function whose value at t is \\int_0^t x^x dx, many more things become representable! But for various mathematical, historical, and computational reasons, it is of interest what functions are expressible in terms of elementary functions as  they've already been defined - field operations (arithmetic), log, exp, and compositions of these.	76		155	139
+2010-07-20T22:39:11.967	a open source alternative to mathematica: maxima.	96	4	153	140
+2010-07-20T22:39:25.650	the ``granularness" of quantum mechanics has nothing to do with putting the real numbers on shakey ground-- quite the contrary, quantum mechanics relies heavily on the real numbers.  For example, in the standard versions of quantum mechanics the position of most particles can take any real value (not some discrete set of points).	9	2	159	141
+2010-07-20T22:44:54.377	Since the one-dimensional "size" of the square is related to its two-dimensional size (area) as a square root, and the diagonal is one-dimensional, the ratio between the diagonals of two squares is the square root of the ratio of their areas. Hence, if the ratio of diagonals is root 2, then the ratio of their areas is 2, i.e. one is twice the size of the other.	67		146	142
+2010-07-20T22:48:22.113	That's a good way of looking at it, but I wouldn't call it a proof. We simply define 1 as a prime, there is no proof of that fact; it's a definition.	122	1	122	143
+2010-07-20T22:51:35.243	You can reason that way if you like. Or you can think of a infinitesimal close approximation as having distance dx and dx^2 = 0.	99		161	144
+2010-07-20T22:51:52.933	I know that complex numbers are a useful abstraction, and in my own mind I'm quite happy that they "exist", in the same that math in general 'exists". However, I tagged the question as "teaching" because I want to hear other people's ideas about how to help non-technicians grasp the wonder of complex numbers. I think your answer is trite and unhelpful so I'm downvoting it.	113		157	145
+2010-07-20T22:52:55.430	I added the emphasized phrase because I think some answers have missed the point about who this is for.	113	1	154	146
+2010-07-20T22:53:33.993	@Eden Maor -- you are right, proof is definitely **not** the right word to use there.  I'll make a change.	51	1	122	147
+2010-07-20T22:54:26.660	When I've used this explanation with people, they want to know why you can't just use normal geometry, which doesn't involve the concept of a negative square root.	113		167	148
+2010-07-20T22:54:51.650	the maths used to calculate results in quantum mechanics may make use of reals, but that's really due to convention and the fact that we (humans) have great difficulty with the hugeness of numbers that would be used if we calculated things in plank lengths and plank masses. It's a convenient abstraction rather than an affirmation of any 'existence' of real numbers.	35		159	149
+2010-07-20T22:57:33.923	I think electrical circuit theory is a more approachable use of complex numbers, with the imaginary component being used to express phase. Most people think quantum mechanics is pretty weird and have trouble believing it (as did Einstein, so they're in good company) so using quantum mechanics as a justification further convinces them that complex numbers are merely nonsense.	113	1	159	150
+2010-07-20T22:57:44.487	I believe the historical context was in solving cubic equations.  If you try to solve a cubic equation that has a real solution, sometimes you have to use complex numbers in intermediate steps in the calculation.  But then when you get to the end you find a real number that really is a solution to a real cubic equation!	8	67	168	151
+2010-07-20T23:01:13.280	+1 for the Weierstrass function, I knew what it was but not what it was called.	120		151	152
+2010-07-20T23:02:18.707	@noah-snyder, My use of "real" and "valid" are based on the kind of conceptual difficulties that non-mathematicians typically express when first introduced to the concept of complex numbers. I want to find a good way to help these people not just understand but also appreciate this area of math.	113	1	154	154
+2010-07-20T23:02:21.623	the branch of mathematics that studies this sort of thing is differential galois theory.	9	18	155	155
+2010-07-20T23:02:46.100	This is also a manifestation of godel's incompleteness theorem :)	35	7	171	156
+2010-07-20T23:03:05.240	David Foster Wallace. (RIP :-( )	120	1	35	157
+2010-07-20T23:04:19.123	of course every physical theory we have is just an approximation.  there are no widely accepted theories that say that spacetime is a lattice (which you seem to believe).	9	1	159	158
+2010-07-20T23:04:40.013	"trigonometric" (not "trigonomic" or "triganomic")	120	2	123	159
+2010-07-20T23:06:25.033	Moreover, the set of continuous functions which are nowhere differentiable is residual, so one can prove their existence without actually constructing an example.	536	1	151	160
+2010-07-20T23:08:41.847	@Noah - Yep that sounds exactly like what I was thinking about.	122	2	168	161
+2010-07-20T23:08:51.097	It was [Gerolamo_Cardano in 1545](http://en.wikipedia.org/wiki/Gerolamo_Cardano). For an enjoyable historical treatment see ["An Imaginary Tale" by Paul J. Nahin](http://press.princeton.edu/titles/6388.html).	113	14	168	162
+2010-07-20T23:08:59.490	You can use normal geometry, you just have to add the idea of front and back, or alternatively clockwise and counter-clockwise. One way to prime the pump of understanding, is think how rotating something by 90 degrees twice gives -1. So rotate^2 = -1. i is like a 90 degree rotation.	99		167	163
+2010-07-20T23:12:16.787	Heh "pi makes sense because it's round like a circle"... nice way to describe one of the fundamental transcendentals :)	35	12	164	164
+2010-07-20T23:14:02.947	Right, but for me to answer your question on your terms I need to know why you think that the real numbers are "real" and "valid."	8	3	154	165
+2010-07-20T23:14:59.950	I haven't said spacetime is a lattice, just that there is a fundamental granularity to it (which is supported by quantum theory). A lattice implies there is some order to the granularity, while what I'm saying is that there is just a fundamental limit to how fine-detailed things can get. And you seem to have confused 'theory' with 'abstraction'. Real numbers are a convenient abstraction used to make things manageable, not a theory of any description.	35		159	166
+2010-07-20T23:15:29.213	It's in my library - haven't gotten to it yet, unfortunately.	122		168	168
+2010-07-20T23:15:49.307	@Neil I'm more familiar with quantum theory than electrical circuit theory :) Although now you mention it I have heard from other people I know that imaginary numbers play a large role there.	35		159	169
+2010-07-20T23:16:17.967	It's definitely not research-level, but I actually doubt it'd get closed on MO, since it's a fact that most books mention without proof; I don't really see why it would be terribly out of place on either site.	536	2	128	170
+2010-07-20T23:17:01.397	Try a finite example, and try to answer, "What is the sum of its elements cardinality?"	99		162	171
+2010-07-20T23:17:43.797	As a general comment, the book _Foundations of Analysis_ by Landau covers the basic constructions up to the complex numbers in full detail (albeit without much motivation).	536	2	20	172
+2010-07-20T23:17:45.390	I mentioned this paradox in my question; it however is not the same one that I am asking about.	51		179	173
+2010-07-20T23:18:46.730	@jacob surely you mean -pi and +pi or 0 and 2pi? And that was exactly what I was thinking :) You have to jump through hoops to do this in Cartesian co-ords, while it is trivial in polar co-ordinates.	35		177	174
+2010-07-20T23:19:44.497	Thanks, very interesting. Not quite what I was looking for, but helpful all the same.	113		173	175
+2010-07-20T23:23:45.550	Wow, looking at the picture, I see that the square is evenly split into the black and white areas. I wasn't convinced at first, but then I printed out the picture and saw that the four black triangles can be 'folded' over to cover the small white square perfectly.	73	1	176	176
+2010-07-20T23:24:22.587	@jonathan-fischoff: thanks, that's helpful	113		167	177
+2010-07-20T23:24:29.870	@Justin L.: "There are some more complex subtleties to that, to make it rigorous" - you still make it sound like a proof	123		122	178
+2010-07-20T23:24:40.417	yup, each of the quadrants of the outer square is split in half.	120		176	179
+2010-07-20T23:25:46.920	...of course, if you're working in wood and the direction of the grain is important, this method would mess that up.	120	1	176	180
+2010-07-20T23:25:54.313	Euclid's theorem could easily be modified to work with 1 as a prime. The reason why 1 isn't a prime is either because it makes a whole lot of different results nicer, or an accident of history, not because of one specific theorem	123	2	149	181
+2010-07-20T23:28:17.773	The intention is to ask about the limit as time goes to 11.	73		111	182
+2010-07-20T23:30:46.897	Community-wiki?		14	83	183
+2010-07-20T23:31:37.923	Answering a question with a question often isn't the most helpful way to begin. People accept the reals as "real" even though they shouldn't, simply because they've been exposed to them from a very young age. You have to help them see that the reals may not be as real as they thought. I would typically start talking about the problems the Greeks had when Euclid proved that the length of the diagonal of a unit square was an irrational number.	113	2	154	184
+2010-07-20T23:37:53.093	You're right, sorry. Probably you can say that, since "the set of all sets" is not so well-defined, it must necessarily contain the set from Russel's paradox. Since the set from Russel's Paradox can't exist, neither can any set that contains it. But I feel this is cheating somehow.	122	1	179	185
+2010-07-20T23:42:46.720	C is a field structure on R^2.		3	154	186
+2010-07-20T23:44:02.507	hopefully we'll get that darn math markup working soon, :)	104	3	164	187
+2010-07-20T23:47:17.900	Are you sure you are intending `x`'s magnitude to always be the result of the cross product, or only its direction?	51		185	188
+2010-07-20T23:57:01.670	I agree with BBischof. This question could use more background. Did you see a mysterious expression with $\\epsilon$s and $\\delta$s and have no idea what it meant? Does your book just toss around `limit` like it's the most natural thing in the world? Providing more detail in your question will get you a more appropriate answer.	73		2	189
+2010-07-20T23:59:42.803	Very nice--this is the answer I wanted to have, but I couldn't get the picture/comparison straight in my head.	72		181	190
+2010-07-21T00:03:43.420	http://farm5.static.flickr.com/4082/4813660948_8e8caa2ec9.jpg should be a picture to match this answer.  Because C is on the circle with center at A and passing through the vertices adjacent to A, the length of AC is equal to the length of a side of the square. &ang;CAD has measure 45 degrees, so AD and DC both have length 1/sqrt(2) times the length of a side of the original square, so the shaded square has half the area of the original square.  @Will, feel free to edit my image into your answer.	72	2	146	191
+2010-07-21T00:08:11.023	fair, Akhil; I'm glad to have it here, though, so that we indicate the acceptability of higher-level math questions (non-grade school)	76	1	128	192
+2010-07-21T00:12:34.977	The relationship between spinors and quaternions could be made stronger. The quaternions are the dual of spinors within a 3D geometric algebra. The quaternions are made up of linear combinations of the oriented planes and a scalar, while the spinors are linear combinations of a vector and the 3d oriented volume or pseudoscalar. Their union makes up the entire 3D GA. The 720 degree is tangential. It comes from four ways to make the angle between two vectors: clockwise theta, clockwise 2pi - theta, counter clockwise theta, counter clockwise 2pi - theta. In all that covers 4pi.	99		78	194
+2010-07-21T00:12:55.507	Is the question bad because it is too basic?  Many questions already here can be answered by a check of wikipedia; in fact, many questions on the Trilogy Sites could be answered by wikipedia as well.	51	4	201	195
+2010-07-21T00:16:33.080	-1. The term "well-behaved" is clearly informal.  An approximate definition would be something like nonsingular, smooth, and describable in closed-form.			206	196
+2010-07-21T00:18:53.343	I think that some effort should be necessary on the part of the person asking the question...		6	201	197
+2010-07-21T00:19:09.050	Although you're right that constructive mathematics has nothing to do with Russell's paradox, my understanding is that the key point that constructivists deny is the law of the excluded middle (not the Axiom of Choice, though most constructivists don't use that either).	8	3	203	198
+2010-07-21T00:21:12.540	Python's console is excellent for this task - but don't forget about Octave, the open source alternative to Matlab.  (It is easiest to use on a UNIX-like command line.)	121	2	205	200
+2010-07-21T00:23:24.567	Yes (as has been answered): the heuristic reason is that we can list the primes $p_1, p_2, \\dots$. Each time you apply the sieve of Eratosnese you exclude the numbers divisible by $p_n$ and weed out "$(1-1/p_n)$" of the natural numbers (i.e., asymptotic density). So in the end you are left with $\\prod ( 1 - 1/p_n)$ fraction of the natural numbers; since the sum $\\sum \\frac{1}{p_n} = \\infty$, this is the proportion zero. So we should expect the primes to have density zero.	536	3	194	201
+2010-07-21T00:25:18.570	@Harry Gindi: well, it is not my fault that economists use this term in their papers and books. How can you expect me to know that well behaved is the same as nonsingular, smooth, or whatever? If I knew all of that I wouldn't probably be asking the question! Instead of down-voting me and telling me off for not being "formal", why don't you write an answer and explain this in a nice way? Is that how you expect this website to get more users? By down-voting legitimate questions rather than questions written by someone who already knows the answer but only wants reputation points?	85	13	206	202
+2010-07-21T00:29:31.073	The proof also works in the ring of polynomials over a finite field.	536	2	211	203
+2010-07-21T00:35:44.400	What is the rule on language? Should I edit the quote?	123		212	204
+2010-07-21T00:37:27.783	Also, according to the FAQ, "Mathematics - Stack Exchange is for people studying math at any level & professionals in related fields." If you start turning down people with less knowledge of the field this website will be exactly the same as mathoverflow, and there will be no point in having two websites that are exactly the same.	85	3	206	205
+2010-07-21T00:37:37.283	Wrong. Wrong. Wrong.			212	206
+2010-07-21T00:39:21.287	Vivi, I don't think your question is inappropriate, but Harry is right that "well-behaved" is context-dependent. Even in the world of economics, it may have different meanings when talking about different things. If you can provide specific examples of when the term was used, you will get better answers.	73	10	206	207
+2010-07-21T00:40:00.507	+1 I think this is a good question. We are going to see a *lot* of questions that can be answered with a trip to Google or Wikipedia, especially during the beta, but I think that is a *good* thing. The ultimate goal is to build a body of knowledge on the topic of mathematics in question/answer format. This question, and others like it, are part of that goal. In the future, someone may want an answer to this question and when Google leads them here, they will say "hey, what a great website", and sign up `:)`	59	8	201	208
+2010-07-21T00:41:43.453	@Harry: What is wrong?	123		212	209
+2010-07-21T00:44:10.857	@Kaestur Hakari: Oh, that language I understand! When I was told that this is "informal", I didn't take it to mean that this is too "vague" and needs to be put in context. If that is the case, sure I understand and will try and find one such case so I get the answer I am after  :)	85		206	213
+2010-07-21T00:44:27.300	Mathunderflow should be like mathoverflow for lower level problems.		2	201	215
+2010-07-21T00:45:06.113	Python even has [online consoles](http://stackoverflow.com/questions/1598733/python-console-website) too	123	2	205	216
+2010-07-21T00:46:12.773	@Harry: How so?	123		212	217
+2010-07-21T00:47:36.780	+1 and here's a Wikpedia article to back it up: http://en.wikipedia.org/wiki/Well-behaved	59	2	215	218
+2010-07-21T00:47:42.300	What do you mean by "smart"?  I think this is a horrible word to use in this context.  I suggest replacing "smart" (as well as "bright") with "prepared".	121	6	102	219
+2010-07-21T00:48:09.320	Read what you wrote.			212	220
+2010-07-21T00:49:13.110	Regardless of whether this is informal or not, we can at least discuss common ways this expression is used, which can be quite valuable	123	2	206	221
+2010-07-21T00:50:16.850	@e.James: That wiki article would actually a pretty good answer	123		215	222
+2010-07-21T00:51:38.050	What does 2^S mean?	123	5	171	223
+2010-07-21T00:51:58.360	Isn't a Maple library built into Matlab?	136		165	224
+2010-07-21T00:54:22.787	@Casebash: I agree. I'm sure there are other people who also want an answer to this question. Even if the answer turns out to be "it depends", at least that answer will be readily available to anyone who searches for it. As a bonus, no one will need to ask the question again, which will prevent them from offending Harry Gindi `;)`	59	2	206	225
+2010-07-21T00:56:43.407	I find all of that so vague and confusing! Maybe that is just a consequence of the term "well-behaved" also being vague, but I find that sometimes things can be explained in a way that even non-mathematicians can understand. Once I asked an econometrics professor about this, and he said he couldn't remember, but that twice differentiability and continuity were two of the requirements. That made me think that there was a right answer, or at least for how economists use the term.	85		215	227
+2010-07-21T00:57:26.463	@Casebash: Yes, but the fundamental point would be the same as this answer, so we would just be splitting up the votes. If I had the rep level, I would edit Yaser Sulaiman's answer to put in the link, but for now a comment will have to do `:)`	59		215	229
+2010-07-21T00:58:09.487	@Casebash: 2^S is standard notation for the [power set](http://en.wikipedia.org/wiki/Power_set) of S: That is, the set of all subsets of S. If S were {1, 2}, 2^S would be {{}, {1}, {2}, {1, 2}}.	73	8	171	230
+2010-07-21T00:58:55.070	@Vivi: there might be a right answer specific to economics. I was surprised to find that the Wikipedia article didn't even mention economics as one of the fields in which it was used.	59	1	215	231
+2010-07-21T00:59:39.373	I dispute the value of the wikipedia article...			215	232
+2010-07-21T01:02:26.233	Actually, rereading the comic, it is also wrong.		3	212	233
+2010-07-21T01:05:42.933	@Kaestur: Oh, yeh it is, my maths been getting rusty since I graduated	123		171	236
+2010-07-21T01:09:00.193	@Harry: How come?	123		212	237
+2010-07-21T01:10:31.300	I have voted to close, as this is clearly not related to mathematics.			220	238
+2010-07-21T01:10:54.543	The last sentence is the real reason.	136		122	239
+2010-07-21T01:12:28.953	It's a mangled version of the proof I gave.			212	241
+2010-07-21T01:14:08.217	There is a way to avoid offending Harry Gindi?!	73	8	206	242
+2010-07-21T01:14:18.887	Ankhil, I find that the question is hard to parse.	25		128	243
+2010-07-21T01:17:29.253	+1: And this would be the induction step in a formal proof, after noting the initial case being that the sum of the first 1 odd numbers is 1 ^2.	128		143	244
+2010-07-21T01:17:33.170	Nobody learns linear algebra in two semesters.  Hoffman and Kunze or bust.		2	225	245
+2010-07-21T01:23:09.193	@BlueRaja I thought Maple only provide a toolbox for MatLab, like Mathematica.	96		165	248
+2010-07-21T01:25:27.910	where by "nobody," Harry, you mean "most math majors in the United States who take a class covering any kind of abstract linear algebra." No need for "I've learnt [x subject] [faster/better/with harder books]" on this eminently reasonable question and answer.	76	11	225	249
+2010-07-21T01:29:18.680	thanks... that much I understand. I know that being twice-differentiable is one of the assumptions, but what about the rest?	85		226	250
+2010-07-21T01:30:16.697	It would be deliciously ironic if this got closed for not being a **real** question.	73	198	154	252
+2010-07-21T01:31:49.640	What search terms were you using? I found [this](http://en.wikipedia.org/wiki/Sum_of_normally_distributed_random_variables) as the top result on Google.	73	2	228	254
+2010-07-21T01:33:15.130	Please make sure to use well-defined terms and more appropriate tags.			228	256
+2010-07-21T01:34:13.317	Francois: You're right, it wasn't written well. I've edited it.	536		128	257
+2010-07-21T01:38:13.977	I have taken more than two semesters of Linear Algebra, followed by a reading course using HK (a great book).  But there is still much, much more to this subject - only accessible after one can make it through a book such as HK.	121		225	259
+2010-07-21T01:41:00.633	Sorry, I am a bit confused. You mean 1. take one of Numerical Linear Algebra or Numerical Analysis, 2 and 3. two semesters of OR. What about the fourth one? Is numerical analysis the same as real analysis? Is numerical linear algebra the same as linear algebra?	85		230	261
+2010-07-21T01:44:57.427	@Harry: But its in Haiku, so its awesome!	123		212	262
+2010-07-21T01:46:09.030	Oh, wow, thanks for that! I talked to 4 people here in the department - two economists and two mathematicians working in finance, and that is how I got the short list written in the question. None of them told me that Vector Calculus should come before Real Analysis! I also really like the way you went about it: "the most important thing, for your ability to learn various things on your own later and for developing an appreciation for different kinds of math". Thanks so much for your answer!	85	1	231	263
+2010-07-21T01:48:53.530	off topic note. I was surprised you are doing a phd in econ and don't know all of calc 1 and 2. My knowledge in econ is limited, but I always thought mastery of calculus is a requirement even for undergraduate econ.	96	3	227	264
+2010-07-21T01:56:02.280	Something to think about is whether there is some sequence of operations you could perform to both sides of the equation that would lead to a measurable difference.	99		11	265
+2010-07-21T01:57:00.000	I don't know eigenvalues, which are taught in calculus 2, I think. I guess I know most of the techniques in calculus 1 and 2, but I never studied them formally, I mostly picked up as I went. The bottom line is: I am sure I would learn something if I sat through the course, but I know enough (or a lot) of it to make the time I would spend there not worth it. But yes, my maths knowledge is weak and I would very, very, very likely not be able to get on a PhD in the US. That is why I want to take maths courses :)	85	1	227	266
+2010-07-21T01:58:33.133	Oh boy,I'm sorry. I think that a class like OR would be beneficial because it is very "applied" (in a good way!), but it may be too big for one semester (you want to study it until you get through stochastic optimization and/or nonlinear optimization).  Numerical Linear Algebra is typically heavily computational, which is a very good thing, and they teach ways to solve large, real-world problems.  Taking another computational class such as Numerical Solutions to PDE develops models real-world problems and what it takes to "solve" them.  (By now, Katie has chimed in and I like her advice, too.)	121		230	269
+2010-07-21T02:17:11.793	To whoever downvoted this: why? I think it's a perfectly good question and it's pretty obvious that this is math so it's in the scope of the site.	45	2	234	278
+2010-07-21T02:18:27.063	So are all of those part of being "well-behaved" in the example above?	85		226	279
+2010-07-21T02:23:48.813	If by ironic you mean "fitting", then yes.		19	154	281
+2010-07-21T02:28:21.783	Vivi - that said, if you feel comfortable learning some things on your own, I'd skip vector calc and just do real analysis. You *should* be able to pick up vector calc with minimal extra work having done real analysis. The ideas are all in the latter, you must might need to do some computational problems for practice.	76		231	283
+2010-07-21T02:31:30.183	@Vivi: see my edits.	73		226	284
+2010-07-21T02:32:09.760	+1:  I would have loved this class as a kid.  I got some of this informally from some of my math teachers, but it's way beyond what was actually taught.  And I agree that geometry is a good focal point.	128	3	132	285
+2010-07-21T02:37:23.803	Is it the most general polygon or is it a simple polygon? or even a convex polygon?	96	2	237	286
+2010-07-21T02:46:43.830	Ask better questions and give better answers.		3	206	287
+2010-07-21T02:48:41.033	@Noah: I've browsed the ultimate authority on everything (wikipedia) and it seems you're right on this.  Grad school was a long time ago!  I just remember one faculty member walking out on my thesis defense when I admitted to using the axiom of choice.	128	2	203	288
+2010-07-21T02:50:43.710	+1, I remember having great fun with Bell's "Men of Mathematics," which I happened across in the public library, when I was a kid. (Okay, so it's not serious or particularly accurate history, but it's colorful and fun.)	76		219	289
+2010-07-21T02:51:14.287	Thanks Tom the book looks interesting. I'm always looking for non-rigorous heuristics to mathematical subjects.	99		225	290
+2010-07-21T03:02:36.070	[Wikipedia article](http://en.wikipedia.org/wiki/Point_in_polygon)	123	2	238	291
+2010-07-21T03:07:26.430	Your question is very hard to understand. However, if I'm understanding you correctly, I fail to see any paradox. If I know the value of the other card is either double or half the value of my card (and I'm trying to maximize the value of the card in my hand) of course its beneficial for me to swap cards.	19		234	292
+2010-07-21T03:21:44.133	Quantity is better than quality, my answer is better. :D	16	1	211	294
+2010-07-21T03:23:05.867	You never define what you mean by "value." After reading your question a few times I assumed that each player is trying to maximize "value." The math that you do is not well explained or justified. I don't know what you mean by: "so using expected value." Lastly, I don't see any paradox here. From a probabilistic standpoint, if the player switches cards he may lose or he may gain, but he stands to gain more than he stands to lose, thats what your math shows. Whats the problem?	19		234	295
+2010-07-21T03:24:19.847	@Ami: I wasn't very clear before. I think that it may be clearer now.	123		234	296
+2010-07-21T03:26:07.680	Thanks for the answer!  But I was also wondering if they are completely equivalent in the eyes of a logician, if one does not care about the pedagogy?	145		241	297
+2010-07-21T03:39:05.687	-1 Even if this is true "in-general," I know of many cases where proofs by contradiction are significantly more concise and elegant.	19	3	241	298
+2010-07-21T03:41:37.247	The question was why people are given this advice.  Most advice doesn't actually apply to all situations ever.  Advice by nature is an oversimplification.  I think that's a bad downvote.	8		241	299
+2010-07-21T03:49:42.443	This is exactly the [two envelopes problem](http://en.wikipedia.org/wiki/Two_envelopes_problem), if anyone wants to write up an explanation.	73	4	234	301
+2010-07-21T03:50:41.070	+1: I think this is a good on-topic question if this site is to be useful to undergraduate math majors.  The Weierstrass function has been very nicely identified in the answers below, and it is an important counter-example that comes up immediately in advanced calculus.	121	1	150	302
+2010-07-21T03:58:37.913	@Issac, correct, fixed now.	52		44	303
+2010-07-21T04:03:28.347	This is a discontinuous set. In discontinuous sets you can define the limit approaching from a single side, however, in this problem there's no function defined in the infinitesimal segment before 11 o'clock and so no limit can be defined.	36		111	304
+2010-07-21T04:05:50.763	An even more interesting problem (similar, but not the same) has been [discussed to death](http://mathoverflow.net/questions/9037) on mathoverflow	136	2	234	305
+2010-07-21T04:09:52.790	@Noah: Not really - I don't think Scott's statement is very accurate. The nicer proof is extremely context dependant	123	2	241	306
+2010-07-21T04:12:24.347	@harry-gindi,@kaestur-hakarl, this site is for mathematicians of all levels, including those in high school, to get help with understanding math. These kind of comments don't help with that at all. For example, by the time someone knows what a field structure on R^2 is, they will already be very familiar with complex numbers.	113	13	154	307
+2010-07-21T04:12:36.313	@Katie: Is Bell not particularly accurate?  I have listed that book so many times as a reference when writing papers for my humanities classes!	121		219	308
+2010-07-21T04:14:33.767	@Edan, Very well written answer, and just the kind of thing I was looking for. Thank you. This gives me some good material for the next time I have this conversation with a family member or colleague.	113	1	168	309
+2010-07-21T04:21:01.483	Tom - let me be more careful. It is mostly accurate, but sometimes Bell gets carried away with himself while telling stories, and some of the more famous sections are inaccurate. For example, the section on "Galois' last night" describes the writing of a manuscript that modern biographers of Galois generally agree was not written the night before he died in a crazed rush (but it's more exciting the way Bell tells it!)	76	1	219	310
+2010-07-21T04:26:08.000	I think this is a great question, and look forward to the answer!	16	1	250	311
+2010-07-21T04:35:01.050	I think "line" may be misleading, as the space-filling curve is not a line by typical geometric or algebraic definitions.	72	2	253	313
+2010-07-21T04:35:03.173	To address two of your suggestions, I recommend "Coincidences, Chaos, and all that Math Jazz". In addition to cardinality it addresses fractals and basic geometric topology.	16	1	216	314
+2010-07-21T04:39:34.137	This is a nice answer and I feel sheepish that I took the lazy route. Kudos.	16		137	315
+2010-07-21T04:41:40.530	The hammer has fallen... finally.	16	1	11	316
+2010-07-21T04:43:35.253	This is really a less detailed version of Akhil's comment.	16		247	319
+2010-07-21T04:43:56.937	@BBischof: =p why don't you come back to IRC?			211	320
+2010-07-21T04:49:59.240	I have to admit I was picturing a convex polygon (in fact, originally a triangle is what I had in mind, but I thought I might as well ask the more general question).\n\nI'll leave it without the restriction of convexity, but perhaps someone will ask the simpler question about the triangle case. I would not consider that a duplicate of my question, since special cases can have special algorithms.	106		237	322
+2010-07-21T04:54:48.953	I'd be most inclined to accept this answer, since it's brief, but the relation you mention also holds when x = 0. Could you edit it to address the 0^0 case somehow?	106		138	323
+2010-07-21T04:58:59.180	@Scott, I see it would not be obvious that 1/3=0.333..., but as by Noldorins comment regarding long division, what would be wrong with this as a proof, if the first line is annotated with 'by long division' ?	105	1	31	324
+2010-07-21T05:01:15.557	@BBischof Akhil's comment derives the answer to this question with mathematical rigor. My answer offers a link to a visual representation of the trend for the sake of gaining intuition. Its nice to have both the proof of the result and intuition about the result.	19	2	247	325
+2010-07-21T05:03:16.410	@Isaac, I edited in my answer in light of your comment.	19		253	326
+2010-07-21T05:07:12.973	Harry calm down...  Scott and I are both confident enough that we're not offended by other people disagreeing with us.	8		241	327
+2010-07-21T05:07:29.617	Noah, is there any reason you posted this as a separate answer?	73		243	328
+2010-07-21T05:10:03.140	That's not cheating, that's exactly correct. I always use Russel's Paradox for the "set of all sets" question. The main point in both cases anyway is remembering that Cantor's definition of a set is a little to vague if you dig deep enough.	3		179	329
+2010-07-21T05:19:27.493	+1: This is nice: it's easy to turn this into a rigorous proof, and it even gives you a lower bound for the order of growth!	31	5	259	331
+2010-07-21T05:19:36.277	Interesting answer, but good luck convincing the people who claim they don't exist with this argument :)	37	2	235	332
+2010-07-21T05:21:10.157	I'm voting down as I don't think this question makes sense.  As far as I know there's no relationship between Russell's paradox and constructive mathematics, so I don't understand what the question is asking.	8	5	198	333
+2010-07-21T05:22:03.947	It's a totally different kind of answer from the other answer.  People may very well like one of the answers a lot more than the other.	8	2	243	334
+2010-07-21T05:27:12.003	I made a mistake and said they are all Independent. I only know X and Z are independent. Hence it's not a Symmetric case.\nSorry and thank you.	33	1	74	335
+2010-07-21T05:33:42.727	I added a statement I've always found much more shocking but which is in exactly the same direction as what you said.	8		260	336
+2010-07-21T05:35:33.567	This is how I had understood it before and I always found it to be the simplest answer, which is quite neat.	51		200	337
+2010-07-21T05:36:38.260	I like this answer because it shows that the Universal Set is a paradox in itself, and not that "it must contain paradoxical sets".	51	2	171	338
+2010-07-21T05:46:43.733	I eventually got my intuition to mesh with Monty Hall. Just imagine presenting the contestant with 100 doors instead of 3.	73	16	258	339
+2010-07-21T05:48:32.543	Haha, I totally forgot about the lower rep threshold for close votes.	73		11	340
+2010-07-21T05:50:07.940	(Or rather, in both cases, it's unprovable *unless arithmetic is inconsistent* in which case everything is provable.)	8	2	260	341
+2010-07-21T05:51:44.643	+1 I guess the question is whether Feynman would miss it... :D	16	3	258	342
+2010-07-21T05:51:55.800	If you look at a Riemann sum for intervals with width 1, you can pretty quickly see that the integral of 1/x from 1 to infinity must be less than the sum of the harmonic series.	72	1	261	343
+2010-07-21T05:52:44.877	Enjoy your three identical answers...	16		185	344
+2010-07-21T05:53:09.913	+1 because I really like the space-filling curve.	72		253	345
+2010-07-21T06:02:08.710	Lolz, I just realised that when I originally stuffed up the corner cases, I actually stuffed up corner cases	123		238	346
+2010-07-21T06:11:29.550	Certainly Feynman could make a very strong argument that this was not a legitimate curve.	8	13	253	347
+2010-07-21T06:15:38.653	Could you clarify vertix-transitive a bit more?	123		187	348
+2010-07-21T06:21:43.413	Whoa. This is definitely going on my reading list.	73	2	266	349
+2010-07-21T06:32:11.147	I think this is one Feynman would object to on physical-possibility grounds ;)	76	20	252	352
+2010-07-21T06:59:36.940	Can you give more info on the "explicit polynomial equations" part? Haven't heard of that and it sounds interesting.	122	2	260	353
+2010-07-21T07:05:42.463	This is the *best* book for non-mathematicians, to show them real, beautiful mathematics. A lot about the history of mathematics, but it actually has real proofs inside, not only history. I liked maths before this book, but this took my love to a whole new level.	122		263	354
+2010-07-21T07:09:20.630	I've removed the article link, as it does not belong on a site about mathematics (and because I think the rest of the answer has value, more so without the link, and the point of a CW format is to compile the best answers possible, which can mean substantially changing or combining answers). If anyone disagrees with this decision or wishes to discuss taking such action, please do it over on meta.	76	4	223	355
+2010-07-21T07:17:57.037	I think there will be good answers to this, but it might be helpful to give a few more specific conditions on who the layman is (five year old with a parent's help? computer engineer? etc) and what counts as maths (does a discussion of Escher's work, for example, count, or people like Russell or Boole on philosophy of math?) It's hard for someone to rank which responses they think work best for such a broad question.	76	4	275	356
+2010-07-21T07:21:39.370	@Sami: Agreed. I've gone and annotated it now. The proof is perfectly valid in my mind...	56		31	357
+2010-07-21T07:22:46.293	I'm not sure it's that confusing. But yeah, perhaps somewhat non-intuitive, indeed.	56		49	358
+2010-07-21T07:23:50.923	Wow, that's... amazing. Exactly what I was after. Thank you!	31	1	273	359
+2010-07-21T07:28:12.973	The notion of the length of the vector is defined in any *normed vector space*, independent of whether it is an *inner product vector space*. This is worth clarifying. I believe vector spaces where the inner product of a vector with itself equals the norm squared have a special name (Euclidian and Hilbert spaces are good examples).	56	1	86	360
+2010-07-21T07:37:17.600	I assume you mean that group 4 as 8 terms? Or do you mean to go all the way to 1/23?	161	2	259	362
+2010-07-21T07:38:22.603	Check out the [Riemann-zeta function](http://en.wikipedia.org/wiki/Riemann_zeta_function) if you want something a bit more technical. It gives a pretty precise estimate of the distribution of primes, indirectly.	56	2	194	363
+2010-07-21T07:41:46.777	This is far too wide and vague to be an answerable question in my mind.	56	7	282	364
+2010-07-21T07:43:54.307	Reopened -d this is a valid question	123	2	11	366
+2010-07-21T07:44:01.700	Fair enough. Inner product spaces have a norm, but normed spaces do not necessarily have an inner product. Edited to reflect this.	76	1	86	367
+2010-07-21T07:47:37.857	voting to close, but I would not object to certain reformulations of this question as long as they were limited to a much smaller domain.	76	1	282	368
+2010-07-21T07:49:39.113	I was attempting to match the degree of detail to the level of the question. If a young child asks me what a vehicle is, I might point to some cars and trucks and buses, rather than giving an exhausive definition or a complete history of how vehicles have improved in recent decades. But perhaps the community decides they prefer to have the more thorough answers, even if the questioner hasn't given the impression that they will understand them.	106	1	127	369
+2010-07-21T07:57:14.477	A very basic math joke. I don't think it belongs here!	143		287	370
+2010-07-21T07:58:52.570	@Peter: why not? This is not mathoverflow, and basic to one person is not basic to another.	31	13	287	372
+2010-07-21T07:59:23.677	Are math jokes strictly prohibited here?	97		287	373
+2010-07-21T07:59:28.340	voting to close	121	2	287	374
+2010-07-21T07:59:49.010	This isn't MathOverflow, it's a fair (off-topic) question.	56	2	287	375
+2010-07-21T08:01:08.557	Agreed with Katie... this could be a viable question, but only if reformulated and reduced to a much narrower scope.	56		282	376
+2010-07-21T08:01:08.883	How do you get an inner product from a symmetric, positive definite matrix? I think I've heard this before.	123		86	377
+2010-07-21T08:02:07.213	I think, with a little effort, the question can be written in purely mathematical language.	145	2	220	378
+2010-07-21T08:04:24.117	@Harry Gindi: Be **nice**. It's a shame on you. Just vote to close, but don't insult people here!	97	32	287	379
+2010-07-21T08:07:55.233	@badp: considering the upvotes, I think it's safe to say people like this question. I for one am very interested in seeing answers to this.	122		81	380
+2010-07-21T08:08:39.897	Information theory is typically only relevant to the comp sci sort, but I strongly agreed with the foundation/logic of mathematics/Godel's Incompleteness theorem.	56		223	381
+2010-07-21T08:09:53.777	Thanks :) I'm liking the answer more now, +1	56		86	382
+2010-07-21T08:10:31.373	Got it now. Misunderstood, but at least you have an answer now. :)	56		42	383
+2010-07-21T08:11:27.907	If this site is to become *the best and most complete* resource on Mathematics for non-mathematicians, I'm guessing at some point someone will be looking for an answer to this question here, which makes this a valid question.	122	8	287	384
+2010-07-21T08:11:50.450	@Noldorin: That picture is from wikipedia, where the answer is explained.  It is not a fair question.		4	287	385
+2010-07-21T08:14:33.343	I'm not sure the normal Monty Hall problem would trick Feynman. Now if you added in some of the variations then I think it would count (I especially like the one where the presenter stands in one place and always opens the door closest to them that has no car)	35		258	386
+2010-07-21T08:16:32.763	Everyone - further discussion on whether this is allowed can be found here: http://meta.math.stackexchange.com/questions/68/questions-about-math-jokes/70#70	122	2	287	387
+2010-07-21T08:25:58.840	@Noah: There is, at least historically - Weyl (1921) "On the New foundational Crisis of Mathematics" talks of paradoxes threateneing the chorence of mathematics as an enterprise, and recommending intuitionistic or predicative mathematics as the solution.	100	10	198	389
+2010-07-21T08:33:39.367	Yeah, it's an interesting point. I suspected the OP already knew the answer, but posted it here as a reference question of sorts, which judging by Stack Overflow ethos seems acceptable.	56	4	287	390
+2010-07-21T08:34:44.933	+1 and voted to reopen. In my opinion, the motives of the OP are a non-issue compared to the goal of building a math knowledge base. Like it or not, this question/puzzle/joke has become an internet staple and there are sure to be people interested in an explanation.	59	10	287	391
+2010-07-21T08:36:18.987	This is a valid proof to me, but pretty similar to the other division-based answers. There are serial down-voters aroudn here, beware!	56		295	393
+2010-07-21T08:42:32.717	@Noah: There isn't really such a thing as "the" axiom of choice constructively.  Higher-order intuitionistic logic has the existence of Skolem functions for all Pi-0-2 sentences, which over ZF is equivalent to the axiom of choice, and this choice principle is generally known as the axiom of choice in intuitionistic type theory, and is much used.	100		203	394
+2010-07-21T08:44:48.093	I've removed the tag [constant].			297	396
+2010-07-21T08:49:06.523	if we deal only with finite sets, there is no real difference between constructive and non-constructive proofs.	89		203	397
+2010-07-21T08:51:18.187	Akhil's reason is the real reason...		2	122	398
+2010-07-21T08:56:58.623	a well-behaved function is a function which behaves just like you need :-) \n(it's a circular definition, I know, but the concept is ill-defined)	89	5	206	399
+2010-07-21T09:02:45.333	I would vote this question up if I had any votes left. +1			301	400
+2010-07-21T09:06:52.690	I see plenty of both these days, but when I was at school and at university, I almost only saw them defined to be {0, 1, ..}. The elements of {1, 2, ..} were called the whole numbers in my school days.	100	3	293	402
+2010-07-21T09:12:31.007	Maybe it's because I'm a student of physics that we do things slightly differently, but we seem to call only the counting numbers 'natural numbers'. 'Whole numbers' is just an informal way of describing all integers.	56	2	293	403
+2010-07-21T09:29:51.863	This is probably my worst answer and it has the most votes of any of my answers =/	51		122	404
+2010-07-21T09:42:45.143	@Harry please stop making nonsense edits -- no matter if this question should be closed or not, the tag [tag-removed] is totally useless	3	12	287	407
+2010-07-21T09:54:28.913	Nothing against the paradox, but the title is misleading. Were it "How come 31.5=32.5?", it would be much better. Not sure if a title may be changed, though.	89		287	408
+2010-07-21T10:00:00.470	Harry: Thanks.  Maybe that's a +i vote?	100	2	301	409
+2010-07-21T10:05:26.943	I think that will be the way to go, since I can only do 4, and I want to take Real Analysis, Linear Algebra, and some numerical methods, and it seems like Operations Research has been recommended by a lot of people (including you). Thanks again for your answer :)	85	1	231	410
+2010-07-21T10:07:06.660	This question contains no mathematical content.  I have flagged it as spam.		2	287	411
+2010-07-21T10:08:26.377	Bourbaki included zero in 1935.  That's not all that recent...			294	412
+2010-07-21T10:12:48.323	Ring homomorphisms must fix the identity.		4	303	413
+2010-07-21T10:23:33.010	Khan Academy is terrible. Try MIT's opencourseware instead.		5	94	414
+2010-07-21T10:27:44.147	@Noah, I might agree that limits of infinite series can be difficult and/or confusing, but defining what an infinite decimal *means* is simple and straightforward (even if the concepts involved in that definition are difficult and/or confusing).	72	1	49	415
+2010-07-21T10:49:00.287	In this case we want to relax that requirement	26	4	303	416
+2010-07-21T10:55:33.227	This is the most intuitive argument, although some might say "But 10x-x isn't 9, because there's going to be a mismatch all the way to the right" - Noah's more complex deals with that.	100		87	417
+2010-07-21T11:05:47.063	*If the "set of all sets" were to exist, because self-containment and non-self-containment are valid predicates, the set of all sets not containing themselves would have to exist as a set in order for our set theory to be consistent* - Not true, as Quine's New Foundations, cited by Fran\xe7ois, shows.  It has a universal set, but not the Russell set.	100	3	200	418
+2010-07-21T11:57:32.573	More recently, rather than actually recent... but point taken, I'll revise the wording :)	35		294	420
+2010-07-21T12:06:02.620	It may be Italian education, but I've always been told, from 1st grade to 3rd year of my engineering degree course (present), that 0 \u2208 \u2115, and never had any reason to believe the countrary. (We have \u2115\u2080=\u2115\\{0} when the need does arise.)	92		283	424
+2010-07-21T12:08:20.010	Obviously, defining \u2115 from 0 and addition also works perfectly. I don't know what difference would 0 make to calculating the cardinality of P(\u2115) either.	92		304	425
+2010-07-21T12:08:49.837	This answer seems to be saying that the powerset of S is a subset of S. This is so wrong I don't know where to start. {S} is an element of 2^S... Every element of 2^S is a SUBSET (not an element) of S.	172		171	426
+2010-07-21T12:22:45.970	@Seamus Here S is defined as the set of all sets. Every element of 2^S is a set, implies they are also elements of S.	96	2	171	427
+2010-07-21T12:23:16.670	Outside academia \u2014 such as?	171		123	428
+2010-07-21T12:35:30.780	If the problem involves test many points on the same polygon. It can be done in O(log n) per query with Kirkpatrick's triangulation refinement method. Which is like triangulating the polygon at different levels.	96		302	429
+2010-07-21T12:36:10.063	Godel's incompleteness theorem applies to first-order logic. For instance, one version of the first incompleteness theorem is that the set of true first-order sentences about the natural numbers is undecidable.	536		311	430
+2010-07-21T12:38:57.763	@Akhil: Thanks for your answer. I thought Godel's Incompleteness theorem applies to any recursively enumerable logic however?	56		311	431
+2010-07-21T12:40:09.647	I guess I'm also looking for a more high-level picture, especially with regards to the foundations of mathematics and proof theory...	56		311	432
+2010-07-21T12:49:28.850	No upvotes left today :-(	123		310	433
+2010-07-21T12:50:04.060	Don't agree that the question is fundamentally inappropriate, but unless stackexchange adds a tineye plugin, it will be hard for this question to help other people unless you put more in the question beyond just "whats going on in this picture."	73	3	287	434
+2010-07-21T12:51:07.147	I asked a question provoked by this at meta, http://meta.math.stackexchange.com/questions/84/philosophical-time-wastebaskets, where I suggested the title "Are complex numbers quantities?" would work better.  Do consider Tom's suggestion there to edit the question to make it invite a more focussed discussion.	100		154	435
+2010-07-21T13:05:39.640	@Harry: "This question contains no mathematical content."?  Um, okay, how do you explain the apparent paradox then?  Even if you don't like the question (I'm still not sure why), it's definitely a math question...geometry in particular.	175	6	287	436
+2010-07-21T13:09:09.243	I have reworded the title and the description. I also added a "philosophical" tag.	113	1	154	438
+2010-07-21T13:11:06.600	What do you mean by $T \\subset Z_{10}$? In fact, what do you mean by $T$?	123		310	439
+2010-07-21T13:14:41.147	@Niel: I think the question is good, it is just that your title doesn't reflect this	123	1	154	440
+2010-07-21T13:16:31.160	For 2., it is vital that the inverse is unique. Otherwise, this is a very nice summary	123		320	441
+2010-07-21T13:20:04.443	Would you reword this question?  How are you going to get a 1 with two dice?  Do you need the die to sum to quantities between 2 and 5, inclusive?	121	2	326	442
+2010-07-21T13:20:08.013	Agreed @Ami, it is a useful answer if not as rigorous.	129		247	443
+2010-07-21T13:26:00.653	@Kenny anything...	108		123	444
+2010-07-21T13:30:00.707	Ack, I meant $Z_{15}$. $T$ is the subring of $Z_{15}$ generated by 10 (basically, that corresponds to the residue classes of 0, 5, 10).	536		310	445
+2010-07-21T13:30:31.033	It's true in **Set**, though.  Maybe we are missing some context?	100		327	446
+2010-07-21T13:34:58.930	Yeah, you're right; if I remember correctly it can be made to say more in the higher-order case. Not sure what/why I was commenting there. Sorry.	536	1	311	448
+2010-07-21T13:38:13.260	That definition of the whole numbers seems strange to me now, but back in my youth, that's how it was for me...	100		293	450
+2010-07-21T13:43:36.727	Okay, so the annihilation leads to the mapping being a homomorphism as both rings are cyclic.	123	2	310	451
+2010-07-21T13:46:01.337	So as I understand you, true 2nd order logic (Henkin semantics) retains all the proofs of 1st order logic and adds more, without any problems whatsoever in terms of completeness (or compactness?). Can this be extended indefinitely to higher and higher order logics, thus encompassing a greater range of proofs? Also, are there *any* advantages to "standard semantics". Sorry for the long list of questions.	56		325	452
+2010-07-21T13:48:06.183	@Charles Stewart: What does the `big-list` tag mean?	149	1	329	453
+2010-07-21T13:50:22.637	Indeed, I can see why they were defined that way. There's a surprising lack of consistency in this area of naming.	56	1	293	454
+2010-07-21T13:54:43.813	Precisely (to give a homomorphism from $Z_n$ to a ring is to give an idempotent element of the ring which is annihilated by $n$).	536		310	455
+2010-07-21T13:56:34.247	Original title was "Do complex numbers really exist?"	113		154	456
+2010-07-21T13:59:20.120	@Prasoon: It's from Math Overflow: it means that there isn't one right answer your your question, but instead you expect lots of alternative answers.	100	5	329	457
+2010-07-21T14:10:23.870	@bryn, I added the second paragraph.	113		138	458
+2010-07-21T14:11:05.427	Googling "is there a largest prime number" or "how many primes are there" or "are there infinitely many primes" or "are there finitely many primes" all lead to simple answers to this question at the very top of the results list. Furthermore, the infinitude of primes is nearly the first thing mentioned in the Wikipedia article for Prime Number.	130	1	201	459
+2010-07-21T14:14:59.460	If you take the more general case of lim x^y as x,y -> 0 then the result depends on exactly how x and y both -> 0. Defining 0^0 as lim x^x is an arbitrary choice. There are unavoidable discontinuities in f(x,y) = x^y around (0,0).	113	1	135	460
+2010-07-21T14:15:09.443	It's nice to see three different approaches.	64	2	326	461
+2010-07-21T14:15:13.983	Martin Gardner is the gold standard. His columns are available on CD from the MAA and are also being reprinted in the New Martin Gardner Mathematical Library.	115	3	323	462
+2010-07-21T14:21:13.687	Blue Raja: Not anymore. It used to be the case, but Mathworks have their own symbolic toolbox now.	64		165	464
+2010-07-21T14:24:44.553	I would rather see the original title, or 'why are complex numbers useful' than what is here now. While 'worse' in some sense, those titles are much better for the purpose of getting future participants with a similar question to read this one instead of posting a duplicate.	73	1	154	465
+2010-07-21T14:29:40.470	It is known as an affine transformation: http://en.wikipedia.org/wiki/Affine_transformation	166		340	466
+2010-07-21T14:36:31.437	@Prasoon: Those types of questions are typically also community wiki, for the same reason.	73	1	329	467
+2010-07-21T14:40:10.350	I find the following pair of wolfram alpha plots illustrate the discontinuities for in $x^y$ around (0,0) quite well:\n\nhttp://www.wolframalpha.com/input/?i=plot+real(x^y),+x%3D-1...1,+y%3D-1...1\nand\nhttp://www.wolframalpha.com/input/?i=plot+imag(x^y),+x%3D-1...1,+y%3D-1...1	167	1	135	469
+2010-07-21T14:40:10.443	It's true in categories enriched over sets. But Eric is correct.	16		327	470
+2010-07-21T14:50:18.250	I think both are a waste of time for a working mathematician.	16	26	280	471
+2010-07-21T14:50:47.657	@Kaestur: Good point. I'm definitely open to changing the question wording again. However, I feel that "useful" doesn't address the naive vistor's concerns. It's easy to see that complex numbers have a use, but many people feel that it's just convenient trickery. Their difficulty is more to do with intuition than utility. Helping them to see a progression through negative numbers and irrationals is best, I think, which is why I like @Edan's answer. How best to word the question, then, to suit Edan's answer?	113	2	154	472
+2010-07-21T14:52:25.407	That's right, because neither Euclid or Newton contributed anything to maths.	56	7	280	473
+2010-07-21T14:52:28.887	If we can get that right, then maybe we can delete this entire stream of comments and leave just the question and answers for the benefit of future visitors.	113		154	474
+2010-07-21T14:58:21.320	I think this is a great answer, too. I wish I could accept both!	113		160	476
+2010-07-21T15:16:03.257	I was satisfied with just the name of the theorem. Adding the proof certainly justifies an upvote.	26	1	308	477
+2010-07-21T15:26:55.213	It's true in SET. That's what motivates Geroch's exercise, but as Eric's counterexample shows, it's not true more generally. I was just wondering whether I was missing something about subobjecthood over and above monomorphism.\n\nI asked a similar question on MathOverflow: http://mathoverflow.net/questions/32368/is-monomorphism-going-in-both-directions-sufficient-for-isomorphism	172		327	478
+2010-07-21T15:52:26.950	Why use a 4x4 matrix rather than using a 3x3 and 3x1, or using a 3x4?	136		338	480
+2010-07-21T15:59:03.263	Actually, for rotations and translations, 3x4 is fine. 3x4 is just a way to collect 3x3 and 3x1 together in one array.	80		338	481
+2010-07-21T16:19:58.457	it is usually a good idea working backwards in basic probability problem, I agree :-)	89	1	328	483
+2010-07-21T16:22:45.913	Monty Hall problem is quite sensitive to the way it is stated, so a witty person like Feynman would have had no problem in saying he was right.	89	9	258	484
+2010-07-21T16:37:44.760	@Tom it's not a sum of 1 or 5, it's a 1 or a 5 showing on either die. The game 'farkle' cares about the values on individual dice, not the sum of values showing in most cases.	35		326	485
+2010-07-21T16:47:48.943	I think this would be more appropriate at Stack Overflow, no?	45	2	356	486
+2010-07-21T16:49:23.000	I think "big-list" is a very useful tag.	8	4	329	487
+2010-07-21T16:50:34.463	@Nicholas: You need to mention that the two variables are independent, otherwise it's not true (if X is N(0,1), then so is Y=-X, but their sum X+Y=0 is not normally distributed).	31	2	228	488
+2010-07-21T16:50:49.783	I added the tag "pi."  It seems like the sort of thing we should expect lots of questions about here...	8	5	297	489
+2010-07-21T16:51:26.803	@Beska: No, it's not a math question.  It's an optical illusion.		2	287	490
+2010-07-21T16:51:41.780	Hopefully Pieces or someone else can edit the question to make that clear.	73		326	491
+2010-07-21T16:54:04.490	Heh, at least you have your solution now. :)	56		232	492
+2010-07-21T16:54:18.407	What is your definition of CS? The post looks like you are referring to theory of computation.	96	2	356	493
+2010-07-21T16:54:56.393	+1 for **GEB**, still one of my real *acid test* books after all these years.	144	2	355	494
+2010-07-21T16:56:33.490	@Ben - Good question. It's sort of the reason I asked this. Computer Science is a mathematical field, as such it belongs here. There is some overlap, but for serious analysis of computational complexity, I don't think Stack Overflow is the right place (most people there are programmer, not mathematicians).	122	2	356	495
+2010-07-21T16:56:36.467	Sage is the way of the future.	8	7	207	496
+2010-07-21T16:57:49.570	@Mgccl - Yes, I'm referring to theory of computation / computational complexity. But that entire branch of mathematics is called "Computer Science" (confusing it with "Computer Science" as used to mean "a degree in programming"). [edit - ok this cross posting has got to stop! Cross posted Mgccl, then Katie! :)]	122		356	498
+2010-07-21T16:59:09.507	For students, Matlab is also pretty cheap and includes most of the important toolboxes as well as Simulink.	144		341	499
+2010-07-21T17:02:04.417	@Katie, I agree with your uptake of the CW format, but not with your stand on the legitimacy of the link. The article obviously does not *really* deal with predicting the future, at least not in a constructive manner. The axiom of choice does have some interesting non-intuitive results which seem like "prediction", for example: http://xorshammer.com/2008/08/23/set-theory-and-weather-prediction/	26	1	223	500
+2010-07-21T17:02:09.003	I'm not sure how this is any different from the question you asked on MO, in fact.	536		327	501
+2010-07-21T17:02:57.800	can I ask why this was closed? Besides a possible need to change "Computer Science" to "Theoretical Computer Science" or somesuch in the title, and maybe remove "Best," this seems an appropriate question related to learning mathematics.	76	5	356	502
+2010-07-21T17:04:02.197	I'm voting to reopen, because I think questions about books should be appropriate. Even MO does not typically close them.\nIt should be community wiki, though.	536		356	503
+2010-07-21T17:09:26.447	@Akhil: It is not a subring.  It is a subrng, or a pseudo-subring.			310	504
+2010-07-21T17:10:15.743	The Mathematical Universe by the same author is also very good.	113	2	263	505
+2010-07-21T17:22:19.063	Excellent question! I look forward to an answer!	16		362	506
+2010-07-21T17:23:22.400	@Harry: Ring here essentially means "rng."	536		310	507
+2010-07-21T17:41:01.373	Reading this right now, it's great	136		339	509
+2010-07-21T17:42:56.347	@workmad3 yeah, -pi and +pi. But I deleted it as my suggestion wasn't uniform and I couldn't work out how to make it uniform.	108		177	510
+2010-07-21T18:00:48.307	Although the functionality of Matlab is almost a subset of that of Mathematica, it is incorrect to say that "Matlab's only comparative strength lies in some of its specialist toolboxes. Matlab uses a compact readable notation for the types of numerical array operation it is commonly used for. The corresponding Mathematica notation is often highly verbose and, also important, can look very unnatural when compared to standard mathematical notation.	80	4	277	511
+2010-07-21T18:09:03.487	There are good reasons not to recommend this book, especially to a non-mathematician who is as yet unaware of alternative points of view. Some reasons why are listed [here](http://en.wikipedia.org/wiki/A_Mathematician%27s_Apology#Critiques). I personally think those critiques are weak compared to what could be said.	80	1	358	512
+2010-07-21T18:09:21.003	This was specifically about subobjects. One of the answers on MO seemed to suggest that there was nothing weird about subobjects in this regard, despite the fact about monomorphisms not implying isomorphism. I wondered if anyone could clear up what the difference might be, and since I'd just got the invitation to the private beta here, I thought I'd ask here instead.	172		327	513
+2010-07-21T18:17:08.727	+1 for nailing down "rejection sampling." I don't think that I would've been able to find the term myself. Still, I can't figure out how to establish, from the rejection sampling procedure, that the uniform distribution of the generated points follows from the uniform distribution of the random number generator.	114		218	514
+2010-07-21T18:29:34.583	Is there a closed-form function for this value?	38		259	516
+2010-07-21T18:44:04.197	if the inverse were not unique, we would have h and k such that nh &equiv; 1 and nk &equiv; 1, and we fall again in case 1.	89		320	517
+2010-07-21T18:44:17.533	@Harry: If this is an answer, post an answer. If you think this answer is unhelpful, downvote. Please don't use the comments to provide nonconstructive criticism.	82	2	94	518
+2010-07-21T18:45:56.640	What does the dollar sign stand for?  Also why is the probability of not getting a 1 or a 5 (4/6)^2?	84		328	519
+2010-07-21T18:55:19.850	@Pieces: the dollar sign just delimits mathematical expressions. It's a syntax that comes from Tex/LaTeX.	157		328	520
+2010-07-21T19:02:14.703	@Pieces: if you want the TeX formatting to light up, I have created a GreaseMonkey script: http://userscripts.org/scripts/show/81977	38		328	521
+2010-07-21T19:02:15.843	@Pieces Daniel is right, that's to delimit LaTeX expressions, for the case that LaTeX will be supported later on (which is not improbable if the site makes it). Re your other question: The probability of not getting a 1 or 5 *on one die* is the probability to get a 2, 3, 4 or 6, that's 4 out of 6. If you want that on two dice, the probability is `(4/6)*(4/6)=(4/6)^2`	3		328	522
+2010-07-21T19:11:00.193	@Akhil - I think the problem wasn't that it was about a book, it was the Computer Science aspect of it. Agree about the cw, my bad.	122		356	523
+2010-07-21T19:22:58.920	$\\Gamma(n+1)$... does it count? :p	171	6	368	525
+2010-07-21T19:24:25.950	@Neil: I don't think you should have changed the question title, after all, the current accepted answer is not an answer to that new form. It's rather that the title has "really exist" but what you are really after is "necessary and meaningful".  If you changed back, maybe dropped the word really, and began by saying questions about which abstractions exist tend to be unfruitful, but there's a comprehension gap here that needs bridging, then this would be a more focussed question.	100		154	526
+2010-07-21T19:36:10.883	anyway, in non-standard analysis 0.99999.... is not 1 :-)	89		11	527
+2010-07-21T19:38:16.183	for reference: http://en.wikipedia.org/wiki/Gamma_function	3	1	374	529
+2010-07-21T19:38:24.607	Really, I'm looking for something whose complexity to calculate is better than $O\\left( n\\right)$	38		374	530
+2010-07-21T19:43:56.857	@Harry: What makes you think he *purposely* misspelled it?	157	1	369	533
+2010-07-21T19:44:39.333	@Harry tagging this question [cauchy-sequences] is about as useful  as tagging the question "What's the best color for a Porsche?" as [combustion-engine].	3	9	11	534
+2010-07-21T19:47:48.127	your second one isn't usually true...	9	7	375	535
+2010-07-21T19:53:25.053	It's better than the tag "number."		1	11	536
+2010-07-21T19:56:58.870	@Edan: Theoretical computer science is essentially mathematics, and MO has accepted it on its website -- note that there are people like Scott Aaronson and Peter Shor active there. I don't see why we should kick out lower level tcs questions.	536	1	356	538
+2010-07-21T19:58:59.503	Your assumption is correct!	174		376	539
+2010-07-21T19:59:48.800	@mau: nice one!  :)	85		206	540
+2010-07-21T20:01:44.380	Whoops, mah bad	136		369	541
+2010-07-21T20:04:59.833	in other words, only the second one is an axiom.	89	2	376	542
+2010-07-21T20:13:39.373	IMNHO it's not a problem of "you may just google the answer". I would accept without a problem a question "does it exist a largest prime number?" (and give the classical Euclidean answer), but the formulation of this question seems rather suspicious.	89		201	543
+2010-07-21T20:15:36.810	Well, first you ask if matrices exist.  ;-)	128	2	235	545
+2010-07-21T20:16:54.437	but it is wrong nevertheless.	89	2	212	546
+2010-07-21T20:22:56.777	That is well beyond discrete mathematics, at least what is taught in discrete mathematics at the undergraduate level at my university.	91		371	548
+2010-07-21T20:23:06.857	Community wiki?	536	8	370	549
+2010-07-21T20:24:55.743	I think script usually refers to the text of a play or movie. Perhaps you meant manuscript?	25		370	550
+2010-07-21T20:48:47.310	Axioms for what?	28	2	375	551
+2010-07-21T20:51:05.027	Ahhh, thank you, fixed. (The German word for "lecture notes" is "Skript", that got me confused).	179		370	552
+2010-07-21T20:57:05.697	ah you beat me to it!	50		384	553
+2010-07-21T21:00:45.160	@Akhil, log(n!) is not in O(n) -- [look at the graphs for the "derivative" of log(n!)](http://dl.dropbox.com/u/1164414/SO/derivative%20of%20log%28fac%20n%29.gif), that's all but flat in areas of interest.	92	1	374	554
+2010-07-21T21:01:58.353	@mau: I still don't get the mistake?	123	2	212	555
+2010-07-21T21:03:26.183	You might want to rephrase your question as "Sum of Harmonic Series with certain terms omitted".  It might be easier to immediately understand what you mean =)  But +1 for me; this is a good question that this site needs.	51	2	387	556
+2010-07-21T21:10:17.633	@John, I assume you mean better than O(n) multiplications. The trivial lower bound is O(n log n) see comment above. If you need a way to calculate factorials, factor n!, and then multiply is generally better than the native method. See here http://www.luschny.de/math/factorial/FastFactorialFunctions.htm	96		374	558
+2010-07-21T21:11:11.357	How come you can write $x^p + y^p$ as $\\prod (x+\\zeta_p^i)$?	123		363	559
+2010-07-21T21:12:23.510	thank you - my memory was a bit fallacious on the actual sums, and totally fallacious with respect to the name ok Kempner :-)	89		388	560
+2010-07-21T21:12:46.630	Wow, this is a very interesting result	123		388	561
+2010-07-21T21:22:50.507	I feel like maybe this should be a question asking if anyone knows of an intuitive explanation and you should write the second part of your answer as an answer. (See http://meta.stackoverflow.com/questions/17463).	45		392	564
+2010-07-21T21:23:04.190	See www.maa.org/pubs/Calc_articles/ma007.pdf for some explanation.	536	6	392	565
+2010-07-21T21:25:04.517	Short answer: 3x3 describes rotation/skew/scale, etc.  You need the 4x4 in order to describe translation.	51	2	336	566
+2010-07-21T21:25:55.203	Should have been $\\prod (x + \\zeta_p^i y)$, now fixed. This is because the two are polynomials (say in $y$ with $x$ fixed) with the same roots and same leading coefficient.	536		363	567
+2010-07-21T21:27:41.757	it's not an answer - this is why I post it as a comment - but I think the fact that at solstices the change of day lenght is null and at equinoxes is maximum should be related to this.	89		392	568
+2010-07-21T21:29:22.600	@Akhil: You should give that as an answer	123	2	392	569
+2010-07-21T21:32:10.090	Casebash: I'm usually reluctant to post links without explanation as anything other than comments.	536	2	392	570
+2010-07-21T21:33:38.293	@Akhil: Then write one or two sentences introducing it. A complete explanation is better, but not necessary	123	1	392	571
+2010-07-21T21:34:29.027	@Ben Alpert - I'm not sure which part of my question you are suggesting is an answer =/	51		392	572
+2010-07-21T21:38:40.290	How can you derive these Taylor series without knowing the derivatives in the first place?	9	4	393	573
+2010-07-21T21:46:00.947	What kind and what level of discrete math you are talking about? Combinatorics, graph theory, some elementary number theory? It's easier if you find reviews on each individual topic, discrete math is a large field.	96		350	574
+2010-07-21T21:52:16.467	@Mgccl, indeed I did.  I guess I was just assuming that multiplications on a modern PC is a single clock cycle.  That breaks down when dealing with large enough factorials that it would matter, tho.	38		374	575
+2010-07-21T21:54:26.747	@Daniel: Because he did it right after linking a page!			369	576
+2010-07-21T21:55:47.180	Moreover, my thinking in asking it was that any sort of function or proof to the problem is inherently mathematical. Sure, it's using math to actually *do useful things,* but I always kinda thought that was the point of math.	62		220	577
+2010-07-21T22:00:34.497	I wasn't sure how to get uniformity either, which is why I was looking at suggesting polar co-ords in a comment rather than a complete answer :)	35		177	578
+2010-07-21T22:03:20.470	I don't see why you are rejecting the plots for an intuitive grasp of the differential. Differentials are best understood in terms of the plots of their functions so removing them from consideration seriously hampers any intuitive explanation.	35	1	392	579
+2010-07-21T22:04:28.457	It would be interesting to see an answer that does not involve integration.	51	3	368	580
+2010-07-21T22:07:10.467	The first line here seems false, since if x = -1, we get 0^(-1) which is also undefined. So at best we have 0^x = 0 for x>0.	106	2	140	581
+2010-07-21T22:10:17.733	@Akhil @Mgccl: If you are defining multiplication to be one operation, then how many bits the answer is proportional to is irrelevant; a straightforward n! calculation requires at least n k-bit multiplications.  The OP is asking if it can be done better than that.	136		374	582
+2010-07-21T22:11:44.720	@bryn, right, I just fixed it, thx.	96		140	583
+2010-07-21T22:14:15.890	I like the argument that 0^0=1 because it's the number of functions from the empty set into the empty set.		7	141	584
+2010-07-21T22:19:22.343	I believe that plots are an extremely useful tool in observing the nature of functions; however, they are a tool and a "shadow" or "reflection" of the function itself.  I think that using the plot to prove this is pretty trivial.  It would be even **more** intuitive to understand it independent of the plot.	51		392	585
+2010-07-21T22:19:48.490	Actually, within the past few seconds, I have changed my mind to allow plots as answers if they are sufficiently intuitive -- moreso than any non-plot answer.	51		392	586
+2010-07-21T22:21:25.757	But what about the first reasoning?  Is it invalid?  Why?	51		399	587
+2010-07-21T22:22:13.933	Does this not imply that `N` is twice as large as `E`?	51		400	588
+2010-07-21T22:23:09.890	because infinity is not a number; 2*"infinity" = "infinity" = "infinity + 1" = "infinity squared" ... they all have the same cardinality if the infinities are all of cardinality aleph-0.	120	4	399	589
+2010-07-21T22:24:04.740	Jason S is correct.			400	590
+2010-07-21T22:25:31.980	No, this does not imply that N is twice as large as E.  The sets are in a one-to-one correspondence.  Each 2*x in your set E has a unique "pullback" to N.	121		400	591
+2010-07-21T22:36:35.387	Thanks @Jason, I've updated my answer to include that point :)	35		399	593
+2010-07-21T22:45:57.950	One danger worth mentioning is that Nahin's books are full of mistakes and inaccuracies. He is known for "lying" about certain things that he perceives as too difficult to explain, rather than alerting the reader. In addition to this, he is absolutely uninterested in fixing these errors in later editions of his books, even when compact solutions are noted.	16		364	594
+2010-07-21T22:58:09.197	I agree that the argument isn't worth having. But I think you need to reach a certain state of enlightenment before you can appreciate why it's not worth having. The entire mathematical community struggled with these kinds of issues for a long time so it's clearly a non-trivial issue that can't simply be dismissed in one sentence.	80	12	157	595
+2010-07-21T23:00:30.020	The granularity of quantum mechanics is observed regularly, and fairly directly, in the lab. It's far more 'real' than the complex numbers.	80		159	596
+2010-07-21T23:02:55.817	OK, fair enough -- apologies for the silliness.	536		374	597
+2010-07-21T23:10:36.773	@Jason: But $2^{\\aleph_0} > \\aleph_0$ so not all operations behave this way with infinite cardinals.	25	1	399	598
+2010-07-21T23:10:44.743	I was looking mostly for the equivalent of a first course in Discrete Mathematics. The usual content if I remember correctly was basically just a overview of everything you mentioned. Logic, Proof Techniques(induction), Number Theory, Sets, Abstract Algebra, Graph theory...  Nothing in depth but just an overview of it all.	180		350	599
+2010-07-21T23:12:49.063	@Eric: The question was for an intuitive understanding, not an intuitive proof.	123		393	600
+2010-07-21T23:13:01.183	Good book suggestion, I have a copy of the book from the last time I took the course, I was just hoping to find material that would let me check what I remember and then be able to dive into what I forgot by reading the book section needed.	180		378	601
+2010-07-21T23:13:59.293	The definition of "ordinal" is incorrect.  -1			54	602
+2010-07-21T23:15:31.053	I think the point stands that studying Euclid or Newton is likely to be an inefficient way to learn the subjects. There are modern books that can give the presentation more efficiently and elegantly (e.g., Euclid didn't have algebraic notation).  "Studying the classics" in mathematics is often a bad idea (not least because they didn't have LaTeX in the Old Days).	536	16	280	603
+2010-07-21T23:19:31.953	pfft, only punks read Cat & Sheaves. These lecture notes by Schapira are better: http://people.math.jussieu.fr/~schapira/lectnotes/AlTo.pdf\nThey use some nice specific examples and problems to develop category theory. With the added bonus of learning some nice alg top along with it. :D:D:D	16	6	373	604
+2010-07-21T23:20:01.767	Edan: Cf. Hilbert's tenth problem. One can write down to any statement a polynomial which has an integer root iff it's true.  By the incompleteness theorem, there will be statements that can't be proved in any formal system, hence one can't prove whether or not the polynomial has a root [if the system is consistent].	536	2	260	605
+2010-07-21T23:20:11.080	Your definition of irrational numbers/real numbers is circular.		4	40	606
+2010-07-21T23:21:45.570	@Seamus: A subobject is just a monomorphism, in every place I've seen.	536		327	607
+2010-07-21T23:25:57.683	In terms of assignments, we just worked problems right from the book. And most of the test problems were either from the book or based on problems in the book. I would suggest just doing that - reading the chapter and picking out a few questions and checking your work and answers with the solution guide. Unfortunately, I can't provide you with links to the material from when I took the course - they aren't on any public web pages. :(	91		378	608
+2010-07-21T23:33:21.243	I have been having the same question for ages.	148		405	609
+2010-07-21T23:50:13.977	I added the intuition tag to reflect the "simple explanation" part.	16		405	610
+2010-07-22T00:23:23.177	Thanks for addressing the distinction between the two sets :)  I think this answer is the most complete.	51		406	611
+2010-07-22T00:24:32.923	@Henry Can you help me correct it?	51		54	612
+2010-07-22T00:43:14.260	In that case, how is the Taylor series intuitive?	9		393	614
+2010-07-22T00:51:23.027	I would have responded that "any Lie algebra can be obtained as a subalgebra from Lie of an associative algebra," but you've already mentioned the enveloping algebra functor in your answer.\nAlso, I'm pretty sure the enveloping algebra functor is always faithful. I'm not sure what you mean by "the Jacobi identity is the necessary identity for the universal enveloping algebra to be associative." I learned the enveloping alg as a quotient of a tensor algebra, which is always associative.	536		414	615
+2010-07-22T00:56:39.240	Doesn't Euler's Formula come from the Taylor Series, which comes from the derivatives in the first place?  But I do like this answer.  Tying sine and cosine to the e is a pretty elegant way to do this.	51		403	616
+2010-07-22T01:00:33.180	I'm also not sure what the Jacobi identity has to do with the enveloping algebra being associative, but it is pivotal in the proof of the Poincare-Birkoff-Witt theorem, which says that the universal algebra is isomorphic, as a vector space, to the symmetric algebra on the underlying vector space of the Lie algebra.	9	2	414	617
+2010-07-22T01:03:29.507	@Harry: No kidding? Read the comments.	38		40	618
+2010-07-22T01:03:52.923	Also the Lie bracket of vector fields is really a commutator (when considered as operators on the space of smooth functions).	536	1	417	619
+2010-07-22T01:07:02.853	Yes this what I was looking for. Thanks for the quick response, I am unsure how I missed this, it now seems obvious, but still glad I asked.	16		417	620
+2010-07-22T01:07:42.603	Eric apparently can read my mind and through my stupid errors. Sorry for the stupidity of this error.	16		414	621
+2010-07-22T01:09:13.880	@Akhil I was wondering about the faithfulness of the other functor,  the one that gives an associative algebra the commutator bracket.	16		414	622
+2010-07-22T01:12:10.190	The proper way is to construct the real numbers as a completion of the rational numbers (by cauchy sequences or dedekind cuts).  The "irrational numbers" are then simply R\\Q.			40	623
+2010-07-22T01:13:05.493	We had a discussion over on mathoverflow about whether or not this exact question has any mathematical merit.  We concluded that it does not and is therefore off topic.			419	624
+2010-07-22T01:13:42.140	@Harry: you still don't get it, do you? This isn't MO, you need to lower the level or people won't understand!	85	3	40	625
+2010-07-22T01:15:59.233	As far as 1.) is concerned, it is important to remember that bijections only necessarily preserve cardinality.  Topological properties are irrelevant.		4	418	626
+2010-07-22T01:16:02.990	should this question have a topology tag?	121		420	627
+2010-07-22T01:23:12.693	That's a forgetful functor, so it's faithful too.	536	1	414	628
+2010-07-22T01:23:33.847	Thanks!  That makes a lot of sense actually.  If it isn't much of a bother for you, do you mind addressing some of the other things I mentioned?  Like why triangles are found in more platonic solids than both of the other shapes combined.	51		416	629
+2010-07-22T01:24:04.080	The question itself wasn't topological, but topological considerations show that using standard continuous functions won't work. I'm not sure that the tag is necessary.	536		420	630
+2010-07-22T01:26:33.887	It might be off-topic on MO, but I'm not sure if there is a consensus yet on MU whether or not to allow statistics-related questions.  However, there is already a [Statistics StackExchange 2.0 Site](http://area51.stackexchange.com/proposals/33/statistical-analysis) in Beta that will be public before this one, so this question might be more proper for that.	51		419	631
+2010-07-22T01:28:27.220	@Francois: I've heard that one... what does that correspond to? the mapping between an infinite set S and its subsets?	120		399	632
+2010-07-22T01:29:09.043	I misquoted the wrong part of the original post first, sorry about that.	120		400	633
+2010-07-22T01:30:01.663	I gave the explanation I was given as a first-semester college freshman from a freshman-level book (cf. _Calculus_ by Michael Spivak).			40	634
+2010-07-22T01:31:22.907	Look it up on wikipedia.  An ordinal is a certain type of pure set.			54	635
+2010-07-22T01:35:01.153	Because 6 triangles tile a plane. So 5 triangles can be folded to meet at a vertex and make a convex corner. Same with 4 and 3. 2 triangles would just form a 2-sided flat surface, not a polyhedron.	120	2	416	636
+2010-07-22T01:35:33.333	@Harry: I am not at all surprised that this question was deemed inappropriate for MathOverflow. However, that doesn't necessarily makes it off-topic here. @Justin: stats.stackexchange is intended for professionals in statistics-related fields. I think that such an elementary question would be a much better fit here.	73	2	419	637
+2010-07-22T01:37:33.673	@Kaestur -- ah, I guess I misunderstood what stats was about.  In that case, I don't see anywhere that this mathematics-related question could possibly be asked.  Undoubtedly, this question was asked in a Math class.  But in regards to @Harry, it is important to note that MO and MU have different criteria for valid questions.	51		419	638
+2010-07-22T01:38:40.050	I might have phrased my question misleadingly; I meant to ask why there are three triangle-based Platonic Solids, and yet only one Square- and one Pentagon-based Platonic Solids?	51		416	639
+2010-07-22T01:38:54.840	@Justin: We did not deem it inappropriate for MO.  We deemed it "lacking mathematical content".  Any answer to this question cannot be mathematical.  It only requires a little bit of thought to see this.			419	640
+2010-07-22T01:40:47.753	@Justin: More or less as Jason said, it's because the interior angle of an equilateral triangle is small enough that you can fit 3, 4, or 5 of them around a vertex and still have a total measure less than 2&pi;.  I don't, however, readily have an answer to the 4D question.	72		416	641
+2010-07-22T01:41:16.863	@:Eric: Yeh, so its only intuitive if you think about them as taylor series, rather than ratios of sides of triangles. As I said, it isn't exactly what was asked for, but i do think it gives you a better understanding of how the chain occurs.	123		393	642
+2010-07-22T01:41:51.620	@Harry the criteria for mathematical content might vary across sites, and it seems premature to conclude that they are the same without proper community discussion.  I honestly do not see *much* mathematics behind the answer to this question at all, and am wondering whether this is an appropriate question for this site.  But undoubtedly the question arose from Math-related concerns, and it's a grey line that might be better left for the community to decide as a whole.	51		419	643
+2010-07-22T01:44:42.907	Great answer! it took me a while to understand the proof.	96		420	644
+2010-07-22T01:45:16.807	and @Jason - My apologies! I misread Jason's first reply to mine.  It makes perfect sense now; I'm not sure what I was on.	51		416	645
+2010-07-22T01:45:40.517	@Justin: I am saying that no possible answer can be math-related.  The example in this question proves why.			419	646
+2010-07-22T01:54:53.630	Maybe there's a difference between "math-related" and "of interest and direct relevance to those studying/using math or related things." I dislike this question as asked, as I did the corresponding one on MO, but there were several useful answers about mathematical measures of causation versus correlation on MO, and I think several people benefitted from the discussion. Part of learning math is dealing personally with the choices and philosophical issues it raises, so within reason, I think questions addressing those can be valuable.	76	4	419	647
+2010-07-22T01:55:27.657	That said, it'd be case-by-case, and there are several typical, terrible "philosophical" math questions that I would vote to close.	76		419	648
+2010-07-22T01:57:22.877	It's certainly not a math question. The 'correct' answer, as far as I'm concerned, should address the difference between longitudinal and cross-sectional studies, which is clearly in the realm of statistics. Whether we consider statistics questions to be math-related is less clear. Personally, I would consider anything covered in a freshman statistics course (regression, probability, box models, confidence intervals) to be fair game for math.stackexchange, and that is the context in which I get asked this question.	73	2	419	649
+2010-07-22T01:57:55.060	This is indeed the only possible correct answer, apparently: (from Wikipedia) `There is, in fact, no such simple solution for factorials; any combination of sums, products, powers, exponential functions, or logarithms  with a fixed number of terms will not suffice to express $n!$.`	38		374	650
+2010-07-22T02:02:06.750	@Katie: I'm glad to hear more about how it worked out on MathOverflow. Half the reason I asked this question was to elicit such responses. Of course, the other half was to spark this exact discussion on what statistics questions to allow.	73		419	651
+2010-07-22T02:03:27.793	You know, after sleeping on it, I've realized that this question is a pretty bad question.  I was trying to find the borderline between acceptably easy and unacceptably easy, and I might strayed slightly.	51	7	201	652
+2010-07-22T02:10:44.437	hehe, thanks...	16		414	653
+2010-07-22T02:10:53.810	observations like this should probably be left as comments.	76	1	421	654
+2010-07-22T02:12:26.477	@Kaestur: I think that "mathematical statistics" is on-topic, but philosophical questions about statistics (not mathematics) are not.			419	655
+2010-07-22T02:19:10.453	@Katie Noted, edited so answer comes before observation.	156		421	656
+2010-07-22T02:21:10.840	This proof also relies on the assumption that every real number can be represented by a (potentially infinite) decimal, which might or might not be accepted by someone asking the original question.	106	3	60	657
+2010-07-22T02:22:20.320	FWIW, we were having the same exact discussion on stats.stackexchange.com. While there is no consensus as yet I posted the answer below in response to "How do we handle overlap with mathoverflow?"			419	658
+2010-07-22T02:22:52.987	"My feeling is that this will depend on the kind of 'experts' that use this site. A few examples: (a) Theoretical questions on measure theory can be bounced to MO if no one here can answer them, (b) Very basic questions involving probability can be bounced to http://math.stackexchange.com/ or perhaps answered here itself. Anything in between basic probability and measure theory we should be able to handle."			419	659
+2010-07-22T02:24:16.370	BTW, the above question with some changes to make it a bit more specific would, I think, be welcome on stats.stackexchange.com. Mind you this is just my opinion and obviously I am not in any sense speaking for the community over there.			419	660
+2010-07-22T02:26:43.850	@Srikant: Thanks for reposting that, for some reason I don't have access to stats.stackexchange even though I committed a while ago. In the class I taught for, this topic was covered before we got touched on probability. Whether it is more basic is hard to answer though.	73		419	661
+2010-07-22T02:29:25.467	So strong correlation only means "interesting?" I understand that we need an experiment before we decide there is causation, but I thought correlation meant there was association! Isn't that what I wrote?	73		424	662
+2010-07-22T02:31:10.457	Why can't I conclude that? All I am saying is that there is association! Isn't that what correlation means?	73		421	663
+2010-07-22T02:35:14.737	@Kaestur, you cannot conclude that people *become* right handed, only that the proportion of right handed people to left handed people appears larger. Sure, left handed people learning to use their right hands is one possibility, but definitely not the only one, and I give two other possibilities in my answer.	156	1	421	664
+2010-07-22T02:39:03.480	@user80 Obviously I disagree - except about those critiques being weak...	144		358	665
+2010-07-22T02:41:40.633	The definition of "Platonic solid" requires that the faces are identical regular polygons, but apparently you're looking for some other more general definition that allows irregular polygonal faces. Why is it that you're not counting the triangular bipyramid which doesn't have regular faces? Here's a picture: http://upload.wikimedia.org/wikipedia/en/thumb/f/f7/Triangular_bipyramid.png/540px-Triangular_bipyramid.png	45		415	666
+2010-07-22T02:42:26.823	@Justin L.: Whoops, I definitely misread your question and thought that it was answering itself somehow. Sorry!	45		392	667
+2010-07-22T03:13:49.440	Not really what you wrote. You wrote that "people become right handed as they grow older" which either means age -> right-handedness or age <-> right-handedness. But if there is another factor that influences both, those statements may be false. With the question as stated nothing can be concluded, more information is needed. Or do you believe in http://en.wikipedia.org/wiki/Paul_the_octopus ?	187		424	669
+2010-07-22T03:36:40.463	@Akhil: Has anyone actually computed such a polynomial?			437	671
+2010-07-22T03:45:20.337	Don't know. E-F-T says that it can be computed, and Matiyasevich says that there have been computations for universal Diophantine equations, so I would imagine possibly, but I can't find it. (It might make a decent MO question.)	536	1	437	673
+2010-07-22T03:46:20.727	You should ask it on MO.  I don't know the context, so I'll probably screw it up.			437	674
+2010-07-22T04:01:03.357	If I crumple it up minimally - that is, say, add one, very slight crease, or perhaps simply do nothing at all - then translate it a significant distance, wouldn't this not hold?	48		347	675
+2010-07-22T04:01:45.273	Done - http://mathoverflow.net/questions/32892/does-anyone-know-a-polynomial-whose-lack-of-roots-cant-be-proved. I'm waiting for Joel David Hamkins...	536	2	437	676
+2010-07-22T04:15:28.820	I don't know the explicit polynomials myself, but apparently it's a bit of a cottage industry to try to find smaller and smaller ones.  For example you can do 9 variables (but degree 10^45) or you can do degree 4 (but 58 variables), see http://www.wolframscience.com/reference/notes/1161a	8	2	437	677
+2010-07-22T04:18:54.073	@Harry: I don't know that most people would consider Spivak's Calculus to be a typical freshmen-level book.  I also don't think this question necessarily demands a fully-rigorous answer.	72		40	678
+2010-07-22T04:18:56.023	Do the universal polynomials themselves give examples of polynomials whose existence of roots can't be proved or does one have to substitute values into some of the parameters?	536		437	679
+2010-07-22T04:21:05.930	Well sqrt(-25) / sqrt(-1) = 5, so the explanation doesn't seem quite complete.	187	1	439	680
+2010-07-22T04:22:43.510	When dealing with square roots, it is important to remember that each number apart from 0 naturally has 2 different roots. This means that you have to be very careful when dealing with non-positive numbers	123	4	438	681
+2010-07-22T04:38:27.460	Just because something is true for some cases, doesn't mean that it is true in other cases.  The square root division law described by Isaac is the only defined way.  sqrt(-25)/sqrt(-1) might = 5, but that's just a coincidence.  There is only one rigorously defined way that keeps everything in order.	51	4	439	682
+2010-07-22T04:45:03.533	In your sqrt(-25)/sqrt(-1) example, this is only true because it is i/i * sqrt(25)/sqrt(1) = 1 * sqrt(25) = 5.  If we allowed people to use Isaac's square root division rule for any values a and b, we'd get some pretty horrible messes...like what is stated in the question.	51		439	684
+2010-07-22T04:48:09.677	@Casebash: I believe it's fairly standard to take sqrt(x) to mean the principal square root function of x--that is, if x is a nonnegative real number, the nonnegative square root.  Defining which root is the principal root of nonreal complex numbers can be a little trickier (some texts use the one with argument in [0,\u03c0) while other texts and many calculators use the one with argument in (-\u03c0/2,\u03c0/2] ).	72		438	685
+2010-07-22T04:54:43.023	@Wilhelm, here @Isaac means that `This is only true when a >= 0 and b>0 else it may be true may not be true.`	168		439	686
+2010-07-22T05:05:13.397	Thanks Justin and Himadri for clarifying my answer.  Hopefully my edit will help as well.	72		439	687
+2010-07-22T05:06:17.013	They are asking for first ten digits so you need to calculate the whole answer and then show the first 10 digits as answer	168		101	688
+2010-07-22T05:07:50.350	I'm only considering regular polygons...although it would be interesting to consider others.  But that is beyond the scope of my question.  I'm reluctant to re-define my question, especially after such a good answer has already been given.	51		415	689
+2010-07-22T05:42:49.717	Yes, the later chapters of Dr. Euler's Fabulous Formula (on Fourier transforms, a subject I know a good amount about) were incomprehensible to me.  Still, the first half or so of the book is very good, and full of wonderful gems.	136		364	690
+2010-07-22T05:45:38.540	Wikipedia does not cite a source for that claim	136		374	691
+2010-07-22T06:14:37.250	(I also think these questions will get slightly easier once we have jsMath or similar LaTeX support on math.SE)	76	3	128	692
+2010-07-22T07:01:16.483	@Akhil: Not only was it good enough to be a MO question. It was good enough to be a good MO question.			437	693
+2010-07-22T07:16:51.833	@Noldorin: Yes, you can come up with stronger and stronger second-order logics with the Henkin semantics, and third-order logic gives you new theorems in the second-order language.  The standard semantics is a source of useful intuitions, like the uniqueness proof for the reals.	100	1	325	695
+2010-07-22T07:23:45.827	I figured "Prime numbers that are not factors of the base" at first, but I tried the trivial counter-example (1/3), which was not cyclic.	51		444	696
+2010-07-22T07:28:10.730	Fair point, especially regarding 'inefficiency', but disagreed in general. Getting an insight into the minds of the masters is a valuable thing to me - providing you have the time! Then again, I'm also a (very amateur) historian, and thus value it in that respect too.	56	7	280	697
+2010-07-22T07:37:44.903	maybe a title more clear could be "In how many different ways can I sort balls of two different colors"	89	1	448	698
+2010-07-22T07:38:29.053	So, you're asking for how many unique ways you can sort them?  And swapping two red balls in a certain arrangement doesn't count as a unique new sorting.	51		448	699
+2010-07-22T07:53:59.297	@Justin L., That's probably a fair assumption, yeah.	56	1	448	700
+2010-07-22T08:04:25.527	There's a specific sort of determinant (I forget its name) for working out the transformations between different coordinate systems (e.g. Cartesian and Polar as you mention).	56		450	702
+2010-07-22T08:04:33.077	that's why I wrote that the condition is necessary but not sufficient.	89		444	703
+2010-07-22T08:05:47.350	Population growth of rabbits! I can't remember how many times I was told that. But seriously, it's not a very good model.	56	2	381	704
+2010-07-22T08:08:22.787	The Jacobian Determinant.		3	450	706
+2010-07-22T08:12:27.707	@Carles: Thanks for the response. So is this "Henkin higher order logic" suitable for creating a proof theory (i.e. for verification of arbitrary proofs)? Would it be limited in any ways other than the universal Godel's Incompelteness theorem, or not? (In simple terms, is there something 'better' for HOL out there?) The Wikipedia article seems to imply Henkin semantics are lacking in some way, but perhaps I've misunderstood... Also, do Henkin semantics wok fine extending either natural deduction or sequent calculus systems?	56		325	707
+2010-07-22T08:47:59.743	@Akhil - I *don't* think we should kick it out, I think we should include it. By the way, I knew Scott Aaronson was active in MO, didn't know Peter Shor was there as well.	122		356	710
+2010-07-22T08:50:50.703	I've never read it, but I always got the feeling it was much more of a practical book on using algorithms for programming, much less of an actual TCS book (e.g., does it talk about complexity classes?).	122		454	712
+2010-07-22T08:52:01.293	@Noldorin: Yes, you can use the usual technology of first-order many-sorted logic.  I've argued a bit on WP with CBM & other editors on the 2nd-order logic pages about ways in which that article leads many of its readers astray (I see I said "Talking in terms of models is more honest, to my way of thinking, than what seems to me a three-way confusion of syntax, semantics and metaphysics"), but relatively little changed.	100		325	714
+2010-07-22T08:55:43.017	Yes, I realise that it's subjective what counts as 'interesting' but hopefully potentially answerers can cope with this.	106		460	716
+2010-07-22T08:57:06.383	That's partially but not fully true. There's some good discussion of complexity classes in relation to the algorithms given, from what I know.	56	2	454	717
+2010-07-22T08:57:16.993	So now I have to go and read about cauchy sequences in order to understand real numbers? And additive identity for whole numbers? Sorry if this appears snarky + rude, but this is what I see a lot of with maths books/sites trying to explain concepts in plain english, but also trying to impress piers with their knowledge	54		79	718
+2010-07-22T09:00:21.727	Yes, but it's a very arcane subject that most people don't understand/care about.  Might I suggest that you ask on http://meta.mathoverflow.net if this question is appropriate for mathoverflow?  I am not confident that you will receive a decent answer here.			460	719
+2010-07-22T09:01:15.220	That's good to know... What about my other questions, though? (Yeah, I'm always having more! Maybe it should have been a new question.) In fact I've got one or two more than I'll ask right now in a new question.	56		325	720
+2010-07-22T09:01:22.800	How could this be used to represent the example Polar transformation?	51		455	721
+2010-07-22T09:01:40.337	I was hoping the answers (and the site in general) wouldn't descend into wikipedia style chin stroking but be accessible to dumbies like me.	54	2	40	723
+2010-07-22T09:05:44.443	I'm accepting this, because it's a complete and correct answer, but I think from a didactic point of view, I think this is hard going: what is the reader to make of "Any formula in $\\Sigma_1$, by contrast, is only recursively enumerable"?  Any such formula is just one formula, isn't it?	100	1	312	724
+2010-07-22T09:07:38.760	It couldn't....			455	725
+2010-07-22T09:09:19.613	Could you please clarify the question?  What parts don't you understand?  Have you done any research about them in the past?			462	726
+2010-07-22T09:10:48.067	Certainly. I'll do my best to clarify...	56		462	728
+2010-07-22T09:16:33.950	And yes, I've done a bit of research/read a few books in the past, but things are a little hazy still. Propositional and predicate (first-order) logic I certainly understand well, as well as some aspects of their extension to higher order/proof theory.	56		462	729
+2010-07-22T09:28:11.213	I didn't say that getting older made them right handed, just that they happen to show up together.	73		424	730
+2010-07-22T09:31:50.697	I'll try my luck. If the community decides to close the question on grounds of arcaneness then so be it.	106	1	460	731
+2010-07-22T09:38:01.293	*economists often care about the derivative of marginal utility* - Sloppy, physics-envying economists, anyway. +1, very nice, pretty picture.	100		226	736
+2010-07-22T09:43:28.190	That does certainly clarify a few things, cheers. I shall give it time to sink in a bit more.	56		463	737
+2010-07-22T09:45:42.230	@Vivi: I think the problem with the qn before you added the context can best be summarised that you hadn't explained the problem that led to your question.  There was enough context for the small band of economist members of this site who knew exactly what you were talking about to answer, but not really enough for people to go away and figure out what the problem was.  Your WP quote was good, maybe even better would have been a passage from a textbook that was causing you trouble.  To sloganise *questions should be problems* - this is something Jeff Atwood goes on about a lot.	100		206	738
+2010-07-22T09:57:40.290	This is more useful if you also consider sums of Fibonacci numbers: 18 mi=5 mi + 13 mi = 8 km + 21 km = 29 km.	73	6	449	740
+2010-07-22T10:13:34.227	@bryn: I'm suggesting to you that this question might be interesting enough for MathOverflow.  You should take it as a compliment.			460	741
+2010-07-22T10:15:50.573	This seems to fail though because (as Akhil mentioned) the empty relation would satisfy this but it's not reflexive.	106		466	742
+2010-07-22T10:28:50.453	@guillermooo - Better to edit your question to state the assumption explicitly. P.S. That's you from Sublime right? :)	122	2	376	745
+2010-07-22T10:34:48.497	-1: {f:R->R} is only a group under addition, not multiplication.			468	746
+2010-07-22T10:35:54.877	Apparently, this is mostly an urban legend. See this for more: http://www.sciencenews.org/view/generic/id/6030/title/Sea_Shell_Spirals	26		458	748
+2010-07-22T10:38:35.297	@Charles Stewart: that is the thing... there is not *one* textbook, this is a recurring issue, and something that has been bothering me for a while. I don't recall now one place where I have seen it, but I am sure I could find numerous examples of places where the "well-behaved" assumption shows up. I also thought that there was one definition, that the meaning wasn't tied up to a particular field. Nonetheless, now that I understand the concept and its issues I can see that an example would have helped :)	85		206	750
+2010-07-22T10:40:19.413	I googled seriality, not much came up. You sure it's spelled right?	96		442	751
+2010-07-22T10:40:23.517	Yeah, it was a nice answer, and thank you so much for that, @Kaestur :)	85		226	752
+2010-07-22T10:42:42.170	Perhaps I made up the noun form. If you google 'serial binary relation' it will come up. Although if you google 'seriality of binary relations' it will come up there too.	106		442	753
+2010-07-22T10:43:48.037	@Neil, except that 0^x = 0 is not true for all non-zero x (e.g. x = -1).	106	1	138	754
+2010-07-22T10:48:43.067	No clue what to suggest, but it's an intriguing question!	56		457	757
+2010-07-22T10:50:07.717	It was directly stated that there is a negative correlation. AKA association. Isn't that what my conclusion says?	73		421	758
+2010-07-22T10:50:33.363	@Harry: you have a very funny way of complimenting, I will give you that much! Arcane = compliment haha!	85	1	460	759
+2010-07-22T10:52:02.987	Would it be fair to suggest that sqrt(a) / sqrt(b) = sqrt(a/b) if either (a >= 0 and b > 0) or (a < 0 and b < 0)? In the second case you would always have a factor of i pulled out of both sqrt operations which would cancel so would end up as sqrt(|a|/|b|)	35		439	761
+2010-07-22T10:52:24.717	What, pray tell, is the inverse of f(x)=x?  Note that g(x)=1/x is not defined on the entire real line.  It is defined as a function R\\{0}->R.			468	762
+2010-07-22T10:56:47.270	Voting to close as "too localized".			469	763
+2010-07-22T11:02:42.157	Add '\\models' and 'latex' and it could be a useful question. Compare current google results for those two terms.	73		469	764
+2010-07-22T11:22:09.630	This is wrong:\n"We can conclude that many people become right-handed as they grow older."\nWe cannot conclude this at all from the given data.\n\nFor one, the study only takes a sample at one point in time, rather than selecting a sample and monitoring their progress through many decades. This is what would be needed for us to even entertain the possibility that aging causes a change in handedness. \n\nThere are many other possibilities in my answer and in others which account for the skewed proportions *without* requiring people to change handedness with age, which is what you falsely concluded.	156		421	766
+2010-07-22T11:22:59.550	Sorry, I realise that I haven't actually answered your question (about the meaning). I've seen it used in logic to stand for semantic entailment, but I imagine it has other uses.	106		472	768
+2010-07-22T11:26:59.343	@bryn: ouch: somehow my eyes saw "reflexivity" and my brain read "symmetry".  Different concepts, I have heard...	100		466	769
+2010-07-22T11:31:16.107	Unfortunately there's also a debate about whether 0 is a natural number (see http://math.stackexchange.com/questions/283/is-0-a-natural-number). But I'll take your usage to mean 'nonnegative integer', and that you're voting for $0^0 = 1$.	106		351	770
+2010-07-22T11:33:02.763	Thank you for adding this answer. I was hoping to avoid an answer that involved integration, so I also prefer AgCl's answer. But I am happy to see more than one demonstration/proof.	106		261	771
+2010-07-22T11:35:47.143	Charles, I meant that the corresponding set of values making the formula true is only recursively enumerable. Indeed, if the formula is $\\exists y_1 \\exists y_2... \\exists y_m \\psi(x_1...x_n y_1...y_m)$ where $\\psi$ is quantifer free, we search over all $x_1, ... x_n, y_1....y_m$ and add $x_1, ... x_n$ to the list whenever a match is found.  I have edited the post to fix it; it was unclear.	536	2	312	772
+2010-07-22T11:36:20.653	@Harry: Not too localised, if any model-theory questions are not too localised.	100	2	469	773
+2010-07-22T11:39:53.830	This is a very good answer. Note, however, that in the discrete analog of convolution (say for summable sequences over $Z$), there is an identity: the discrete analog of the delta function!	536		467	774
+2010-07-22T11:45:03.120	As a general comment, I recommend using detexify (http://detexify.kirelabs.org/classify.html) and Wikipedia to help first.	536	10	469	777
+2010-07-22T11:46:24.443	For reference, the function @Akhil mentions is the [Kronecker Delta](http://en.wikipedia.org/wiki/Kronecker_delta), specifically the one at 0.	73		467	778
+2010-07-22T11:55:24.893	To quote the question, *if the domain can be extended in an obvious way to include an identity element then that's not what I'm after.*	100		468	780
+2010-07-22T11:57:41.347	Not to sound as though I'm picking on you, but I think this revised claim is also false. My first clue was the fact that the wikipedia article you referenced said that Euclidean+Reflexive => Equivalence. Since being reflexive is a stronger requirement than being serial I sought a counterexample, the smallest of which I can find is on the set {1,2} and is defined as Rxy <-> y = 2.	106		466	781
+2010-07-22T11:57:47.960	If this is [big-list], shouldn't it be CW?	100		460	782
+2010-07-22T12:05:18.350	@Akhil Mathew: Detexify is very useful. Thanks.	97		469	784
+2010-07-22T12:12:57.133	Gosh, wrote a lot more than I intended there, but it is jolly interesting... now can someone please tell me how to fix my Tex!?	160		478	785
+2010-07-22T12:14:08.100	@bryn: Rx2 & Rx2 -> Rxx.	100		466	786
+2010-07-22T12:23:30.623	@Kaestur: Done. http://meta.math.stackexchange.com/questions/143/about-the-soft-question-and-big-list-tags	100		460	788
+2010-07-22T12:24:43.943	The value is limited as we can't exactly search for this question	123	1	469	789
+2010-07-22T12:25:25.173	@Charles: ouch: I typed it into a program that does a brute-force search for counterexamples, but I misrepresented the Euclideanity as 'Rxy & Rxz -> Ryz'. Perhaps I should have read the definition you gave! Sorry.	106		466	790
+2010-07-22T12:27:56.573	Good answer, but your last statement does not work for infinite sequences.	73		479	791
+2010-07-22T12:29:40.550	@Casebash: searching for 'models' gives this page as the top result. Although now that the question has been fully answered, I don't mind closure.	73		469	792
+2010-07-22T12:31:18.110	+1 Nice.  *Since the rational points are dense, this determines the function.* - This is the trickiest claim in the argument, enough to count as a lacuna.  It might make a good further question "Can there be two distinct, continuous functions that are equal at all rationals?"	100	3	479	793
+2010-07-22T12:32:41.977	@Kaestur: it works for countably many reals, which I think is all that was intended.	100		479	794
+2010-07-22T12:34:16.017	@bryn: Not that I've seen.  Forcing uses two vertical lines.	100		472	795
+2010-07-22T13:19:27.170	@Charles: Fair enough. +1 from me.	73		479	796
+2010-07-22T13:20:35.247	Interestingly, this proof goes as far back as Nicole Oresme in the 14th century.\n\nWikipedia has a nice display of this proof [http://en.wikipedia.org/wiki/Harmonic_series_%28mathematics%29]	113	1	259	797
+2010-07-22T13:24:36.267	My first downvote! How exciting `:)`	59	1	297	798
+2010-07-22T13:29:26.053	@bryn, changed "non-zero" to "positive" and added a paragraph about graph discontinuity based on my comment in the discussion about the question.	113		138	799
+2010-07-22T13:30:12.603	@Chris: I wrote this answer after two others that provided perfectly reasonable plainer-language answers that were slightly less technically precise--that is, the goal of this answer was precision and technical correctness despite losing some simplicity of explanation.  Roughly speaking, Cauchy sequences in this context are are sequences that converge at all.  Additive identity is an early algebra concept, so not that fancy.	72	1	79	801
+2010-07-22T13:31:44.940	I've heard about something called the Geometer's Sketchpad, but I've never used it. Might be worth a glance.	73		486	802
+2010-07-22T13:32:49.243	What is that expression you are integrating? Looks like the formula we learned for surface area. Why would that be related?	73	1	484	803
+2010-07-22T13:33:51.097	@workmad3: It's true that it works in both those cases, but it's misleading.  It's comparable to saying that it's okay to cancel the 6s in 16/64 to get 1/4--it works, but for the wrong reasons.  The identity sqrt(a) * sqrt(b) = sqrt(a * b) really does only work when a and b are nonnegative.	72		439	804
+2010-07-22T13:37:35.783	@Drazick: You need to clarify further. You said you know 'Y' is a Gaussian variable, then you asked us to prove a fact about 'Y' being a Gaussian variable	123		74	805
+2010-07-22T13:39:44.873	Geometer's Sketchpad is a great program, yeah. As far as I know it's best for plotting/animating however, not so much for solving geometric problems.	56		486	806
+2010-07-22T13:40:43.810	He's integrating the radius from 0 to r to get the volume, which is acceptable, though it begs the question of how you got the surface area in the first place.	56	1	484	807
+2010-07-22T14:13:24.043	I like The Unapologetic Mathematician's blog (at least the mathematical content of it) for two main reasons.  First, he introduces topics as they appear in the standard undergraduate curriculum - but then takes them to the next level within the first paragraph of a post.  From there he is able to keep his feet on the ground while revealing "deeper meaning" to the topic.  Second, since he has been doing it so long the site has become quite comprehensive.	121	3	349	808
+2010-07-22T14:17:20.463	@Noldorin: It's in the back of my geometry textbook! My teacher said its like how they stitch together baseballs. But why is that acceptable? Is there a picture or something that could help explain it?	73		484	809
+2010-07-22T14:37:07.793	Would the asker please edit the question in response to the above requests for more context/motivation/level of response desired... ?	121	2	2	810
+2010-07-22T14:37:22.490	@Kaestur: Let me rephrase. It's valid mathematically, but doesn't really answer the question, because the formula for the surface area is not more obvious really...	56	2	484	811
+2010-07-22T14:38:56.727	@Tom I was initially very excited by that book, but later grew to dislike it. I found that in fact, much of what is in there is less relevant than other important things. Additionally, the style of presentation leaves much to be desired. I was sad when I realized that it didn't help me much. Instead I would recommend the Berkeley problems book. That material is absolutely essential, and by solving problems you can be sure your solid on the topics.	16		225	812
+2010-07-22T14:43:03.863	Eh! This Division by Zero guy stole my name!	56		81	813
+2010-07-22T14:51:27.587	Thanks!  This is quite clear.	38		7	814
+2010-07-22T15:02:38.467	*Coincidences, Chaos and All that Math Jazz* is indeed good: the way the themes are explained is quite peculiar and attractive. The books from Livio are IMNHO a bit more on the "talk side": they are nice but I don't think they are really math-oriented.	89		499	815
+2010-07-22T16:05:07.117	We will use another term for 'infinite set', maybe 'tes' and everything works out again. :) Unless what you mean is, there is only finite many mathematical objects.	96		501	816
+2010-07-22T16:13:10.807	Voting to close because I can't imagine there being a meaningful answer to this question	136	1	501	817
+2010-07-22T16:15:01.227	I am looking for precise answers.  Like could we construct the real numbers?  Could we do Euclidean geometry with such an axiom system?	145		501	818
+2010-07-22T16:16:26.017	I think the OP actually is asking what things would be like if mathematics itself were different in this way, not *our knowledge of mathematics*.	56		503	819
+2010-07-22T16:18:12.537	@AgCl: pls, correct the typo in the title. \n@BlueRaja: it could be something like "constructive mathematics vs standard mathematics".	89		501	820
+2010-07-22T16:19:02.050	As a related question, what does the 'single turnstile' mean? I've seen it plenty of times.	56		472	821
+2010-07-22T16:19:54.000	why no calculus? definition of limit with epsilons and deltas does not need an infinite set, and you should be able to define derivatives on functions over Q.	89	4	502	822
+2010-07-22T16:22:22.000	I believe there should a way to define e in a finistic way, and I would like to learn how.	145	1	503	823
+2010-07-22T16:24:40.453	@Noldorin: if nobody could define e in a finitistic way, math would be different. I am just stating *I* am not be able to define e in such a way, but this really means nothing. I rephrased my answer.	89		503	824
+2010-07-22T16:25:52.387	There are algorithms that can output e to arbitrary precision. I wonder if that counts.	96		503	825
+2010-07-22T16:26:02.483	@mau: You can't even get the reals, let alone calculus, without the concept of an infinite set. Calculus relies on the epsilon-delta definition which is crucially unique to the reals. To construct the reals you not only need the idea of an infinite set, but an *uncountably* infinite set.	56		502	826
+2010-07-22T16:27:28.737	e is a transcendental and irrational. There's no escaping the requirement of the concept of infinity to define it.	56		503	827
+2010-07-22T16:28:29.080	Is it equivalent toe the single or double tailed right-arrows in logic?	56		472	828
+2010-07-22T16:29:06.443	@Noldorin: where are the reals needed in the epsilon-delta definition? If you work with functions on R, you need them. But I don't see why this must be the case.	89		502	829
+2010-07-22T16:31:13.193	Not true. The real numbers would not even exist, it just wouldn't make sense for them to.	56		504	830
+2010-07-22T16:32:14.753	@Noldorin Statements about real numbers can be unpacked as statements about naturals. For example, stating that $\\sqrt{2}$ is irrational can be unpacked as a statement that given a rational approximation to $\\sqrt{2}$ (a notion that can be defined using just naturals) you can always find a better approximation, but never an exact solution to $a^2=2b^2$.	80	3	502	831
+2010-07-22T16:32:17.327	@mau: The arbitrarily small gap between two numbers. Go ask someone on MathOverflow I recommend, they would be able to explain it better than me.	56		502	832
+2010-07-22T16:32:55.410	@user80: I think you misunderstand the question. See my first comment on this post.	56		502	833
+2010-07-22T16:37:35.623	@Noldorin You are confusing two things. There is the set of real numbers and the real numbers themselves. You could not construct the set of real numbers, but you can still reason about real numbers by not constructing sets of them. In Peano arithmetic you can make statements about all of the natural numbers despite there being no set of all natural numbers. The same goes for some statements about real numbers.	80	3	504	834
+2010-07-22T16:40:49.457	Sure, you can only allow finite sets: just replace every real number $x$ defined by a Dedekind cut with the set $\\{ x\\}$. This is not very interesting though, since the entries of the finite sets can range over uncountably many things--but this is unavoidable, the reals being uncountable.	536	2	501	835
+2010-07-22T16:43:24.757	Well it's certainly possible to prove existence by finding a solution! :)	136		434	836
+2010-07-22T16:52:05.590	How can you reason about them if they don't exist? Perhaps we're moving into the debate about constructivism versus intuitionism in mathematics now?	56		504	837
+2010-07-22T16:53:03.357	By popular demand, http://math.stackexchange.com/questions/505/can-there-be-two-distinct-continuous-functions-that-are-equal-at-all-rationals	100		479	838
+2010-07-22T17:04:32.433	Indeed I did. Thanks for catching that!	45		506	841
+2010-07-22T17:04:47.613	I probably should have mentioned that the second page needs to be on top of the first, meaning within the boundaries of it (you can't put it on another table...)	26	5	347	842
+2010-07-22T17:10:26.073	@Noldorin if you use just rational numbers, there can be an arbitrarily small gap between two numbers. We developed calculus with real numbers just because we started with real numbers; Robinson developed non-standard analysis just avoiding the Archimedean property, but leaving all other things; why can't we develop calculus over Q or algebraic numbers?	89		502	843
+2010-07-22T18:02:41.630	does "computer" feel like an awkward tag to anyone else? I'd prefer to replace it with something like [computing] or [software] here (and I think it's appropriate to have both of these tags, chosen according to whether the question is platform- or software-specific)	76	1	486	844
+2010-07-22T18:04:58.427	@Noldorin Firstly, constructivism isn't normally opposed to intuitionism. Constructivism and intuitionism (which are closely related) are opposed to classical mathematics. And this is only tangentially related.\n\nYou can reason about (some) real numbers, using the naturals, by interpreting statements about real numbers as being statements about natural numbers in disguise. You can even reason about (some) infinite sets this way using Peano arithmetic. This mentions the encoding of infinite ordinals up to $\\epsilon_0$ as finite objects: http://en.wikipedia.org/wiki/Peano_axioms#Consistency	80	3	504	845
+2010-07-22T18:12:08.710	this is awesome! thanks for the resource.	76		508	846
+2010-07-22T18:22:18.267	@Katie: I have been using the tag [math-software].			486	847
+2010-07-22T18:23:19.890	@Casebash: If you have no intention of accepting our answers, please stop asking these types of questions.		3	405	848
+2010-07-22T19:03:10.963	I think this is a perfect example of the type of question we will encounter that is not a homework question for the asker, but is, in the exact form asked, a standard question in a beginning undergraduate class that someone else could easily use to do their homework for them. This is inevitable, and it doesn't mean we shouldn't ask and encourage questions in standard undergrad math, but we need to build intuition and consensus for how to deal.	76	4	505	849
+2010-07-22T19:11:25.813	I've removed the tag "infinity," which I believe to be an odd combination of too vague and too localized, and thus easily abused. If there end up being a lot of questions about "infinity" later on, as I suspect there might be given the broader audience, I could be convinced that it's a good tag to reinstate for askers that will not know where their question fits in otherwise.	76	2	1	850
+2010-07-22T19:43:24.117	Could this approximation be used to linearly approximate a polar transformation?	51		456	852
+2010-07-22T19:44:38.560	Sorry; to clarify, I was asking if any of these "tricks" mentioned in this answer could be used to approximate or trick a matrix transformation that could approximately represent a polar transformation, to see if these "tricks" really did answer my question.	51		455	853
+2010-07-22T19:46:32.923	Are there more necessary conditions that could be found?  Perhaps it must be a prime greater than the base you are currently in (for obvious reasons).	51		444	854
+2010-07-22T20:10:24.830	What is a good way to get an overview of algebraic geometry and the problems it solves?	99		498	855
+2010-07-22T20:34:05.350	@mau: Again, ask on MO I recommend. I was told by someone smarter than myself (a professor) that calculus specifically relies on the properties of reals exclusively.	56		502	857
+2010-07-22T20:48:02.167	@Noldorin You are simply plain wrong. @Mgccl gives a perfectly good example of how you can reason about e using finite methods. You can prove things about e using finite machines running for a finite amount of time. You can reason about machines using finite mathematics. You don't need "the concept of infinity".	80	3	503	858
+2010-07-22T20:51:38.303	After reading over this answer many times, I have finally understood it.  It is short, concise, and the conditions are clearly outlined.  Thank you =)	51		445	859
+2010-07-22T21:03:07.137	So hard to read without proper maths notation :-(	123		495	861
+2010-07-22T21:07:39.047	You can give your friend this 'conjecture': All integers are smaller than n. Counter example n. Here n = something extremely large. ;)	96	22	514	862
+2010-07-22T21:15:52.067	If you are using firefox or chorme, use this http://userscripts.org/scripts/show/81977 to show the notations.	96	1	495	865
+2010-07-22T21:16:20.443	Is there a concrete example or not? If there is, surely it can't be that hard to track down?	123		437	866
+2010-07-22T21:23:08.763	Wow, according to wiki, "This is still an open problem among the subjectivists as no consensus has been reached yet"	123		234	867
+2010-07-22T21:29:03.197	@Harry: you can argue that it's an optical illusion, but the resolution to the illusion is based in math.  The realization that it isn't a true trangle because the slopes of the two portions of the "hypotenuse" are not equal is a concept that is based in mathematics.  Without the math to back it up, it's just handwaving magic.	175	2	287	868
+2010-07-22T21:29:35.820	See http://www.math.uni-bonn.de/people/carl/preprint.pdf - this was answered in the MO question.	536		437	869
+2010-07-22T21:41:23.200	@This question isn't easy. If X and Z are independent, then it X+Z and X will only be independent in very unusual and specific circumstances and so we won't be able to use the rule about linear combinations of Gaussians	123	1	74	871
+2010-07-22T21:42:45.683	I don't think Haskell's monad and the monad in category theory are the same, but I could be wrong.	99		405	872
+2010-07-22T22:02:38.920	It feels like the element $xy^2$ should be of infinite order here, but I'm not very sure of how to prove this.	536		519	875
+2010-07-22T22:04:04.440	pP isn't necessary prime though, right?	536	2	520	876
+2010-07-22T22:12:24.077	@Noldorin, perhaps the simplest example of the distinction could be seen in classical propositional logic.\n\nA statement like |= p -> (q -> p) means that the no matter the truth values of p and q, the value of p -> (q -> p) is always truth (which can be seen by looking at the truth table). \n\nA statement like |- p -> (q -> p) means that we can prove this formula purely by using axioms/rules of deduction, with no mention of truth or meaning.\n\nIncidentally, I think you could ask this as a separate question on the site, since we don't want the comment strand to be where one has to look for answers.	106		472	877
+2010-07-22T22:15:27.847	At the risk of making another embarrassing mistake, I think I've realised why I got the last one wrong -- I was using the definition of Euclidean that I got from your link to the wikipedia article, rather than the one you gave above. I think my counterexample works with that definition of Euclideanity.	106		466	879
+2010-07-22T22:15:47.207	@Akhil: pP=P as it is an ideal and a subset of P and P is a minimal ideal. Since P is prime, pP is too	123		520	880
+2010-07-22T22:36:16.503	It's me, yeah! :)	174		376	884
+2010-07-22T22:46:38.910	For a general overview of ALL of alg geom, I have no idea. But here are some specifics. If you care about enumerative algebraic geometry, http://tinyurl.com/28bkunk . If you care about real solutions to algebraic systems, http://arxiv.org/abs/0907.1847 . If you care about representation theory, http://tinyurl.com/2dkss6h . If you care about mirror symmetry or string theory, http://arxiv.org/abs/math/0601041 . If you care about number theory, http://math.mit.edu/~poonen/782/782notes.pdf . If you care about PDE's or analysis in general, http://math.stanford.edu/~dbaskin/sdgs-microlocal.pdf . :D	16	7	498	885
+2010-07-22T22:48:23.493	No... The original assertion is handwaving.		2	287	886
+2010-07-22T22:50:57.860	@Jonathan Actually, http://www.haskell.org/tutorial/monads.html they are the same. I don't completely understand that link, but what I extract makes me think they are the same. And they come right out and say it. Also, our last names are similar.	16	1	405	887
+2010-07-22T22:51:46.017	P is a minimal prime, not a minimal ideal...		2	520	888
+2010-07-22T22:53:33.190	Why bother?  It's not like you're going to get very far in commutative algebra without using localization...			518	889
+2010-07-22T22:59:00.577	I don't agree Harry, if you had said Alg Geom, then I'd agree, but comm alg is pretty big... But this is purely opinion of course, you likely weigh the type of ring theory using localization much higher due to your inclinations :D	16	1	518	891
+2010-07-22T23:24:22.703	@Akhil: Dedekind cuts are infinite sets.  I don't think this idea works.	145		501	895
+2010-07-22T23:28:43.540	@BBischof good to know! I also found this link which looks promising. http://en.wikibooks.org/wiki/Haskell/Category_theory. Yes your name makes me think I misspelled my name :).	99	1	405	896
+2010-07-23T00:06:06.043	Ah right...I had in my mind that P was a minimal and prime ideal, not a minimal prime ideal.	9		520	897
+2010-07-23T00:06:57.480	Harry: A friend had asked me about this from his algebra course, where they hadn't yet covered localization.	536		518	898
+2010-07-23T00:28:37.840	Only problem I see with these, is that when one is shaky on the laws simplifying might be a problem.	187		482	899
+2010-07-23T00:31:55.883	@Wilhelm: It works pretty well if you use the most certain laws first	123		482	900
+2010-07-23T01:42:55.807	great answers like these highlight how desperately we need TeX formatting >.<	51	1	426	901
+2010-07-23T01:54:04.190	@Kaestur Done :)	156		421	902
+2010-07-23T02:14:29.367	This popped up as I was thinking of writing it. +1 :)	181		526	903
+2010-07-23T02:17:04.557	The meaning of the symbol "..." is that *we can't choose such an* N, as you propose.  The idea is that 0.999... means that the nines go on forever.  The arguments that you've heard or read so far constitute mathematical proof - regardless whether or not you *believe* in them, or find them to appear *contrived*.	121	7	525	904
+2010-07-23T02:17:56.473	@mau: The short answer is the rationals are not complete.	536	1	502	905
+2010-07-23T02:19:03.303	10x - x != 9.  10x - x would be 8.9999...1.  However infinite the extent of 9s is in x, if we multiply it by 10, the nines are shifted left by one position and a zero inserted at the "last" place, and then when you subtract the other number there is a nine subtracted from a zero at the far right.  Otherwise we'd have to give 0.999.. some unusual properties like automatically increasing the number of nines when it is multiplied.  It would not be just an ordinary number.  Maybe that's the problem.  0.999... might just not be an ordinary type number as some people are using it.	195		87	906
+2010-07-23T02:25:19.747	Assuming finitely-many sides; otherwise, the collection of side-lengths becomes the (ordered) power-set of the rationals.	136	1	526	907
+2010-07-23T02:26:10.337	I think it should be tagged "crank magnet".	121	3	11	908
+2010-07-23T02:37:35.177	Does this general fact still apply if your elements are ordered *infinite*-tuple elements?  Because the number of sides of polygons are unbounded.  Would it still be countable?	51		526	909
+2010-07-23T02:38:12.353	I disagree that writing 0.999... necessarily means the same thing as "lim sum(9*10^j, for j = -1 to n) as n goes to negative infinity".  0.999... is the sum, as I read it, not the limit of the sum.  If you intend it to be the limit, at least write lim in front of it.  You'd never be able to get away with this assumption/omission anywhere else.	195	1	49	910
+2010-07-23T02:39:35.390	Also should be tagged "I'm going to say it's true because my teacher told me it was true", for many of the replies.	195		11	911
+2010-07-23T02:40:22.817	Justin: No, because the set of all infinite sequences over $Q$ is of the same cardinality as $R$.  In fact, the set of all sequences over $\\{0,1\\}$ is of the same cardinality as $R$---this is by the binary encoding.  If you are allowing polygons with infinitely many sides (finite but unbounded is OK), then I'll edit my answer - could you please clarify?	536		526	912
+2010-07-23T02:51:42.897	It is usually preferable to post such remarks as comments.	536	4	528	913
+2010-07-23T03:07:13.157	@Doug: I don't understand what you're talking about.  Could you try to clarify?  What do you mean by an infinite sum if you don't mean the limit of the partial sums?	8	12	49	914
+2010-07-23T03:17:42.090	My name is actually just a German word: bishop. When I was in Germany I was constantly noticing buildings named after me :D	16		405	915
+2010-07-23T03:17:54.133	This is one of my all-time favorite ring theory questions.  It took us several days to get it the first time.	8	1	530	916
+2010-07-23T03:19:44.413	I am pretty sure it follows from this:\n\nhttp://books.google.com/books?id=ix4P1e6AkeIC&pg=PA218&lpg=PA218&dq=conway+division+algebra&source=bl&ots=0PbTsdZeTt&sig=hxmtgpV_SxHUR3KKZYOXNNOw5dA&hl=en&ei=EQpJTJC2H8LknAeApKTjDQ&sa=X&oi=book_result&ct=result&resnum=2&ved=0CBoQ6AEwAQ#v=onepage&q&f=false\n\nIf I remember correctly from Functional Analysis last year...	16		529	918
+2010-07-23T03:30:55.137	I think it's great that you are seeding the site with these sorts of questions.	536	4	530	919
+2010-07-23T03:32:09.663	This is a good one :)	16		532	920
+2010-07-23T03:36:22.533	Zeilberger's article is wrong though, the world isn't a digital computer, because of quantum mechanics...	8	2	532	921
+2010-07-23T03:40:19.270	Because it's good to have more than one perspective on a problem!	8	12	518	922
+2010-07-23T03:46:24.933	Another way I could respond to your comment is with a link to this picture http://twofoldgaze.files.wordpress.com/2009/11/mathmap2.png and tell you to zoom in on algebraic geometry. :D	16	1	498	923
+2010-07-23T04:01:28.903	or a digital computer simulate 'quantum mechanics'. If you are in the matrix, they can make you believe there is no gravity.	96	1	532	924
+2010-07-23T04:13:45.807	Can you think of a reason why it should hit points that are not at the origin?	99		536	925
+2010-07-23T04:16:49.390	@Jonathan: I'm not sure what you mean--in 1-d, the random walk hits every integer with probability 1, and in 2-d, the random walk hits every lattice point with probability 1.	72	1	536	926
+2010-07-23T04:18:56.923	Then I guess I am confused by the question :(	99		536	927
+2010-07-23T04:21:00.183	do you mean in the limit it will be found at the origin?	99		536	928
+2010-07-23T04:37:36.737	What I mean is that P(at some time during the random walk, the point will be back at the origin)=1. This has the consequence that the number of times the random walk visits the origin is infinite.	72		536	929
+2010-07-23T04:39:50.463	Conceptually, I agree (and there's a fairly similar expected-value argument on Wikipedia), but I'm looking for a rigorous theoretical proof.  (I know it's doable and I know I have it buried in a notebook somewhere, but I can't for the life of me find the notebook or reconstruct the proof at the moment.)  It's also interesting that while true in 1 and 2 dimensions, it is not true in higher dimensions.	72		537	930
+2010-07-23T04:46:25.650	I don't really find writing rigorous proofs fun, but if you would like a derivation of how multiplicity becomes entropy in the limit check out: http://en.wikipedia.org/wiki/Principle_of_maximum_entropy#The_Wallis_derivation	99		537	931
+2010-07-23T04:47:13.183	Hmm, I definitely find it surprising that the same line of argument would fail in higher dimensions. Do you have a link?	99		537	932
+2010-07-23T04:55:39.193	I think it will hit all points a infinite number of times.	99	1	536	934
+2010-07-23T05:01:05.783	Yes, it will (in 1 and 2 dimensions).  The reasoning from returning to the origin once to hitting every point infinitely many times is much easier than the proof (not that I can do either off the top of my head right now).	72		536	935
+2010-07-23T05:02:04.160	http://en.wikipedia.org/wiki/Random_walk#Higher_dimensions which links to http://mathworld.wolfram.com/PolyasRandomWalkConstants.html	72		537	936
+2010-07-23T05:04:11.067	I'm having trouble following the tail of the first paragraph--I'm missing something between going to groups of 2x+1 moves and still hitting x, but it may just be me at this point.	72		538	937
+2010-07-23T05:04:35.293	@Isaac: If you know you will hit every point with probability 1, then you will return to each point with probability 1	123	1	536	938
+2010-07-23T05:07:11.140	Thanks! Very interesting!	99		537	939
+2010-07-23T05:07:13.543	@Isaac: I am trying to show that there can be no maximal absolute value achieved. If there was a maximal absolute value, x, then there could never be 2x+1 moves which were all the same, which is clearly not going to be the case if you wait long enough. I just broke it into groups to prove this a bit more formally.	123		538	940
+2010-07-23T05:10:27.610	@Casebash What he means is where is likely to "converge" so it is the ratios that matter.	99		536	941
+2010-07-23T05:10:34.723	@Casebash: Yes, this is true, but I know all that from knowing that the probability of returning to the origin is 1.  (Er, what I'm trying to say is that talking about the first return to the origin is the simplest version of a number of equivalent statements, including that every point is visited infinitely many times.)	72		536	942
+2010-07-23T05:13:40.273	In this kind of answer I would put differentiation first and integration second, which is the way most basic calculus courses do it. Also, I think it's helpful to give brief examples from mechanics (speed and distance) as most of the other answers have done. Even so, I like the succinctness and brevity (for this level of question).	113		127	943
+2010-07-23T05:17:25.633	At the moment, what I'm thinkings is that once you're looking at the groups, you might have the all-the-same group happen in a late enough group that it's offset by earlier groups and doesn't force you past x.	72		538	944
+2010-07-23T05:20:14.863	@Isaac: In that case we would have exceeded the absolute value earlier. That is why I choose the value 2x+1. The 1d proof is sound - the 2d proof is not however	123		538	945
+2010-07-23T05:27:09.347	To clarify: I refer to 2x+1 *consecutive* moves	123		538	946
+2010-07-23T06:06:08.137	Okay, I think I see it; I think I'm just being exceptionally dense at the moment and need to crunch through it on paper... in the morning.	72		538	947
+2010-07-23T06:20:58.387	@Isaac: True. There is a non-zero probability of reaching each point from the origin. If you can show you return to the origin, then you get an infinite number of retries	123		536	949
+2010-07-23T06:30:21.283	I'm feeling it.	99		504	951
+2010-07-23T06:31:35.870	IMO this is only a good explanation if you already understand what a limit is.	198		487	952
+2010-07-23T06:38:55.043	Wouldn't this be spec(Z[x,y]/(xP(x)+y))(C) for a cubic polynomial P(x)?  (Where we view the scheme spec(...)(-) as a functor CRing^op->Sets).		2	535	953
+2010-07-23T06:40:44.993	I mean finite, but unbounded.	51		526	954
+2010-07-23T06:47:42.263	A good example of a question that is asked by someone genuinely interested in math but is looking for an accessible way into more advanced number theory that he would otherwise have no other means of finding.	51	8	540	955
+2010-07-23T07:14:26.697	Fair enough. I think I choose them in this order because I the concept of area seems more basic to understand, whereas the concept of tangents/gradients at points seems a bit more complex. But I would never teach integration before differentiation!	106		127	956
+2010-07-23T08:02:18.983	Is the operation simply multiplication here?	56		519	957
+2010-07-23T08:15:52.557	There are recent theories that say the universe is effectively a quantum computer though, where (qu)bits represent the superposition of states.	56	1	532	959
+2010-07-23T08:16:56.687	Also, feel free to retag this question :)	156		544	960
+2010-07-23T08:21:00.997	Akhil is right, of course. The proof is a bit more long-winded, but that's the base of it. Not appreciating the down-votes out of ignorance here.	56		502	961
+2010-07-23T08:30:43.487	probability is not the best tag for Markow chains, but it could be useful.	89		544	962
+2010-07-23T08:51:53.793	Please fix the tags if required. I have no knowledge of what area of mathematics this falls under so could only guess.	108		548	963
+2010-07-23T08:56:58.680	That 'proof' looks perfectly fine to me.	56	3	548	964
+2010-07-23T09:01:46.250	for me the explanation is ok too.	89		548	965
+2010-07-23T09:24:46.893	This is a very nice answer.  A quibble: *it's the belief that there is a largest natural number* - Not quite.  If you don't believe in the principle of induction, it doesn't follow from accepting the existence of zero and the successor function, that numbers get very big.  At least, not if big means much, much bigger than the amount of time you are prepared to spend constructing them.	100	4	532	968
+2010-07-23T09:31:17.923	I did a little digging and from what I can find, most of the books on computational theory appear to be introductory books that cover all of the topics you mentioned (automata, regular expressions, regular languages, context-free languages, undecidability, complexity). The more advanced books appear to be exclusively on a specific topic. Can you specify what topics you are interested in - that might help with book suggestions.	91		356	969
+2010-07-23T09:41:45.587	`0\u2070 = 1` if you want polynomials like `x + 1 = x\xb9 + x\u2070` to work for `x = 0`... :)	92		549	970
+2010-07-23T09:55:30.827	\u2115\u2080 is not an unambiguous name, we use it as `\u2115\u2080 = \u2115 \\ {0}`.	92		318	971
+2010-07-23T10:00:33.850	may be your question gets more good explanation if you ask for all x / 0 is undefined...	168		548	972
+2010-07-23T10:11:01.690	Good Question..	168		530	973
+2010-07-23T10:24:49.570	It's not a weird type of math..??	168	3	118	974
+2010-07-23T11:14:11.690	Which makes 0/0 even more nonsensical then :)	35		549	975
+2010-07-23T11:18:54.070	Except that the 0^-1 is undefined (the original question didn't ask why 1/0 was undefined, but that seems acceptable), so there is no need for us to be disturbed.	106		549	976
+2010-07-23T11:24:37.757	Neither 0/x = 0 nor x/x = 1 would be considered axioms though -- they're just observations that can be proved for any x other than zero, so I don't think it makes sense to pit them off against each other.	106	3	553	977
+2010-07-23T11:34:12.157	@bryn, they're not axioms. They are, however, immensely useful properties that a value of `0/0` must have to be of any use.	92	3	553	978
+2010-07-23T11:37:11.310	While I am not that bothered about the rep, why the downvote?	108	1	548	979
+2010-07-23T11:44:54.263	`0\u2070 = 1` if you want to write polynomials like `2x + 3` as `2x\xb9 + 3x\u2070` (when `x = 0`...). There are probably other applications where having `0\u2070 = 0` or having 0\u2070 undefined is as useful, but I'm not aware of one.	92	1	135	982
+2010-07-23T11:45:25.167	The product formula is valid for all $s$ with $\\Re(s)>1$; it's of *great* importance as to why the zeta-function (and its cousins the L-functions) relates to the distribution of prime numbers.	536		556	983
+2010-07-23T11:55:23.930	Then it's countable, because for each $n$ the set of all such polygons is countable, and taking the union over all $n$ gives a countable union of countable sets, which is (by a diagonal argument, countable - see http://en.wikipedia.org/wiki/Countable_set.	536		526	985
+2010-07-23T12:04:26.377	@Noldorin: This is an abstract group specified by a presentation, and, the operation is the group operation. This is not supposed to be a subset of C.	31		519	988
+2010-07-23T12:07:38.053	@Neil: are you aware of any positive reason to assert 0^x=0 for x>=0?  If not you are arguing that either 0^0 should be 1 (for algebraic reasons) or undefined (for analytical reasons).	100		138	989
+2010-07-23T12:09:54.413	@Simon: I misunderstood clearly. However, surely by the definition x can only have at most 2 values and y at most 3 values, even in the complex plane? It can't be infinite that way.	56		519	990
+2010-07-23T12:16:32.310	As I pointed out though, 0/0 can be written out as $0^1 * 0^-1$ which relies on the undefined $0^-1$. The answer by @badp is much better explained than my answer though (and is pretty much what I was attempting to say :) )	35		549	991
+2010-07-23T12:30:32.033	@Noldorin: I'm not trying to solve for x and y; x and y are abstract generators of the group and they satisfy certain relations.	31		519	992
+2010-07-23T12:45:51.987	I have a feeling that this thread is going to waste so much of my time	123	3	566	993
+2010-07-23T12:54:58.690	I wrote a book (in Italian) with 99 such puzzles :-)	89	2	566	994
+2010-07-23T12:58:18.560	@Simon: What are the actual elements of the group then? I'm not familiar with the syntax you're using.	56		519	995
+2010-07-23T13:07:45.123	Have you tried messing around with matrices to see if you can represent this group (or a quotient of it)?	9		519	996
+2010-07-23T13:13:20.167	as opposed to Martin-Gardner-type essays?	120	1	541	997
+2010-07-23T13:15:07.107	@Noldorin: The group is the "freest" group that is generated by the elements x and y such that x^2 = y^3 = (xy)^7 = 1.  As another example <x : x^n = 1> would be the cyclic group of order n.	9		519	998
+2010-07-23T13:17:47.023	I think this is a fairly common kind of olympiad question. Nice though	123		568	999
+2010-07-23T13:19:46.020	@Charles: I changed the wording to "positive x" which I believe specifically excludes 0, so it's now equivalent to 0^x=0 for x>0. I haven't limited exponents to be integers in my arguments, so technically I'm leaning more towards the analytical than the algebraic. However, my goal was to produce a very short intuitive argument that would make sense to a layman. I think I've now also closed the technical gaps, but maybe there's something I'm missing.	113		138	1000
+2010-07-23T13:26:22.150	@Eric: Ah, that makes a bit more sense now, cheers. I take it 1 is used to represent the identity element here, rather than the integer?	56		519	1001
+2010-07-23T13:30:09.863	my dissertation for M.Sc. in mathematics (back in 1986...) was about hidden Markov models in speech recognition :-)	89		564	1002
+2010-07-23T13:34:37.387	@Noldorin: Correct, 1 is the identity element.	9		519	1003
+2010-07-23T13:58:54.567	One answer (from Proof Without Words book):\nhttp://gurmeetsingh.files.wordpress.com/2008/10/calissons.png	45	8	567	1004
+2010-07-23T14:00:31.460	If the size is fixed, it's easy to create a tiling that prevents finding a monochromatic triangle, but if I remember correctly, the answer is unknown in the general case.	45		568	1005
+2010-07-23T14:05:26.580	I specifically excluded the case when h=0, because I know how to solve that. We know t isn't going to be zero, so we can set y=0, and get t = 2 v sin a / g, x = 2 v^2 sin a cos a / g = v^2 sin 2a / g. This is at a maximum when 2a = \u03c0 and so a = \u03c0/2.	113		576	1006
+2010-07-23T14:08:14.017	Also, you made a mistake and used cos a for y, although I know you meant sin a because you used this for y'.	113		576	1007
+2010-07-23T14:16:07.007	I highly recommend throwing stones off a cliff when you're at the seaside. It's a lot of fun. This problem grew out of an argument I had with my family when we were at the seaside, that 45\xb0 *isn't* the best angle when you're on a cliff.	113	1	571	1008
+2010-07-23T14:19:22.087	@Neil: I meant to say subbing in y=0 to find when the ball hits the ground. You are right about the second comment too, I accidentally integrated with respect to t and then with respect to a as well.	123		576	1009
+2010-07-23T14:32:37.280	I meant 2a = \u03c0/2 and so a = \u03c0/4 above.	113		576	1010
+2010-07-23T14:34:07.183	This is similar to the infinity norm, which is essentially the nth root of the sum of the nth powers of the x_i's letting n tend to infinity in the limit, but more usually defined as the max of the absolute values of the x_i's. However, because of this, its not a true max if you allow negative (x_i's), whereas the above is not affected.	166		534	1011
+2010-07-23T14:53:09.150	@badp: I've never seen it used that way, but if there is someone else out there who does, I suppose that makes it ambiguous. Who's the we?	73		318	1012
+2010-07-23T14:56:37.207	have you checked out these wikipedia pages? http://en.wikipedia.org/wiki/Generic_property, http://en.wikipedia.org/wiki/Generic_point	9	2	574	1013
+2010-07-23T15:07:10.520	Is it that those are the only division algebras or if you have a division algebra it is isomorphic to the ones you listed?	99		529	1014
+2010-07-23T15:10:14.413	Community wiki?	536		541	1015
+2010-07-23T15:38:16.633	See also http://mathoverflow.net/posts/29519 - I'll copy the puzzles I posted there to give this thread a start.	136	1	566	1018
+2010-07-23T15:43:46.197	Do the axiom of choice or continuum hypothesis count?	136	2	577	1020
+2010-07-23T15:55:34.273	http://en.wikipedia.org/wiki/Large_cardinal	8	3	577	1021
+2010-07-23T16:03:13.223	On the other hand, surely you'll agree that 0/0 is undefined in any (nonzero) ring even when you can't take limits!	8	3	552	1022
+2010-07-23T16:13:09.487	Questions that are asking the user to create a list/collection of answers should be marked community wiki. I converted this question.	69		541	1023
+2010-07-23T16:25:03.377	As a related point, do Henkin semantics actually provide a proof theoretical advantage, or are they used primarily from model theory? I'm wondering if using the more intuitive 'standard semantics' would be sufficient/just as good for HOL.	56		463	1024
+2010-07-23T16:34:33.603	Could you possibly give an example of finding the radius of convergence for some simple function?	105		589	1025
+2010-07-23T17:05:09.863	voted to close.  The question is subjective, as is clearly indicated by the first sentence of [the wikipedia article on Natural Numbers](http://lmgtfy.com/?q=Natural+number&l=1 "Let me Google that for you")	121	3	283	1027
+2010-07-23T17:20:14.443	@BlueRaja- please read the question.	160		566	1028
+2010-07-23T17:27:11.997	Yes we figured that	136		594	1030
+2010-07-23T17:30:46.203	See the question and this wikipedia link on disemvowelling for an explanation: http://en.wikipedia.org/wiki/Disemvowelling	160		584	1031
+2010-07-23T17:31:35.720	Seriously though, feel free to rollback. I just wanted to keep my promise.	160	2	584	1032
+2010-07-23T17:34:40.707	@Akhil:  It is acceptable to answer your own question.	38		594	1034
+2010-07-23T17:37:20.390	**Sorry, incorrect link above, try [this](http://mathoverflow.net/questions/29323).** @Tom: I've deleted the cryptography one and the monty-hall one (despite the fact that the novelty is in the intuitive explanation I give, which I've never seen anywhere else - *those interested can look at the MO page*); but, I believe the fork-in-the-road questions are appropriate.  They are not the usual "Ask A what B would say..." solutions.  In fact, they are both significantly more rare and interesting.	136		566	1035
+2010-07-23T17:42:45.387	@Tom: I'm going to leave this for the lol's	136	2	584	1037
+2010-07-23T17:51:57.773	Thanks.  I imagine that proving that is quite an enormous amount of work.	38		596	1038
+2010-07-23T17:58:46.527	Do you mean [$\\sum_{n=0}^\\infty \\text{volume of unit-}n\\text{-simplex}$](http://latex.codecogs.com/gif.latex?%5Csum_%7Bn%3D0%7D%5E%5Cinfty%20%5Ctext%7Bvolume%20of%20unit-%7Dn%5Ctext%7B-simplex%7D)?	171		593	1039
+2010-07-23T18:00:21.720	The function e^x is the solution of functional equation exp(x+y)=exp(x)exp(y) s.t. exp'(0)=1. I wonder, if one can see that the generating function for simplex volumes satisfies this equation...	152		593	1040
+2010-07-23T18:04:20.633	The n! way is by cofactor expansion, which is probably the slowest algorithm you could use.	73	3	595	1041
+2010-07-23T18:05:34.923	(I can't answer Harry's question as category theory is where abstract algebra stopped making any sense to me.)	72		535	1042
+2010-07-23T18:06:56.603	As long as you are open to accepting someone else's answer if it is better than your own :)	73	5	594	1043
+2010-07-23T18:08:13.933	This question is more appropriate to go onto Stackoverflow.com	120	2	595	1044
+2010-07-23T18:15:26.587	@Kenny I messed up the question, I meant e^x, is that what is confusing you?	99		593	1045
+2010-07-23T18:21:05.703	@Jason: It would be an appropriate question for stackoverflow, but it's also a good question here. Linear algebra and algorithmic complexity are math. (Also, on stackoverflow it would get instantly closed as an exact duplicate)	73	3	595	1046
+2010-07-23T18:21:41.863	Actually it's one of the first things you learn in introductory linear algebra classes.	136		596	1047
+2010-07-23T18:29:41.677	Well, I haven't learned the proof yet...  I don't think he even mentioned how it is done...	38		596	1049
+2010-07-23T18:33:09.080	@BlueRaja: The proof is left to the reader.	73		374	1050
+2010-07-23T18:42:10.260	@John: If you've learned how to solve a system of linear equations (represented by a matrix), or equivalently, *how* to find the inverse of a matrix, you know Gauss-Jordan elimination.  If this process results in a row of all 0's, it means the matrix can't be inverted.  However, this is not the most efficient method of determining **if** a matrix can be inverted; see my answer for that.	136	1	596	1051
+2010-07-23T18:42:55.953	What does it mean to be complex differentiable in an open set?	105	2	591	1052
+2010-07-23T18:43:10.743	As Charles Stewart states, this is only true under standard semantics. Henkin semantics make higher-order logics complete (and possibly compact too?).	56		313	1053
+2010-07-23T18:53:09.303	Are the probabilities between each successive generation of random numbers constant?	51		580	1054
+2010-07-23T19:09:11.190	@Jon: No, I was asking the definition of "sum of simplexes volumes from n to infinity".	171		593	1055
+2010-07-23T19:20:13.723	this is rad cool	51		550	1056
+2010-07-23T19:21:46.933	This one is the most accessible/easy to explain of them all...but 257 seems like an arbitrary place to stop the conjecture at so I'm not sure it's as pretty.	51	2	555	1057
+2010-07-23T19:31:48.017	BTW, the answer is *not* [$\\frac{1}{n}\\cdot\\frac{n!}{r_1!r_2!\\cdots r_k!}$](http://latex.codecogs.com/gif.latex?%5Cfrac%7B1%7D%7Bn%7D%5Ccdot%5Cfrac%7Bn%21%7D%7Br_1%21r_2%21%5Ccdots%20r_k%21%7D).	171		600	1058
+2010-07-23T19:34:14.393	@Justin: Yes~~~	136		580	1060
+2010-07-23T20:02:47.117	@Justin: Well, Mersenne had an intuition.  Sometimes intuitions are sound, and sometimes they're not.	100		555	1061
+2010-07-23T20:10:20.827	Feferman, Friedman, Maddy & Steel (2000) "Does mathematics need new axioms?" http://www.math.ohio-state.edu/~friedman/pdf/DoesMathNeed102601.pdf	100	6	577	1062
+2010-07-23T20:13:38.167	Conjecturally one should be able to get to O(n^{2+\\epsilon}) but as your link says the current record is around 2.376.  Interestingly enough there are now two completely different ways to get to 2.376, which might suggest that that's actually as good as you can do.  (It's also worth noting that nearly all problems in linear algebra have the same complexity, e.g. matrix multiplication and taking determinants.)	8	2	599	1063
+2010-07-23T20:22:45.930	A function on an open subset of $\\mathbb{C}$ to $\\mathbb{C}$ is complex differentiable if the limit $\\lim_{h \\to 0} \\frac{ f(z+h) - f(z)}{h}$ exists for all $z$ (analogous to the usual definition). It actually implies that derivatives of all orders exist, though.	536	2	591	1065
+2010-07-23T20:32:46.360	Oh yes. But not neccarily unity. Depends on what x is. Like e^1.5i could be thought of as adding and subtracting oriented volumes that are not unity ... I think	99		593	1066
+2010-07-23T20:33:56.653	Interesting... I'm surprised my logic book didn't mention that.	536		313	1067
+2010-07-23T20:34:32.050	#Neil: Sorry, I have not made myself clear.  You say *0^0 can't have a reasonable definition* because of a continuity argument, what I call the analytical reason.  But it is quite possible to have a value here with the function the same here: it's just as discontinuous.  You've talked about *necessary constraints* on x^y for +ve x,y, but there is a reason to extend x^0 to all x, but no reason to extend 0^y to cover all y>=0.  So these constraints don't look equally compelling.	100	2	138	1068
+2010-07-23T20:37:17.597	Could you go into the motivation behind the problem?	99		600	1069
+2010-07-23T20:38:11.290	Advantage?  There are possible proof representations with Henkin semantics, there are no possibility to have proof representations for all theorems with the set-theory-in-sheep's-clothing semantics.  Henkin semantics yields perfectly tractable axiomatisations in many-sorted, first-order logic.  All reasonable architectures for proof verifiers can handle them.	100		463	1070
+2010-07-23T20:39:47.747	An SO question, http://stackoverflow.com/questions/1886280/how-to-find-determinant-of-large-matrix, gives a good summary of efficient algorithms for finding determinants of potentially large matrics.	100		595	1071
+2010-07-23T20:40:29.740	In the second equation, is it `log(3*n)` or `log(3)*n`?  Either way, can you explain in more detail how you got the third one?  I'm not sure how it follows.  Thank you for the help though!	51		605	1072
+2010-07-23T20:49:48.610	While definitely subjective, it might be the case that the asker genuinely does not know about the controversy and is in need of an answer to say "There is no answer".  Whatever the case, I still voted to close.	51	2	283	1073
+2010-07-23T20:52:13.037	It's the second one and the answer to your other question, first he moved n inside the log where it became 3^n, the he raised both sides to the base of the log. Look here http://en.wikipedia.org/wiki/List_of_logarithmic_identities for more rules	99		605	1074
+2010-07-23T21:10:51.167	A trivial observation: For string S, concatenate with itself infinite many times to get a infinite string. Find the period of this infinite string. The period shows how many strings you can generate from string S and considered different permutations.	96		600	1075
+2010-07-23T21:23:02.217	Period of $p$ is not feasible unless $p$ is divisible by $\\sum_{i=1}^k \\frac{r_i}{\\gcd(r_1, r_2, r_3....,r_k)}$.	96		600	1076
+2010-07-23T21:26:38.740	@Kenny: Why not? Seems perfectly sensible to me.	56		600	1077
+2010-07-23T21:29:48.587	@Casebash good reasoning. Another way is to redefine the origin since there is nothing special about it.	99		536	1078
+2010-07-23T21:38:37.573	@Noldorin: Counter example, two 1's.	96		600	1079
+2010-07-23T21:51:53.797	Here's a hint: "Forever" is a really, really long time.	51		607	1080
+2010-07-23T21:52:15.263	Or this http://en.wikipedia.org/wiki/Supertask	99	1	107	1081
+2010-07-23T21:58:29.333	I don't have a answer, but since no one else has said anything, have you tried breaking the curve into a series of lines to gain some intuition?	99		575	1082
+2010-07-23T22:05:32.310	This answer, while chosen as best, is hardly satisfying.	51	6	374	1083
+2010-07-23T22:29:01.617	The [invisible wall](http://en.wikipedia.org/wiki/Supertask#Benardete.E2.80.99s_paradox) interpretation of the classic demon problem was interesting.	73		107	1085
+2010-07-23T22:59:59.910	@BlueRaja: Axiom of choice doesn't count - I mean more axioms than the standard, not less.	123		577	1086
+2010-07-23T23:07:06.623	Seamus: I doubt that Goldbach's conjecture or the Riemann hypothesis would make good axioms. The point of an axiom is to be intuitive. The continuum hypothesis seems to be a better example though	123		587	1087
+2010-07-23T23:11:49.157	Peter Winkler's two books of mathematical puzzles are a rich source of problems satisfying all requirements of this thread. I recommend them highly, they are not your usual rehash of well-known chestnuts.	115	2	567	1088
+2010-07-23T23:15:20.837	Wow, so you subbed the other way round. Very nice	123		578	1089
+2010-07-23T23:27:08.993	The Art of Problem Solving is very good for someone preparing for mathematics contests such as the AMC-12, but in my opinion too elementary for Olympiad-level training.	115		572	1090
+2010-07-23T23:32:44.100	@Casebash: It may very well turn out that the Riemann hypothesis is independent of ZFC, at which point, to keep our sanity, it will likely become an axiom (or maybe someone will find a simpler axiom which allows us to prove it).	136		587	1091
+2010-07-23T23:38:37.087	What does PSL_2 mean?	123		597	1092
+2010-07-23T23:40:47.317	This is known as the [inclusion-exclusion principle](http://en.wikipedia.org/wiki/Inclusion%E2%80%93exclusion_principle)	123	2	602	1093
+2010-07-23T23:42:12.867	community-wiki? Genuine question.	76	1	612	1094
+2010-07-24T00:03:37.070	Algebraic geometry is incredibly important in bioinformatics and DNA/taxonomy stuff.  I don't actually understand the details myself which is why I haven't written an answer.	8		612	1095
+2010-07-24T00:08:44.500	"To determine how a prime $p$ of $\\mathbb{Z}$ splits in $\\mathbb{Z}[i]$ is equivalent to determining how the polynomial $X^2+1$ splits modulo $p$" - What theorem is that?	123		598	1096
+2010-07-24T00:14:32.057	SL_2 is 2x2 matrices with determinant 1.  PSL_2 is the quotient of this group module its center, namely the scalar matrices.	8		597	1097
+2010-07-24T00:29:21.230	I don't think it has a name, but basically the point is that determing how $p$ splits in $\\mathbb{Z}[i] = \\mathbb{Z}[X]/(X^2+1)$ is the same thing as considering the quotient by the ideal generated by $p$, i.e. $\\mathbb{Z}_p[X]/(X^2+1)$.  If $X^2+1$ splits modulo $p$, then this ring has two prime ideals.  So essentially it reduces to properties of quotient rings.	536	2	598	1098
+2010-07-24T00:33:02.470	Bernd Sturmfels at Berkeley has done quite a bit of work on applying algebraic geometry to just these sort of phylogenetics problems (but I don't know enough about the work to comment intelligently).	76		615	1099
+2010-07-24T00:33:03.780	I was not aware there was a connection between NURBS and AG, could you expand on that?	99		613	1100
+2010-07-24T00:35:42.823	To whoever downvoted this question: While this question isn't particularly interesting, we don't want to get into a habit of being too harsh with downvotes or we will discourage participation in our community	123		614	1101
+2010-07-24T00:48:02.940	I would recommend this, but ignore anything about it that turns you off from mathematics! In particular, not all mathematicians believe that you can't be good at math past your young adulthood and that teaching, writing or applying math are a waste! :)	76	22	360	1103
+2010-07-24T01:10:37.943	I asked this question since a much more specific question was asked [here](http://math.stackexchange.com/questions/614/how-to-determine-annual-payments-on-a-partially-repaid-loan) and so I think that it is worthwhile answering the general question rather than just the specific	123		618	1104
+2010-07-24T01:15:38.383	@Katie Here is a summary article in this direction http://math.berkeley.edu/~bernd/ClayBiology.pdf	16		615	1105
+2010-07-24T01:16:16.090	@Katie, good call on the community-wiki	99		612	1106
+2010-07-24T01:25:13.633	fun fact: the story goes that Von Neumann was asked (a variant of) this problem, and responded with the answer almost instantly. The asker (Feynman or somesuch, I don't remember precisely) was impressed--he himself taken a long time to find the clever solution. Upon being asked how he did it, Von Neumann said "I summed the series!"	76	3	619	1107
+2010-07-24T01:35:27.650	oops, thanks Casebash...I've edited my answer to my own question so that it's correct... :heh:	76		620	1108
+2010-07-24T01:41:18.680	Order doesn't matter here, because interest is accrued continuously. Sorry I don't know how to find the rate, but its equivalent to 10% a year. The payments are once a year though. I do see what you mean about the future value of the payments, but its a pain to type all 10 into my calculator. Is there an easier way? I don't want to run out of time when I see a 30 yrs problem on the real exam!	73		616	1109
+2010-07-24T01:55:53.000	@Kaestur: Re order: We can make this problem discrete by assuming all the interest is charged an equivalent amount at the end of the year just before the payments. So, in this case, the repayments are made after the interest. Re: calculating the future value, this is a geometric series, not an arithmetic as I first said. There is a formula for summing this up, I'll update my question with more information	123		616	1110
+2010-07-24T02:00:46.310	I like that this question explains what they've tried and where they got stuck.	8		614	1111
+2010-07-24T02:22:21.437	+1 just for the javascript sliderule link :-)	120	1	604	1112
+2010-07-24T02:31:05.660	Thanks, thats a good link	123		621	1113
+2010-07-24T02:37:41.760	@Justin, I know that there are mixed views (as indicated in the second paragraph of my question). But for the case of 1 being classified as a prime number, it seems the consensus view of the Mathematical community is that it should not count as a prime number. My actual question is 'Is there a consensus on whether zero is a natural number?' (although the question's title is simpler), so a suitable answer would be 'No, there is no consensus' combined with a quick demonstration from a few Mathematical dictionaries or articles that there are conflicting definitions.	106	2	283	1114
+2010-07-24T02:46:41.410	What do you mean by SO(3)?	123		622	1115
+2010-07-24T02:56:08.750	Linear algebra is often much nicer - that is just what it comes down to	123	1	622	1116
+2010-07-24T03:01:22.467	(I realise that it might not be clear what the $n$-dimensional generalisation is of this, but perhaps this would happen even in different geometries or metric spaces?).	106	1	625	1117
+2010-07-24T03:11:16.750	@Casebash: The geometric series page is so confusing to me! But I think I found a simple way to do it, and added it to my question. I also calculated the balance after 10 years by discounting the first 10 payments, like you originally suggested. I didn't get the $1195 answer like you did, though. What happened? That would mean the balance after 10 years is only 101 dollars. That sounds too low if you are only paying back 1.5x the interest rate.	73		616	1118
+2010-07-24T03:14:09.840	@Casebash informally its another way of saying "all the ways you can rotate something" http://en.wikipedia.org/wiki/Rotation_group	99		622	1119
+2010-07-24T03:20:28.843	Are you being serious, or just seeding the site?	123		624	1121
+2010-07-24T03:22:31.403	You haven't formally studied representation theory? Lolz, I have and I didn't really know much of that. Then again, I kind of just crammed for the exam	123		626	1122
+2010-07-24T03:23:32.403	Its deep. Look at the most general version of the fundamental theorem of calculus http://en.wikipedia.org/wiki/Fundamental_theorem_of_calculus#Generalizations	99	3	625	1123
+2010-07-24T03:28:57.947	@Casebash: I would guess the latter, but why does it matter? This is a math question, albeit a simple one.	73	1	624	1124
+2010-07-24T03:35:33.597	This doesn't explain why the coefficients match up.	45		627	1125
+2010-07-24T03:41:56.420	+1. I always believed that a rigorous proof required calculus, but I'd love to be shown otherwise.	73	2	623	1128
+2010-07-24T03:42:54.393	Ben: I think you left out the most important part: How to solve those two equations!	73	2	629	1129
+2010-07-24T03:46:26.873	I just deleted some of my previous comments as they might not have been correct. You said that each of the first 10 payments must be 150% of interest due and used that to get that each payment must be $75 and the calculation in my answer depends on that figure. However, the amount of interest due decreases as payments are made, so each subsequent repayment will be less than $75. The correct way to deal with this is to just reduce the debt by 5% per year	123		614	1130
+2010-07-24T03:49:30.803	An interesting [note](http://web.cos.gmu.edu/~tstephe3/papers/solomonFiniteSimpleGroups.pdf) on the classification of finite simple groups.  Just a sentence to get you going: "A rough count by Gorenstein [in the early 80's] showed that the original proof of the Classi\ufb01cation \nTheorem occupies about 15,000 journal pages."	121	2	626	1131
+2010-07-24T03:55:21.910	it's also probably one of the more useful math questions for high school chem! If I had a nickel for every chem student I've tutored whose teacher told them they just had to try coefficients til it worked...	76	6	624	1132
+2010-07-24T04:01:10.173	@Kaestur: Wait, so you know [complex analysis](http://math.stackexchange.com/questions/411/why-do-complex-functions-have-a-finite-radius-of-convergence), but not geometric series? Are you seeding?	123		616	1133
+2010-07-24T04:04:53.977	The Egyptians new how to calculated pyramids. Turned out the shape didn't matter just the base area. Democritus put it together http://en.wikipedia.org/wiki/Democritus#Mathematics	99		623	1134
+2010-07-24T04:06:41.887	@Ben: Yes it does.  Try reading 'integral' as 'anti-derivative'.	136		627	1135
+2010-07-24T04:08:05.940	This question is seeded	123		618	1136
+2010-07-24T04:13:18.743	another twist on this: The other well-known calculus way to find the volume of the cone is to integrate over the disks that make up the cross sectional areas, as you go from the base at 0 to the top at h. The same argument (though it uses calculus) can show that, if you take an arbitrary region in the plane, and first form a "cylinder" of height h from it by extruding it a distance h, then form a "cone" from it by extruding and then tapering linearly, the volume of the resulting "cone" is 1/3 the volume of the resulting "cylinder" (loosely, making solids pointy nicely gives 1/3 the volume).	76	3	623	1137
+2010-07-24T04:20:20.940	@Katie: Yes, good point, I agree. I guess I just didn't pay much attention to those aspects when I was young, since it all seemed a long way off!	113		360	1138
+2010-07-24T04:25:12.853	@Casebash: I've introduced myself in [my moderator nomination](http://meta.math.stackexchange.com/questions/150/elect-our-provisional-moderators/156#156). This question was intended as an example of how a non-mathematician might ask a question on this site, and demonstrate things like showing what work you've done and interacting with people trying to solve your question. I'm sorry if you felt cheated by answering my fake question. I have upvoted you to thank you for the effort though :)	73		616	1139
+2010-07-24T04:34:32.860	great question! It took me about 16 times of seeing the basics of representations before I had any idea what they were good for.	76	5	622	1140
+2010-07-24T05:19:35.730	yeah the latex, so I'll start by asking are you trying to get help solving a Lagrangian, or do you need help choosing an objective function, or are you trying to understand what an intuitive explanation for why the calculus of variations is finding a extrema? Or something else...?	99		632	1142
+2010-07-24T05:29:44.480	I can solve the Lagrangian, and I have the proper objective function, I just don't find it obvious how the solution to the Lagrangian applied to my objective function manifests itself as this *common tangent* between two "wells" on a curve.  When we get to common tangent planes to surfaces, it is even less clear.	121		632	1144
+2010-07-24T05:42:49.450	@Kaestur: Just confused. I didn't know that people were trying to seed so realistically	123		616	1145
+2010-07-24T06:48:07.807	@Katie: Well it only takes calculus to formally prove it. Imagining a cylinder as an "infinite-a-gon pyramid" is really good for intuitively understanding thas	123	1	623	1149
+2010-07-24T06:49:06.697	Why is this downvoted? Is this incorrect?	123		634	1150
+2010-07-24T07:05:19.097	If there's something wrong with this answer, please let me know.	72		634	1151
+2010-07-24T07:18:25.320	This sounds pretty similar to subset sum (http://en.wikipedia.org/wiki/Subset_sum_problem), which is NP complete.	31		631	1154
+2010-07-24T07:38:00.233	Can we *not* use LaTeX if the formula is simple enough like 'n+1'? And $NP$ is definitely wrong \u2014 at least use $\\mathrm{NP}$.	171	7	631	1155
+2010-07-24T07:38:07.627	As an aside, I have seen a number of nearly-identical problems and in every case, the lengths of the sides of the small triangles were four consecutive Fibonacci numbers.  This causes the ratios to all be very close and facilitates the illusion.	72	2	287	1156
+2010-07-24T07:47:18.183	@Simon: Similar, yes; but can you show a reduction from it?	136		631	1157
+2010-07-24T08:37:06.597	Not yet, which is why I left a comment rather than an answer.	31		631	1160
+2010-07-24T08:51:41.693	@Harry: You know that if you downvote someone for no reason they usually get sympathy upvotes and actually gain reputation	123	4	634	1161
+2010-07-24T08:58:55.187	Points here are meaningless to me.			634	1162
+2010-07-24T10:47:35.623	This looks like a good source: http://www.combinatorics.org/Volume_3/Comments/v3i1r5.01.ps	26	2	636	1163
+2010-07-24T11:07:01.850	Lang's algebra also has significant typos that make it frustrating to read if you do not have enough mathematical maturity.		4	377	1164
+2010-07-24T11:09:14.123	question is also testing what the boundaries are for allowing logic puzzles that might have limited amounts to do with math itself	51		639	1165
+2010-07-24T11:10:26.010	This answer is right, but I understand Ben Alpert's confusion.  It's slightly unclear when I read it over again.	51	1	627	1166
+2010-07-24T11:14:19.137	See [section 3 of TauDay.com](http://tauday.com/) for a rather elegant explanation of this, and the author's reasoning for why the area of a circle should be $\\frac{1}{2}\\tau r^2$, in parallel to the other famous quadratic forms $\\frac{1}{2}m v^2$ and $\\frac{1}{2}g t^2$, to make it obvious that the area of a circle is, in fact, an integral of growing rings of circumferences.	51		625	1167
+2010-07-24T12:03:12.077	Did Kronecker die a finitist?  I thought he came around at some point. I don't have any idea how to answer this question, but I will vote to reopen, thanks for the edit.	121	1	501	1169
+2010-07-24T12:14:54.970	I've removed the `logic` tag, since it might be confused with mathematical-logic.	26		639	1170
+2010-07-24T12:24:28.087	It would be better to change the title of your question to say something about the problem itself. Something like "Math/Logic problem - 1000 cups of wine, one of which is poisoned". This will help people who know the answer look at the question, as well as make it easier to find later.	122	8	639	1171
+2010-07-24T12:54:59.383	"After all, this doesn't hold for functions from R2 to R2" ??? is there an easy counterexample? this is new to me, but i'm just an amateur.	120		640	1172
+2010-07-24T12:57:52.560	It already doesn't hold for functions from R to R.  Take your favorite non-differentiable function (say with a jump in it) and integrate.  For example, the function which is 0 for x negative and x for x positive is only once differentiable because its derivative is 0 for x negative and 1 for x positive which is not differentiable at x=0.	8	4	640	1173
+2010-07-24T13:01:24.143	Much of math is reducing hard things to linear algebra.  For examples: calculus (differentiating is locally replacing your function by the best linear function available), representation theory, homology.	8	24	622	1174
+2010-07-24T13:31:30.130	The fact that harmonic functions are infinitely differentiable is a special case of elliptic regularity: solutions to elliptic equations $P(u)=0$ are $C^\\infty$.	536	2	641	1175
+2010-07-24T13:38:42.577	I have a slight problem with the reasoning here. It all checks out, apart from the fact the poison is slow acting. I can't see a way to manage to test all wines with just 10 servants when it takes the entire time-period for symptoms to show.	35		639	1178
+2010-07-24T13:41:12.090	I think it should be "fast-acting". The servant dies immediately after drinking the poisonous wine molecule.	171		639	1179
+2010-07-24T13:51:06.090	@workmad3: Number the wines from 0 to 999 and number the servants from 1 to 10. Feed servant k all the wines with a 1 in the kth binary position of their number. Wait an hour. If D is the set of dead servants, the number of the poisoned wine is $\\sum_{i \\in D} 2^{i-1}$.	31	4	639	1180
+2010-07-24T14:09:53.643	Ah ok...so in your first example, the 8 particles correspond to a basis of the Lie algebra su(3).  The physical interpretation that the adjoint action of SU(3) is irreducible is that these particles are indistinguishable at high energies?  Does the symmetry breaking at low energies manifest itself mathematically somehow?  More generally, every irrep of SU(3) corresponds to some group of particles?  To which irrep of SU(3) does the baryon decuplet correspond?	9		642	1181
+2010-07-24T14:11:34.653	or f(x) = x^q where q is a noninteger bigger than 1.	9	1	640	1182
+2010-07-24T14:13:27.050	Italian education at least.	92		318	1183
+2010-07-24T14:23:23.953	I must be misreading this. 1) `x^a \xd7 x^b = x^a+b`; for `x = 0` and `a = 0`, you would get `0^0 \xd7 0^b = 0^b = 0`, so we can't tell anything -- _except confirm that `0^0 = 1` still works here!_ 2) `x^{-a}=1/{x^a}` -- _so when `a = 0`, `x^{-0} = 1/x^0 = x^0`, which again does work for `0^0 = 1`;_ 3) `{x^a}^b = x^{a\xd7b}`, thus `x^(1/n)` is the n-th root -- _and `1/n = 0` for no value of `n`, so that's completely irrelevant._	92		141	1184
+2010-07-24T14:48:20.960	@Justin: Can you please justify the lower bound? My upper bound at N = 1000, k = 7 is smaller that your lower bound (56 < 57.4), and [my simulation](http://www.ideone.com/sRssu) also suggests 56 is an upper bound.	171		639	1185

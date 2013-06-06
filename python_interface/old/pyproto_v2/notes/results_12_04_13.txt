@@ -1,0 +1,32 @@
+Q&A graph (full):
+
+load      : 11.723466 seconds
+start     : 8.438043 seconds (159987 rows in working table)
+setSource : 0.434017 seconds (159987 rows in working table)
+label     : 0.000367000000001 seconds (159987 rows in working table)
+select    : 9.979454 seconds (98831 rows in working table)
+link      : 0.037202 seconds (98831 rows in working table)
+join      : 1.724285 seconds (98831 rows in working table)
+select    : 2.789966 seconds (98831 rows in working table)
+link      : 0.827338 seconds (95224 rows in working table)
+label     : 0.000377 seconds (95224 rows in working table)
+group     : 0.480214 seconds (95224 rows in working table)
+count     : 0.526253 seconds (95224 rows in working table)
+select    : 3.984657 seconds (26079 rows in working table)
+link      : 0.011268 seconds (26079 rows in working table)
+unique    : 0.234875 seconds (9177 rows in working table)
+link      : 0.005013 seconds (9177 rows in working table)
+makegraph : 0.062836 seconds (9177 rows in working table)
+
+# keep the distance column
+
+# COME UP WITH A NEW SYNTAX, AND SHOW WHY IT IS BETTER THAN THE FORMER ONE
+(JUSTIFY WHY WE HAVE TWO EXPRESSIONS INSTEAD OF ONE)
+Step 1) build a general path (link, join, select)
+Step 2) restrict the set of edges (group, count, etc)
+
+select: condition evaluation: don't use rowdicts (use [row[i] for i in attridx] ?)
+look at CS224W stuff (SNAP)
+
+Fix specification (should "order" actually order rows, etc)
+C++ mother table
