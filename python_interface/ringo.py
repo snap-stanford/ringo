@@ -177,15 +177,15 @@ class Query(object):
           raise InvalidQueryException(body)
 
   def __path_parse_next(self, buf):
-    m = re.match(r"(?#operator)^\s*(<=>|--|(?:as\s+))"
+    m = re.match(r"(?#operator)^\s*(=>|->|(?:as\s+))"
                  r"(?#arguments)(.*?)"
-                 r"(?#stop before next operation)(?=($|(<=>|--|\s+as\s+).*))", buf)
+                 r"(?#stop before next operation)(?=($|(=>|->|\s+as\s+).*))", buf)
     if m is None:
       raise InvalidQueryException(buf)
     else:
       operator = m.group(1).strip()
       arguments = m.group(2).strip()
-      if operator == "<=>":
+      if operator == "=>":
         table, col, rest = self.__parse_table_col(arguments)
         if len(rest) > 0:
           raise InvalidQueryException(rest)
@@ -196,7 +196,7 @@ class Query(object):
         col, rest = self.__parse_name(arguments)
         if len(rest) > 0:
           raise InvalidQueryException(rest)
-        if operator == "--":
+        if operator == "->":
           self.wcol = col
           self.dst_col = col
         elif operator == "as":
