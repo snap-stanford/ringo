@@ -1,11 +1,12 @@
 from snap import *
+from time import gmtime, strftime
 
 class ringo(object):
     dataTypes = ['int', 'float', 'string']
     def __init__(self):
         # mapping between table names and table objects
         self.Tables = {}
-        # an operation record has the form: <id (int), type (string), result table name (string), argument list (as used in python interface; table names are used for table arguments)>
+        # an operation record has the form: <id (int), type (string), result table name (string), argument list (as used in python interface; table names are used for table arguments), time stamp>
         self.Operations = [] 
         # mapping between a table (name/id) and the sequence of operation ids that led to it
         self.Lineage = {}
@@ -42,13 +43,15 @@ class ringo(object):
         self.Tables[TableName] = T
         args = (TableName, Schema, InFnm, RelevantCols, SeparatorChar, HasTitleLine)
         OpId = len(Operations)
-        Op = (OpId, 'load tsv', TableName, args)
+        Op = (OpId, 'load tsv', TableName, args, strftime("%a, %d %b %Y %H:%M:%S", gmtime()))
         self.Operations.append(Op)
         Lineage[TableName] = [OpId]
         
     def SaveTableTSV(self, TableName, OutFnm):
         T = Tables[TableName]
-        T.SaveSS(
+        T.SaveSS(OutFnm)
+        Op = (len(Operations), 'save tsv', TableName, (TableName, OutFnm), strftime("%a, %d %b %Y %H:%M:%S", gmtime()))
+        self.Operations.append(Op)
     
     def GetOpType(self, OpId):
         return Operations[OpId][1]
