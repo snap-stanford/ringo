@@ -37,7 +37,7 @@ class ringo(object):
             RC.Add(c)
         
         # Load input and create new TTable object
-        T = TTable.LoadSS(TableName, S, InFnm, StringVals, RC, SeparatorChar, HasTitleLine)
+        T = TTable.LoadSS(TableName, S, InFnm, Context, RC, SeparatorChar, HasTitleLine)
         
         # update engine's data structures
         self.Tables[TableName] = T
