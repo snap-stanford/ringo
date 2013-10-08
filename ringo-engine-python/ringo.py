@@ -53,9 +53,14 @@ class ringo(object):
         Op = (len(Operations), 'save tsv', TableName, (TableName, OutFnm), strftime("%a, %d %b %Y %H:%M:%S", gmtime()))
         self.Operations.append(Op)
     
+    def JoinTables(self, JoinTableName, LeftTableName, RightTableName):
+        LeftT = Tables[LeftTableName]
+        RightT = Tables[RightTableName]
+        JoinT = LeftT.Join(RightT)
+        Tables[JoinTableName] = JoinT
+        Op = (len(Operations), 'join', JoinTableName, (JoinTableName, LeftTableName, RightTableName), strftime("%a, %d %b %Y %H:%M:%S", gmtime()));
+        self.Operations.append(Op);
+        Lineage[JoinTableName] = Lineage[LeftTableName] + Lineage[RightTableName] + [OpId]
+
     def GetOpType(self, OpId):
         return Operations[OpId][1]
-        
-        
-        
-            
