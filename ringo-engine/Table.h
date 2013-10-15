@@ -16,6 +16,10 @@ class TTableContext{
 protected:
   TStrHash<TInt, TBigStrPool> StringVals;
   friend class TTable;
+public:
+  TTableContext() {}
+  TTableContext(TSIn& SIn): StringVals(SIn) {}
+  void Save(TSOut& SOut) { StringVals.Save(SOut);}
 };
 
 /* 
@@ -28,6 +32,9 @@ public:
   typedef enum {INT, FLT, STR} TYPE;
   /* possible policies for aggregating node attributes */
   typedef enum {MIN, MAX, FIRST, LAST, AVG, MEAN} ATTR_AGGR;
+  /* possible operations on columns */
+  typedef enum {OP_ADD, OP_SUB, OP_MUL, OP_DIV, OP_MOD} OPS;
+
   /* a table schema is a vector of pairs <attribute name, attribute type> */
   typedef TVec<TPair<TStr, TYPE> > Schema; 
 protected:
@@ -179,6 +186,10 @@ public:
 
 /***** Utility functions *****/
 protected:
+  /* Utility functions for columns */
+  void AddIntCol(TStr ColName);
+  void AddFltCol(TStr ColName);
+
 /***** Utility functions for handling string values *****/
   TStr GetStrVal(TInt ColIdx, TInt RowIdx) const{ return TStr(Context.StringVals.GetKey(StrColMaps[ColIdx][RowIdx]));}
   void AddStrVal(const TInt ColIdx, const TStr& Val);
@@ -189,6 +200,7 @@ protected:
   TYPE GetSchemaColType(TInt Idx) const{ return S[Idx].Val2;}
   void AddSchemaCol(TStr ColName, TYPE ColType) { S.Add(TPair<TStr,TYPE>(ColName, ColType));}
   TInt GetColIdx(TStr ColName) const{ return ColTypeMap.IsKey(ColName) ? ColTypeMap.GetDat(ColName).Val2 : TInt(-1);}  // column index among columns of the same type
+  TBool IsAttr(TStr Attr);
 
 /***** Utility functions for adding attributes to the graph *****/
   // Get node identifier for src/dst node given row physical id
@@ -243,7 +255,11 @@ protected:
         return V[V.Len()/2];
       }
     }
+    // added to remove a compiler warning
+    T ShouldNotComeHere;
+    return ShouldNotComeHere;
   }
+
   // preparation for graph generation of final table: retrieve the values of nodes (XNodeVals) - called by ToGraph
   void GraphPrep();
   // build graph out of the final table, without any attribute values - called by ToGraph
@@ -313,7 +329,7 @@ public:
 	TTable(); 
   TTable(TTableContext& Context);
   TTable(const TStr& TableName, const Schema& S, TTableContext& Context);
-  // TTable(TSIn& SIn){}  // TODO
+  TTable(TSIn& SIn, TTableContext& Context);
   TTable(const TTable& Table): Name(Table.Name), Context(Table.Context), S(Table.S),
     NumRows(Table.NumRows), NumValidRows(Table.NumValidRows), FirstValidRow(Table.FirstValidRow),
     Next(Table.Next), IntCols(Table.IntCols), FltCols(Table.FltCols),
@@ -330,14 +346,16 @@ public:
   static PTable New(const PTable Table, const TStr& TableName){ PTable T = New(Table); T->Name = TableName; return T;}
 
 /***** Save / Load functions *****/
-  // static PTable Load(TSIn& SIn){ return new TTable(SIn);} 
   // Load table from spread sheet (TSV, CSV, etc)
   static PTable LoadSS(const TStr& TableName, const Schema& S, const TStr& InFNm, TTableContext& Context, const char& Separator = '\t', TBool HasTitleLine = true);
   // Load table from spread sheet - but only load the columns specified by RelevantCols
   static PTable LoadSS(const TStr& TableName, const Schema& S, const TStr& InFNm, TTableContext& Context, const TIntV& RelevantCols, const char& Separator = '\t', TBool HasTitleLine = true);
   // Save table schema + content into a TSV file
   void SaveSS(const TStr& OutFNm);
-	//void Save(TSOut& SOut);
+  // Load table from binary. The TTableContext must be provided separately as it shared among multiple TTables and should be saved in a separate binary.
+  static PTable Load(TSIn& SIn, TTableContext& Context){ return new TTable(SIn, Context);} 
+  // Save table schema + content into binary. Note that TTableContext must be saved in a separate binary (as it is shared among multiple TTables).
+	void Save(TSOut& SOut);
 
 /***** Graph handling *****/
   /* Create a graph out of the FINAL table */
@@ -466,7 +484,48 @@ public:
   PTable Intersection(const TTable& Table, TStr TableName);
   PTable Minus(const TTable& Table, TStr TableName);
   PTable Project(const TStrV& ProjectCols, TStr TableName);
+  void ProjectInPlace(const TStrV& ProjectCols);
   
+  /* Column-wise arithmetic operations */
+
+  /*
+   * Performs Attr1 OP Attr2 and stores it in Attr1
+   * If ResAttr != "", result is stored in a new column ResAttr
+   */
+  void ColGenericOp(TStr Attr1, TStr Attr2, TStr ResAttr, OPS op);
+  void ColAdd(TStr Attr1, TStr Attr2, TStr ResultAttrName="");
+  void ColSub(TStr Attr1, TStr Attr2, TStr ResultAttrName="");
+  void ColMul(TStr Attr1, TStr Attr2, TStr ResultAttrName="");
+  void ColDiv(TStr Attr1, TStr Attr2, TStr ResultAttrName="");
+  void ColMod(TStr Attr1, TStr Attr2, TStr ResultAttrName="");
+
+  /* Performs Attr1 OP Attr2 and stores it in Attr1 or Attr2
+   * This is done depending on the flag AddToFirstTable
+   * If ResAttr != "", result is stored in a new column ResAttr
+   */
+  void ColGenericOp(TStr Attr1, TTable& Table, TStr Attr2, TStr ResAttr, 
+    OPS op, TBool AddToFirstTable);
+  void ColAdd(TStr Attr1, TTable& Table, TStr Attr2, TStr ResAttr="",
+    TBool AddToFirstTable=true);
+  void ColSub(TStr Attr1, TTable& Table, TStr Attr2, TStr ResAttr="",
+    TBool AddToFirstTable=true);
+  void ColMul(TStr Attr1, TTable& Table, TStr Attr2, TStr ResAttr="",
+    TBool AddToFirstTable=true);
+  void ColDiv(TStr Attr1, TTable& Table, TStr Attr2, TStr ResAttr="",
+    TBool AddToFirstTable=true);
+  void ColMod(TStr Attr1, TTable& Table, TStr Attr2, TStr ResAttr="",
+    TBool AddToFirstTable=true);
+
+  /* Performs Attr1 OP Num and stores it in Attr1
+   * If ResAttr != "", result is stored in a new column ResAttr
+   */
+  void ColGenericOp(TStr Attr1, TFlt Num, TStr ResAttr, OPS op);
+  void ColAdd(TStr Attr1, TFlt Num, TStr ResultAttrName="");
+  void ColSub(TStr Attr1, TFlt Num, TStr ResultAttrName="");
+  void ColMul(TStr Attr1, TFlt Num, TStr ResultAttrName="");
+  void ColDiv(TStr Attr1, TFlt Num, TStr ResultAttrName="");
+  void ColMod(TStr Attr1, TFlt Num, TStr ResultAttrName="");
+
   // add a column of explicit integer identifiers to the rows
   void AddIdColumn(const TStr IdColName);
 
