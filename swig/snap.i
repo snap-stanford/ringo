@@ -171,6 +171,7 @@ Version = "0.8.3r"
 
 %template(TIntV) TVec<TInt>;
 %template(TFltV) TVec<TFlt>;
+%template(TStrV) TVec<TStr>;
 %template(TIntPrV) TVec<TIntPr>;
 %template(TFltPrV) TVec<TFltPr>;
 %template(TStrIntPrV) TVec<TStrIntPr>;
@@ -273,7 +274,6 @@ Version = "0.8.3r"
 %template(TUInt64V) TVec<TUInt64>;
 %template(TSFltV) TVec<TSFlt>;
 %template(TAscFltV) TVec<TAscFlt>;
-%template(TStrV) TVec<TStr>;
 %template(TChAV) TVec<TChA>;
 %template(TIntQuV) TVec<TIntQu>;
 %template(TFltTrV) TVec<TFltTr>;

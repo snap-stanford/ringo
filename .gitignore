@@ -1,17 +1,64 @@
-*.DS_Store
+# Mac OS X
+.DS_Store
 
-pyproto_v2/*.tsv
-pyproto_v2/*/*.tsv
-pyproto_v2/*/*.tsvs
-*.i
+# Xcode
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.xcuserstate
+project.xcworkspace/
+xcuserdata/
+
+build/
+
+# Compiler-generated files
+*.o
+*.dSYM/
 *.pyc
-*.profile
-python_interface/sandbox/
-pyproto/data/*.xml
-TODO.txt
+*.so
 
-shorten.sh
-shfile.sh
+# Test-generated files 
+test_*.dat
+test_*.dot
+test_*.gif
+sample_*.dot
+*.graph
+*.log
+*.m
+*.net
+*.out
+*.paj
+*.png
+*.plt
+*.tab
+*.ps
+*.pool
+*.xml
 
-*.sublime-workspace
-*.sublime-project
+# Backup files
+*~.nib
+
+# Doxygen-produced files
+doxygen/snapdoc-dev
+doxygen/snapdoc-user
+doxygen/log*.txt
+doxygen/snap
+
+# SWIG-produces files
+swig/snap.py
+swig/snap_wrap.cxx
+swig/OSX-Release
+
+# Ignore executables, but keep everything else
+snap-core/testSnap
+test/run-all-tests
+!test/graphviz/base*
+tutorials/*
+!tutorials/*.*
+!tutorials/Makefile
+!tutorials/cncom
+!tutorials/graphviz
+tutorials/.DS_Store
+tutorials/*.dSYM
+benchmarking/*.dat

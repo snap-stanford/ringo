@@ -1,6 +1,6 @@
 """
  Script to parse the XML DBLP database and output a TSV file with
- schema (string Article ID, string Author)
+ schema (string Key, string Author)
  The DBLP dataset can be found at http://dblp.uni-trier.de/xml/
 """
 
@@ -8,7 +8,9 @@ from lxml import etree
 import sys
 
 if len(sys.argv) < 3:
-  print "Usage: python parse.py source destination [max_articles]"
+  print """Usage: python parse.py source destination [max_articles]
+  source: input DBLP .xml file
+  destination: name of the .tsv output file"""
   exit(1)
 
 srcfile = sys.argv[1]
