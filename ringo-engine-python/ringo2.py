@@ -141,6 +141,7 @@ class ringo(object):
         JoinTableId = max(self.Tables+1)
         __UpdateTables(JoinTableId, JoinT, Lineage[TableId])
         __UpdateOperation('join', JoinTableId, (TableId, Arr))
+        return JoinTableId
 
     def Graph(self, TableId):
         T = Tables[TableId]
