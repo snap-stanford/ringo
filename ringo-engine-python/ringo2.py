@@ -26,9 +26,9 @@ class ringo(object):
         for attr in Schema:
             if Schema[attr] == 'int':
                 S.Add(TStrTypPr(attr, TTable.INT))  # tentative TTable interface syntax...
-            else if Schema[attr] == 'float':
+            elif Schema[attr] == 'float':
                 S.Add(TStrTypPr(attr, TTable.FLT))  # tentative TTable interface syntax...
-            else if Schema[attr] == 'string':
+            elif Schema[attr] == 'string':
                 S.Add(TStrTypPr(attr, TTable.STR))  # tentative TTable interface syntax...
             else:
                 print "Illegal type %s for attribute %s" % (Schema[attr], attr)
@@ -88,7 +88,7 @@ class ringo(object):
     def Unique(self, TableId, GroupByAttrs, Ordered, NewTable = False):
         Args = (TableId, GroupByAttr, NewTable)
         Attrs = TStrV()
-        for Attr in GroupByAttr
+        for Attr in GroupByAttr:
             Attrs.Add(Attr)
 
         if NewTable:
@@ -114,7 +114,7 @@ class ringo(object):
     def Project(self, TableId, Columns, NewTable = False):
         Args = (TableId, Predicate, NewTable)
         PrepCols = TStrV()
-        for Col in Columns
+        for Col in Columns:
             PrepCols.Add(Col)
 
         if NewTable:
@@ -134,13 +134,17 @@ class ringo(object):
         __UpdateOperation('join', JoinTableId, (LeftTableId, RightTableId, LeftAttr, RightAttr))
         return JoinTableId
     
-    def Join(self, TableId, Attr)
+    def Join(self, TableId, Attr):
         T = Tables[TableId]
         JoinT = T.SelfJoin(Attr)
 
         JoinTableId = max(self.Tables+1)
         __UpdateTables(JoinTableId, JoinT, Lineage[TableId])
         __UpdateOperation('join', JoinTableId, (TableId, Arr))
+
+    def Graph(self, TableId):
+        T = Tables[TableId]
+        return T.ToGraph(snap.FIRST)
 
     def GetOpType(self, OpId):
         return Operations[OpId][1]
