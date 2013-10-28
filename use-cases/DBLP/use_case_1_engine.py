@@ -3,8 +3,10 @@
 """
 
 import sys
-import ringo2
+sys.path.append('../../ringo-engine-python')
 import time
+import snap
+import ringo2
 
 NTestNodes = 10
 
@@ -28,20 +30,14 @@ with Timer('load'):
   S = {"Key":"string", "Author":"string"}
   T = ringo.LoadTableTSV(S, srcfile)
 
-print "OK"
-
-############### TODO: Operations below not yet implemented/tested ##################
-"""
 with Timer('join'):
-  T2 = T.SelfJoin("Key")
+  T = ringo.SelfJoin(T, "Key")
 
 with Timer('graph'):
-  T2.SetSrcCol('1_1.Author')
-  T2.SetDstCol('1_2.Author')
-  G = T2.ToGraph(0)
+  # TODO: use simpler conventions for column renaming
+  G = ringo.ToGraph(T, '1_1.Author','1_2.Author')
 
 with Timer('diameter (%d test nodes)' % NTestNodes):
   diameter = snap.GetBfsEffDiam(G,NTestNodes)
 
 print "Diameter: {0:.5f}".format(diameter)
-"""

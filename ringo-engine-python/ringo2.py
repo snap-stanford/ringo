@@ -32,45 +32,50 @@ class ringo(object):
                 S.Add(snap.TStrTAttrPr(attr, snap.atStr))  # tentative TTable interface syntax...
             else:
                 print "Illegal type %s for attribute %s" % (Schema[attr], attr)
-        TableId = 1 if len(self.Tables) == 0 else max(self.Tables)+1
 
         # Load input and create new TTable object
-        T = snap.TTable.LoadSS(TableId, S, InFnm, self.Context, SeparatorChar, snap.TBool(HasTitleLine))
-        self.__UpdateTables(TableId, T, [])
+        TableId = self.__GetTableId()
+        T = snap.TTable.LoadSS(str(TableId), S, InFnm, self.Context, SeparatorChar, snap.TBool(HasTitleLine))
+        TableId = self.__UpdateTables(T, [])
         
         Args = (Schema, InFnm, SeparatorChar, HasTitleLine)
         self.__UpdateOperation('load tsv', TableId, Args)
         return TableId
         
+    # UNTESTED
     def SaveTableTSV(self, TableId, OutFnm):
         T = Tables[TableId]
         T.SaveSS(OutFnm)
         self.__UpdateOperation('save tsv', TableId, (TableId, OutFnm))
     
+    # UNTESTED
     def LoadTableBinary(self, InFnm):
         SIn = TSIn(InFnm)
         T = TTable.Load(SIn, Context)
 
         #T's internal name will not match TId - is this an issue?
-        TableId = max(self.Tables)+1
-        self.__UpdateTables(TableId, T, [])
+        TableId = self.__UpdateTables(T, [])
         self.__UpdateOperation('load binary', TableId, (InFnm))
         return TableId
 
+    # UNTESTED
     def SaveTableBinary(self, TableId, OutFnm):
         T = Tables[TableId]
         SOut = TSOut(OutFnm)
         T.Save(SOut)
         self.__UpdateOperation('save binary', TableId, (TableId, OutFnm))
 
+    # UNTESTED
     def GetHistory(self, TableId):
         return str(Lineage[TableId]) #should discuss exact format of this
 
+    # UNTESTED
     def AddLabel(self, TableId, Attr, Label):
         T = Tables[TableId]
         T.AddLabel(Attr, Label)
         self.__UpdateOperation('add label', TableId, (TableId, Attr, Label))
 
+    # UNTESTED
     def Unique(self, TableId, GroupByAttr, NewTable = False):
         Args = (TableId, GroupByAttr, NewTable)
         if NewTable:
@@ -82,6 +87,7 @@ class ringo(object):
 
         return TableId
 
+    # UNTESTED
     def Unique(self, TableId, GroupByAttrs, Ordered, NewTable = False):
         Args = (TableId, GroupByAttr, NewTable)
         Attrs = TStrV()
@@ -97,6 +103,7 @@ class ringo(object):
 
         return TableId
 
+    # UNTESTED
     def Select(self, TableId, Predicate, NewTable = False): 
         Args = (TableId, Predicate, NewTable)
         if NewTable:
@@ -108,6 +115,7 @@ class ringo(object):
 
         return TableId
 
+    # UNTESTED
     def Project(self, TableId, Columns, NewTable = False):
         Args = (TableId, Predicate, NewTable)
         PrepCols = TStrV()
@@ -121,41 +129,47 @@ class ringo(object):
         T.ProjectInPlace(PrepCols)
         self.__UpdateOperation('project', TableId, Args)
 
+    # UNTESTED
     def Join(self, LeftTableId, RightTableId, LeftAttr, RightAttr):
         LeftT = Tables[LeftTableId]
         RightT = Tables[RightTableId]
         JoinT = LeftT.Join(LeftAttr, RightT, RightAttr)
 
-        JoinTableId = max(self.Tables)+1
-        self.__UpdateTables(JoinTableId, JoinT, Lineage[LeftTableId] + Lineage[RightTableId])
+        JoinTableId = self.__UpdateTables(JoinT, Lineage[LeftTableId] + Lineage[RightTableId])
         self.__UpdateOperation('join', JoinTableId, (LeftTableId, RightTableId, LeftAttr, RightAttr))
         return JoinTableId
-    
-    def Join(self, TableId, Attr):
-        T = Tables[TableId]
+
+    # USE CASE 1 OK
+    def SelfJoin(self, TableId, Attr):
+        T = self.Tables[TableId]
         JoinT = T.SelfJoin(Attr)
 
-        JoinTableId = max(self.Tables+1)
-        self.__UpdateTables(JoinTableId, JoinT, Lineage[TableId])
-        self.__UpdateOperation('join', JoinTableId, (TableId, Arr))
+        JoinTableId = self.__UpdateTables(JoinT, self.Lineage[TableId])
+        self.__UpdateOperation('join', JoinTableId, (TableId, Attr))
         return JoinTableId
 
-    def Graph(self, TableId):
-        T = Tables[TableId]
+    # USE CASE 1 OK
+    def ToGraph(self, TableId, SrcCol, DstCol):
+        T = self.Tables[TableId]
+        T.SetSrcCol(SrcCol)
+        T.SetDstCol(DstCol)
         return T.ToGraph(snap.FIRST)
 
+    # UNTESTED
     def GetOpType(self, OpId):
         return Operations[OpId][1]
 
     def __CopyTable(TableId):
-        TId = max(self.Tables)+1
         T = TTable.New(Tables[TableId], TId)
-        self.__UpdateTables(TId, T, Lineage[TableId])
-        return TId
+        CopyTableId = self.__UpdateTables(T, Lineage[TableId])
+        return CopyTableId
 
-    def __UpdateTables(self, TableId, Table, Lineage):
+    def __UpdateTables(self, Table, Lineage, TableId = None):
+        if TableId is None:
+          TableId = self.__GetTableId()
         self.Tables[TableId] = Table
         self.Lineage[TableId] = sorted(Lineage)
+        return TableId
 
     def __UpdateOperation(self, OpType, TableId, Args):
         OpId = len(self.Operations)
@@ -166,3 +180,6 @@ class ringo(object):
             self.Lineage[TableId] = [OpId]
         else:
             self.Lineage[TableId] += [OpId]
+
+    def __GetTableId(self):
+      return 1 if len(self.Tables) == 0 else max(self.Tables) + 1
