@@ -1,6 +1,5 @@
 import snap
 import time
-import pdb
 
 """
 Decorator used to automate the registration of TTable operations
@@ -57,10 +56,10 @@ class ringo(object):
         self.__UpdateTables(T, [], TableId)
         return TableId
         
-    # UNTESTED
+    # USE CASE 2 OK
     @registerOp('save tsv')
     def SaveTableTSV(self, TableId, OutFnm):
-        T = Tables[TableId]
+        T = self.Tables[TableId]
         T.SaveSS(OutFnm)
         return TableId
     
@@ -184,7 +183,7 @@ class ringo(object):
       T = self.Tables[TableId]
       V = snap.TStrV()
       for attr in Attrs:
-        V.Add('PageRank')
+        V.Add(attr)
       T.Order(V, "", snap.TBool(False), snap.TBool(Asc))
       return TableId
 

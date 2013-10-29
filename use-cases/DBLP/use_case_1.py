@@ -3,41 +3,44 @@
 """
 
 import sys
-import snap
+sys.path.append("..")
+sys.path.append("../../ringo-engine-python")
 import time
+import snap
+import ringo2
+import testutils
+import pdb
 
-NTestNodes = 10
+N_TEST_NODES = 10
+ENABLE_TIMER = True
 
 if len(sys.argv) < 2:
-  print """Usage: python use_case_1.py source
-  source: input DBLP .tsv file"""
+  print """Usage: python use_case_1.py source [destination]
+  source: input DBLP .tsv file
+  destination: file where the coauthorship network should be stored"""
   exit(1)
+srcfile = sys.argv[1]
+dstfile = sys.argv[2] if len(sys.argv) >= 3 else None
 
-class Timer(object):
-  def __init__(self,name):
-    self.name = name
-  def __enter__(self):
-    self.start = time.time()
-  def __exit__(self, type, value, traceback):
-    print '[%s]\tElapsed: %.2f seconds' % (self.name, time.time() - self.start)
+ringo = ringo2.ringo()
 
-with Timer('load'):
-  srcfile = sys.argv[1]
-  schema = snap.Schema()
-  schema.Add(snap.TStrTAttrPr("Key",snap.atStr))
-  schema.Add(snap.TStrTAttrPr("Author",snap.atStr))
-  context = snap.TTableContext()
-  T = snap.TTable.LoadSS("1",schema,srcfile,context)
+t = testutils.Timer(ENABLE_TIMER)
+S = {"Key":"string", "Author":"string"}
+T = ringo.LoadTableTSV(S, srcfile)
+t.show("load")
 
-with Timer('join'):
-  T2 = T.SelfJoin("Key")
+T = ringo.SelfJoin(T, "Key")
+t.show("join")
 
-with Timer('graph'):
-  T2.SetSrcCol('1_1.Author')
-  T2.SetDstCol('1_2.Author')
-  G = T2.ToGraph(snap.FIRST)
+# TODO: use simpler conventions for column renaming
+G = ringo.ToGraph(T, "1_1.Author","1_2.Author")
+t.show("graph")
 
-with Timer('diameter (%d test nodes)' % NTestNodes):
-  diameter = snap.GetBfsEffDiam(G,NTestNodes)
+if not dstfile is None:
+  G.Save(snap.TFOut(dstfile))
+  t.show("save")
+
+diameter = snap.GetBfsEffDiam(G,N_TEST_NODES)
+t.show("diameter (%d test nodes)" % N_TEST_NODES)
 
 print "Diameter: {0:.5f}".format(diameter)
