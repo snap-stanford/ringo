@@ -11,7 +11,7 @@ import ringo2
 NTestNodes = 10
 
 if len(sys.argv) < 2:
-  print """Usage: python use_case_1.py source
+  print """Usage: python use_case_1_engine.py source
   source: input DBLP .tsv file"""
   exit(1)
 

@@ -35,7 +35,7 @@ with Timer('join'):
 with Timer('graph'):
   T2.SetSrcCol('1_1.Author')
   T2.SetDstCol('1_2.Author')
-  G = T2.ToGraph(0)
+  G = T2.ToGraph(snap.FIRST)
 
 with Timer('diameter (%d test nodes)' % NTestNodes):
   diameter = snap.GetBfsEffDiam(G,NTestNodes)
