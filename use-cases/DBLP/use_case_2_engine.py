@@ -7,7 +7,6 @@ sys.path.append('../../ringo-engine-python')
 import snap
 import ringo2
 import time
-import pdb
 
 NTopAuthors = 20
 
@@ -33,11 +32,9 @@ with Timer('load'):
 
 with Timer('join'):
   T2 = ringo.SelfJoin(T, "Key")
-print ringo.Tables[T2].GetNumValidRows()
 
 with Timer('select'):
   ringo.Select(T2, '1_1.Author != 1_2.Author')
-print ringo.Tables[T2].GetNumValidRows()
 
 with Timer('graph'):
   G = ringo.ToGraph(T2, '1_1.Author', '1_2.Author')
