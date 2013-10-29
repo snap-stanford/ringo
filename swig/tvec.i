@@ -221,4 +221,3 @@ TStrV.__getitem__ = getitem
 TStrV.__iter__ = itervec
 %}
 #endif
-

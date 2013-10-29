@@ -102,6 +102,15 @@ Version = "0.8.3r"
 %ignore THash::MarkDelKey;
 %ignore THash::MarkDelKeyId;
 
+// ignore overloaded methods for TTable row iterators
+%ignore TRowIterator::GetIntAttr(TInt) const;
+%ignore TRowIterator::GetFltAttr(TInt) const;
+%ignore TRowIterator::GetStrAttr(TInt) const;
+%ignore TRowIteratorWithRemove::GetNextIntAttr(TInt) const;
+%ignore TRowIteratorWithRemove::GetNextFltAttr(TInt) const;
+%ignore TRowIteratorWithRemove::GetNextStrAttr(TInt) const;
+
+
 // Python-C++ conversion typemaps
 
 %include "snap_types.i"
@@ -570,4 +579,3 @@ Version = "0.8.3r"
 
 // note for operator renaming
 // %rename(Add) Vector3::operator +;
-
