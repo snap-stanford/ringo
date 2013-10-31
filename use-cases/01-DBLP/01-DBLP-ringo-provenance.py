@@ -32,6 +32,8 @@ t.show("load")
 T = ringo.SelfJoin(T, "Key")
 t.show("join")
 
+ringo.GenerateProvenance(T, '01-DBLP-provenance.py');
+
 # TODO: use simpler conventions for column renaming
 G = ringo.ToGraph(T, "1_1.Author","1_2.Author")
 t.show("graph")

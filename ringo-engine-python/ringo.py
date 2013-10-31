@@ -1,19 +1,31 @@
 import snap
 import time
+import inspect
+
+class RingoObject(object):
+    def __init__(self, *args):
+        self.value = args
 
 """
 Decorator used to automate the registration of TTable operations
 """
-def registerOp(opName):
+def registerOp(opName, wrapReturn = True):
     def decorator(func):
-      def wrapper(*args, **kwargs):
-          TableId = func(*args, **kwargs)
-          args[0].UpdateOperation(opName, TableId, [args, kwargs])
-          return TableId
-      return wrapper
+        def wrapper(*args, **kwargs):
+            unpack_args = [arg.value[0] if isinstance(arg, RingoObject) else arg for arg in args]
+
+            locals = inspect.getouterframes(inspect.currentframe())[1][0].f_locals
+            locals = dict((var, locals[var]) for var in locals if isinstance(locals[var], RingoObject))
+
+            RetVal = func(*unpack_args, **kwargs)
+            if wrapReturn:
+                RetVal = RingoObject(RetVal)
+                args[0]._Ringo__UpdateOperation(opName, RetVal, [args, kwargs], locals)
+            return RetVal
+        return wrapper
     return decorator
 
-class ringo(object):
+class Ringo(object):
     NODE_ATTR_NAME = "__node_attr"
     EDGE_SRC_ATTR_NAME = "__edge_src_attr"
     EDGE_DST_ATTR_NAME = "__edge_dst_attr"
@@ -36,7 +48,7 @@ class ringo(object):
     # S = {'name':'string', 'age':'int', 'weight':'float'}
     # MyTable = ringo.LoadTableTSV(S, 'table.tsv')
     # MyTable = ringo.LoadTableTSV(S, 'table.tsv', [0,1]) if we want to load only columns 'name' and 'age'
-    @registerOp('load tsv')
+    @registerOp('LoadTableTSV')
     def LoadTableTSV(self, Schema, InFnm, SeparatorChar = '\t', HasTitleLine = False):
         # prepare parameters to call TTable::LoadSS
         S = snap.Schema()  # How should this be written ?
@@ -57,14 +69,14 @@ class ringo(object):
         return TableId
         
     # USE CASE 2 OK
-    @registerOp('save tsv')
+    @registerOp('SaveTableTSV')
     def SaveTableTSV(self, TableId, OutFnm):
         T = self.Tables[TableId]
         T.SaveSS(OutFnm)
         return TableId
     
     # UNTESTED
-    @registerOp('load binary')
+    @registerOp('LoadTableBinary')
     def LoadTableBinary(self, InFnm):
         SIn = TSIn(InFnm)
         T = TTable.Load(SIn, Context)
@@ -73,7 +85,7 @@ class ringo(object):
         return self.__UpdateTables(T, [])
 
     # UNTESTED
-    @registerOp('save binary')
+    @registerOp('SaveTableBinary')
     def SaveTableBinary(self, TableId, OutFnm):
         T = Tables[TableId]
         SOut = TSOut(OutFnm)
@@ -85,14 +97,14 @@ class ringo(object):
         return str(Lineage[TableId]) #should discuss exact format of this
 
     # UNTESTED
-    @registerOp('add label')
+    @registerOp('AddLabel')
     def AddLabel(self, TableId, Attr, Label):
         T = Tables[TableId]
         T.AddLabel(Attr, Label)
         return TableId
 
     # UNTESTED
-    @registerOp('unique')
+    @registerOp('Unique')
     def Unique(self, TableId, GroupByAttr, InPlace = True):
         Args = (TableId, GroupByAttr, InPlace)
         if not InPlace:
@@ -103,7 +115,7 @@ class ringo(object):
         return TableId
 
     # UNTESTED
-    @registerOp('unique')
+    @registerOp('Unique')
     def Unique(self, TableId, GroupByAttrs, Ordered, InPlace = True):
         Args = (TableId, GroupByAttr, NewTable)
         Attrs = TStrV()
@@ -118,7 +130,7 @@ class ringo(object):
         return TableId
 
     # USE CASE 2 OK
-    @registerOp('select')
+    @registerOp('Select')
     def Select(self, TableId, Predicate, InPlace = True): 
         Args = (TableId, Predicate, InPlace)
         if not InPlace:
@@ -148,7 +160,7 @@ class ringo(object):
         return TableId
 
     # UNTESTED
-    @registerOp('project')
+    @registerOp('Project')
     def Project(self, TableId, Columns, InPlace = True):
         Args = (TableId, Predicate, NewTable)
         PrepCols = TStrV()
@@ -163,7 +175,7 @@ class ringo(object):
         return TableId
 
     # UNTESTED
-    @registerOp('join')
+    @registerOp('Join')
     def Join(self, LeftTableId, RightTableId, LeftAttr, RightAttr):
         LeftT = Tables[LeftTableId]
         RightT = Tables[RightTableId]
@@ -171,14 +183,14 @@ class ringo(object):
         return self.__UpdateTables(JoinT, Lineage[LeftTableId] + Lineage[RightTableId])
 
     # USE CASE 1 OK
-    @registerOp('join')
+    @registerOp('SelfJoin')
     def SelfJoin(self, TableId, Attr):
         T = self.Tables[TableId]
         JoinT = T.SelfJoin(Attr)
 
         return self.__UpdateTables(JoinT, self.Lineage[TableId])
 
-    @registerOp('order')
+    @registerOp('Order')
     def Order(self, TableId, Attrs, Asc = False):
       T = self.Tables[TableId]
       V = snap.TStrV()
@@ -188,6 +200,7 @@ class ringo(object):
       return TableId
 
     # USE CASE 1 OK
+    @registerOp('ToGraph', False)
     def ToGraph(self, TableId, SrcCol, DstCol):
         T = self.Tables[TableId]
         T.SetSrcCol(SrcCol)
@@ -206,7 +219,7 @@ class ringo(object):
         return Operations[OpId][1]
 
     # USE CASE 2 OK
-    @registerOp('page rank')
+    @registerOp('PageRank')
     def PageRank(self, Graph, ResultAttrName = 'PageRank', AddToNetwork = False, C = 0.85, Eps = 1e-4, MaxIter = 100):
       if AddToNetwork:
         raise NotImplementedError()
@@ -216,6 +229,61 @@ class ringo(object):
       T = snap.TTable.GetFltNodePropertyTable(Graph, str(TableId), HT, self.NODE_ATTR_NAME, ResultAttrName, self.Context)
       self.__UpdateTables(T, [], TableId)
       return TableId
+
+    @registerOp('GenerateProvenance', False)
+    def GenerateProvenance(self, TableId, OutFnm):
+        def GetName(Value, Locals):
+            if isinstance(Value, basestring):
+                return "'"+Value+"'"
+            for Name in Locals:
+                if Locals[Name] == Value:
+                    return Name
+            return str(Value)
+
+        Info = inspect.getouterframes(inspect.currentframe())[1][0].f_locals
+
+        Lines = ['engine=ringo.Ringo()']
+        NumFiles = 0
+        for OpId in self.Lineage[TableId]:
+            Op = self.Operations[OpId] 
+            FuncCall = 'engine.'+Op[1]+'('
+
+            SpecialArg = -1
+            if Op[1] == 'LoadTableTSV' or Op[1] == 'SaveTableTSV' or Op[1] == 'SaveTableBinary':
+                SpecialArg = 1
+            elif Op[1] == 'LoadTableBinary':
+                SpecialArg = 0
+
+            for Arg in Op[3][0][1:]:
+                if SpecialArg == 0:
+                    FuncCall += 'filename'+str(NumFiles)+','
+                    NumFiles += 1
+                else:
+                    FuncCall += GetName(Arg, Op[4])+','
+                SpecialArg -= 1
+            for Arg in Op[3][1]:
+                FuncCall += str(Arg)+'='+GetName(Op[3][1][Arg], Op[4])+','
+            FuncCall = FuncCall[:-1]+')'
+
+            FindName = Info['locals'] if OpId+1>=len(self.Operations) else self.Operations[OpId+1][4]
+            Name = GetName(Op[2], FindName)
+            if Name != str(Op[2]):
+                FuncCall = Name+'='+FuncCall
+
+            Lines.append(FuncCall)
+        Lines.append('return '+GetName(Info['args'][1], Info['locals']))
+         
+        Script = 'import ringo\n\ndef generate('
+        for x in xrange(NumFiles):
+            if x != 0: Script += ','
+            Script += 'filename'+str(x)
+        Script += '):\n'
+
+        for Line in Lines:
+            Script += '    '+Line+'\n'
+
+        with open(OutFnm, 'w') as file:
+            file.write(Script)
 
     def __CopyTable(TableId):
         T = TTable.New(Tables[TableId], TId)
@@ -229,9 +297,10 @@ class ringo(object):
         self.Lineage[TableId] = sorted(Lineage)
         return TableId
 
-    def UpdateOperation(self, OpType, TableId, Args):
+    def __UpdateOperation(self, OpType, RetVal, Args, Locals):
+        TableId = RetVal.value[0]
         OpId = len(self.Operations)
-        Op = (OpId, OpType, TableId, Args, time.strftime("%a, %d %b %Y %H:%M:%S"))
+        Op = (OpId, OpType, RetVal, Args, Locals, time.strftime("%a, %d %b %Y %H:%M:%S"))
         self.Operations.append(Op)
 
         if TableId not in self.Lineage:

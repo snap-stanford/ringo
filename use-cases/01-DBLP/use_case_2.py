@@ -21,7 +21,7 @@ if len(sys.argv) < 2:
 srcfile = sys.argv[1]
 dstfile = sys.argv[2] if len(sys.argv) >= 3 else None
 
-ringo = ringo.ringo()
+ringo = ringo.Ringo()
 
 t = testutils.Timer(ENABLE_TIMER)
 S = {"Key":"string", "Author":"string"}
