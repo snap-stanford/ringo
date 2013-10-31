@@ -5,7 +5,7 @@
 import sys
 import snap
 import time
-import ringo
+import other_ringo as ringo
 
 NTestNodes = 10
 

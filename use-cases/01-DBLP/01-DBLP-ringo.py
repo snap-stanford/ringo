@@ -7,7 +7,7 @@ sys.path.append("..")
 sys.path.append("../../ringo-engine-python")
 import time
 import snap
-import ringo2
+import ringo
 import testutils
 import pdb
 
@@ -22,7 +22,7 @@ if len(sys.argv) < 2:
 srcfile = sys.argv[1]
 dstfile = sys.argv[2] if len(sys.argv) >= 3 else None
 
-ringo = ringo2.ringo()
+ringo = ringo.ringo()
 
 t = testutils.Timer(ENABLE_TIMER)
 S = {"Key":"string", "Author":"string"}
