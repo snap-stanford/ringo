@@ -15,14 +15,18 @@ UNAME := $(shell uname)
 
 ifeq ($(UNAME), Linux)
   # Linux flags
-  CXXFLAGS += -fPIC -shared -D__STDC_LIMIT_MACROS
-  LDFLAGS += -lrt
+  SWIGFLAGS += -D_CMPWARN -D__stdcall -DSW_SNAPPY
+  CXXFLAGS += -fPIC -D__STDC_LIMIT_MACROS -DSW_SNAPPY
+  LDFLAGS += -shared
 else ifeq ($(UNAME), Darwin)
   # OS X flags
+  SWIGFLAGS += -D_CMPWARN -D__stdcall -DSW_SNAPPY
+  CXXFLAGS += -DSW_SNAPPY
   LDFLAGS += -lpython -dynamiclib
 else ifeq ($(shell uname -o), Cygwin)
   # Cygwin flags
-  CXXFLAGS += -shared -D__STDC_LIMIT_MACROS
+  SWIGFLAGS += -D_CMPWARN -D__stdcall -DSW_SNAPPY
+  CXXFLAGS += -shared -D__STDC_LIMIT_MACROS -DSW_SNAPPY
   LIBS += -lpython2.6
 endif
 
@@ -30,7 +34,7 @@ all: snap.py _snap.so
 
 snap_wrap.cxx: snap.i snap_types.i tvec.i pneanet.i pungraph.i pngraph.i pgraph.i \
 	snapswig.h snap_types.h printgraph.h goodgraph.cpp
-	swig -python -c++ -w302,312,317,325,362,383,384,389,401,503,508,509 -O -D_CMPWARN -I$(SNAPDIR) -I$(GLIBDIR) snap.i
+	swig $(SWIGFLAGS) -python -c++ -w302,312,317,325,362,383,384,389,401,503,508,509 -O -I$(SNAPDIR) -I$(GLIBDIR) snap.i
 
 snap_wrap.o: snap_wrap.cxx
 	g++ $(CXXFLAGS) -c snap_wrap.cxx -I$(SNAPDIR) -I$(GLIBDIR)  -I/usr/include/python2.6 -I/usr/include/python2.7
@@ -39,7 +43,7 @@ Snap.o:
 	$(CC) $(CXXFLAGS) -c $(SNAPDIR)/Snap.cpp -I$(SNAPDIR) -I$(GLIBDIR)
 
 _snap.so: snap_wrap.o Snap.o
-	g++ $(LDFLAGS) $(CXXFLAGS) snap_wrap.o Snap.o $(LIBS) -o _snap.so
+	g++ $(LDFLAGS) -o _snap.so snap_wrap.o Snap.o $(LIBS)
 
 snap.py: snap_wrap.cxx
 
