@@ -226,7 +226,9 @@ class Ringo(object):
       HT = snap.TIntFltH()
       snap.GetPageRank(Graph, HT, C, Eps, MaxIter)
       TableId = self.__GetTableId()
-      T = snap.TTable.GetFltNodePropertyTable(Graph, str(TableId), HT, self.NODE_ATTR_NAME, ResultAttrName, self.Context)
+      # NOTE: The argument snap.atStr only works if NODE_ATTR_NAME is a String attribute of the graph.
+      # Some logic is needed to determine the attribute type
+      T = snap.TTable.GetFltNodePropertyTable(Graph, str(TableId), HT, self.NODE_ATTR_NAME, snap.atStr, ResultAttrName, self.Context)
       self.__UpdateTables(T, [], TableId)
       return TableId
 

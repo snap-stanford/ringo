@@ -21,11 +21,12 @@ if len(sys.argv) < 2:
   destination: output directory (for saving the table of edges and the coauthorship network)"""
   exit(1)
 srcfile = sys.argv[1]
-dstfile = sys.argv[2] if len(sys.argv) >= 3 else None
-try:
-  os.makedirs(dstfile)
-except OSError:
-  pass
+dstdir = sys.argv[2] if len(sys.argv) >= 3 else None
+if not dstdir is None:
+  try:
+    os.makedirs(dstdir)
+  except OSError:
+    pass
 
 context = snap.TTableContext()
 
@@ -46,8 +47,8 @@ t.show("join")
 
 # Save final table
 # >>> rank.save('table.tsv')
-if not dstfile is None:
-  T.SaveSS(os.path.join(dstfile,OUTPUT_TABLE_FILENAME))
+if not dstdir is None:
+  T.SaveSS(os.path.join(dstdir,OUTPUT_TABLE_FILENAME))
   t.show("save edge table")
 
 # Create network
@@ -60,8 +61,8 @@ T.SetDstCol(DstCol)
 G = T.ToGraph(snap.FIRST)
 t.show("graph")
 
-if not dstfile is None:
-  G.Save(snap.TFOut(os.path.join(dstfile,OUTPUT_GRAPH_FILENAME)))
+if not dstdir is None:
+  G.Save(snap.TFOut(os.path.join(dstdir,OUTPUT_GRAPH_FILENAME)))
   t.show("save graph")
 
 # Print diameter

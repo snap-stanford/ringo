@@ -13,8 +13,7 @@ Usage: python 02-DBLP-snap.py source destination
 
   source: input file
   destination: directory containing the output files.
-    The only output file is table.tsv. It stores the list of PageRank scores of authors, sorted
-    in descending order.
+    The only output file is table.tsv. It stores the list of PageRank scores of authors, sorted in descending order.
 
   * Output: the top 20 authors ordered by PageRank score
     Example:

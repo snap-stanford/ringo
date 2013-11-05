@@ -24,7 +24,7 @@ def parseFile(srcFile, destFile, attributes, N = None):
       try:
         if element.tag == 'row':
           row = (element.get(attr) for attr in attributes)
-          row = (x if not x is None else "" for x in row)
+          row = (x if not x is None else "0" for x in row)
           destination.write("\t".join(row) + "\n")
         count += 1
         if not N is None and count >= N:

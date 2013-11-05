@@ -22,11 +22,12 @@ if len(sys.argv) < 2:
   destination: output .tsv file containing PageRank scores"""
   exit(1)
 srcfile = sys.argv[1]
-dstfile = sys.argv[2] if len(sys.argv) >= 3 else None
-try:
-  os.makedirs(dstfile)
-except OSError:
-  pass
+dstdir = sys.argv[2] if len(sys.argv) >= 3 else None
+if not dstdir is None:
+  try:
+    os.makedirs(dstdir)
+  except OSError:
+    pass
 
 context = snap.TTableContext()
 
@@ -67,7 +68,7 @@ t.show("graph")
 # >>> graph.pageRank('PageRank')
 HT = snap.TIntFltH()
 snap.GetPageRank(G, HT)
-P = snap.TTable.GetFltNodePropertyTable(G, "page_rank_table", HT, SrcCol, PAGE_RANK_ATTRIBUTE, context)
+P = snap.TTable.GetFltNodePropertyTable(G, "page_rank_table", HT, SrcCol, snap.atStr, PAGE_RANK_ATTRIBUTE, context)
 t.show("page rank")
 
 # Order by PageRank score (in descending order)
@@ -79,8 +80,8 @@ t.show("order")
 
 # Save final table
 # >>> rank.save('table.tsv')
-if not dstfile is None:
-  P.SaveSS(os.path.join(dstfile,OUTPUT_TABLE_FILENAME))
+if not dstdir is None:
+  P.SaveSS(os.path.join(dstdir,OUTPUT_TABLE_FILENAME))
   t.show("save")
 
 # Print top authors with their PageRank score
