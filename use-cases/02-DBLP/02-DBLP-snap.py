@@ -61,7 +61,7 @@ T.SetDstCol(DstCol)
 SrcV = snap.TStrV()
 SrcV.Add(SrcCol)
 T.AddSrcNodeAttr(SrcV)
-G = T.ToGraph(snap.FIRST)
+G = T.ToGraph(snap.aaFirst)
 t.show("graph")
 
 # Compute PageRank score

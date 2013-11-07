@@ -95,7 +95,7 @@ posts.SetDstCol(DstCol)
 DstV = snap.TStrV()
 DstV.Add(DstCol)
 posts.AddDstNodeAttr(DstV)
-G = posts.ToGraph(snap.FIRST)
+G = posts.ToGraph(snap.aaFirst)
 t.show("graph")
 
 # Compute Authority score
@@ -191,17 +191,17 @@ t.show("order")
 # Save
 # Save final table
 # >>> rank.save('table.tsv')
+# Rename columns and remove unnecessary ones before saving
+final.Rename("authority.Expert", "Expert")
+final.Rename("comments_tagged.CommentScore", "CommentScore")
+final.Rename("authority.Authority", "Authority")
+V = snap.TStrV()
+V.Add("Expert")
+V.Add("CommentScore")
+V.Add("Authority")
+V.Add("FinalScore")
+final.ProjectInPlace(V)
 if not dstdir is None:
-  # Rename columns and remove unnecessary ones before saving
-  final.Rename("authority.Expert", "Expert")
-  final.Rename("comments_tagged.CommentScore", "CommentScore")
-  final.Rename("authority.Authority", "Authority")
-  V = snap.TStrV()
-  V.Add("Expert")
-  V.Add("CommentScore")
-  V.Add("Authority")
-  V.Add("FinalScore")
-  final.ProjectInPlace(V)
   final.SaveSS(os.path.join(dstdir,OUTPUT_TABLE_FILENAME))
   t.show("save")
 

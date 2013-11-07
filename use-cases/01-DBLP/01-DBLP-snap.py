@@ -58,7 +58,7 @@ SrcCol = "1_1.Author"
 DstCol = "1_2.Author"
 T.SetSrcCol(SrcCol)
 T.SetDstCol(DstCol)
-G = T.ToGraph(snap.FIRST)
+G = T.ToGraph(snap.aaFirst)
 t.show("graph")
 
 if not dstdir is None:
