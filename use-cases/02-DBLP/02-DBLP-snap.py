@@ -69,7 +69,7 @@ t.show("graph")
 HT = snap.TIntFltH()
 snap.GetPageRank(G, HT)
 #P = snap.TTable.GetFltNodePropertyTable(G, "page_rank_table", HT, SrcCol, snap.atStr, PAGE_RANK_ATTRIBUTE, context)
-P = snap.TTable("PR", HT, "Author", "PageRank", context, snap.TBool(False));
+P = snap.TTable("PR", HT, "Author", "PageRank", context, snap.TBool(False))
 t.show("page rank")
 
 # Order by PageRank score (in descending order)
