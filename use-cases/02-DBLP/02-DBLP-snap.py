@@ -54,13 +54,8 @@ t.show("select")
 # Create network
 # >>> authors.graph('Author_1', 'Author_2', directed=False)
 # TODO: Bug - what if a node only appears in the destination column ? (symmetric in our case)
-SrcCol = "1_1.Author"
-DstCol = "1_2.Author"
-T.SetSrcCol(SrcCol)
-T.SetDstCol(DstCol)
-SrcV = snap.TStrV()
-SrcV.Add(SrcCol)
-T.AddSrcNodeAttr(SrcV)
+T.SetSrcCol("1_1.Author")
+T.SetDstCol("1_2.Author")
 G = T.ToGraph(snap.aaFirst)
 t.show("graph")
 
@@ -68,8 +63,7 @@ t.show("graph")
 # >>> graph.pageRank('PageRank')
 HT = snap.TIntFltH()
 snap.GetPageRank(G, HT)
-#P = snap.TTable.GetFltNodePropertyTable(G, "page_rank_table", HT, SrcCol, snap.atStr, PAGE_RANK_ATTRIBUTE, context)
-P = snap.TTable("PR", HT, "Author", "PageRank", context, snap.TBool(False))
+P = snap.TTable("PR", HT, "Author", "PageRank", context, snap.TBool(True))
 t.show("page rank")
 
 # Order by PageRank score (in descending order)
@@ -86,12 +80,4 @@ if not dstdir is None:
   t.show("save")
 
 # Print top authors with their PageRank score
-RI = P.BegRI()
-print "{0: <30}PageRank".format("Name")
-print "-----------------------------------------"
-cnt = 0
-while RI < P.EndRI() and cnt < N_TOP_AUTHORS:
-#  print "{0: <30}{1:.5f}".format(RI.GetStrAttr(SrcCol), RI.GetFltAttr("PageRank"))
-  print "{0: <30}{1:.5f}".format(RI.GetStrAttr("Author"), RI.GetFltAttr("PageRank"))
-  RI.Next()
-  cnt += 1
+testutils.dump(P, N_TOP_AUTHORS)

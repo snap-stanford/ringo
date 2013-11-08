@@ -88,13 +88,8 @@ t.show("join")
 
 # Create haskell-specific Q&A graph
 # >>> graph = posts.graph('Asker', 'Expert', directed = True)
-SrcCol = "Asker"
-DstCol = "Expert"
-posts.SetSrcCol(SrcCol)
-posts.SetDstCol(DstCol)
-DstV = snap.TStrV()
-DstV.Add(DstCol)
-posts.AddDstNodeAttr(DstV)
+posts.SetSrcCol("Asker")
+posts.SetDstCol("Expert")
 G = posts.ToGraph(snap.aaFirst)
 t.show("graph")
 
@@ -104,7 +99,7 @@ t.show("graph")
 HTHub = snap.TIntFltH()
 HTAuth = snap.TIntFltH()
 snap.GetHits(G, HTHub, HTAuth)
-authority = snap.TTable.GetFltNodePropertyTable(G, "authority", HTAuth, DstCol, snap.atInt, AUTHORITY_ATTRIBUTE, context)
+authority = snap.TTable("authority", HTAuth, "Expert", AUTHORITY_ATTRIBUTE, context, snap.TBool(False))
 t.show("authority score")
 
 # b) Compute comment scores
