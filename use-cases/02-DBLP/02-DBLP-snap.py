@@ -68,7 +68,8 @@ t.show("graph")
 # >>> graph.pageRank('PageRank')
 HT = snap.TIntFltH()
 snap.GetPageRank(G, HT)
-P = snap.TTable.GetFltNodePropertyTable(G, "page_rank_table", HT, SrcCol, snap.atStr, PAGE_RANK_ATTRIBUTE, context)
+#P = snap.TTable.GetFltNodePropertyTable(G, "page_rank_table", HT, SrcCol, snap.atStr, PAGE_RANK_ATTRIBUTE, context)
+P = snap.TTable("PR", HT, "Author", "PageRank", context, snap.TBool(False));
 t.show("page rank")
 
 # Order by PageRank score (in descending order)
@@ -90,6 +91,7 @@ print "{0: <30}PageRank".format("Name")
 print "-----------------------------------------"
 cnt = 0
 while RI < P.EndRI() and cnt < N_TOP_AUTHORS:
-  print "{0: <30}{1:.5f}".format(RI.GetStrAttr(SrcCol), RI.GetFltAttr("PageRank"))
+#  print "{0: <30}{1:.5f}".format(RI.GetStrAttr(SrcCol), RI.GetFltAttr("PageRank"))
+  print "{0: <30}{1:.5f}".format(RI.GetStrAttr("Author"), RI.GetFltAttr("PageRank"))
   RI.Next()
   cnt += 1
