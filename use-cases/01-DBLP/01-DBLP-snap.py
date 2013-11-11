@@ -13,18 +13,22 @@ import testutils
 N_TEST_NODES = 10
 ENABLE_TIMER = True
 OUTPUT_TABLE_FILENAME = 'table.tsv'
-OUTPUT_GRAPH_FILENAME = 'graph.tsv'
+OUTPUT_GRAPH_FILENAME = 'graph'
+INPUT_AUTHORS_FILENAME = 'authors.tsv'
+INPUT_YEAR_FILENAME = 'year.tsv'
 
 if len(sys.argv) < 2:
   print """Usage: python 01-DBLP-snap.py source [destination]
-  source: input DBLP .tsv file
+  source: input directory containing authors.tsv and year.tsv
   destination: output directory (for saving the table of edges and the coauthorship network)"""
   exit(1)
-srcfile = sys.argv[1]
-dstdir = sys.argv[2] if len(sys.argv) >= 3 else None
-if not dstdir is None:
+srcDir = sys.argv[1]
+authorFile = os.path.join(srcDir, INPUT_AUTHORS_FILENAME)
+yearFile = os.path.join(srcDir, INPUT_YEAR_FILENAME)
+dstDir = sys.argv[2] if len(sys.argv) >= 3 else None
+if not dstDir is None:
   try:
-    os.makedirs(dstdir)
+    os.makedirs(dstDir)
   except OSError:
     pass
 
@@ -37,37 +41,52 @@ t = testutils.Timer(ENABLE_TIMER)
 S = snap.Schema()
 S.Add(snap.TStrTAttrPr("Key", snap.atStr))
 S.Add(snap.TStrTAttrPr("Author", snap.atStr))
-T = snap.TTable.LoadSS("1", S, srcfile, context, '\t', snap.TBool(False))
-t.show("load")
+authors = snap.TTable.LoadSS("1", S, authorFile, context, '\t', snap.TBool(False))
+t.show("load author table", authors)
+
+# >>> year = ringo.load('year.tsv')
+S = snap.Schema()
+S.Add(snap.TStrTAttrPr("Key", snap.atStr))
+S.Add(snap.TStrTAttrPr("Year", snap.atInt))
+year = snap.TTable.LoadSS("2", S, yearFile, context, '\t', snap.TBool(False))
+t.show("load year table", year)
+
+# Select
+# >>> year.select('Year >= 2005')
+year.SelectAtomicIntConst("Year", 2005, snap.GTE)
+t.show("select", year)
+
+# Join
+# >>> table = authors.join(year, ['Key'], ['Key'])
+table = authors.Join("Key", year, "Key")
+t.show("join", table)
 
 # Self-join
-# >>> authors.selfjoin(authors, ['Key'])
-T = T.SelfJoin("Key")
-t.show("join")
+# >>> table.selfjoin(['Key'])
+table = table.SelfJoin("Key")
+t.show("join", table)
 
 # Save final table
-# >>> rank.save('table.tsv')
-if not dstdir is None:
-  T.SaveSS(os.path.join(dstdir,OUTPUT_TABLE_FILENAME))
-  t.show("save edge table")
+# >>> table.save('table.tsv')
+if not dstDir is None:
+  table.SaveSS(os.path.join(dstDir,OUTPUT_TABLE_FILENAME))
+  t.show("save edge table", table)
 
 # Create network
-# >>> authors.graph('Author_1', 'Author_2', directed=False)
+# >>> graph = table.graph('Author_1', 'Author_2', directed=False)
 # TODO: use simpler conventions for column renaming
-SrcCol = "1_1.Author"
-DstCol = "1_2.Author"
-T.SetSrcCol(SrcCol)
-T.SetDstCol(DstCol)
-G = T.ToGraph(snap.aaFirst)
-t.show("graph")
+table.SetSrcCol("1_2_1.1.Author")
+table.SetDstCol("1_2_2.1.Author")
+graph = table.ToGraph(snap.aaFirst)
+t.show("graph", graph)
 
-if not dstdir is None:
-  G.Save(snap.TFOut(os.path.join(dstdir,OUTPUT_GRAPH_FILENAME)))
-  t.show("save graph")
+if not dstDir is None:
+  graph.Save(snap.TFOut(os.path.join(dstDir,OUTPUT_GRAPH_FILENAME)))
+  t.show("save graph", graph)
 
 # Print diameter
 # >>> print graph.diameter(10000)
-diameter = snap.GetBfsEffDiam(G,N_TEST_NODES)
+diameter = snap.GetBfsEffDiam(graph,N_TEST_NODES)
 t.show("diameter (%d test nodes)" % N_TEST_NODES)
 
 print "Diameter: {0:.5f}".format(diameter)
