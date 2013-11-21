@@ -80,6 +80,11 @@ snap.GetHits(graph, HTHub, HTAuth)
 t5 = snap.TTable.TableFromHashMap("t5", HTAuth, "UserId", "Authority", context, snap.TBool(False))
 t.show("authority score", t5)
 
+# Select top entries
+# >>> t.select('Authority > 0.00001')
+t5.SelectAtomicFltConst("Authority", 0.00001, snap.GT)
+t.show("select", t5)
+
 # Order by final score (in descending order)
 # >>> t5.order(['Authority'], desc = True)
 V = snap.TStrV()

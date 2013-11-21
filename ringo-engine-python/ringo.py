@@ -221,7 +221,7 @@ class Ringo(object):
         T.AddSrcNodeAttr(SrcV)
         T.AddDstNodeAttr(DstV)
 
-        G = T.ToGraph(snap.FIRST)
+        G = T.ToGraph(snap.aaFirst)
         GraphId = self.__UpdateObjects(G, self.Lineage[TableId])
         return RingoObject(GraphId)
 
