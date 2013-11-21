@@ -39,7 +39,7 @@ def dump(table, maxRows = None):
       if t == 0: # int
         elmts.append(str(RI.GetIntAttr(c)))
       elif t == 1: # float
-        elmts.append("{0:.6f}".format(RI.GetFltAttr(c)))
+        elmts.append("{0:.20f}".format(RI.GetFltAttr(c)))
       elif t == 2: # string
         elmts.append(RI.GetStrAttr(c))
       else:

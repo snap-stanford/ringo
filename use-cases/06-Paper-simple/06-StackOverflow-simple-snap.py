@@ -82,8 +82,8 @@ t5 = snap.TTable.TableFromHashMap("t5", HTAuth, "UserId", "Authority", context, 
 t.show("authority score", t5)
 
 # Select top entries
-# >>> t.select('Authority > 0.00001')
-t5.SelectAtomicFltConst("Authority", 0.00001, snap.GT)
+# >>> t.select('Authority > 0.0')
+t5.SelectAtomicFltConst("Authority", 0.0, snap.GT)
 t.show("select", t5)
 
 # Order by final score (in descending order)
