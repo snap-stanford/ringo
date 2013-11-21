@@ -72,6 +72,7 @@ t.show("join", t4)
 t4.SetSrcCol("t1_t2.t1.UserId")
 t4.SetDstCol("t1.UserId")
 graph = t4.ToGraph(snap.aaFirst) # ToGraphPerGroup should be able to support grouping on string columns!
+t.show("graph", graph)
 
 # Get authority scores
 HTHub = snap.TIntFltH()

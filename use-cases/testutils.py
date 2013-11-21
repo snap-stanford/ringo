@@ -6,8 +6,9 @@ class Timer(object):
     self.enabled = enabled
     self.time = time.time()
   def show(self, operation, obj = None):
+    blanks = (16 - len(operation))*" "
     if self.enabled:
-      message = '[%s]\tElapsed: %.2f seconds' % (operation, time.time() - self.time)
+      message = '[%s]%sElapsed: %.2f seconds' % (operation, blanks, time.time() - self.time)
       if not obj is None:
         if isinstance(obj, snap.PTable):
           message += ', Rows: %d' % obj.GetNumValidRows()
