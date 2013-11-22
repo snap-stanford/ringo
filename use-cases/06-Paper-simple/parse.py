@@ -11,7 +11,7 @@ import sys
 import os
 
 if len(sys.argv) < 3:
-  print """Usage: python parse.py srcDir dstDir [max_items]
+  print """Usage: python parse.py srcPostsFile dstDir [max_items]
   srcPostsFile: path to the Posts.xml file from the StackOverflow dataset
   dstDir: output directory"""
   exit(1)
@@ -36,12 +36,13 @@ with open(srcPostsFile) as source, open(dstPostsFile, 'w') as dstPosts, open(dst
         postId = element.get('Id')
         userId = element.get('OwnerUserId')
         answerId = element.get('AcceptedAnswerId')
-        if postId is None or userId is None:
+        creationDate = element.get('CreationDate')
+        if postId is None or userId is None or creationDate is None:
           missing_info += 1
           continue
         if answerId is None:
           answerId = "0"
-        dstPosts.write("\t".join((postId, userId, answerId)) + "\n")
+        dstPosts.write("\t".join((postId, userId, answerId, creationDate)) + "\n")
         tags = element.get('Tags')
         if not tags is None:
           tags = tags[1:-1].split('><')
