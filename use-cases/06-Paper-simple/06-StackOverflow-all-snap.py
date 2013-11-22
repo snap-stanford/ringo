@@ -69,8 +69,8 @@ t.show("join", t4)
 
 # Graph
 # >>> graph = t4.graph("UserId_1", "UserId_2")
-t4.SetSrcCol("t1_id")
-t4.SetDstCol("UserId")
+t4.SetSrcCol("t1_1.UserId")
+t4.SetDstCol("t1_2.UserId")
 graph = t4.ToGraph(snap.aaFirst) # ToGraphPerGroup should be able to support grouping on string columns!
 t.show("graph", graph)
 
