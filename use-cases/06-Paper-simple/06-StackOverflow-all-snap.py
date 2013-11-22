@@ -46,31 +46,31 @@ t.show("load posts", t1)
 
 # Load tags
 # >>> t2 = ringo.load('tags.tsv')
-S = snap.Schema()
-S.Add(snap.TStrTAttrPr("PostId", snap.atInt))
-S.Add(snap.TStrTAttrPr("Tag", snap.atStr))
-t2 = snap.TTable.LoadSS("t2", S, os.path.join(srcdir, TAGS_FILE), context, '\t', snap.TBool(False))
-t.show("load tags", t2)
+#S = snap.Schema()
+#S.Add(snap.TStrTAttrPr("PostId", snap.atInt))
+#S.Add(snap.TStrTAttrPr("Tag", snap.atStr))
+#t2 = snap.TTable.LoadSS("t2", S, os.path.join(srcdir, TAGS_FILE), context, '\t', snap.TBool(False))
+#t.show("load tags", t2)
 
 # Select
 # >>> t.select('Tag = "python"'')
-t2.SelectAtomicStrConst("Tag", "python", snap.EQ)
-t.show("select", t2)
+#t2.SelectAtomicStrConst("Tag", "python", snap.EQ)
+#t.show("select", t2)
 
 # Join
 # >>> t3 = t1.join(t2)
-t3 = t1.Join("PostId", t2, "PostId")
-t.show("join", t3)
+#t3 = t1.Join("PostId", t2, "PostId")
+#t.show("join", t3)
 
 # Join
 # >>> t4 = t3.join(t1, ["AnswerId"], ["PostId"])
-t4 = t3.Join("AnswerId", t1, "PostId")
+t4 = t1.Join("AnswerId", t1, "PostId")
 t.show("join", t4)
 
 # Graph
 # >>> graph = t4.graph("UserId_1", "UserId_2")
-t4.SetSrcCol("t1_t2.t1.UserId")
-t4.SetDstCol("t1.UserId")
+t4.SetSrcCol("t1_id")
+t4.SetDstCol("UserId")
 graph = t4.ToGraph(snap.aaFirst) # ToGraphPerGroup should be able to support grouping on string columns!
 t.show("graph", graph)
 
