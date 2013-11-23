@@ -316,7 +316,7 @@ class Ringo(object):
 
         Info = inspect.getouterframes(inspect.currentframe())[1][0].f_locals
 
-        Lines = ['engine=ringo.Ringo()']
+        Lines = []
         NumFiles = 0
         for OpId in self.Lineage[TableId]:
             Op = self.Operations[OpId] 
@@ -347,7 +347,7 @@ class Ringo(object):
             Lines.append(FuncCall)
         Lines.append('return '+GetName(Info['args'][1], Info['locals']))
          
-        Script = 'import ringo\n\ndef generate('
+        Script = 'import ringo\n\ndef generate(engine,'
         for x in xrange(NumFiles):
             if x != 0: Script += ','
             Script += 'filename'+str(x)
@@ -355,6 +355,8 @@ class Ringo(object):
 
         for Line in Lines:
             Script += '    '+Line+'\n'
+
+        Script += '\nengine=ringo.Ringo()\n'
 
         with open(OutFnm, 'w') as file:
             file.write(Script)

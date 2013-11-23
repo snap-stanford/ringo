@@ -3,7 +3,7 @@
 """
 
 import sys
-sys.path.append("..")
+sys.path.insert(1, "..")
 sys.path.append("../../ringo-engine-python")
 import os
 import time
