@@ -25,7 +25,7 @@ dstfile = sys.argv[2] if len(sys.argv) >= 3 else None
 ringo = ringo.Ringo()
 
 t = testutils.Timer(ENABLE_TIMER)
-S = {"Key":"string", "Author":"string"}
+S = [("Key","string"), ("Author","string")]
 T = ringo.LoadTableTSV(S, srcfile)
 t.show("load")
 

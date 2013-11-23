@@ -12,7 +12,7 @@ class Timer(object):
       if not obj is None:
         if isinstance(obj, snap.PTable):
           message += ', Rows: %d' % obj.GetNumValidRows()
-        else:
+        elif hasattr(obj, 'GetNodes'):
           message += ', Nodes: %d, Edges: %d' % (obj.GetNodes(), obj.GetEdges())
       print message
     self.time = time.time()

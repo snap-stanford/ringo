@@ -51,20 +51,20 @@ class Ringo(object):
             raise AttributeError
         
     # Use case:
-    # S = {'name':'string', 'age':'int', 'weight':'float'}
+    # S = [('name','string'), ('age','int'), ('weight','float')]
     # MyTable = ringo.LoadTableTSV(S, 'table.tsv')
     # MyTable = ringo.LoadTableTSV(S, 'table.tsv', [0,1]) if we want to load only columns 'name' and 'age'
     @registerOp('LoadTableTSV')
     def LoadTableTSV(self, Schema, InFnm, SeparatorChar = '\t', HasTitleLine = False):
         # prepare parameters to call TTable::LoadSS
         S = snap.Schema()  # How should this be written ?
-        for attr in Schema:
-            if Schema[attr] == 'int':
-                S.Add(snap.TStrTAttrPr(attr, snap.atInt))  # tentative TTable interface syntax...
-            elif Schema[attr] == 'float':
-                S.Add(snap.TStrTAttrPr(attr, snap.atFlt))  # tentative TTable interface syntax...
-            elif Schema[attr] == 'string':
-                S.Add(snap.TStrTAttrPr(attr, snap.atStr))  # tentative TTable interface syntax...
+        for Col in Schema:
+            if Col[1] == 'int':
+                S.Add(snap.TStrTAttrPr(Col[0], snap.atInt))  # tentative TTable interface syntax...
+            elif Col[1] == 'float':
+                S.Add(snap.TStrTAttrPr(Col[0], snap.atFlt))  # tentative TTable interface syntax...
+            elif Col[1] == 'string':
+                S.Add(snap.TStrTAttrPr(Col[0], snap.atStr))  # tentative TTable interface syntax...
             else:
                 print "Illegal type %s for attribute %s" % (Schema[attr], attr)
 
@@ -99,9 +99,50 @@ class Ringo(object):
         T.Save(SOut)
         return RingoObject(TableId)
 
+    @registerOp('TableFromHashMap')
+    def TableFromHashMap(self, HashMap, ColName1, ColName2, TableIsStrKeys = False):
+        TableId = self.__GetObjectId()
+        T = snap.TTable.TableFromHashMap(str(TableId), HashMap, ColName1, ColName2, self.Context, snap.TBool(TableIsStrKeys))
+        self.__UpdateObjects(T, [], TableId)
+        return RingoObject(TableId)
+
     # UNTESTED
+    @registerOp('GetHistory', False)
     def GetHistory(self, TableId):
         return str(Lineage[TableId]) #should discuss exact format of this
+
+    @registerOp('DumpTableContent', False)
+    def DumpTableContent(self, TableId, MaxRows = None):
+        T = self.Objects[TableId]
+        ColSpace = 25
+        S = T.GetSchema()
+        Template = ""
+        Line = ""
+        Names = []
+        Types = []
+        for i, attr in enumerate(S):
+            Template += "{%d: <%d}" % (i, ColSpace)
+            Names.append(attr.GetVal1())
+            Types.append(attr.GetVal2())
+            Line += "-" * ColSpace
+        print Template.format(*Names)
+        print Line
+        RI = T.BegRI()
+        Cnt = 0
+        while RI < T.EndRI() and (MaxRows is None or Cnt < MaxRows):
+            Elmts = []
+            for c,t in zip(Names,Types):
+                if t == snap.atInt:
+                    Elmts.append(str(RI.GetIntAttr(c)))
+                elif t == snap.atFlt:
+                    Elmts.append("{0:.6f}".format(RI.GetFltAttr(c)))
+                elif t == snap.atStr:
+                    Elmts.append(RI.GetStrAttr(c))
+                else:
+                    raise NotImplementedError("unsupported column type")
+            print Template.format(*Elmts)
+            RI.Next()
+            Cnt += 1
 
     # UNTESTED
     @registerOp('AddLabel')
@@ -138,7 +179,7 @@ class Ringo(object):
 
     # USE CASE 2 OK
     @registerOp('Select')
-    def Select(self, TableId, Predicate, InPlace = True): 
+    def Select(self, TableId, Predicate, InPlace = True, CompConstant = False): 
         Args = (TableId, Predicate, InPlace)
         if not InPlace:
             TableId = self.__CopyTable(TableId)
@@ -149,9 +190,9 @@ class Ringo(object):
             raise NotImplementedError('Only predicates of the form "Attr1 <op> Attr2" are supported')
 
         T = self.Objects[TableId]
-        opString = elements[1]
+        OpString = elements[1]
         try:
-            op = {
+            Op = {
               '=': snap.EQ,
               '!=': snap.NEQ,
               '<': snap.LT,
@@ -160,10 +201,27 @@ class Ringo(object):
               '>=': snap.GTE,
               'in': snap.SUBSTR,
               'contains': snap.SUPERSTR
-            }[opString]
+            }[OpString]
         except KeyError:
-            raise NotImplementedError("operator %s undefined" % opString)
-        T.SelectAtomic(elements[0], elements[2], op)
+            raise NotImplementedError("Operator %s undefined" % OpString)
+
+        Schema = T.GetSchema()
+        ColType = None
+        for Col in Schema:
+            if Col.Val1 == elements[0]:
+                ColType = Col.Val2
+        if ColType is None:
+            raise ValueError("No column with name %s found" % elements[0])
+ 
+        if CompConstant:
+            if  ColType == snap.atInt:
+                T.SelectAtomicIntConst(elements[0], int(elements[2]), Op)
+            elif ColType == snap.atFlt:
+                T.SelectAtomicFltConst(elements[0], float(elements[2]), Op)
+            elif ColType == snap.atStr:
+                T.SelectAtomicStrConst(elements[0], str(elements[2]), Op)
+        else:
+            T.SelectAtomic(elements[0], elements[2], Op)
         return RingoObject(TableId)
 
     # UNTESTED
@@ -187,7 +245,7 @@ class Ringo(object):
         LeftT = self.Objects[LeftTableId]
         RightT = self.Objects[RightTableId]
         JoinT = LeftT.Join(LeftAttr, RightT, RightAttr)
-        JoinTId = self.__UpdateObjects(JoinT, Lineage[LeftTableId] + Lineage[RightTableId])
+        JoinTId = self.__UpdateObjects(JoinT, self.Lineage[LeftTableId] + self.Lineage[RightTableId])
         return RingoObject(JoinTId)
 
     # USE CASE 1 OK
@@ -211,6 +269,7 @@ class Ringo(object):
     @registerOp('ToGraph')
     def ToGraph(self, TableId, SrcCol, DstCol):
         T = self.Objects[TableId]
+        
         T.SetSrcCol(SrcCol)
         T.SetDstCol(DstCol)
         # TODO: How do we reset attributes when we build several graphs out of the same TTable?
@@ -309,7 +368,7 @@ class Ringo(object):
         if Id is None:
           Id = self.__GetObjectId()
         self.Objects[Id] = Object 
-        self.Lineage[Id] = sorted(Lineage)
+        self.Lineage[Id] = sorted(list(set(Lineage)))
         return Id
 
     def __UpdateOperation(self, OpType, RetVal, Args, Locals):
