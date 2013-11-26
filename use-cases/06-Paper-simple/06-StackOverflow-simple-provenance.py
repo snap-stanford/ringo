@@ -56,17 +56,15 @@ t.show("join", t3)
 t4 = ringo.Join(t3, t1, "AnswerId", "PostId")
 t.show("join", t4)
 
-ringo.GenerateProvenance(t4, '06-StackOverflow-simple-autogen.py')
-'''
 # Graph
 graph = ringo.ToGraph(t4, "1_2.1.UserId", "1.UserId")
 t.show("graph", graph)
+ringo.ShowMetadata(graph)
 
 # Get authority scores
-HTHub = snap.TIntFltH()
-HTAuth = snap.TIntFltH()
-ringo.GetHits(graph, HTHub, HTAuth)
+(HTHub, HTAuth) = ringo.GetHits(graph)
 t.show("hits", graph)
+ringo.ShowMetadata(HTAuth)
 
 t5 = ringo.TableFromHashMap(HTAuth, "UserId", "Authority")
 t.show("authority score", t5)
@@ -83,5 +81,7 @@ t.show("order", t5)
 if not dstdir is None:
   ringo.SaveTableTSV(t5, os.path.join(dstdir,OUTPUT_TABLE_FILENAME))
   t.show("save", t5)
-'''
-ringo.DumpTableContent(t4, 20)
+
+ringo.DumpTableContent(t5, 20)
+ringo.ShowMetadata(t5)
+ringo.GenerateProvenance(t5, '06-StackOverflow-simple-autogen.py')

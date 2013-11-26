@@ -6,6 +6,7 @@ import ringo
 def generate(engine,filename0, filename1, filename2):
     t1 = engine.LoadTableTSV([('PostId', 'int'), ('UserId', 'int'), ('AnswerId', 'int')], filename0)
     t2 = engine.LoadTableTSV([('PostId', 'int'), ('Tag', 'string')], filename1)
+    #need to make this add an list, and have extra param on this select to make it not in place
     t2 = engine.Select(t2, 'Tag = java', CompConstant=True)
     t3 = engine.Join(t1, t2, 'PostId', 'PostId')
     t4 = engine.Join(t3, t1, 'AnswerId', 'PostId')
