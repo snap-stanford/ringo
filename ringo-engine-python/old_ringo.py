@@ -1,66 +1,421 @@
-from snap import *
-from time import gmtime, strftime
+import snap
+import time
+import inspect
 
-class ringo(object):
+class RingoObject(object):
+    def __init__(self, Id):
+        self.Id = Id
+
+"""
+Decorator used to automate the registration of TTable operations
+"""
+def registerOp(opName, trackOp = True):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            unpack_args = [arg.Id if isinstance(arg, RingoObject) else arg for arg in args]
+
+            #If this is changed, GetHits must also be changed
+            locals = inspect.getouterframes(inspect.currentframe())[1][0].f_locals
+            locals_tuples = dict(locals)
+            for var in locals:
+                if isinstance(locals[var], tuple):
+                    for i in xrange(len(locals[var])):
+                        locals_tuples['%s[%d]'%(var, i)] = locals[var][i]
+            ringo_locals = dict((var, locals_tuples[var]) for var in locals_tuples if isinstance(locals_tuples[var], RingoObject))
+
+            RetVal = func(*unpack_args, **kwargs)
+            if trackOp:
+                args[0]._Ringo__UpdateOperation(opName, RetVal, [args[1:], kwargs], ringo_locals)
+            return RetVal
+        return wrapper
+    return decorator
+
+class Ringo(object):
+    NODE_ATTR_NAME = "__node_attr"
+    EDGE_SRC_ATTR_NAME = "__edge_src_attr"
+    EDGE_DST_ATTR_NAME = "__edge_dst_attr"
+
     dataTypes = ['int', 'float', 'string']
     def __init__(self):
-        # mapping between table names and table objects
-        self.Tables = {}
-        # an operation record has the form: <id (int), type (string), result table name (string), argument list (as used in python interface; table names are used for table arguments), time stamp>
+        # mapping between object ids and snap objects
+        self.Objects = {}
+        # an operation record has the form: <id (int), type (string), result table id, argument list (as used in python interface; table ids are used for table arguments), time stamp>
         self.Operations = [] 
-        # mapping between a table (name/id) and the sequence of operation ids that led to it
+        # mapping between a table (id) and the sequence of operation ids that led to it
         self.Lineage = {}
-        # mapping between network names and network objects
-        self.Networks = {}
-        # mapping between a table (name/id) and the names of the networks that originated from it
+        # mapping between a table (id) and the ids of the networks that originated from it
         self.TableToNetworks = {}
-        self.Context = TTableContext.New()
+        self.Context = snap.TTableContext()
+
+    def __getattr__(self, name):
+        if name in dir(snap):
+            def wrapper(*args, **kwargs):
+                unpack_args = [self.Objects[arg.Id] if isinstance(arg, RingoObject) else arg for arg in args]
+                return getattr(snap, name)(*unpack_args, **kwargs)
+            return wrapper
+        else:
+            raise AttributeError
         
     # Use case:
-    # S = {'name':'string', 'age':'int', 'weight':'float'}
-    # ringo.LoadTableTSV('My Table', S, 'table.tsv')
-    # ringo.LoadTableTSV('My Table', S, 'table.tsv', [0,1]) if we want to load only columns 'name' and 'age'
-    def LoadTableTSV(self, TableName, Schema, InFnm, RelevantCols = [], SeparatorChar = '\t', HasTitleLine = True):
+    # S = [('name','string'), ('age','int'), ('weight','float')]
+    # MyTable = ringo.LoadTableTSV(S, 'table.tsv')
+    # MyTable = ringo.LoadTableTSV(S, 'table.tsv', [0,1]) if we want to load only columns 'name' and 'age'
+    @registerOp('LoadTableTSV')
+    def LoadTableTSV(self, Schema, InFnm, SeparatorChar = '\t', HasTitleLine = False):
         # prepare parameters to call TTable::LoadSS
-        S = Table.Schema()  # How should this be written ?
-        for attr in Schema:
-            if Schema[attr] == 'int':
-                S.Add(TStrTypPr(attr, TTable.INT))  # tentative TTable interface syntax...
-            else if Schema[attr] == 'float':
-                S.Add(TStrTypPr(attr, TTable.FLT))  # tentative TTable interface syntax...
-            else if Schema[attr] == 'string':
-                S.Add(TStrTypPr(attr, TTable.STR))  # tentative TTable interface syntax...
+        S = snap.Schema()  # How should this be written ?
+        for Col in Schema:
+            if Col[1] == 'int':
+                S.Add(snap.TStrTAttrPr(Col[0], snap.atInt))  # tentative TTable interface syntax...
+            elif Col[1] == 'float':
+                S.Add(snap.TStrTAttrPr(Col[0], snap.atFlt))  # tentative TTable interface syntax...
+            elif Col[1] == 'string':
+                S.Add(snap.TStrTAttrPr(Col[0], snap.atStr))  # tentative TTable interface syntax...
             else:
                 print "Illegal type %s for attribute %s" % (Schema[attr], attr)
-        RC = TIntV()
-        for c in RelevantCols: 
-            RC.Add(c)
-        
-        # Load input and create new TTable object
-        T = TTable.LoadSS(TableName, S, InFnm, Context, RC, SeparatorChar, HasTitleLine)
-        
-        # update engine's data structures
-        self.Tables[TableName] = T
-        args = (TableName, Schema, InFnm, RelevantCols, SeparatorChar, HasTitleLine)
-        OpId = len(Operations)
-        Op = (OpId, 'load tsv', TableName, args, strftime("%a, %d %b %Y %H:%M:%S", gmtime()))
-        self.Operations.append(Op)
-        Lineage[TableName] = [OpId]
-        
-    def SaveTableTSV(self, TableName, OutFnm):
-        T = Tables[TableName]
-        T.SaveSS(OutFnm)
-        Op = (len(Operations), 'save tsv', TableName, (TableName, OutFnm), strftime("%a, %d %b %Y %H:%M:%S", gmtime()))
-        self.Operations.append(Op)
-    
-    def JoinTables(self, JoinTableName, LeftTableName, RightTableName):
-        LeftT = Tables[LeftTableName]
-        RightT = Tables[RightTableName]
-        JoinT = LeftT.Join(RightT)
-        Tables[JoinTableName] = JoinT
-        Op = (len(Operations), 'join', JoinTableName, (JoinTableName, LeftTableName, RightTableName), strftime("%a, %d %b %Y %H:%M:%S", gmtime()));
-        self.Operations.append(Op);
-        Lineage[JoinTableName] = Lineage[LeftTableName] + Lineage[RightTableName] + [OpId]
 
+        # Load input and create new TTable object
+        TableId = self.__GetObjectId()
+        T = snap.TTable.LoadSS(str(TableId), S, InFnm, self.Context, SeparatorChar, snap.TBool(HasTitleLine))
+        self.__UpdateObjects(T, [], TableId)
+        return RingoObject(TableId)
+        
+    # USE CASE 2 OK
+    @registerOp('SaveTableTSV')
+    def SaveTableTSV(self, TableId, OutFnm):
+        T = self.Objects[TableId]
+        T.SaveSS(OutFnm)
+        return RingoObject(TableId)
+    
+    # UNTESTED
+    @registerOp('LoadTableBinary')
+    def LoadTableBinary(self, InFnm):
+        SIn = TSIn(InFnm)
+        T = TTable.Load(SIn, Context)
+
+        #T's internal name will not match TId - is this an issue?
+        TableId = self.__UpdateObjects(T, [])
+        return RingoObject(TableId)
+
+    # UNTESTED
+    @registerOp('SaveTableBinary')
+    def SaveTableBinary(self, TableId, OutFnm):
+        T = self.Objects[TableId]
+        SOut = TSOut(OutFnm)
+        T.Save(SOut)
+        return RingoObject(TableId)
+
+    @registerOp('TableFromHashMap')
+    def TableFromHashMap(self, HashId, ColName1, ColName2, TableIsStrKeys = False):
+        HashMap = self.Objects[HashId]
+        TableId = self.__GetObjectId()
+        T = snap.TTable.TableFromHashMap(str(TableId), HashMap, ColName1, ColName2, self.Context, snap.TBool(TableIsStrKeys))
+        self.__UpdateObjects(T, [], TableId)
+        return RingoObject(TableId)
+
+    # UNTESTED
+    @registerOp('GetHistory', False)
+    def GetHistory(self, TableId):
+        return str(Lineage[TableId]) #should discuss exact format of this
+
+    @registerOp('DumpTableContent', False)
+    def DumpTableContent(self, TableId, MaxRows = None):
+        T = self.Objects[TableId]
+        ColSpace = 25
+        S = T.GetSchema()
+        Template = ""
+        Line = ""
+        Names = []
+        Types = []
+        for i, attr in enumerate(S):
+            Template += "{%d: <%d}" % (i, ColSpace)
+            Names.append(attr.GetVal1())
+            Types.append(attr.GetVal2())
+            Line += "-" * ColSpace
+        print Template.format(*Names)
+        print Line
+        RI = T.BegRI()
+        Cnt = 0
+        while RI < T.EndRI() and (MaxRows is None or Cnt < MaxRows):
+            Elmts = []
+            for c,t in zip(Names,Types):
+                if t == snap.atInt:
+                    Elmts.append(str(RI.GetIntAttr(c)))
+                elif t == snap.atFlt:
+                    Elmts.append("{0:.6f}".format(RI.GetFltAttr(c)))
+                elif t == snap.atStr:
+                    Elmts.append(RI.GetStrAttr(c))
+                else:
+                    raise NotImplementedError("unsupported column type")
+            print Template.format(*Elmts)
+            RI.Next()
+            Cnt += 1
+
+    # UNTESTED
+    @registerOp('AddLabel')
+    def AddLabel(self, TableId, Attr, Label):
+        T = self.Objects[TableId]
+        T.AddLabel(Attr, Label)
+        return RingoObject(TableId)
+
+    # UNTESTED
+    @registerOp('Unique')
+    def Unique(self, TableId, GroupByAttr, InPlace = True):
+        Args = (TableId, GroupByAttr, InPlace)
+        if not InPlace:
+            TableId = __CopyTable(TableId)
+        
+        T = self.Objects[TableId]
+        T.Unique(GroupByAttr)
+        return RingoObject(TableId)
+
+    # UNTESTED
+    @registerOp('Unique')
+    def Unique(self, TableId, GroupByAttrs, Ordered, InPlace = True):
+        Args = (TableId, GroupByAttr, NewTable)
+        Attrs = TStrV()
+        for Attr in GroupByAttr:
+            Attrs.Add(Attr)
+
+        if not InPlace:
+            TableId = __CopyTable(TableId)
+
+        T = self.Objects[TableId]
+        T.Unique(Attrs, Ordered)
+        return RingoObject(TableId)
+
+    # USE CASE 2 OK
+    @registerOp('Select')
+    def Select(self, TableId, Predicate, InPlace = True, CompConstant = False): 
+        Args = (TableId, Predicate, InPlace)
+        if not InPlace:
+            TableId = self.__CopyTable(TableId)
+            
+        # Parse predicate
+        elements = Predicate.split()
+        if (len(elements) != 3):
+            raise NotImplementedError('Only predicates of the form "Attr1 <op> Attr2" are supported')
+
+        T = self.Objects[TableId]
+        OpString = elements[1]
+        try:
+            Op = {
+              '=': snap.EQ,
+              '!=': snap.NEQ,
+              '<': snap.LT,
+              '<=': snap.LTE,
+              '>': snap.GT,
+              '>=': snap.GTE,
+              'in': snap.SUBSTR,
+              'contains': snap.SUPERSTR
+            }[OpString]
+        except KeyError:
+            raise NotImplementedError("Operator %s undefined" % OpString)
+
+        Schema = T.GetSchema()
+        ColType = None
+        for Col in Schema:
+            if Col.Val1 == elements[0]:
+                ColType = Col.Val2
+        if ColType is None:
+            raise ValueError("No column with name %s found" % elements[0])
+ 
+        if CompConstant:
+            if  ColType == snap.atInt:
+                T.SelectAtomicIntConst(elements[0], int(elements[2]), Op)
+            elif ColType == snap.atFlt:
+                T.SelectAtomicFltConst(elements[0], float(elements[2]), Op)
+            elif ColType == snap.atStr:
+                T.SelectAtomicStrConst(elements[0], str(elements[2]), Op)
+        else:
+            T.SelectAtomic(elements[0], elements[2], Op)
+        return RingoObject(TableId)
+
+    # UNTESTED
+    @registerOp('Project')
+    def Project(self, TableId, Columns, InPlace = True):
+        Args = (TableId, Predicate, NewTable)
+        PrepCols = TStrV()
+        for Col in Columns:
+            PrepCols.Add(Col)
+
+        if NewTable:
+            TableId = __CopyTable(TableId)
+
+        T = self.Objects[TableId]
+        T.ProjectInPlace(PrepCols)
+        return RingoObject(TableId)
+
+    # UNTESTED
+    @registerOp('Join')
+    def Join(self, LeftTableId, RightTableId, LeftAttr, RightAttr):
+        LeftT = self.Objects[LeftTableId]
+        RightT = self.Objects[RightTableId]
+        JoinT = LeftT.Join(LeftAttr, RightT, RightAttr)
+        JoinTId = self.__UpdateObjects(JoinT, self.Lineage[LeftTableId] + self.Lineage[RightTableId])
+        return RingoObject(JoinTId)
+
+    # USE CASE 1 OK
+    @registerOp('SelfJoin')
+    def SelfJoin(self, TableId, Attr):
+        T = self.Objects[TableId]
+        JoinT = T.SelfJoin(Attr)
+        JoinTId = self.__UpdateObjects(JoinT, self.Lineage[TableId])
+        return RingoObject(JoinTId)
+
+    @registerOp('Order')
+    def Order(self, TableId, Attrs, Asc = False):
+        T = self.Objects[TableId]
+        V = snap.TStrV()
+        for attr in Attrs:
+            V.Add(attr)
+        T.Order(V, "", snap.TBool(False), snap.TBool(Asc))
+        return RingoObject(TableId)
+
+    # USE CASE 1 OK
+    @registerOp('ToGraph')
+    def ToGraph(self, TableId, SrcCol, DstCol):
+        T = self.Objects[TableId]
+        
+        T.SetSrcCol(SrcCol)
+        T.SetDstCol(DstCol)
+        # TODO: How do we reset attributes when we build several graphs out of the same TTable?
+        SrcV = snap.TStrV()
+        DstV = snap.TStrV()
+        SrcV.Add(SrcCol)
+        DstV.Add(DstCol)
+        T.AddSrcNodeAttr(SrcV)
+        T.AddDstNodeAttr(DstV)
+
+        G = T.ToGraph(snap.aaFirst)
+        GraphId = self.__UpdateObjects(G, self.Lineage[TableId])
+        return RingoObject(GraphId)
+
+    #Cannot use built-in operation tracking since return value is a pair
+    @registerOp('GetHits', False)
+    def GetHits(self, GraphId):
+        G = self.Objects[GraphId]
+        HT1 = snap.TIntFltH()
+        HT2 = snap.TIntFltH()
+
+        snap.GetHits(G, HT1, HT2)
+        HT1Id = self.__UpdateObjects(HT1, self.Lineage[GraphId])
+        HT2Id = self.__UpdateObjects(HT2, self.Lineage[GraphId])
+        RetVal = (RingoObject(HT1Id), RingoObject(HT2Id))
+
+        #Copy what wrapper does
+        Locals = inspect.getouterframes(inspect.currentframe())[2][0].f_locals
+        Locals = dict((var, Locals[var]) for var in Locals if isinstance(Locals[var], RingoObject))
+        OpId = self.__AddOperation('GetHits', RetVal, [GraphId], Locals)
+
+        self.Lineage[HT1Id].append(OpId)
+        self.Lineage[HT2Id].append(OpId)
+
+        return RetVal
+
+    # UNTESTED
     def GetOpType(self, OpId):
         return Operations[OpId][1]
+
+    # USE CASE 2 OK
+    @registerOp('PageRank')
+    def PageRank(self, GraphId, ResultAttrName = 'PageRank', AddToNetwork = False, C = 0.85, Eps = 1e-4, MaxIter = 100):
+        if AddToNetwork:
+            raise NotImplementedError()
+
+        Graph = self.Objects[GraphId]
+        HT = snap.TIntFltH()
+        snap.GetPageRank(Graph, HT, C, Eps, MaxIter)
+        TableId = self.__GetObjectId()
+        # NOTE: The argument snap.atStr only works if NODE_ATTR_NAME is a String attribute of the graph.
+        # Some logic is needed to determine the attribute type
+        T = snap.TTable.GetFltNodePropertyTable(Graph, str(TableId), HT, self.NODE_ATTR_NAME, snap.atStr, ResultAttrName, self.Context)
+        self.__UpdateObjects(T, self.Lineage[GraphId], TableId)
+        return RingoObject(TableId)
+
+    @registerOp('GenerateProvenance', False)
+    def GenerateProvenance(self, TableId, OutFnm):
+        def GetName(Value, Locals):
+            if isinstance(Value, basestring):
+                return "'"+Value+"'"
+            for Name in Locals:
+                if Locals[Name] == Value:
+                    return Name
+            return str(Value)
+
+        Info = inspect.getouterframes(inspect.currentframe())[1][0].f_locals
+
+        Lines = []
+        NumFiles = 0
+        for OpId in self.Lineage[TableId]:
+            Op = self.Operations[OpId] 
+            FuncCall = 'engine.'+Op[1]+'('
+
+            SpecialArg = -1
+            if Op[1] == 'LoadTableTSV' or Op[1] == 'SaveTableTSV' or Op[1] == 'SaveTableBinary':
+                SpecialArg = 1
+            elif Op[1] == 'LoadTableBinary':
+                SpecialArg = 0
+
+            for Arg in Op[3][0]:
+                if SpecialArg == 0:
+                    FuncCall += 'filename'+str(NumFiles)+','
+                    NumFiles += 1
+                else:
+                    FuncCall += GetName(Arg, Op[4])+','
+                SpecialArg -= 1
+            for Arg in Op[3][1]:
+                FuncCall += str(Arg)+'='+GetName(Op[3][1][Arg], Op[4])+','
+            FuncCall = FuncCall[:-1]+')'
+
+            FindName = Info['locals'] if OpId+1>=len(self.Operations) else self.Operations[OpId+1][4]
+            Name = GetName(Op[2], FindName)
+            if Name != str(Op[2]):
+                FuncCall = Name+'='+FuncCall
+
+            Lines.append(FuncCall)
+        Lines.append('return '+GetName(Info['args'][1], Info['locals']))
+         
+        Script = 'import ringo\n\ndef generate(engine,'
+        for x in xrange(NumFiles):
+            if x != 0: Script += ','
+            Script += 'filename'+str(x)
+        Script += '):\n'
+
+        for Line in Lines:
+            Script += '    '+Line+'\n'
+
+        Script += '\nengine=ringo.Ringo()\n'
+
+        with open(OutFnm, 'w') as file:
+            file.write(Script)
+
+    def __CopyTable(TableId):
+        T = TTable.New(self.Objects[TableId], TId)
+        CopyTableId = self.__UpdateObjects(T, Lineage[TableId])
+        return CopyTableId
+
+    def __UpdateObjects(self, Object, Lineage, Id = None):
+        if Id is None:
+          Id = self.__GetObjectId()
+        self.Objects[Id] = Object 
+        self.Lineage[Id] = sorted(list(set(Lineage)))
+        return Id
+
+    def __UpdateOperation(self, OpType, RetVal, Args, Locals):
+        OpId = self.__AddOperation(OpType, RetVal, Args, Locals)
+        ObjectId = RetVal.Id
+
+        if ObjectId not in self.Lineage:
+            self.Lineage[ObjectId] = [OpId]
+        else:
+            self.Lineage[ObjectId] += [OpId]
+
+    def __AddOperation(self, OpType, RetVal, Args, Locals):
+        OpId = len(self.Operations)
+        Op = (OpId, OpType, RetVal, Args, Locals, time.strftime("%a, %d %b %Y %H:%M:%S"))
+        self.Operations.append(Op)
+        return OpId
+
+    def __GetObjectId(self):
+        return 1 if len(self.Objects) == 0 else max(self.Objects) + 1

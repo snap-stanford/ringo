@@ -6,6 +6,12 @@ class RingoObject(object):
     def __init__(self, Id):
         self.Id = Id
 
+    def __eq__(self, other):
+        return self.Id == other.Id
+
+    def __hash__(self):
+        return hash(self.Id)
+
 """
 Decorator used to automate the registration of TTable operations
 """
@@ -14,12 +20,23 @@ def registerOp(opName, trackOp = True):
         def wrapper(*args, **kwargs):
             unpack_args = [arg.Id if isinstance(arg, RingoObject) else arg for arg in args]
 
+            #If this is changed, GetHits must also be changed
             locals = inspect.getouterframes(inspect.currentframe())[1][0].f_locals
-            locals = dict((var, locals[var]) for var in locals if isinstance(locals[var], RingoObject))
+            ringo_locals = dict((var, locals[var]) for var in locals if isinstance(locals[var], RingoObject))
+            for var in locals:
+                if isinstance(locals[var], tuple):
+                    all_ringo = True
+                    for tuple_elem in locals[var]:
+                        if not isinstance(tuple_elem, RingoObject):
+                            all_ringo = False
+                    if all_ringo == True: ringo_locals[var] = locals[var]
+            args[0]._Ringo__UpdateNaming(ringo_locals)
 
+            start_time = time.time()
             RetVal = func(*unpack_args, **kwargs)
+            end_time = time.time()
             if trackOp:
-                args[0]._Ringo__UpdateOperation(opName, RetVal, [args[1:], kwargs], locals)
+                args[0]._Ringo__UpdateOperation(opName, RetVal, [args[1:], kwargs], end_time - start_time)
             return RetVal
         return wrapper
     return decorator
@@ -33,12 +50,17 @@ class Ringo(object):
     def __init__(self):
         # mapping between object ids and snap objects
         self.Objects = {}
+        # mapping between ringo objects and their user-given names
+        self.ObjectNames = {}
         # an operation record has the form: <id (int), type (string), result table id, argument list (as used in python interface; table ids are used for table arguments), time stamp>
         self.Operations = [] 
-        # mapping between a table (id) and the sequence of operation ids that led to it
+        # mapping between a object (id) and the sequence of operation ids that led to it
         self.Lineage = {}
-        # mapping between a table (id) and the ids of the networks that originated from it
+        # mapping between object ids and their metadata (dict)
+        self.Metadata = {}
+        # mapping between a object (id) and the ids of the networks that originated from it
         self.TableToNetworks = {}
+
         self.Context = snap.TTableContext()
 
     def __getattr__(self, name):
@@ -100,16 +122,20 @@ class Ringo(object):
         return RingoObject(TableId)
 
     @registerOp('TableFromHashMap')
-    def TableFromHashMap(self, HashMap, ColName1, ColName2, TableIsStrKeys = False):
+    def TableFromHashMap(self, HashId, ColName1, ColName2, TableIsStrKeys = False):
+        HashMap = self.Objects[HashId]
         TableId = self.__GetObjectId()
         T = snap.TTable.TableFromHashMap(str(TableId), HashMap, ColName1, ColName2, self.Context, snap.TBool(TableIsStrKeys))
-        self.__UpdateObjects(T, [], TableId)
+        self.__UpdateObjects(T, self.Lineage[HashId], TableId)
         return RingoObject(TableId)
 
     # UNTESTED
     @registerOp('GetHistory', False)
-    def GetHistory(self, TableId):
-        return str(Lineage[TableId]) #should discuss exact format of this
+    def ShowMetadata(self, ObjectId):
+        template = '{0: <25}{1}'
+        print template.format('Name', self.ObjectNames[RingoObject(ObjectId)])
+        for Label, Info in self.Metadata[ObjectId]:
+            print template.format(Label, Info)
 
     @registerOp('DumpTableContent', False)
     def DumpTableContent(self, TableId, MaxRows = None):
@@ -284,6 +310,19 @@ class Ringo(object):
         GraphId = self.__UpdateObjects(G, self.Lineage[TableId])
         return RingoObject(GraphId)
 
+    @registerOp('GetHits')
+    def GetHits(self, GraphId):
+        G = self.Objects[GraphId]
+        HT1 = snap.TIntFltH()
+        HT2 = snap.TIntFltH()
+
+        snap.GetHits(G, HT1, HT2)
+        HT1Id = self.__UpdateObjects(HT1, self.Lineage[GraphId])
+        HT2Id = self.__UpdateObjects(HT2, self.Lineage[GraphId])
+        RetVal = (RingoObject(HT1Id), RingoObject(HT2Id))
+
+        return RetVal
+
     # UNTESTED
     def GetOpType(self, OpId):
         return Operations[OpId][1]
@@ -305,20 +344,27 @@ class Ringo(object):
         return RingoObject(TableId)
 
     @registerOp('GenerateProvenance', False)
-    def GenerateProvenance(self, TableId, OutFnm):
-        def GetName(Value, Locals):
+    def GenerateProvenance(self, ObjectId, OutFnm):
+        def GetName(Value):
             if isinstance(Value, basestring):
                 return "'"+Value+"'"
-            for Name in Locals:
-                if Locals[Name] == Value:
-                    return Name
+            try:
+                if Value in self.ObjectNames:
+                    return self.ObjectNames[Value]
+            except:
+                pass
+            if isinstance(Value, tuple):
+                Ret = '('
+                for SubVal in Value:
+                    Ret += GetName(SubVal)+', '
+                Ret = Ret[:-2]+')'
+                return Ret
             return str(Value)
 
-        Info = inspect.getouterframes(inspect.currentframe())[1][0].f_locals
-
         Lines = []
-        NumFiles = 0
-        for OpId in self.Lineage[TableId]:
+        Files = []
+
+        for OpId in self.Lineage[ObjectId]:
             Op = self.Operations[OpId] 
             FuncCall = 'engine.'+Op[1]+'('
 
@@ -330,33 +376,38 @@ class Ringo(object):
 
             for Arg in Op[3][0]:
                 if SpecialArg == 0:
-                    FuncCall += 'filename'+str(NumFiles)+','
-                    NumFiles += 1
+                    FuncCall += 'filename'+str(len(Files))+', '
+                    Files.append(GetName(Arg))
                 else:
-                    FuncCall += GetName(Arg, Op[4])+','
+                    FuncCall += GetName(Arg)+', '
                 SpecialArg -= 1
             for Arg in Op[3][1]:
-                FuncCall += str(Arg)+'='+GetName(Op[3][1][Arg], Op[4])+','
-            FuncCall = FuncCall[:-1]+')'
+                FuncCall += str(Arg)+'='+GetName(Op[3][1][Arg])+', '
+            FuncCall = FuncCall[:-2]+')'
 
-            FindName = Info['locals'] if OpId+1>=len(self.Operations) else self.Operations[OpId+1][4]
-            Name = GetName(Op[2], FindName)
+            Name = GetName(Op[2])
             if Name != str(Op[2]):
-                FuncCall = Name+'='+FuncCall
+                FuncCall = Name+' = '+FuncCall
 
             Lines.append(FuncCall)
-        Lines.append('return '+GetName(Info['args'][1], Info['locals']))
+
+        FinalName = GetName(RingoObject(ObjectId))
+        Lines.append('return '+FinalName)
          
         Script = 'import ringo\n\ndef generate(engine,'
-        for x in xrange(NumFiles):
-            if x != 0: Script += ','
+        for x in xrange(len(Files)):
+            if x != 0: Script += ', '
             Script += 'filename'+str(x)
         Script += '):\n'
 
         for Line in Lines:
             Script += '    '+Line+'\n'
 
-        Script += '\nengine=ringo.Ringo()\n'
+        Script += '\nengine = ringo.Ringo()\n'
+        Script += FinalName + ' = generate(engine'
+        for File in Files:
+            Script += ', ' + File
+        Script += ')\n'
 
         with open(OutFnm, 'w') as file:
             file.write(Script)
@@ -373,16 +424,69 @@ class Ringo(object):
         self.Lineage[Id] = sorted(list(set(Lineage)))
         return Id
 
-    def __UpdateOperation(self, OpType, RetVal, Args, Locals):
-        ObjectId = RetVal.Id
-        OpId = len(self.Operations)
-        Op = (OpId, OpType, RetVal, Args, Locals, time.strftime("%a, %d %b %Y %H:%M:%S"))
-        self.Operations.append(Op)
+    def __UpdateOperation(self, OpType, RetVal, Args, Time):
+        OpId = self.__AddOperation(OpType, RetVal, Args, Time)
+        
+        ObjectIds = [Object.Id for Object in RetVal] if isinstance(RetVal, tuple) else [RetVal.Id]
+        for ObjectId in ObjectIds:
+            if ObjectId not in self.Lineage:
+                self.Lineage[ObjectId] = [OpId]
+            else:
+                self.Lineage[ObjectId] += [OpId]
 
-        if ObjectId not in self.Lineage:
-            self.Lineage[ObjectId] = [OpId]
-        else:
-            self.Lineage[ObjectId] += [OpId]
+        self.__UpdateMetadata(OpId)
+
+    def __UpdateMetadata(self, OpId):
+        Op = self.Operations[OpId]
+        Objects = Op[2]
+        if not isinstance(Objects, tuple):
+            Objects = [Objects]
+        for Object in Objects:
+            Metadata = [] 
+            self.__AddTypeSpecificInfo(self.Objects[Object.Id], Metadata) 
+            Metadata.append(('Last Operation Time', Op[5]))
+            TotalTime = 0
+            for PrevOpId in self.Lineage[Object.Id]:
+                TotalTime += self.Operations[PrevOpId][5]
+            Metadata.append(('Total Creation Time', TotalTime))
+            self.Metadata[Object.Id] = Metadata
+
+    def __AddTypeSpecificInfo(self, Object, Metadata):
+        if isinstance(Object, snap.PTable):
+            Metadata.append(('Type', 'Table'))
+            Metadata.append(('Number of Rows', Object.GetNumRows()))
+            Schema = []
+            for attr in Object.GetSchema():
+                Schema.append(attr.GetVal1())
+                if attr.GetVal2() == snap.atInt:
+                    Schema[-1] += ' (int)'
+                elif attr.GetVal2() == snap.atFlt:
+                    Schema[-1] += ' (float)'
+                elif attr.GetVal2() == snap.atStr:
+                    Schema[-1] += ' (string)'
+            Metadata.append(('Schema', Schema))
+        elif isinstance(Object, snap.PNEANet):
+            Metadata.append(('Type', 'Network'))
+            Metadata.append(('Number of Nodes', Object.GetNodes()))
+            Metadata.append(('Number of Edges', Object.GetEdges()))
+        elif str(type(Object))[-3] == 'H':
+            Metadata.append(('Type', 'HashMap'))
+            Metadata.append(('Number of Elements', Object.Len()))
+
+    def __AddOperation(self, OpType, RetVal, Args, Time):
+        OpId = len(self.Operations)
+        Op = (OpId, OpType, RetVal, Args, time.strftime("%a, %d %b %Y %H:%M:%S"), Time)
+        self.Operations.append(Op)
+        return OpId
+
+    def __UpdateNaming(self, Locals):
+        for Var in Locals:
+            Object = Locals[Var]
+            if Object not in self.ObjectNames:
+                self.ObjectNames[Object] = Var
+                if isinstance(Object, tuple):
+                    for i in xrange(len(Object)):
+                        self.ObjectNames[Object[i]] = '%s[%d]' %(Var, i)
 
     def __GetObjectId(self):
         return 1 if len(self.Objects) == 0 else max(self.Objects) + 1

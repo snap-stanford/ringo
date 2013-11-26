@@ -61,9 +61,8 @@ graph = ringo.ToGraph(t4, "1_2.1.UserId", "1.UserId")
 t.show("graph", graph)
 
 # Get authority scores
-HTHub = snap.TIntFltH()
-HTAuth = snap.TIntFltH()
-ringo.GetHits(graph, HTHub, HTAuth)
+(HTHub, HTAuth) = ringo.GetHits(graph)
+HT = ringo.GetHits(graph)
 t.show("hits", graph)
 
 t5 = ringo.TableFromHashMap(HTAuth, "UserId", "Authority")
@@ -83,3 +82,4 @@ if not dstdir is None:
   t.show("save", t5)
 
 ringo.DumpTableContent(t5, 20)
+ringo.ShowMetadata(t5)
