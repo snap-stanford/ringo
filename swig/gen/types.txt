@@ -96,7 +96,10 @@ __func__	GetKCoreEdges
 __func__	PrintInfo
 __func__	GetNodeEcc
 __func__	GetPageRank
+__func__	GetPageRankMP1
+__func__	GetPageRankMP2
 __func__	GetHits
+__func__	GetHitsMP
 __func__	PlotInDegDistr
 __func__	PlotOutDegDistr
 __func__	PlotWccDistr

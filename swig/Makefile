@@ -15,9 +15,9 @@ UNAME := $(shell uname)
 
 ifeq ($(UNAME), Linux)
   # Linux flags
-  SWIGFLAGS += -D_CMPWARN -D__stdcall -DSW_SNAPPY
-  CXXFLAGS += -fPIC -D__STDC_LIMIT_MACROS -DSW_SNAPPY
-  LDFLAGS += -shared
+  SWIGFLAGS += -D_CMPWARN -D__stdcall -DSW_SNAPPY -DOPENMP
+  CXXFLAGS += -fPIC -D__STDC_LIMIT_MACROS -DSW_SNAPPY -fopenmp
+  LDFLAGS += -shared -fopenmp
 else ifeq ($(UNAME), Darwin)
   # OS X flags
   SWIGFLAGS += -D_CMPWARN -D__stdcall -DSW_SNAPPY

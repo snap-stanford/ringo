@@ -132,6 +132,16 @@ def GetPageRank(tspec, *args):
     if type(tspec) == PNGraph : return GetPageRank_PNGraph(tspec, *args)
     if type(tspec) == PNEANet : return GetPageRank_PNEANet(tspec, *args)
     return None
+def GetPageRankMP1(tspec, *args):
+    if type(tspec) == PUNGraph: return GetPageRankMP1_PUNGraph(tspec, *args)
+    if type(tspec) == PNGraph : return GetPageRankMP1_PNGraph(tspec, *args)
+    if type(tspec) == PNEANet : return GetPageRankMP1_PNEANet(tspec, *args)
+    return None
+def GetPageRankMP2(tspec, *args):
+    if type(tspec) == PUNGraph: return GetPageRankMP2_PUNGraph(tspec, *args)
+    if type(tspec) == PNGraph : return GetPageRankMP2_PNGraph(tspec, *args)
+    if type(tspec) == PNEANet : return GetPageRankMP2_PNEANet(tspec, *args)
+    return None
 def CntInDegNodes(tspec, *args):
     if type(tspec) == PUNGraph: return CntInDegNodes_PUNGraph(tspec, *args)
     if type(tspec) == PNGraph : return CntInDegNodes_PNGraph(tspec, *args)
@@ -256,6 +266,11 @@ def GetHits(tspec, *args):
     if type(tspec) == PUNGraph: return GetHits_PUNGraph(tspec, *args)
     if type(tspec) == PNGraph : return GetHits_PNGraph(tspec, *args)
     if type(tspec) == PNEANet : return GetHits_PNEANet(tspec, *args)
+    return None
+def GetHitsMP(tspec, *args):
+    if type(tspec) == PUNGraph: return GetHitsMP_PUNGraph(tspec, *args)
+    if type(tspec) == PNGraph : return GetHitsMP_PNGraph(tspec, *args)
+    if type(tspec) == PNEANet : return GetHitsMP_PNEANet(tspec, *args)
     return None
 def GetMxBiCon(tspec, *args):
     if type(tspec) == PUNGraph: return GetMxBiCon_PUNGraph(tspec, *args)
