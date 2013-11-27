@@ -1,9 +1,9 @@
 ***************************************************************************
-* Use case #2: get top Python experts from the StackOverflow dataset      *
+* Use case #3: get top Python experts from the StackOverflow dataset      *
 ***************************************************************************
 
 Dataset: StackOverflow
-Input directory: /dfs/ilfs2/0/ringo/StackOverflow/
+Input directory: /dfs/ilfs2/0/ringo/StackOverflow.old/
 
 Usage: python 02-DBLP-snap.py source destination
        python 02-DBLP-ringo.py source destination
@@ -16,9 +16,9 @@ Usage: python 02-DBLP-snap.py source destination
     sorted in descending order. For each user, the Authority score, the score for 
     comments and the overall final score are given
 
-  * Output: the top < 20 authors ordered by PageRank score
+  * Output: the top 20 Python experts ordered by decreasing authority score
 
-        $python 03-StackOverflow-snap.py /dfs/ilfs2/0/ringo/StackOverflow/ output
+        $python 03-StackOverflow-snap.py /dfs/ilfs2/0/ringo/StackOverflow.old/ output
 
         [load posts]  Elapsed: 13.67 seconds, Rows: 10338371
         [copy & project]  Elapsed: 1.09 seconds, Rows: 10338371

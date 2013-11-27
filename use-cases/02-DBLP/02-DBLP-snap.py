@@ -62,13 +62,11 @@ t.show("select", year)
 # >>> table = authors.join(year, ['Key'], ['Key'])
 table = authors.Join("Key", year, "Key")
 t.show("join", table)
-testutils.dump(table, 10)
 
 # Self-join
 # >>> table.selfjoin(table, ['Key'])
 table = table.SelfJoin("Key")
 t.show("join", table)
-testutils.dump(table, 10)
 
 # Select
 # >>> table.select('Author_1 != Author_2')
@@ -86,7 +84,7 @@ t.show("graph", graph)
 # >>> pagerank = graph.pageRank('PageRank')
 HT = snap.TIntFltH()
 snap.GetPageRank(graph, HT)
-pagerank = snap.TTable("PR", HT, "Author", "PageRank", context, snap.TBool(True))
+pagerank = snap.TTable.New("PR", HT, "Author", PAGE_RANK_ATTRIBUTE, context, snap.TBool(True))
 t.show("page rank", pagerank)
 
 # Order by PageRank score (in descending order)

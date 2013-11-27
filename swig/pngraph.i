@@ -60,10 +60,12 @@ TNGraphEdgeI.GetId = GetId
 // centr.h - PNGraph
 %template(GetNodeEcc_PNGraph) TSnap::GetNodeEcc<PNGraph>;
 %template(GetPageRank_PNGraph) TSnap::GetPageRank<PNGraph>;
+%template(GetHits_PNGraph) TSnap::GetHits<PNGraph>;
+#ifdef OPENMP
 %template(GetPageRankMP1_PNGraph) TSnap::GetPageRankMP1<PNGraph>;
 %template(GetPageRankMP2_PNGraph) TSnap::GetPageRankMP2<PNGraph>;
-%template(GetHits_PNGraph) TSnap::GetHits<PNGraph>;
 %template(GetHitsMP_PNGraph) TSnap::GetHitsMP<PNGraph>;
+#endif
 
 
 // alg.h - PNGraph
