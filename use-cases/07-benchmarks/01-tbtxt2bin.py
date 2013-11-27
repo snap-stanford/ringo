@@ -29,9 +29,7 @@ if __name__ == '__main__':
     t.show("load text", table)
     r.show("__loadtext__")
 
-    FOut = snap.TFOut(dstfile)
-    table.Save(FOut)
-    FOut.Flush()
+    table.SaveBin(dstfile)
     t.show("save bin", table)
     r.show("__savebin__")
 
