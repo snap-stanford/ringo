@@ -8,6 +8,9 @@ sys.path.append("../utils")
 import snap
 import testutils
 
+#def Save(self,*args):
+    #self().Save(*args)
+
 if __name__ == '__main__':
 
     if len(sys.argv) < 3:
@@ -29,7 +32,10 @@ if __name__ == '__main__':
     t.show("load text", table)
     r.show("__loadtext__")
 
-    table.SaveBin(dstfile)
+    FOut = snap.TFOut(dstfile)
+    table.Save(FOut)
+    FOut.Flush()
+    #table.SaveBin(dstfile)
     t.show("save bin", table)
     r.show("__savebin__")
 

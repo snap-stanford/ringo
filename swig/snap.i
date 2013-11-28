@@ -572,6 +572,9 @@ Version = "0.8.4r"
 %include "pungraph.i"
 %include "pgraph.i"
 
+/* table interface */
+%include "ptable.i"
+
 %template(PTable) TPt< TTable >;
 
 // note for operator renaming
