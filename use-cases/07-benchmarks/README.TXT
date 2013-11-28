@@ -24,6 +24,13 @@ grpagerank.py <srcfile>
 	the edges of the graph. The final table contains three integer
 	columns representing the list of edges in the graph (edge id, 
 	source id, destination id)
-	TODO: there is still an error at the graph creation step when there
-	are comments in the original .txt file - probably NumRows or some
-	related variable is not initialized correctly.
+
+03-tbselltnewtb.py
+	reads a table from a source input file in binary format, and
+	creates a new table with the same schema as the first table
+	but containing only the rows where the first value is < 10000.
+
+04-tbselgtnewtb.py
+	reads a table from a source input file in binary format, and
+	creates a new table with the same schema as the first table
+	but containing only the rows where the first value is > 10000.
