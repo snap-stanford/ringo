@@ -62,6 +62,12 @@ __loadbin__       cpu(s) 6.613  mem(MB) 1362.600
 [selected < 1000 new table]Elapsed: 5.01 seconds, Rows: 581776
 __selectedlt1000newtable__  cpu(s) 4.995  mem(MB) 1362.600
 
+madmax3:/lfs/local/0/rok/ringo> python 03-tbselltnewtb.py twitter_rv.table
+[load bin]        Elapsed: 117.04 seconds, Rows: 1468365182
+__loadbin__       cpu(s) 116.655  mem(MB) 28694.056
+[selected < 1000 new table]Elapsed: 106.94 seconds, Rows: 8459175
+__selectedlt1000newtable__  cpu(s) 106.694  mem(MB) 28694.056
+
 ----------------------
 Benchmark 4:
 - read table from a file with the binary format
