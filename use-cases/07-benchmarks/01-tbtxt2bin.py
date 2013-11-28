@@ -34,8 +34,6 @@ if __name__ == '__main__':
 
     FOut = snap.TFOut(dstfile)
     table.Save(FOut)
-    FOut.Flush()
-    #table.SaveBin(dstfile)
     t.show("save bin", table)
     r.show("__savebin__")
 
