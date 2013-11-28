@@ -1,0 +1,80 @@
+Benchmarks
+Nov 27, 2013
+
+New directory:
+  use-cases/07-benchmarks
+
+Input file:
+  /dfs/ilfs2/0/ringo/benchmarks/soc-LiveJournal1.txt
+	original file from snap.staford.edu
+  /dfs/ilfs2/0/ringo/benchmarks/soc-LiveJournal1-noheader.txt
+	file without the header
+  /dfs/ilfs2/0/ringo/benchmarks/twitter_rv.txt
+	original file from the Web, twitter-2010
+
+----------------------
+Benchmark 1:
+- read input text file and build a table with 2 integer columns
+- save table to file in the binary format
+
+madmax3:/lfs/local/0/rok/ringo> time python 01-tbtxt2bin.py soc-LiveJournal1-noheader.txt soc-LiveJournal1.table
+[load text]       Elapsed: 30.63 seconds, Rows: 68993773
+__loadtext__            cpu(s) 30.541   mem(MB) 4721.224
+[save bin]        Elapsed: 4.32 seconds, Rows: 68993773
+__savebin__             cpu(s) 4.305    mem(MB) 4721.224
+
+madmax3:/lfs/local/0/rok/ringo> time python 01-tbtxt2bin.py twitter_rv.txt twitter_rv.table
+[load text]       Elapsed: 584.90 seconds, Rows: 1468365182
+__loadtext__            cpu(s) 583.000  mem(MB) 79119.416
+[save bin]        Elapsed: 100.47 seconds, Rows: 1468365182
+__savebin__             cpu(s) 100.195  mem(MB) 79119.416
+
+----------------------
+Benchmark 2:
+- read table from a file with the binary format
+- create a graph from the table
+- create table from the graph
+
+madmax3:/lfs/local/0/rok/ringo> time python 02-tbbin2gr2tb.py soc-LiveJournal1.table
+[load bin]        Elapsed: 6.05 seconds, Rows: 68993773
+__loadbin__             cpu(s) 6.032    mem(MB) 1361.532
+[create graph]    Elapsed: 83.52 seconds, Rows: 68993773
+__creategraph__         cpu(s) 83.287   mem(MB) 8572.868
+[table from graph]Elapsed: 6.12 seconds, Rows: 68993773
+__tablefromgraph__      cpu(s) 6.102    mem(MB) 8761.336
+
+madmax3:/lfs/local/0/rok/ringo> time python 02-tbbin2gr2tb.py twitter_rv.table
+[load bin]        Elapsed: 114.16 seconds, Rows: 1468365182
+__loadbin__             cpu(s) 113.792  mem(MB) 28693.012
+[create graph]    Elapsed: 2490.36 seconds, Rows: 1468365182
+__creategraph__         cpu(s) 2483.698 mem(MB) 134119.948
+[table from graph]Elapsed: 115.93 seconds, Rows: 1468365182
+__tablefromgraph__      cpu(s) 115.485  mem(MB) 137429.552
+
+----------------------
+Benchmark 3:
+- read table from a file with the binary format
+- select rows with the first value < 10000, create new table
+
+Benchmark 4:
+- read table from a file with the binary format
+- select rows with the first value > 10000, create new table
+
+Benchmark 5:
+- read table from a file with the binary format
+- select rows with the first value < 10000, in place
+
+Benchmark 6:
+- read table from a file with the binary format
+- select rows with the first value > 10000, in place
+
+Benchmark 7:
+- read table t1 from a file with the binary format
+- create new table t2 with one column and 10000 rows with numbers 0..9999
+- join t2 and t1 on first columns
+
+Benchmark 8:
+- read table t1 from a file with the binary format
+- create new table t2 with one column and 4837570 rows with numbers 0..4837569
+- join t2 and t1 on first columns
+
