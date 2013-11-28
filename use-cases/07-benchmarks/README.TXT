@@ -34,3 +34,11 @@ grpagerank.py <srcfile>
 	reads a table from a source input file in binary format, and
 	creates a new table with the same schema as the first table
 	but containing only the rows where the first value is > 10000.
+
+05-tbselltinplace.py
+	reads a table from a source input file in binary format, and
+	removes all the rows where the first value is not < 10000.
+
+06-tbselgtinplace.py
+	reads a table from a source input file in binary format, and
+	removes all the rows where the first value is not > 10000.
