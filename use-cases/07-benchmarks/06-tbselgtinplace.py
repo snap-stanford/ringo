@@ -29,5 +29,5 @@ if __name__ == '__main__':
 
     Selected = snap.TIntV()
     table.SelectAtomicIntConst("Src", 10000, snap.GT)
-    t.show("selected > 1000 in place", table)
-    r.show("__selectedgt1000inplace__")
+    t.show("selected > 10K in place", table)
+    r.show("__selectedgt10Kinplace__")

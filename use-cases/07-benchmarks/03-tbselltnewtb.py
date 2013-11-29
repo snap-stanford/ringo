@@ -30,5 +30,5 @@ if __name__ == '__main__':
     Selected = snap.TIntV()
     table.SelectAtomicIntConst("Src", 10000, snap.LT, Selected, snap.TBool(False))
     table2 = snap.TTable.New(table, "2", Selected)
-    t.show("selected < 1000 new table", table2)
-    r.show("__selectedlt1000newtable__")
+    t.show("selected < 10K new table", table2)
+    r.show("__selectedlt10Knewtable__")
