@@ -14,7 +14,7 @@ Input file:
 
 ----------------------
 Benchmark 1:
-- read input text file and build a table with 2 integer columns
+- read input text file with 2 columns and build a table with 2 integer columns
 - save table to file in the binary format
 
 madmax3:/lfs/local/0/rok/ringo> time python 01-tbtxt2bin.py soc-LiveJournal1-noheader.txt soc-LiveJournal1.table
@@ -77,4 +77,77 @@ Benchmark 8:
 - read table t1 from a file with the binary format
 - create new table t2 with one column and 4837570 rows with numbers 0..4837569
 - join t2 and t1 on first columns
+
+----------------------
+
+Benchmark 50:
+- read input text file with two columns and build a PNGraph
+- save PNGraph to file in the binary format
+
+madmax3:/lfs/local/0/rok/ringo> time python 50-grtxt2bin.py soc-LiveJournal1-noheader.txt soc-LiveJournal1.graph
+[load text]       Elapsed: 63.42 seconds, Nodes: 4847571, Edges: 68993773
+__loadtext__            cpu(s) 63.370   mem(MB) 2173.488
+[save bin]        Elapsed: 3.39 seconds, Nodes: 4847571, Edges: 68993773
+__savebin__             cpu(s) 3.491    mem(MB) 2173.488
+
+madmax3:/lfs/local/0/rok/ringo> time python 50-grtxt2bin.py twitter_rv.txt twitter_rv.graph
+[load text]       Elapsed: 1796.63 seconds, Nodes: 41652230, Edges: 1468365182
+__loadtext__            cpu(s) 1792.409 mem(MB) 25086.476
+[save bin]        Elapsed: 67.87 seconds, Nodes: 41652230, Edges: 1468365182
+__savebin__             cpu(s) 69.036   mem(MB) 25086.476
+
+----------------------
+Benchmark 51:
+- read PNGraph from a file with the binary format
+- calculate pagerank
+
+madmax3:/lfs/local/0/rok/ringo> time python 51-grpagerank.py soc-LiveJournal1.graph
+[load graph]      Elapsed: 5.08 seconds, Nodes: 4847571, Edges: 68993773
+__loadbin__             cpu(s) 5.184    mem(MB) 992.084
+[pagerank]        Elapsed: 5.11 seconds, Nodes: 4847571, Edges: 68993773
+__pagerank__            cpu(s) 370.841  mem(MB) 1344.584
+24 iterations in 4s
+
+madmax3:/lfs/local/0/rok/ringo> time python 51-grpagerank.py twitter_rv.graph
+[load graph]      Elapsed: 75.42 seconds, Nodes: 41652230, Edges: 1468365182
+__loadbin__             cpu(s) 76.645   mem(MB) 15150.040
+[pagerank]        Elapsed: 95.95 seconds, Nodes: 41652230, Edges: 1468365182
+__pagerank__            cpu(s) 6379.563 mem(MB) 18337.412
+21 iterations in 81s
+
+----------------------
+Benchmark 52:
+- read input text file with two columns and build a PNEANet
+- save PNEANet to file in the binary format
+
+madmax3:/lfs/local/0/rok/ringo> time python 52-nettxt2bin.py soc-LiveJournal1-noheader.txt soc-LiveJournal1.net
+[load text]       Elapsed: 70.86 seconds, Nodes: 4847571, Edges: 68993773
+__loadtext__            cpu(s) 70.667   mem(MB) 6859.352
+[save bin]        Elapsed: 9.22 seconds, Nodes: 4847571, Edges: 68993773
+__savebin__             cpu(s) 9.198    mem(MB) 6859.352
+
+madmax3:/lfs/local/0/rok/ringo> time python 52-nettxt2bin.py twitter_rv.txt twitter_rv.net
+[load text]       Elapsed: 2068.26 seconds, Nodes: 41652230, Edges: 1468365182
+__loadtext__            cpu(s) 2062.072 mem(MB) 101899.520
+[save bin]        Elapsed: 205.42 seconds, Nodes: 41652230, Edges: 1468365182
+__savebin__             cpu(s) 204.893  mem(MB) 101899.520
+
+----------------------
+Benchmark 53:
+- read PNEANet from a file with the binary format
+- calculate pagerank
+
+madmax3:/lfs/local/0/rok/ringo> time python 53-netpagerank.py soc-LiveJournal1.net
+[load graph]      Elapsed: 12.27 seconds, Nodes: 4847571, Edges: 68993773
+__loadbin__             cpu(s) 12.244   mem(MB) 2805.776
+[pagerank]        Elapsed: 21.75 seconds, Nodes: 4847571, Edges: 68993773
+__pagerank__            cpu(s) 1460.664 mem(MB) 3227.024
+24 iterations in 20s
+
+madmax3:/lfs/local/0/rok/ringo> time python 53-netpagerank.py twitter_rv.net
+[load graph]      Elapsed: 210.70 seconds, Nodes: 41652230, Edges: 1468365182
+__loadbin__             cpu(s) 210.167  mem(MB) 52710.616
+[pagerank]        Elapsed: 362.06 seconds, Nodes: 41652230, Edges: 1468365182
+__pagerank__            cpu(s) 23470.793        mem(MB) 56418.312
+21 iterations in 334s
 

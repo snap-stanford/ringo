@@ -1,14 +1,24 @@
 Benchmarks
-Nov 25, 2013
+Nov 28, 2013
 
-grtxt2bin.py <srcfile> <dstfile>
+50-grtxt2bin.py <srcfile> <dstfile>
 	reads a source input file in the text format and produces a
 	destination output file in the SNAP binary format. The input
 	file is an edge list, specifying a directed graph. The output
 	file contains a SNAP PNGraph.
 
-grpagerank.py <srcfile>
+51-grpagerank.py <srcfile>
 	reads a source input file which contains a PNGraph in the
+	SNAP binary format and calculates a pagerank.
+
+52-nettxt2bin.py <srcfile> <dstfile>
+	reads a source input file in the text format and produces a
+	destination output file in the SNAP binary format. The input
+	file is an edge list, specifying a directed graph. The output
+	file contains a SNAP PNEANet.
+
+53-netpagerank.py <srcfile>
+	reads a source input file which contains a PNEANet in the
 	SNAP binary format and calculates a pagerank.
 
 01-tbtxt2bin.py <srcfile> <dstfile>

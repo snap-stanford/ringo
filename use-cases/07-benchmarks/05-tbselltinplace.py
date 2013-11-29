@@ -31,3 +31,4 @@ if __name__ == '__main__':
     table.SelectAtomicIntConst("Src", 10000, snap.LT)
     t.show("selected < 1000 in place", table)
     r.show("__selectedlt1000inplace__")
+

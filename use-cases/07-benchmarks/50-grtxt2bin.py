@@ -20,7 +20,7 @@ if __name__ == '__main__':
     t = testutils.Timer()
     r = testutils.Resource()
 
-    g = snap.LoadEdgeListStr(snap.PNGraph, srcfile, 0, 1)
+    g = snap.LoadEdgeList(snap.PNGraph, srcfile, 0, 1)
     t.show("load text", g)
     r.show("__loadtext__")
 
