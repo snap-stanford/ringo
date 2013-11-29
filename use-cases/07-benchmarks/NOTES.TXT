@@ -17,13 +17,13 @@ Benchmark 1:
 - read input text file with 2 columns and build a table with 2 integer columns
 - save table to file in the binary format
 
-madmax3:/lfs/local/0/rok/ringo> time python 01-tbtxt2bin.py soc-LiveJournal1-noheader.txt soc-LiveJournal1.table
+madmax3:/lfs/local/0/rok/ringo> python 01-tbtxt2bin.py soc-LiveJournal1-noheader.txt soc-LiveJournal1.table
 [load text]       Elapsed: 30.63 seconds, Rows: 68993773
 __loadtext__            cpu(s) 30.541   mem(MB) 4721.224
 [save bin]        Elapsed: 4.32 seconds, Rows: 68993773
 __savebin__             cpu(s) 4.305    mem(MB) 4721.224
 
-madmax3:/lfs/local/0/rok/ringo> time python 01-tbtxt2bin.py twitter_rv.txt twitter_rv.table
+madmax3:/lfs/local/0/rok/ringo> python 01-tbtxt2bin.py twitter_rv.txt twitter_rv.table
 [load text]       Elapsed: 584.90 seconds, Rows: 1468365182
 __loadtext__            cpu(s) 583.000  mem(MB) 79119.416
 [save bin]        Elapsed: 100.47 seconds, Rows: 1468365182
@@ -35,7 +35,7 @@ Benchmark 2:
 - create a graph from the table
 - create table from the graph
 
-madmax3:/lfs/local/0/rok/ringo> time python 02-tbbin2gr2tb.py soc-LiveJournal1.table
+madmax3:/lfs/local/0/rok/ringo> python 02-tbbin2gr2tb.py soc-LiveJournal1.table
 [load bin]        Elapsed: 6.05 seconds, Rows: 68993773
 __loadbin__             cpu(s) 6.032    mem(MB) 1361.532
 [create graph]    Elapsed: 83.52 seconds, Rows: 68993773
@@ -43,7 +43,7 @@ __creategraph__         cpu(s) 83.287   mem(MB) 8572.868
 [table from graph]Elapsed: 6.12 seconds, Rows: 68993773
 __tablefromgraph__      cpu(s) 6.102    mem(MB) 8761.336
 
-madmax3:/lfs/local/0/rok/ringo> time python 02-tbbin2gr2tb.py twitter_rv.table
+madmax3:/lfs/local/0/rok/ringo> python 02-tbbin2gr2tb.py twitter_rv.table
 [load bin]        Elapsed: 114.16 seconds, Rows: 1468365182
 __loadbin__             cpu(s) 113.792  mem(MB) 28693.012
 [create graph]    Elapsed: 2490.36 seconds, Rows: 1468365182
@@ -56,18 +56,52 @@ Benchmark 3:
 - read table from a file with the binary format
 - select rows with the first value < 10000, create new table
 
+madmax3:/lfs/local/0/rok/ringo> python 03-tbselltnewtb.py soc-LiveJournal1.table
+[load bin]        Elapsed: 6.63 seconds, Rows: 68993773
+__loadbin__       cpu(s) 6.613  mem(MB) 1362.600
+[selected < 1000 new table]Elapsed: 5.01 seconds, Rows: 581776
+__selectedlt1000newtable__  cpu(s) 4.995  mem(MB) 1362.600
+
+madmax3:/lfs/local/0/rok/ringo> python 03-tbselltnewtb.py twitter_rv.table
+[load bin]        Elapsed: 117.04 seconds, Rows: 1468365182
+__loadbin__       cpu(s) 116.655  mem(MB) 28694.056
+[selected < 1000 new table]Elapsed: 106.94 seconds, Rows: 8459175
+__selectedlt1000newtable__  cpu(s) 106.694  mem(MB) 28694.056
+
+----------------------
 Benchmark 4:
 - read table from a file with the binary format
 - select rows with the first value > 10000, create new table
 
+madmax3:/lfs/local/0/rok/ringo> python 04-tbselgtnewtb.py soc-LiveJournal1.table
+[load bin]        Elapsed: 5.96 seconds, Rows: 68993773
+__loadbin__       cpu(s) 5.944  mem(MB) 1362.576
+[selected > 1000 new table]Elapsed: 22.32 seconds, Rows: 68411783
+__selectedgt1000newtable__  cpu(s) 22.263 mem(MB) 6328.688
+
+----------------------
 Benchmark 5:
 - read table from a file with the binary format
 - select rows with the first value < 10000, in place
 
+madmax3:/lfs/local/0/rok/ringo> python 05-tbselltinplace.py soc-LiveJournal1.table
+[load bin]        Elapsed: 5.98 seconds, Rows: 68993773
+__loadbin__       cpu(s) 5.962  mem(MB) 1362.568
+[selected < 1000 in place]Elapsed: 4.27 seconds, Rows: 581776
+__selectedlt1000inplace__ cpu(s) 4.261  mem(MB) 1362.568
+
+----------------------
 Benchmark 6:
 - read table from a file with the binary format
 - select rows with the first value > 10000, in place
 
+madmax3:/lfs/local/0/rok/ringo> python 06-tbselgtinplace.py soc-LiveJournal1.table
+[load bin]        Elapsed: 6.61 seconds, Rows: 68993773
+__loadbin__       cpu(s) 6.590  mem(MB) 1362.572
+[selected > 1000 in place]Elapsed: 3.16 seconds, Rows: 68411783
+__selectedgt1000inplace__ cpu(s) 3.150  mem(MB) 1362.572
+
+----------------------
 Benchmark 7:
 - read table t1 from a file with the binary format
 - create new table t2 with one column and 10000 rows with numbers 0..9999
