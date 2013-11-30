@@ -52,3 +52,13 @@ Nov 28, 2013
 06-tbselgtinplace.py
 	reads a table from a source input file in binary format, and
 	removes all the rows where the first value is not > 10000.
+
+07-joinsmall.py
+	reads a table t1 from a source input file in binary format,
+	creates a one-column table containing the values 0..10000,
+	and joins the two tables on the first column
+
+08-joinbig.py
+	reads a table t1 from a source input file in binary format,
+	creates a one-column table containing the values 0..4837569,
+	and joins the two tables on the first column
