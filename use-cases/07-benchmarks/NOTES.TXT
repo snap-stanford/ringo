@@ -121,47 +121,41 @@ __selectedgt1000inplace__       cpu(s) 69.504   mem(MB) 28693.000
 
 ----------------------
 Benchmark 7:
-- read table t1 from a file with the binary format
-- create new table t2 with one column and 10000 rows with numbers 0..9999
+- read two column table t1 from a file with the binary format
+- read one column table t2 from a file with the text format format
 - join t2 and t1 on first columns
 
-madmax3:/lfs/local/0/mraison/ringo> python 07-joinsmall.py soc-LiveJournal1.table
-[load bin]        Elapsed: 6.00 seconds, Rows: 68993773
-__loadbin__       cpu(s) 5.981  mem(MB) 1362.564
-[created table with vals 0..10000]Elapsed: 0.02 seconds, Rows: 10000
-__createdtablewithvals10000__ cpu(s) 0.025  mem(MB) 1362.564
-[joined t1 and t2 on first columns]Elapsed: 6.95 seconds, Rows: 581776
-__joinedt1t2firstcols__ cpu(s) 6.928  mem(MB) 1362.564
-
-madmax3:/lfs/local/0/mraison/ringo> python 07-joinsmall.py twitter_rv.table
-[load bin]        Elapsed: 120.49 seconds, Rows: 1468365182
-__loadbin__       cpu(s) 120.085  mem(MB) 28694.044
-[created table with vals 0..10000]Elapsed: 0.03 seconds, Rows: 10000
-__createdtablewithvals10000__ cpu(s) 0.028  mem(MB) 28694.044
-[joined t1 and t2 on first columns]Elapsed: 136.39 seconds, Rows: 8459175
-__joinedt1t2firstcols__ cpu(s) 136.081  mem(MB) 28694.044
-
-----------------------
-Benchmark 8:
-- read table t1 from a file with the binary format
-- create new table t2 with one column and 4837570 rows with numbers 0..4837569
-- join t2 and t1 on first columns
-
-madmax3:/lfs/local/0/mraison/ringo> python 08-joinbig.py soc-LiveJournal1.table
+madmax3:/lfs/local/0/rok/ringo> time python 07-join.py soc-LiveJournal1.table soc-LiveJournal1_10k.txt
 [load bin]        Elapsed: 6.01 seconds, Rows: 68993773
-__loadbin__       cpu(s) 5.996  mem(MB) 1362.560
-[created table with vals 0..4837570]Elapsed: 11.48 seconds, Rows: 4837570
-__createdtablewithvals4837570__ cpu(s) 11.455 mem(MB) 1508.640
-[joined t1 and t2 on first columns]Elapsed: 36.80 seconds, Rows: 68969511
-__joinedt1t2firstcols__ cpu(s) 36.695 mem(MB) 6938.588
+__loadbin__             cpu(s) 5.996    mem(MB) 1361.548
+[load text]       Elapsed: 0.00 seconds, Rows: 10000
+__loadtext__            cpu(s) 0.004    mem(MB) 1361.548
+[join]            Elapsed: 6.91 seconds, Rows: 1128462
+__join__                cpu(s) 6.891    mem(MB) 1361.548
 
-madmax3:/lfs/local/0/mraison/ringo> python 08-joinbig.py twitter_rv.table
-[load bin]        Elapsed: 114.41 seconds, Rows: 1468365182
-__loadbin__       cpu(s) 114.028  mem(MB) 28694.044
-[created table with vals 0..4837570]Elapsed: 9.87 seconds, Rows: 4837570
-__createdtablewithvals4837570__ cpu(s) 9.848  mem(MB) 28694.044
-[joined t1 and t2 on first columns]Elapsed: 154.00 seconds, Rows: 61864635
-__joinedt1t2firstcols__ cpu(s) 153.607  mem(MB) 28694.044
+madmax3:/lfs/local/0/rok/ringo> time python 07-join.py twitter_rv.table twitter_rv_10k.txt
+[load bin]        Elapsed: 113.69 seconds, Rows: 1468365182
+__loadbin__             cpu(s) 113.319  mem(MB) 28693.028
+[load text]       Elapsed: 0.00 seconds, Rows: 10000
+__loadtext__            cpu(s) 0.003    mem(MB) 28693.028
+[join]            Elapsed: 139.40 seconds, Rows: 37748898
+__join__                cpu(s) 139.087  mem(MB) 28693.028
+
+madmax3:/lfs/local/0/rok/ringo> time python 07-join.py soc-LiveJournal1.table soc-LiveJournal1_all.txt 
+[load bin]        Elapsed: 6.01 seconds, Rows: 68993773
+__loadbin__             cpu(s) 5.995    mem(MB) 1361.548
+[load text]       Elapsed: 1.70 seconds, Rows: 4837571
+__loadtext__            cpu(s) 1.701    mem(MB) 1394.740
+[join]            Elapsed: 37.52 seconds, Rows: 68976030
+__join__                cpu(s) 37.408   mem(MB) 6824.852
+
+madmax3:/lfs/local/0/rok/ringo> time python 07-join.py twitter_rv.table twitter_rv_all.txt 
+[load bin]        Elapsed: 115.75 seconds, Rows: 1468365182
+__loadbin__             cpu(s) 115.366  mem(MB) 28693.028
+[load text]       Elapsed: 13.87 seconds, Rows: 41642230
+__loadtext__            cpu(s) 13.826   mem(MB) 28693.028
+[join]            Elapsed: 700.61 seconds, Rows: 1467617557
+__join__                cpu(s) 698.248  mem(MB) 120987.936
 
 ----------------------
 
