@@ -10,15 +10,13 @@ Usage: python 02-DBLP-snap.py source destination
 
   * Arguments:
 
-  source: input directory containing posts.tsv and tags.tsv files
-  destination: directory containing the output files.
-    The only output file is experts.tsv. It stores the list of Python experts, 
-    sorted in descending order. For each user, the Authority score, the score for 
-    comments and the overall final score are given
+  posts.tsv: path to posts.tsv file
+  tags.tsv: path to tags.tsv file
+  dest.tsv: output .tsv file containing expert scores. It stores the list of Python experts, sorted in descending order. For each user, the Authority score, the score for comments and the overall final score are given
 
   * Output: the top 20 Python experts ordered by decreasing authority score
 
-        $python 06-Paper-simple-snap.py /dfs/ilfs2/0/ringo/StackOverflow/ output
+        $python 06-Paper-simple-snap.py /dfs/ilfs2/0/ringo/StackOverflow/posts.tsv /dfs/ilfs2/0/ringo/StackOverflow/tags.tsv output
 
         [load posts]    Elapsed: 4.69 seconds, Rows: 15838934
         [load tags] Elapsed: 15.61 seconds, Rows: 16413230

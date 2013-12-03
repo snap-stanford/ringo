@@ -18,17 +18,16 @@ ENABLE_TIMER = True
 AUTHORITY_ATTRIBUTE = "Authority"
 
 if len(sys.argv) < 2:
-  print """Usage: python 02-DBLP-snap.py source [destination]
-  srcDir: input directory containing posts.tsv and comments.tsv files
-  destination: output .tsv file containing expert scores"""
+  print """Usage: python 02-DBLP-snap.py <posts.tsv> <tags.tsv> <comments.tsv> <dest.tsv>
+  posts.tsv: path to posts.tsv file
+  tags.tsv: path to tags.tsv file
+  comments.tsv: path to comments.tsv file
+  dest.tsv: output .tsv file containing expert scores"""
   exit(1)
-srcdir = sys.argv[1]
-dstdir = sys.argv[2] if len(sys.argv) >= 3 else None
-if not dstdir is None:
-  try:
-    os.makedirs(dstdir)
-  except OSError:
-    pass
+postsFile = sys.argv[1]
+tagsFile = sys.argv[2]
+commentsFile = sys.argv[3]
+destFile = sys.argv[4] if len(sys.argv) >= 4 else None
 
 context = snap.TTableContext()
 
@@ -36,61 +35,72 @@ t = testutils.Timer(ENABLE_TIMER)
 
 # a) Compute authority scores
 
+
 # Load posts
 # >>> posts = ringo.load('posts.tsv')
 S = snap.Schema()
-S.Add(snap.TStrTAttrPr("Id", snap.atInt))
-S.Add(snap.TStrTAttrPr("ParentId", snap.atInt))
-S.Add(snap.TStrTAttrPr("OwnerUserId", snap.atInt))
-S.Add(snap.TStrTAttrPr("Score", snap.atInt))
-S.Add(snap.TStrTAttrPr("Tags", snap.atStr))
-posts = snap.TTable.LoadSS("posts", S, os.path.join(srcdir, POSTS_FILE), context, '\t', snap.TBool(False))
+S.Add(snap.TStrTAttrPr("PostId", snap.atInt))
+S.Add(snap.TStrTAttrPr("UserId", snap.atInt))
+S.Add(snap.TStrTAttrPr("AcceptedAnswerId", snap.atInt))
+S.Add(snap.TStrTAttrPr("CreationDate", snap.atStr))
+posts = snap.TTable.LoadSS("t1", S, postsFile, context, '\t', snap.TBool(False))
 t.show("load posts", posts)
 
+# Load tags
+# >>> tags = ringo.load('tags.tsv')
+S = snap.Schema()
+S.Add(snap.TStrTAttrPr("PostId", snap.atInt))
+S.Add(snap.TStrTAttrPr("Tag", snap.atStr))
+tags = snap.TTable.LoadSS("t2", S, tagsFile, context, '\t', snap.TBool(False))
+t.show("load tags", tags)
+
+# Select
+# >>> tags.select('Tags = "python"')
+tags.SelectAtomicStrConst("Tag", "python", snap.EQ)
+t.show("select", tags)
+
+# Join
+# >>> questions = posts.join(tags)
+questions = posts.Join("PostId", tags, "PostId")
+t.show("join", questions)
+
 # Project
-# >>> questions = posts.project(['Id', 'OwnerUserId', 'Tags'])
+# >>> questions.project(['PostId', 'UserId', 'AcceptedAnswerId'], in_place = True)
 V = snap.TStrV()
-V.Add("Id")
-V.Add("OwnerUserId")
-V.Add("Tags")
-questions = posts.Project(V, "questions")
+V.Add("PostId")
+V.Add("t1.UserId")
+V.Add("t1.AcceptedAnswerId")
+questions.ProjectInPlace(V)
 t.show("copy & project", questions)
 
 # Rename
-# >>> questions.rename('OwnerUserId', 'Asker')
-questions.Rename("OwnerUserId", "Asker")
+# >>> questions.rename('UserId', 'Asker')
+questions.Rename("t1.UserId", "Asker")
 t.show("rename", questions)
 
-# Select
-# >>> questions.select('"haskell" in Tags')
-questions.SelectAtomicStrConst("Tags", "python", snap.SUPERSTR)
-t.show("select", questions)
-
 # Project
-# >>> posts.project(['Id',OwnerUserId','ParentId','Score'])
+# >>> posts.project(['PostId',UserId'], in_place = True)
 V = snap.TStrV()
-V.Add("Id")
-V.Add("OwnerUserId")
-V.Add("ParentId")
-V.Add("Score")
+V.Add("PostId")
+V.Add("UserId")
 posts.ProjectInPlace(V)
 t.show("project", posts)
 
 # Rename
-# >>> posts.rename('OwnerUserId','Expert')
-posts.Rename("OwnerUserId", "Expert")
+# >>> posts.rename('UserId','Expert')
+posts.Rename("UserId", "Expert")
 t.show("rename", posts)
 
 # Join
-# >>> posts = posts.join(questions, ['ParentId'], ['Id'])
-posts = posts.Join("ParentId", questions, "Id")
-t.show("join", posts)
+# >>> edges = questions.join(posts, ['AcceptedAnswerId'], ['PostId'])
+edges = questions.Join("t1.AcceptedAnswerId", posts, "PostId")
+t.show("join", edges)
 
 # Create haskell-specific Q&A graph
 # >>> graph = posts.graph('Asker', 'Expert', directed = True)
-posts.SetSrcCol("Asker")
-posts.SetDstCol("Expert")
-graph = posts.ToGraph(snap.aaFirst)
+edges.SetSrcCol("t1_t2.Asker")
+edges.SetDstCol("t1.Expert")
+graph = edges.ToGraph(snap.aaFirst)
 t.show("graph", graph)
 
 # Compute Authority score
@@ -109,31 +119,23 @@ t.show("authority score", authority)
 S = snap.Schema()
 S.Add(snap.TStrTAttrPr("UserId", snap.atInt))
 S.Add(snap.TStrTAttrPr("PostId", snap.atInt))
-comments = snap.TTable.LoadSS("comments", S, os.path.join(srcdir, COMMENTS_FILE), context, '\t', snap.TBool(False))
+comments = snap.TTable.LoadSS("comments", S, commentsFile, context, '\t', snap.TBool(False))
 t.show("load", comments)
 
 # Get table of all haskell related posts (both questions and answers)
-# >>> taggedPosts = posts.union(posts, ['Id'], ['ParentId'])
-# Note: actually this operation is not necessary
+# >>> taggedPosts = edges.union(edges, ['AcceptedAnswerId'], ['PostId'])
 V = snap.TStrV()
-V.Add("questions.Id")
-posts2 = posts.Project(V, "posts2")
-posts2.Rename("questions.Id", "Id")
+V.Add("t1.PostId")
+posts2 = edges.Project(V, "posts2")
+posts2.Rename("t1.PostId", "Id")
 V = snap.TStrV()
-V.Add("posts.Id")
-posts3 = posts.Project(V, "posts3")
-posts3.Rename("posts.Id", "Id")
+V.Add("t1.Expert")
+posts3 = edges.Project(V, "posts3")
+posts3.Rename("t1.Expert", "Id")
 # TODO: There has to be a less painful way!
 posts3.Rename("posts3_id", "posts2_id")
 taggedPosts = posts2.Union(posts3, "tagged")
 t.show("union", taggedPosts)
-
-# Unique
-# >>> taggedPosts.Unique(["Id"])
-V = snap.TStrV()
-V.Add("Id")
-taggedPosts.Unique(V)
-t.show("unique", taggedPosts)
 
 # Join
 # >>> comments = comments.join(taggedPosts, ['PostId'], ['Id'])
@@ -196,8 +198,8 @@ V = snap.TStrV()
 V.Add("Expert")
 V.Add("FinalScore")
 final.ProjectInPlace(V)
-if not dstdir is None:
-  final.SaveSS(os.path.join(dstdir,OUTPUT_TABLE_FILENAME))
+if not destFile is None:
+  final.SaveSS(destFile)
   t.show("save", final)
 
 testutils.dump(final, 20)

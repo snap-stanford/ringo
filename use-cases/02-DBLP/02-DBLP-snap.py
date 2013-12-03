@@ -4,30 +4,26 @@
 
 import sys
 sys.path.append("..")
-sys.path.append("../../ringo-engine-python")
 import os
 import time
 import snap
 import testutils
-import pdb
 
 N_TOP_AUTHORS = 20
 ENABLE_TIMER = True
-OUTPUT_TABLE_FILENAME = 'table.tsv'
+OUTPUT_TABLE_FILENAME = "table.tsv"
 PAGE_RANK_ATTRIBUTE = "PageRank"
 NODE_ATTR_NAME = "__node_attr"
-INPUT_AUTHORS_FILENAME = 'authors.tsv'
-INPUT_YEAR_FILENAME = 'year.tsv'
 
 if len(sys.argv) < 2:
-  print """Usage: python 02-DBLP-snap.py srcdir [destination]
-  srcdir: input directory containing authors.tsv and year.tsv
-  destination: output directory"""
+  print """Usage: python 02-DBLP-snap.py <authors.tsv> <year.tsv> <outputdir>
+  authors.tsv: path to authors.tsv file
+  year.tsv: path to year.tsv file
+  outputdir: output directory"""
   exit(1)
-srcDir = sys.argv[1]
-authorFile = os.path.join(srcDir, INPUT_AUTHORS_FILENAME)
-yearFile = os.path.join(srcDir, INPUT_YEAR_FILENAME)
-dstDir = sys.argv[2] if len(sys.argv) >= 3 else None
+authorFile = sys.argv[1]
+yearFile = sys.argv[2]
+dstDir = sys.argv[3] if len(sys.argv) >= 4 else None
 if not dstDir is None:
   try:
     os.makedirs(dstDir)

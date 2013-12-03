@@ -6,20 +6,21 @@
 Dataset: DBLP
 Input file: /dfs/ilfs2/0/ringo/DBLP/authors.tsv
 
-Usage: python 02-DBLP-snap.py source destination
-       python 02-DBLP-ringo.py source destination
+Usage: python 02-DBLP-snap.py <authors.tsv> <year.tsv> <outputdir>
+       python 02-DBLP-ringo.py <authors.tsv> <year.tsv> <outputdir>
 
   * Arguments:
 
-  source: directory containing authors.tsv and year.tsv files
-  destination: directory containing the output files.
+  authors.tsv: path to authors.tsv file
+  year.tsv: path to year.tsv file
+  outputdir: output directory
     The only output file is table.tsv. It stores the list of PageRank scores of authors, sorted in descending order.
 
   * Output: the top 20 authors ordered by PageRank score
 
   * Example (scores are normalized so that the top score is 1):
 
-        $ python 02-DBLP-ringo.py /dfs/ilfs2/0/ringo/DBLP output
+        $ python 02-DBLP-ringo.py /dfs/ilfs2/0/ringo/DBLP/authors.tsv /dfs/ilfs2/0/ringo/year.tsv output
 
         [load authors table]  Elapsed: 6.34 seconds
         [load year table] Elapsed: 1.25 seconds

@@ -11,23 +11,17 @@ import snap
 import testutils
 import pdb
 
-POSTS_FILE = 'posts.tsv'
-TAGS_FILE = 'tags.tsv'
-OUTPUT_TABLE_FILENAME = 'experts.tsv'
 ENABLE_TIMER = True
 
 if len(sys.argv) < 2:
-  print """Usage: python 02-DBLP-snap.py source [destination]
-  srcDir: input directory containing posts.tsv and comments.tsv files
-  destination: output .tsv file containing expert scores"""
+  print """Usage: python 06-StackOverflow-simple-snap.py <posts.tsv> <tags.tsv> <dest.tsv>
+  posts.tsv: path to posts.tsv file
+  tags.tsv: path to tags.tsv file
+  dest.tsv: output .tsv file containing expert scores"""
   exit(1)
-srcdir = sys.argv[1]
-dstdir = sys.argv[2] if len(sys.argv) >= 3 else None
-if not dstdir is None:
-  try:
-    os.makedirs(dstdir)
-  except OSError:
-    pass
+postsFile = sys.argv[1]
+tagsFile = sys.argv[2]
+destFile = sys.argv[3] if len(sys.argv) >= 4 else None
 
 context = snap.TTableContext()
 
@@ -41,7 +35,8 @@ S = snap.Schema()
 S.Add(snap.TStrTAttrPr("PostId", snap.atInt))
 S.Add(snap.TStrTAttrPr("UserId", snap.atInt))
 S.Add(snap.TStrTAttrPr("AnswerId", snap.atInt))
-t1 = snap.TTable.LoadSS("t1", S, os.path.join(srcdir, POSTS_FILE), context, '\t', snap.TBool(False))
+S.Add(snap.TStrTAttrPr("CreationDate", snap.atStr))
+t1 = snap.TTable.LoadSS("t1", S, postsFile, context, '\t', snap.TBool(False))
 t.show("load posts", t1)
 
 # Load tags
@@ -49,7 +44,7 @@ t.show("load posts", t1)
 S = snap.Schema()
 S.Add(snap.TStrTAttrPr("PostId", snap.atInt))
 S.Add(snap.TStrTAttrPr("Tag", snap.atStr))
-t2 = snap.TTable.LoadSS("t2", S, os.path.join(srcdir, TAGS_FILE), context, '\t', snap.TBool(False))
+t2 = snap.TTable.LoadSS("t2", S, tagsFile, context, '\t', snap.TBool(False))
 t.show("load tags", t2)
 
 # Select
@@ -97,8 +92,8 @@ t5.Order(V, "", snap.TBool(False), snap.TBool(False))
 t.show("order", t5)
 
 # Save
-if not dstdir is None:
-  t5.SaveSS(os.path.join(dstdir,OUTPUT_TABLE_FILENAME))
+if not destFile is None:
+  t5.SaveSS(destFile)
   t.show("save", t5)
 
 testutils.dump(t5, 20)

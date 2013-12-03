@@ -11,20 +11,24 @@ import sys
 import os
 
 if len(sys.argv) < 3:
-  print """Usage: python parse.py srcPostsFile dstDir [max_items]
+  print """Usage: python parse_stackoverflow.py srcPostsFile srcCommentsFile dstDir [max_posts]
   srcPostsFile: path to the Posts.xml file from the StackOverflow dataset
   dstDir: output directory"""
   exit(1)
 
 srcPostsFile = sys.argv[1]
-dstDir = sys.argv[2]
+srcCommentsFile = sys.argv[2]
+dstDir = sys.argv[3]
 try:
   os.makedirs(dstDir)
 except OSError:
   pass
 dstPostsFile = os.path.join(dstDir,"posts.tsv")
 dstTagsFile = os.path.join(dstDir,"tags.tsv")
-N = int(sys.argv[3]) if len(sys.argv) >= 4 else None
+dstCommentsFile = os.path.join(dstDir, "comments.tsv")
+N = int(sys.argv[4]) if len(sys.argv) >= 5 else None
+
+# Parse posts
 count = 0
 unicode_failures = 0
 missing_info = 0
@@ -56,4 +60,27 @@ with open(srcPostsFile) as source, open(dstPostsFile, 'w') as dstPosts, open(dst
     except UnicodeEncodeError:
       unicode_failures += 1
     element.clear()
-print 'Rows: ' + str(count) + ', Failures: ' + str(unicode_failures) + ', Missing info: ' + str(missing_info)
+print 'Parsed posts file - Rows: ' + str(count) + ', Failures: ' + str(unicode_failures) + ', Missing info: ' + str(missing_info)
+
+# Parse comments
+unicode_failures = 0
+missing_info = 0
+with open(srcCommentsFile) as source, open(dstCommentsFile, 'w') as dstComments:
+  context = etree.iterparse(source)
+  for event, element in context:
+    try:
+      if element.tag == 'row':
+        userId = element.get('UserId')
+        postId = element.get('PostId')
+        if postId is None or userId is None:
+          missing_info += 1
+          continue
+        dstComments.write("\t".join((userId, postId)) + "\n")
+      count += 1
+      if count % 10000 == 0:
+        print count
+    except UnicodeEncodeError:
+      unicode_failures += 1
+    element.clear()
+print 'Parsed comments file - Rows: ' + str(count) + ', Failures: ' + str(unicode_failures) + ', Missing info: ' + str(missing_info)
+

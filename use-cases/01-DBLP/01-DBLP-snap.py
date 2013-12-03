@@ -4,7 +4,6 @@
 
 import sys
 sys.path.append("..")
-sys.path.append("../../ringo-engine-python")
 import os
 import time
 import snap
@@ -14,18 +13,16 @@ N_TEST_NODES = 10
 ENABLE_TIMER = True
 OUTPUT_TABLE_FILENAME = 'table.tsv'
 OUTPUT_GRAPH_FILENAME = 'graph'
-INPUT_AUTHORS_FILENAME = 'authors.tsv'
-INPUT_YEAR_FILENAME = 'year.tsv'
 
 if len(sys.argv) < 2:
-  print """Usage: python 01-DBLP-snap.py source [destination]
-  source: input directory containing authors.tsv and year.tsv
-  destination: output directory (for saving the table of edges and the coauthorship network)"""
+  print """Usage: python 01-DBLP-snap.py <authors.tsv> <year.tsv> <outputdir>
+  authors.tsv: path to authors.tsv file
+  year.tsv: path to year.tsv file
+  outputdir: output directory (for saving the table of edges and the coauthorship network)"""
   exit(1)
-srcDir = sys.argv[1]
-authorFile = os.path.join(srcDir, INPUT_AUTHORS_FILENAME)
-yearFile = os.path.join(srcDir, INPUT_YEAR_FILENAME)
-dstDir = sys.argv[2] if len(sys.argv) >= 3 else None
+authorFile = sys.argv[1]
+yearFile = sys.argv[2]
+dstDir = sys.argv[3] if len(sys.argv) >= 4 else None
 if not dstDir is None:
   try:
     os.makedirs(dstDir)

@@ -5,13 +5,14 @@
 Dataset: DBLP
 Input file: /dfs/ilfs2/0/ringo/DBLP/authors.tsv
 
-Usage: python 01-DBLP-snap.py source destination
-       python 01-DBLP-ringo.py source destination
+Usage: python 01-DBLP-snap.py <authors.tsv> <year.tsv> <outputdir>
+       python 01-DBLP-ringo.py <authors.tsv> <year.tsv> <outputdir>
 
   * Arguments:
 
-  source: directory containing authors.tsv and year.tsv files
-  destination: directory containing the output files.
+  authors.tsv: path to authors.tsv file
+  year.tsv: path to year.tsv file
+  outputdir: output directory (for saving the table of edges and the coauthorship network)
     The output files are:
     - graph: stores the coauthorship network (SNAP object)
     - table.tsv: stores the final Ringo table from which the coauthorship network is created
@@ -20,7 +21,7 @@ Usage: python 01-DBLP-snap.py source destination
 
   * Example:
 
-        $ python 01-DBLP-snap.py /dfs/ilfs2/0/ringo/DBLP output
+        $ python 01-DBLP-snap.py /dfs/ilfs2/0/ringo/DBLP/authors.tsv /dfs/ilfs2/ringo/DBLP/year.tsv output
 
         [load]  Elapsed: 6.59 seconds, Rows: 2734707
         [load year table] Elapsed: 1.26 seconds, Rows: 1039160
