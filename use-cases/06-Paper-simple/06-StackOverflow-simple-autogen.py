@@ -1,3 +1,4 @@
+import sys
 import ringo
 
 [(t1_ColName1, t1_ColType1), (t1_ColName2, t1_ColType2), (t1_ColName3, t1_ColType3), (t1_ColName4, t1_ColType4)] = [('PostId', 'int'), ('UserId', 'int'), ('AnswerId', 'int'), ('CreationDate', 'string')]
@@ -17,4 +18,7 @@ def generate(engine,filename0, filename1, filename2):
     return t5
 
 engine = ringo.Ringo()
-t5 = generate(engine, 'input/posts.tsv', 'input/tags.tsv', './experts.tsv')
+files = ['input/posts.tsv', 'input/tags.tsv', './experts.tsv']
+for i in xrange(min(len(files), len(sys.argv)-1)):
+    files[i] = sys.argv[i+1]
+t5 = generate(engine, *files)

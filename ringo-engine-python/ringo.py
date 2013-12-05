@@ -376,7 +376,7 @@ class Ringo(object):
                 return Ret
             return str(Value)
 
-        Preamble = ['import ringo\n']
+        Preamble = ['import sys', 'import ringo', '']
         Lines = []
         Files = []
 
@@ -440,10 +440,10 @@ class Ringo(object):
             Script += '    '+Line+'\n'
 
         Script += '\nengine = ringo.Ringo()\n'
-        Script += FinalName + ' = generate(engine'
-        for File in Files:
-            Script += ', ' + File
-        Script += ')\n'
+        Script += 'files = [%s]\n' % str.join(', ', Files)
+        Script += 'for i in xrange(min(len(files), len(sys.argv)-1)):\n'
+        Script += '    files[i] = sys.argv[i+1]\n'
+        Script += FinalName + ' = generate(engine, *files)\n'
 
         with open(OutFnm, 'w') as file:
             file.write(Script)
