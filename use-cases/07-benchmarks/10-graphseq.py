@@ -29,7 +29,7 @@ if __name__ == '__main__':
     schema.Add(snap.TStrTAttrPr("Id", snap.atInt))
     schema.Add(snap.TStrTAttrPr("OwnerUserId", snap.atInt))
     schema.Add(snap.TStrTAttrPr("AcceptedAnswerId", snap.atInt))
-    schema.Add(snap.TStrTAttrPr("CreationDate", snap.atStr))
+    schema.Add(snap.TStrTAttrPr("CreationDate", snap.atInt))
     schema.Add(snap.TStrTAttrPr("Score", snap.atInt))
     table = snap.TTable.LoadSS("1", schema, srcfile, context, "\t", snap.TBool(False))
     t.show("load text", table)
