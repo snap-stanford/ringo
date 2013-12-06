@@ -220,8 +220,8 @@ __graphseq__      cpu(s) 5.293  mem(MB) 5652979.712
 Benchmark 12:
 reads the post table from the StackOverflow dataset, creates a
 graph where user A points to user B if A accepted at least one 
-answer from B, computes the PageRank score of each user in this 
-graph, and saves the scores to a file
+answer from B for a question about Python, computes the PageRank
+score of each user in this graph, and saves the scores to a file
 
 madmax:~/ringo/use-cases/07-benchmarks$ python 12-usecase.py /dfs/ilfs2/0/ringo/StackOverflow_joined/posts.tsv out.bin
 
@@ -258,6 +258,56 @@ __graph__         cpu(s) 0.603  mem(MB) 4973.884
 __pagerank__      cpu(s) 27.422 mem(MB) 4973.884
 [save]            Elapsed: 0.02 seconds, Length: 59343
 __save__          cpu(s) 0.009  mem(MB) 4973.884
+
+----------------------
+Benchmark 14:
+same as 12-usecase.py, except that a table of "questions"
+and a table of "answers" are explicitly created before joining
+
+madmax:~/ringo/use-cases/07-benchmarks$ python 14-usecase-complete.py /dfs/ilfs2/0/ringo/StackOverflow_joined/posts.tsv out.bin
+
+******* RESULTS ON LAPTOP (Martin) ********
+[load posts text] Elapsed: 55.11 seconds, Rows: 26673279
+__loadpoststext__ cpu(s) 55.069 mem(MB) 2871934.976
+[select tag = 'python']Elapsed: 8.17 seconds, Rows: 214856
+__selecttagpython__ cpu(s) 8.155  mem(MB) 2871934.976
+[select questions]Elapsed: 0.00 seconds, Rows: 142207
+__selectquestions__ cpu(s) 0.004  mem(MB) 2871934.976
+[select answers]  Elapsed: 0.39 seconds, Rows: 16737213
+__selectanswers__ cpu(s) 0.386  mem(MB) 2871934.976
+[join]            Elapsed: 1.76 seconds, Rows: 141816
+__join__          cpu(s) 1.755  mem(MB) 2871934.976
+[graph]           Elapsed: 0.08 seconds, Nodes: 59343, Edges: 141816
+__graph__         cpu(s) 0.083  mem(MB) 2871934.976
+[pagerank]        Elapsed: 1.01 seconds, Rows: 59343
+__pagerank__      cpu(s) 1.006  mem(MB) 2871934.976
+[save bin]        Elapsed: 0.00 seconds, Rows: 59343
+__savebin__       cpu(s) 0.003  mem(MB) 2871934.976
+
+----------------------
+Benchmark 15:
+same as 14-usecase-complete.py, but using PANDAS and NetworkX instead of
+Ringo
+
+madmax:~/ringo/use-cases/07-benchmarks$ python 15-usecase-simple-pandas-networkx.py /dfs/ilfs2/0/ringo/StackOverflow_joined/posts.tsv out.pkl
+
+******* RESULTS ON LAPTOP (Martin) ********
+[load posts text] Elapsed: 14.81 seconds, Length: 26673279
+__loadpoststext__ cpu(s) 14.799 mem(MB) 2925330.432
+[select tag = 'python']Elapsed: 1.94 seconds, Length: 214856
+__selecttagpython__ cpu(s) 1.940  mem(MB) 2925330.432
+[select question] Elapsed: 0.01 seconds, Length: 142207
+__selectquestion__  cpu(s) 0.010  mem(MB) 2925330.432
+[select answer]   Elapsed: 1.21 seconds, Length: 142207
+__selectanswer__  cpu(s) 1.213  mem(MB) 2925330.432
+[join]            Elapsed: 3.43 seconds, Length: 141816
+__join__          cpu(s) 3.420  mem(MB) 4024623.104
+[graph]           Elapsed: 0.50 seconds, Length: 59343
+__graph__         cpu(s) 0.500  mem(MB) 4024623.104
+[pagerank]        Elapsed: 17.75 seconds, Length: 59343
+__pagerank__      cpu(s) 17.738 mem(MB) 4024623.104
+[save]            Elapsed: 0.00 seconds, Length: 59343
+__save__          cpu(s) 0.003  mem(MB) 4024623.104
 
 ----------------------
 Benchmark 50:
