@@ -41,6 +41,20 @@ def registerOp(opName, trackOp = True):
         return wrapper
     return decorator
 
+"""
+Decorator used to track which parameters represent Column Names of which Tables
+The column name metadata is a list of pairs of the form (c, t) where c is the index
+    of the column name and t is the index of the corresponding table in the argument list
+Populates FunctionTableCols
+"""
+#dictionary from function name to column name metadata
+FunctionTableCols = {}
+def registerColName(opName, colNameList):
+    FunctionTableCols[opName] = colNameList
+    def decorator(func):
+        return func
+    return decorator
+
 class Ringo(object):
     NODE_ATTR_NAME = "__node_attr"
     EDGE_SRC_ATTR_NAME = "__edge_src_attr"
@@ -88,7 +102,7 @@ class Ringo(object):
             elif Col[1] == 'string':
                 S.Add(snap.TStrTAttrPr(Col[0], snap.atStr))  # tentative TTable interface syntax...
             else:
-                print "Illegal type %s for attribute %s" % (Schema[attr], attr)
+                print "Illegal type %s for attribute %s" % (Col[1], Col[0])
 
         # Load input and create new TTable object
         TableId = self.__GetObjectId()
@@ -267,6 +281,7 @@ class Ringo(object):
 
     # UNTESTED
     @registerOp('Join')
+    @registerColName('Join', [(2, 0), (3, 1)])
     def Join(self, LeftTableId, RightTableId, LeftAttr, RightAttr):
         LeftT = self.Objects[LeftTableId]
         RightT = self.Objects[RightTableId]
@@ -361,12 +376,13 @@ class Ringo(object):
                 return Ret
             return str(Value)
 
+        Preamble = ['import sys', 'import ringo', '']
         Lines = []
         Files = []
 
+        SchemaMap = {} #dictionary from ringo objects to a dictionary from names to variable names
         for OpId in self.Lineage[ObjectId]:
             Op = self.Operations[OpId] 
-            FuncCall = 'engine.'+Op[1]+'('
 
             SpecialArg = -1
             if Op[1] == 'LoadTableTSV' or Op[1] == 'SaveTableTSV' or Op[1] == 'SaveTableBinary':
@@ -374,27 +390,47 @@ class Ringo(object):
             elif Op[1] == 'LoadTableBinary':
                 SpecialArg = 0
 
+            FuncArgs = []
             for Arg in Op[3][0]:
                 if SpecialArg == 0:
-                    FuncCall += 'filename'+str(len(Files))+', '
+                    FuncArgs.append('filename'+str(len(Files)))
                     Files.append(GetName(Arg))
                 else:
-                    FuncCall += GetName(Arg)+', '
+                    FuncArgs.append(GetName(Arg))
                 SpecialArg -= 1
             for Arg in Op[3][1]:
-                FuncCall += str(Arg)+'='+GetName(Op[3][1][Arg])+', '
-            FuncCall = FuncCall[:-2]+')'
+                FuncArgs.append(str(Arg)+'='+GetName(Op[3][1][Arg]))
 
-            Name = GetName(Op[2])
-            if Name != str(Op[2]):
-                FuncCall = Name+' = '+FuncCall
+            RetName = GetName(Op[2])
+
+            if Op[1] == 'LoadTableTSV':
+                Schema = Op[3][0][0]
+                SchemaPreamble = []
+                TableSchemaMap = {}
+                for i in xrange(len(Schema)):
+                    VariablePair = ('%s_ColName%d' % (RetName, i+1), '%s_ColType%d' % (RetName, i+1))
+                    TableSchemaMap[GetName(Schema[i][0])] = VariablePair[0]
+                    TableSchemaMap[GetName(Schema[i][1])] = VariablePair[1]
+                    SchemaPreamble.append('(%s, %s)' % VariablePair)
+                SchemaPreamble = '[%s]' % str.join(', ', SchemaPreamble)
+                Preamble.append('%s = %s' % (SchemaPreamble, FuncArgs[0]))
+                FuncArgs[0] = SchemaPreamble
+                SchemaMap[RetName] = TableSchemaMap
+            elif Op[1] in FunctionTableCols: 
+                for ColInd, TableInd in FunctionTableCols[Op[1]]:
+                    if FuncArgs[TableInd] in SchemaMap:
+                        FuncArgs[ColInd] = SchemaMap[FuncArgs[TableInd]][FuncArgs[ColInd]]
+
+            FuncCall = 'engine.%s(%s)' % (Op[1], str.join(', ', FuncArgs))
+            if RetName != str(Op[2]):
+                FuncCall = RetName+' = '+FuncCall
 
             Lines.append(FuncCall)
 
         FinalName = GetName(RingoObject(ObjectId))
         Lines.append('return '+FinalName)
          
-        Script = 'import ringo\n\ndef generate(engine,'
+        Script = str.join('\n', Preamble) + '\n\ndef generate(engine,'
         for x in xrange(len(Files)):
             if x != 0: Script += ', '
             Script += 'filename'+str(x)
@@ -404,10 +440,10 @@ class Ringo(object):
             Script += '    '+Line+'\n'
 
         Script += '\nengine = ringo.Ringo()\n'
-        Script += FinalName + ' = generate(engine'
-        for File in Files:
-            Script += ', ' + File
-        Script += ')\n'
+        Script += 'files = [%s]\n' % str.join(', ', Files)
+        Script += 'for i in xrange(min(len(files), len(sys.argv)-1)):\n'
+        Script += '    files[i] = sys.argv[i+1]\n'
+        Script += FinalName + ' = generate(engine, *files)\n'
 
         with open(OutFnm, 'w') as file:
             file.write(Script)

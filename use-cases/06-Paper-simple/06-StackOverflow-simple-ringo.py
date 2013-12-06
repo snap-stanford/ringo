@@ -35,7 +35,7 @@ ringo = ringo.Ringo()
 t = testutils.Timer(ENABLE_TIMER)
 
 # Load posts
-S = [('PostId','int'), ('UserId','int'), ('AnswerId','int')]
+S = [('PostId','int'), ('UserId','int'), ('AnswerId','int'), ('CreationDate','string')]
 t1 = ringo.LoadTableTSV(S, os.path.join(srcdir, POSTS_FILE))
 t.show("load posts", t1)
 
