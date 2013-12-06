@@ -214,6 +214,20 @@ Benchmark 13:
 same as 12-usecase.py, but using PANDAS and NetworkX instead of
 Ringo
 
+madmax:~/ringo/use-cases/07-benchmarks$ python 13-usecase-pandas-networkx.py /dfs/ilfs2/0/ringo/StackOverflow_joined/posts.tsv out.pkl
+[load posts text] Elapsed: 24.46 seconds, Length: 26673279
+__loadpoststext__ cpu(s) 24.375 mem(MB) 4084.104
+[selected tag = 'python']Elapsed: 2.60 seconds, Length: 214856
+__selectedtagpython__ cpu(s) 2.589  mem(MB) 4084.104
+[join]            Elapsed: 9.48 seconds, Length: 141816
+__join__          cpu(s) 9.447  mem(MB) 4973.884
+[graph]           Elapsed: 0.60 seconds, Length: 59343
+__graph__         cpu(s) 0.603  mem(MB) 4973.884
+[pagerank]        Elapsed: 27.51 seconds, Length: 59343
+__pagerank__      cpu(s) 27.422 mem(MB) 4973.884
+[save]            Elapsed: 0.02 seconds, Length: 59343
+__save__          cpu(s) 0.009  mem(MB) 4973.884
+
 ----------------------
 Benchmark 50:
 - read input text file with two columns and build a PNGraph
