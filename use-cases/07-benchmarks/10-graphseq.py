@@ -39,7 +39,6 @@ if __name__ == '__main__':
     t.show("join", table)
     r.show("__join__")
 
-    pdb.set_trace()
     table.SetSrcCol("1_1.OwnerUserId")
     table.SetDstCol("1_2.OwnerUserId")
     gseq = table.ToGraphSequence("1_1.CreationDate", snap.aaFirst, WINDOW_SIZE, WINDOW_SIZE)
