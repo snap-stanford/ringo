@@ -18,7 +18,6 @@ if __name__ == '__main__':
         sys.exit(1)
 
     srcfile = sys.argv[1]
-    dstfile = sys.argv[2]
 
     context = snap.TTableContext()
 
