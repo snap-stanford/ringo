@@ -13,7 +13,7 @@ import testutils
 
 if __name__ == '__main__':
 
-    if len(sys.argv) < 2:
+    if len(sys.argv) < 3:
         print """Usage: """ + sys.argv[0] + """ <postsfile> <dstfile>
         postsfile: posts.tsv file from StackOverflow dataset
         dstfile: destination file for saving the pagerank table"""
