@@ -58,3 +58,11 @@ Nov 28, 2013
 	a one column table t2 from a source input file in a text format,
 	and joins the two tables on the first column
 
+08-groupaggr.py
+	reads the posts table from the Stackoverflow dataset, and for
+	each user, computes the sum of the scores of this user's posts
+
+09-isnextk.py
+	reads the posts table form the StackOverflow dataset, and for 
+	each post, finds the next post by the same user in chronological
+	order
