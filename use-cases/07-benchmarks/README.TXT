@@ -66,3 +66,24 @@ Nov 28, 2013
 	reads the posts table form the StackOverflow dataset, and for 
 	each post, finds the next post by the same user in chronological
 	order
+
+10-graphseq.py
+	reads the post table from the StackOverflow dataset, and creates
+	a sequence of graphs where a user A points to a user B if A accepted 
+	at least one answer from B. There is one graph for each time window
+	of one month
+
+11-graphpergroup.py
+	reads the post table from the StackOverflow dataset, and creates
+	a graph for each topic, where in each graph, a user A points to a 
+	user B if A accepted at least one answer from B
+
+12-usecase.py
+	reads the post table from the StackOverflow dataset, creates a
+	graph where user A points to user B if A accepted at least one 
+	answer from B, computes the PageRank score of each user in this 
+	graph, and saves the scores to a file
+
+13-usecase-pandas-networkx.py
+	same as 12-usecase.py, but using PANDAS and NetworkX instead of
+	Ringo

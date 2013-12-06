@@ -9,8 +9,6 @@ sys.path.append("../utils")
 import snap
 import testutils
 
-WINDOW_SIZE = 2592000 # 1 month
-
 if __name__ == '__main__':
 
     if len(sys.argv) < 2:
@@ -52,8 +50,8 @@ if __name__ == '__main__':
     t.show("join", table)
     r.show("__join__")
 
-    table.SetSrcCol("1_2.1.AcceptedAnswerId")
-    table.SetDstCol("1.Id")
+    table.SetSrcCol("1_2.1.OwnerUserId")
+    table.SetDstCol("1.OwnerUserId")
     gseq = table.ToGraphPerGroup("1_2.2.Tag", snap.aaFirst)
     t.show("graphseq", gseq)
     r.show("__graphseq__")
