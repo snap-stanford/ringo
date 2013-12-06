@@ -41,7 +41,7 @@ if __name__ == '__main__':
 
     table.SetSrcCol("1_1.AcceptedAnswerId")
     table.SetDstCol("1_2.Id")
-    table = table.ToGraphSequence("1_1.CreationDate", snap.aaFirst, WINDOW_SIZE, WINDOW_SIZE)
-    t.show("graphseq", table)
+    gseq = table.ToGraphSequence("1_1.CreationDate", snap.aaFirst, WINDOW_SIZE, WINDOW_SIZE)
+    t.show("graphseq", gseq)
     r.show("__graphseq__")
 

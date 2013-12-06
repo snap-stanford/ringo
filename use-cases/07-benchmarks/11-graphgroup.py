@@ -54,7 +54,7 @@ if __name__ == '__main__':
 
     table.SetSrcCol("1_2.1.AcceptedAnswerId")
     table.SetDstCol("1.Id")
-    table = table.ToGraphPerGroup("1_2.2.Tag", snap.aaFirst)
-    t.show("graphseq", table)
+    gseq = table.ToGraphPerGroup("1_2.2.Tag", snap.aaFirst)
+    t.show("graphseq", gseq)
     r.show("__graphseq__")
 
