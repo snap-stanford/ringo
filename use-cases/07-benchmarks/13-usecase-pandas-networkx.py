@@ -54,7 +54,6 @@ if __name__ == '__main__':
 
     qa_proj = qa[['OwnerUserId_x','OwnerUserId_y']]
     graph = nx.from_edgelist(qa_proj.values.tolist())
-    print graph.number_of_edges()
     t.show("graph", graph)
     r.show("__graph__")
 
@@ -63,6 +62,6 @@ if __name__ == '__main__':
     t.show("pagerank", pr)
     r.show("__pagerank__")
 
-    pr.to_pickle(dstfile)
+    pr.save(dstfile)
     t.show("save", pr)
     r.show("__save__")
