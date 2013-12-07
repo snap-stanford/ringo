@@ -5,6 +5,7 @@ import time
 import pdb
 
 sys.path.append("../utils")
+sys.path.insert(0,"../../swig")
 
 import snap
 import testutils

@@ -4,7 +4,7 @@
 # 
 
 # set the path to your SNAP directory here
-GITDIR = ../../snapr
+GITDIR = ../../snap-par
 SNAPDIR = $(GITDIR)/$(SNAP)
 GLIBDIR = $(GITDIR)/$(GLIB)
 

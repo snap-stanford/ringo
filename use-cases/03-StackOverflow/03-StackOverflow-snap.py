@@ -29,7 +29,7 @@ tagsFile = sys.argv[2]
 commentsFile = sys.argv[3]
 destFile = sys.argv[4] if len(sys.argv) >= 4 else None
 
-context = snap.TTableContext()
+#context = snap.TTableContext()
 
 t = testutils.Timer(ENABLE_TIMER)
 

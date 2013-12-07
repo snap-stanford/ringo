@@ -5,6 +5,7 @@ import time
 import pdb
 
 sys.path.append("../utils")
+sys.path.insert(0, "../../swig")
 
 import snap
 import testutils
@@ -31,10 +32,12 @@ if __name__ == '__main__':
     assert(len(S) >= 2)
     table.SetSrcCol(S[0])
     table.SetDstCol(S[1])
-    graph = table.ToGraph(snap.aaFirst)
+    graph = table.ToGraphDirected(snap.aaFirst)
     t.show("create graph", table)
     r.show("__creategraph__")
 
-    table2 = snap.TTable.GetEdgeTable(graph, "1", context)
-    t.show("table from graph", table2)
-    r.show("__tablefromgraph__")
+    #table2 = snap.TTable.GetEdgeTable(graph, "1", context)
+    #t.show("table from graph", table2)
+    #r.show("__tablefromgraph__")
+
+    print graph.GetNodes(), graph.GetEdges()
