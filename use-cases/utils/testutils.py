@@ -15,6 +15,8 @@ class Timer(object):
                     message += ', Rows: %d' % obj.GetNumValidRows()
                 elif hasattr(obj, 'GetNodes'):
                     message += ', Nodes: %d, Edges: %d' % (obj.GetNodes(), obj.GetEdges())
+                elif hasattr(obj, '__len__'):
+                    message += ', Length: %d' % len(obj)
             print message
         self.time = time.time()
 

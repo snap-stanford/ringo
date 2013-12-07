@@ -51,6 +51,8 @@ TCnCom.__iter__ = itervec
 
 Schema.__getitem__ = getitem
 Schema.__iter__ = itervec
+PNEANetV.__getitem__ = getitem
+PNEANetV.__iter__ = itervec
 %}
 
 #if SNAP_ALL

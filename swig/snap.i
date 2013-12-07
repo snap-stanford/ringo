@@ -97,6 +97,46 @@ Version = "0.8.4r"
 %ignore TVec< TPair< TStr,TAttrType > >::TVec(TSIn &);
 //%ignore Schema::Load;
 
+%ignore TVec<PNEANet>::Intrs;
+%ignore TVec<PNEANet>::IntrsLen;
+%ignore TVec<PNEANet>::AddSorted;
+%ignore TVec<PNEANet>::AddBackSorted;
+%ignore TVec<PNEANet>::AddMerged;
+%ignore TVec<PNEANet>::AddVMerged;
+%ignore TVec<PNEANet>::AddUnique;
+%ignore TVec<PNEANet>::SearchBack;
+%ignore TVec<PNEANet>::SearchBin;
+%ignore TVec<PNEANet>::SearchForw;
+%ignore TVec<PNEANet>::SearchVForw;
+%ignore TVec<PNEANet>::Merge;
+%ignore TVec<PNEANet>::Count;
+%ignore TVec<PNEANet>::Diff;
+%ignore TVec<PNEANet>::Union;
+%ignore TVec<PNEANet>::PrevPerm;
+%ignore TVec<PNEANet>::NextPerm;
+%ignore TVec<PNEANet>::DelAll;
+%ignore TVec<PNEANet>::DelIfIn;
+%ignore TVec<PNEANet>::GetPivotValN;
+%ignore TVec<PNEANet>::BSort;
+%ignore TVec<PNEANet>::ISort;
+%ignore TVec<PNEANet>::QSort;
+%ignore TVec<PNEANet>::Sort;
+%ignore TVec<PNEANet>::IsSorted;
+%ignore TVec<PNEANet>::IsIn;
+%ignore TVec<PNEANet>::IsInBin;
+%ignore TVec<PNEANet>::Partition;
+%ignore TVec<PNEANet>::operator<;
+%ignore TVec<PNEANet>::operator==;
+%ignore TVec<PNEANet>::operator!=;
+%ignore TVec<PNEANet>::GetPrimHashCd;
+%ignore TVec<PNEANet>::GetSecHashCd;
+%ignore TVec<PNEANet>::GetDat;
+%ignore TVec<PNEANet>::UnionLen;
+%ignore TVec<PNEANet>::GetAddDat;
+%ignore TVec<PNEANet>::GetMxValN;
+// TODO: maybe the line below could work
+//%rename("regex:/TVec<PNEANet>::(?!(GetVal|operator\[\]|Len))/$ignore/") "";
+
 // ignore all THash::AddDatId, MarkDelKey, MarkDelKeyId
 %ignore THash::AddDatId;
 %ignore THash::MarkDelKey;
@@ -184,6 +224,7 @@ Version = "0.8.4r"
 %template(TIntTrV) TVec<TIntTr>;
 %template(TIntFltKdV) TVec<TIntFltKd>;
 %template(TIntStrPr) TPair<TInt, TStr>;
+%template(PNEANetV) TVec<PNEANet>;
 
 #if SNAP_ALL
 //%template(TBoolChPr) TPair<TBool, TCh>;
