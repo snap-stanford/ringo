@@ -36,11 +36,11 @@ if __name__ == '__main__':
     t.show("load posts text", table)
     r.show("__loadpoststext__")
 
-    Selected = snap.TIntV()
-    table.SelectAtomicStrConst("Tag", "python", snap.EQ, Selected, snap.TBool(False))
-    questions = snap.TTable.New(table, "2", Selected)
-    t.show("select tag = 'python'", questions)
-    r.show("__selecttagpython__")
+    selected = snap.TIntV()
+    questions = snap.TTable.New(snap.TStr("2"), table.GetSchema(), context)
+    table.SelectAtomicStrConst("Tag", "python", snap.EQ, selected, questions, snap.TBool(False), snap.TBool(True))
+    t.show("selected tag = 'python'", questions)
+    r.show("__selectedtagpython__")
 
     questions.SelectAtomicIntConst("AcceptedAnswerId", 0, snap.NEQ)
     t.show("select questions", questions)
@@ -61,7 +61,7 @@ if __name__ == '__main__':
     r.show("__graph__")
 
     PRankH = snap.TIntFltH()
-    snap.GetPageRank(graph, PRankH,  0.85, 1e-4, 100)
+    snap.GetPageRankMP2(graph, PRankH,  0.85, 1e-4, 100)
     prtable = snap.TTable.New("PR", PRankH, "UserId", "PageRank", context, snap.TBool(True))
     t.show("pagerank", prtable)
     r.show("__pagerank__")

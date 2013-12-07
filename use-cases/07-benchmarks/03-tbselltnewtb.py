@@ -27,8 +27,8 @@ if __name__ == '__main__':
     t.show("load bin", table)
     r.show("__loadbin__")
 
-    Selected = snap.TIntV()
-    table.SelectAtomicIntConst("Src", 10000, snap.LT, Selected, snap.TBool(False))
-    table2 = snap.TTable.New(table, "2", Selected)
+    selected = snap.TIntV()
+    table2 = snap.TTable.New(snap.TStr("2"), table.GetSchema(), context)
+    table.SelectAtomicIntConst("Src", 10000, snap.LT, selected, table2, snap.TBool(False), snap.TBool(True))
     t.show("selected < 10K new table", table2)
     r.show("__selectedlt10Knewtable__")
