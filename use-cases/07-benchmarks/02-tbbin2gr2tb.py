@@ -5,7 +5,6 @@ import time
 import pdb
 
 sys.path.append("../utils")
-sys.path.insert(0, "../../swig")
 
 import snap
 import testutils
@@ -36,8 +35,6 @@ if __name__ == '__main__':
     t.show("create graph", table)
     r.show("__creategraph__")
 
-    #table2 = snap.TTable.GetEdgeTable(graph, "1", context)
-    #t.show("table from graph", table2)
-    #r.show("__tablefromgraph__")
-
-    print graph.GetNodes(), graph.GetEdges()
+    table2 = snap.TTable.GetEdgeTable(graph, "1", context)
+    t.show("table from graph", table2)
+    r.show("__tablefromgraph__")
