@@ -6,8 +6,7 @@ import testutils
 
 if __name__ == '__main__':
 
-    #srcfile = '/dfs/ilfs2/0/ringo/StackOverflow_joined/debug.tsv'
-    srcfile = '../../../StackOverflow/debug.tsv'
+    srcfile = '/dfs/ilfs2/0/ringo/StackOverflow_joined/debug.tsv'
 
     context = snap.TTableContext()
 
