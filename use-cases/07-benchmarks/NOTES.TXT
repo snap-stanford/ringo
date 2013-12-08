@@ -202,18 +202,17 @@ user B if A accepted at least one answer from B
 
 madmax:~/ringo/use-cases/07-benchmarks$ python 11-graphgroup.py /dfs/ilfs2/0/ringo/StackOverflow_2/posts.tsv /dfs/ilfs2/0/ringo/StackOverflow_2/tags.tsv 
 
-******* RESULTS ON LAPTOP (Martin) ********
-[load posts text] Elapsed: 23.03 seconds, Rows: 15838934
-__loadpoststext__ cpu(s) 23.013 mem(MB) 1797906.432
-[load tags text]  Elapsed: 17.76 seconds, Rows: 16413230
-__loadtagstext__  cpu(s) 17.634 mem(MB) 2230648.832
-[join]            Elapsed: 12.59 seconds, Rows: 16413230
-__join__          cpu(s) 11.972 mem(MB) 3850534.912
-[join]            Elapsed: 15.38 seconds, Rows: 9900425
-__join__          cpu(s) 14.576 mem(MB) 5491695.616
-[graphseq]        Elapsed: 5.35 seconds
-__graphseq__      cpu(s) 5.293  mem(MB) 5652979.712
-
+madmax:~/ringo/use-cases/07-benchmarks$ python 11-graphgroup.py /dfs/ilfs2/0/ringo/StackOverflow_2/posts.tsv /dfs/ilfs2/0/ringo/StackOverflow_2/tags.tsv
+[load posts text] Elapsed: 10.56 seconds, Rows: 15838934
+__loadpoststext__ cpu(s) 10.533 mem(MB) 878.112
+[load tags text]  Elapsed: 16.44 seconds, Rows: 16413230
+__loadtagstext__  cpu(s) 16.396 mem(MB) 1450.632
+[join]            Elapsed: 12.56 seconds, Rows: 16413230
+__join__          cpu(s) 107.156  mem(MB) 3175.132
+[join]            Elapsed: 11.97 seconds, Rows: 9900425
+__join__          cpu(s) 94.351 mem(MB) 4210.960
+[graphseq]        Elapsed: 109.10 seconds
+__graphseq__      cpu(s) 204.776  mem(MB) 11023.556
 
 
 ----------------------
@@ -224,20 +223,18 @@ answer from B for a question about Python, computes the PageRank
 score of each user in this graph, and saves the scores to a file
 
 madmax:~/ringo/use-cases/07-benchmarks$ python 12-usecase.py /dfs/ilfs2/0/ringo/StackOverflow_joined/posts.tsv out.bin
-
-******* RESULTS ON LAPTOP (Martin) ********
-[load posts text] Elapsed: 57.67 seconds, Rows: 26673279
-__loadpoststext__ cpu(s) 57.642 mem(MB) 2872094.720
-[selected tag = 'python']Elapsed: 7.80 seconds, Rows: 214856
-__selectedtagpython__ cpu(s) 7.793  mem(MB) 2872094.720
-[join]            Elapsed: 2.18 seconds, Rows: 141816
-__join__          cpu(s) 2.179  mem(MB) 2872094.720
-[graph]           Elapsed: 0.09 seconds, Nodes: 59343, Edges: 141816
-__graph__         cpu(s) 0.091  mem(MB) 2872094.720
-[pagerank]        Elapsed: 1.02 seconds, Rows: 59343
-__pagerank__      cpu(s) 1.015  mem(MB) 2872094.720
+[load posts text] Elapsed: 36.59 seconds, Rows: 26673279
+__loadpoststext__ cpu(s) 36.494 mem(MB) 1773.420
+[selected tag = 'python']Elapsed: 7.83 seconds, Rows: 214856
+__selectedtagpython__ cpu(s) 7.815  mem(MB) 1773.420
+[join]            Elapsed: 0.91 seconds, Rows: 141816
+__join__          cpu(s) 22.627 mem(MB) 1773.420
+[graph]           Elapsed: 0.11 seconds, Nodes: 59343
+__graph__         cpu(s) 2.097  mem(MB) 1773.420
+[pagerank]        Elapsed: 0.97 seconds, Rows: 59343
+__pagerank__      cpu(s) 0.972  mem(MB) 1773.420
 [save bin]        Elapsed: 0.01 seconds, Rows: 59343
-__savebin__       cpu(s) 0.004  mem(MB) 2872094.720
+__savebin__       cpu(s) 0.005  mem(MB) 1773.420
 
 
 ----------------------
