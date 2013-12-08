@@ -36,9 +36,8 @@ if __name__ == '__main__':
     t.show("load posts text", table)
     r.show("__loadpoststext__")
 
-    Selected = snap.TIntV()
-    table.SelectAtomicStrConst("Tag", "python", snap.EQ, Selected, snap.TBool(False))
-    questions = snap.TTable.New(table, "2", Selected)
+    questions = snap.TTable.New(snap.TStr("2"), table.GetSchema(), context)
+    table.SelectAtomicStrConst("Tag", "python", snap.EQ, questions)
     t.show("selected tag = 'python'", questions)
     r.show("__selectedtagpython__")
 
