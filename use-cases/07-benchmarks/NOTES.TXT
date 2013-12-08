@@ -323,24 +323,22 @@ same as 12-usecase.py, except that a table of "questions"
 and a table of "answers" are explicitly created before joining
 
 madmax:~/ringo/use-cases/07-benchmarks$ python 14-usecase-complete.py /dfs/ilfs2/0/ringo/StackOverflow_joined/posts.tsv out.bin
-
-******* RESULTS ON LAPTOP (Martin) ********
-[load posts text] Elapsed: 55.11 seconds, Rows: 26673279
-__loadpoststext__ cpu(s) 55.069 mem(MB) 2871934.976
-[select tag = 'python']Elapsed: 8.17 seconds, Rows: 214856
-__selecttagpython__ cpu(s) 8.155  mem(MB) 2871934.976
-[select questions]Elapsed: 0.00 seconds, Rows: 142207
-__selectquestions__ cpu(s) 0.004  mem(MB) 2871934.976
-[select answers]  Elapsed: 0.39 seconds, Rows: 16737213
-__selectanswers__ cpu(s) 0.386  mem(MB) 2871934.976
-[join]            Elapsed: 1.76 seconds, Rows: 141816
-__join__          cpu(s) 1.755  mem(MB) 2871934.976
-[graph]           Elapsed: 0.08 seconds, Nodes: 59343, Edges: 141816
-__graph__         cpu(s) 0.083  mem(MB) 2871934.976
-[pagerank]        Elapsed: 1.01 seconds, Rows: 59343
-__pagerank__      cpu(s) 1.006  mem(MB) 2871934.976
-[save bin]        Elapsed: 0.00 seconds, Rows: 59343
-__savebin__       cpu(s) 0.003  mem(MB) 2871934.976
+[load posts text] Elapsed: 34.88 seconds, Rows: 26673279
+__loadpoststext__ cpu(s) 34.791 mem(MB) 1773.420
+[select tag = 'python']Elapsed: 7.33 seconds, Rows: 214856
+__selecttagpython__ cpu(s) 7.316  mem(MB) 1773.420
+[select questions]Elapsed: 0.04 seconds, Rows: 142207
+__selectquestions__ cpu(s) 2.471  mem(MB) 1773.420
+[select answers]  Elapsed: 1.02 seconds, Rows: 16737213
+__selectanswers__ cpu(s) 29.252 mem(MB) 1773.420
+[join]            Elapsed: 0.70 seconds, Rows: 141816
+__join__          cpu(s) 18.781 mem(MB) 1773.420
+[graph]           Elapsed: 0.11 seconds, Nodes: 59343
+__graph__         cpu(s) 1.962  mem(MB) 1773.420
+[pagerank]        Elapsed: 0.98 seconds, Rows: 59343
+__pagerank__      cpu(s) 0.979  mem(MB) 1773.420
+[save bin]        Elapsed: 0.24 seconds, Rows: 59343
+__savebin__       cpu(s) 0.009  mem(MB) 1773.420
 
 ----------------------
 Benchmark 15:
