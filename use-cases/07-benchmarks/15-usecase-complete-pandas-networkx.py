@@ -46,12 +46,13 @@ if __name__ == '__main__':
     posts1 = posts[posts['Tag'] == 'python']
     t.show("select tag = 'python'", posts1)
     r.show("__selecttagpython__")
+    
     posts1 = posts1[posts1['AcceptedAnswerId'] != 0]
     t.show("select question", posts1)
     r.show("__selectquestion__")
 
     posts2 = posts[posts['AcceptedAnswerId'] == 0]
-    t.show("select answer", posts1)
+    t.show("select answer", posts2)
     r.show("__selectanswer__")
 
     pandas_rename(posts1, "AcceptedAnswerId", "Id")
