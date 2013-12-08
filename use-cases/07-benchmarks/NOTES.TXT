@@ -347,25 +347,23 @@ Benchmark 15:
 same as 14-usecase-complete.py, but using PANDAS and NetworkX instead of
 Ringo
 
-madmax:~/ringo/use-cases/07-benchmarks$ python 15-usecase-simple-pandas-networkx.py /dfs/ilfs2/0/ringo/StackOverflow_joined/posts.tsv out.pkl
-
-******* RESULTS ON LAPTOP (Martin) ********
-[load posts text] Elapsed: 14.81 seconds, Length: 26673279
-__loadpoststext__ cpu(s) 14.799 mem(MB) 2925330.432
-[select tag = 'python']Elapsed: 1.94 seconds, Length: 214856
-__selecttagpython__ cpu(s) 1.940  mem(MB) 2925330.432
+madmax:~/ringo/use-cases/07-benchmarks$ python 15-usecase-complete-pandas-networkx.py /dfs/ilfs2/0/ringo/StackOverflow_joined/posts.tsv out.pkl
+[load posts text] Elapsed: 28.35 seconds, Length: 26673279
+__loadpoststext__ cpu(s) 28.246 mem(MB) 4084.112
+[select tag = 'python']Elapsed: 3.09 seconds, Length: 214856
+__selecttagpython__ cpu(s) 3.065  mem(MB) 4084.112
 [select question] Elapsed: 0.01 seconds, Length: 142207
-__selectquestion__  cpu(s) 0.010  mem(MB) 2925330.432
-[select answer]   Elapsed: 1.21 seconds, Length: 142207
-__selectanswer__  cpu(s) 1.213  mem(MB) 2925330.432
-[join]            Elapsed: 3.43 seconds, Length: 141816
-__join__          cpu(s) 3.420  mem(MB) 4024623.104
-[graph]           Elapsed: 0.50 seconds, Length: 59343
-__graph__         cpu(s) 0.500  mem(MB) 4024623.104
-[pagerank]        Elapsed: 17.75 seconds, Length: 59343
-__pagerank__      cpu(s) 17.738 mem(MB) 4024623.104
-[save]            Elapsed: 0.00 seconds, Length: 59343
-__save__          cpu(s) 0.003  mem(MB) 4024623.104
+__selectquestion__  cpu(s) 0.013  mem(MB) 4084.112
+[select answer]   Elapsed: 1.78 seconds, Length: 142207
+__selectanswer__  cpu(s) 1.770  mem(MB) 4084.112
+[join]            Elapsed: 6.64 seconds, Length: 141816
+__join__          cpu(s) 6.554  mem(MB) 5103.344
+[graph]           Elapsed: 0.67 seconds, Length: 59343
+__graph__         cpu(s) 0.665  mem(MB) 5103.344
+[pagerank]        Elapsed: 28.88 seconds, Length: 59343
+__pagerank__      cpu(s) 28.810 mem(MB) 5103.344
+[save]            Elapsed: 0.11 seconds, Length: 59343
+__save__          cpu(s) 0.012  mem(MB) 5103.344
 
 ----------------------
 Benchmark 50:

@@ -60,7 +60,7 @@ if __name__ == '__main__':
     r.show("__graph__")
 
     PRankH = snap.TIntFltH()
-    snap.GetPageRankMP2(graph, PRankH,  0.85, 1e-4, 100)
+    snap.GetPageRank(graph, PRankH,  0.85, 1e-4, 100)
     prtable = snap.TTable.New("PR", PRankH, "UserId", "PageRank", context, snap.TBool(True))
     t.show("pagerank", prtable)
     r.show("__pagerank__")
