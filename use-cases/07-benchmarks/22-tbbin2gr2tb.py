@@ -31,12 +31,16 @@ if __name__ == '__main__':
     assert(len(S) >= 2)
     table.SetSrcCol(S[0])
     table.SetDstCol(S[1])
-    graph = table.ToGraph(snap.aaFirst)
-    t.show("create graph", graph)
-    r.show("__creategraph__")
+    for i in xrange(0,1):
+        graph = table.ToPNGraphPar1()
+        #graph = table.ToPNGraphPar()
+        #graph = table.ToPNGraph()
+        t.show("create graph", graph)
+        r.show("__creategraph__")
+
     print "graph type", type(graph)
 
-    table2 = snap.TTable.GetEdgeTable(graph, "1", context)
+    table2 = snap.TTable.GetEdgeTablePN(graph, "1", context)
     t.show("table from graph", table2)
     r.show("__tablefromgraph__")
 

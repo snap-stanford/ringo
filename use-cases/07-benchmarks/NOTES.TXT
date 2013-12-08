@@ -35,6 +35,67 @@ Benchmark 2:
 - create a graph from the table
 - create table from the graph
 
+- after new hash table (Rok), parallel, 12/07/2013
+
+madmax7:/lfs/local/0/rok/ringo> time python 22-tbbin2gr2tb.py soc-LiveJournal1.table 
+[load bin]        Elapsed: 6.01 seconds, Rows: 68993773
+__loadbin__     	cpu(s) 5.994	mem(MB) 1361.660
+[create graph]    Elapsed: 6.40 seconds, Nodes: 4847571
+__creategraph__ 	cpu(s) 371.937	mem(MB) 2484.372
+graph type <class 'snap.PNGraph'>
+[table from graph]Elapsed: 5.78 seconds, Rows: 68993773
+__tablefromgraph__	cpu(s) 15.620	mem(MB) 4221.228
+
+madmax7:/lfs/local/0/rok/ringo> time python 22-tbbin2gr2tb.py twitter_rv.table 
+[load bin]        Elapsed: 116.31 seconds, Rows: 1468365182
+__loadbin__     	cpu(s) 115.956	mem(MB) 28693.140
+[create graph]    Elapsed: 116.74 seconds, Nodes: 41652230
+__creategraph__ 	cpu(s) 7458.773	mem(MB) 41198.800
+graph type <class 'snap.PNGraph'>
+[table from graph]Elapsed: 106.35 seconds, Rows: 1468365182
+__tablefromgraph__	cpu(s) 115.410	mem(MB) 69772.640
+
+- after new hash table (Rok), sequential, 12/07/2013
+
+madmax7:/lfs/local/0/rok/ringo> time python 22-tbbin2gr2tb.py soc-LiveJournal1.table 
+[load bin]        Elapsed: 6.06 seconds, Rows: 68993773
+__loadbin__     	cpu(s) 6.041	mem(MB) 1361.656
+[create graph]    Elapsed: 17.12 seconds, Nodes: 4847571
+__creategraph__ 	cpu(s) 17.078	mem(MB) 2868.540
+graph type <class 'snap.PNGraph'>
+[table from graph]Elapsed: 5.62 seconds, Rows: 68993773
+__tablefromgraph__	cpu(s) 5.607	mem(MB) 4703.712
+
+madmax7:/lfs/local/0/rok/ringo> time python 22-tbbin2gr2tb.py twitter_rv.table 
+[load bin]        Elapsed: 116.47 seconds, Rows: 1468365182
+__loadbin__     	cpu(s) 116.099	mem(MB) 28693.140
+TNGraph::New reserved 100663319
+[create graph]    Elapsed: 542.19 seconds, Nodes: 41652230
+__creategraph__ 	cpu(s) 540.928	mem(MB) 47168.672
+graph type <class 'snap.PNGraph'>
+[table from graph]Elapsed: 112.14 seconds, Rows: 1468365182
+__tablefromgraph__	cpu(s) 111.747	mem(MB) 76528.956
+
+- after optimization, 12/01/2013
+
+madmax3:/lfs/local/0/rok/ringo> python 02-tbbin2gr2tb.py soc-LiveJournal1.table
+[load bin]        Elapsed: 6.03 seconds, Rows: 68993773
+__loadbin__     	cpu(s) 6.017	mem(MB) 1400.184
+[create graph]    Elapsed: 60.97 seconds, Rows: 68993773
+__creategraph__ 	cpu(s) 60.791	mem(MB) 7939.684
+[table from graph]Elapsed: 6.76 seconds, Rows: 68993773
+__tablefromgraph__	cpu(s) 6.737	mem(MB) 8757.916
+
+madmax3:/lfs/local/0/rok/ringo> python 02-tbbin2gr2tb.py twitter_rv.table
+[load bin]        Elapsed: 114.68 seconds, Rows: 1468365182
+__loadbin__     	cpu(s) 114.296	mem(MB) 28693.016
+[create graph]    Elapsed: 1675.08 seconds, Rows: 1468365182
+__creategraph__ 	cpu(s) 1669.950	mem(MB) 124849.312
+[table from graph]Elapsed: 126.98 seconds, Rows: 1468365182
+__tablefromgraph__	cpu(s) 126.447	mem(MB) 137432.264
+
+- before optimization
+
 madmax3:/lfs/local/0/rok/ringo> python 02-tbbin2gr2tb.py soc-LiveJournal1.table
 [load bin]        Elapsed: 6.05 seconds, Rows: 68993773
 __loadbin__             cpu(s) 6.032    mem(MB) 1361.532
