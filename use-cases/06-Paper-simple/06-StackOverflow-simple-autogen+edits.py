@@ -26,3 +26,4 @@ for i in xrange(min(len(files), len(sys.argv)-1)):
 t5 = generate(engine, *files)
 engine.DumpTableContent(t5, 20)
 engine.ShowMetadata(t5)
+

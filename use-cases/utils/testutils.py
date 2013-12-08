@@ -14,7 +14,9 @@ class Timer(object):
                 if isinstance(obj, snap.PTable):
                     message += ', Rows: %d' % obj.GetNumValidRows()
                 elif hasattr(obj, 'GetNodes'):
-                    message += ', Nodes: %d, Edges: %d' % (obj.GetNodes(), obj.GetEdges())
+                    # RS, commented out GetEdges() since they are not precomputed
+                    #message += ', Nodes: %d, Edges: %d' % (obj.GetNodes(), obj.GetEdges())
+                    message += ', Nodes: %d' % (obj.GetNodes())
                 elif hasattr(obj, '__len__'):
                     message += ', Length: %d' % len(obj)
             print message
