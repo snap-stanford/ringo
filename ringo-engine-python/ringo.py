@@ -1,6 +1,8 @@
 import snap
 import time
 import inspect
+import hashlib
+import re
 
 class RingoObject(object):
     def __init__(self, Id):
@@ -66,10 +68,12 @@ class Ringo(object):
         self.Objects = {}
         # mapping between ringo objects and their user-given names
         self.ObjectNames = {}
-        # an operation record has the form: <id (int), type (string), result table id, argument list (as used in python interface; table ids are used for table arguments), time stamp>
+        # an operation record has the form: <id (int), type (string), result table id, argument list (as used in python interface; ringo objects are used for table arguments), time stamp>
         self.Operations = [] 
         # mapping between a object (id) and the sequence of operation ids that led to it
         self.Lineage = {}
+        # mapping between a object (id) and the list of object ids it depends on
+        self.Dependencies = {}
         # mapping between object ids and their metadata (dict)
         self.Metadata = {}
         # mapping between a object (id) and the ids of the networks that originated from it
@@ -143,13 +147,44 @@ class Ringo(object):
         self.__UpdateObjects(T, self.Lineage[HashId], TableId)
         return RingoObject(TableId)
 
-    # UNTESTED
-    @registerOp('GetHistory', False)
+    @registerOp('ShowMetadata', False)
     def ShowMetadata(self, ObjectId):
-        template = '{0: <25}{1}'
+        template = '{0: <35}{1}'
         print template.format('Name', self.ObjectNames[RingoObject(ObjectId)])
         for Label, Info in self.Metadata[ObjectId]:
-            print template.format(Label, Info)
+            print template.format(Label, re.sub('<#(\d+)>',
+                lambda m: self.__GetName(RingoObject(int(m.group(1)))), str(Info)))
+
+    @registerOp('ShowDependencies', False)
+    def ShowDependencies(self, ObjectId, HideMiddle = False):
+        def Outputter(self, ObjectId, TabCount):
+            print '  '*TabCount + self.__GetName(RingoObject(ObjectId))
+            for Parent in self.Dependencies[ObjectId]:
+                Outputter(self, Parent, TabCount+1)
+
+        print 'Dependency Tree'
+        if HideMiddle:
+            Ancestors = set()
+            Parents = set()
+            Parents.add(ObjectId)
+            while len(Parents) > 0:
+                Curr = Parents.pop()
+                if len(self.Dependencies[Curr]) == 0:
+                    Ancestors.add(Curr)
+                for Obj in self.Dependencies[Curr]:
+                    Parents.add(Obj)
+            print self.__GetName(RingoObject(ObjectId))
+            for Obj in Ancestors:
+                if Obj != ObjectId:
+                    print '  '+self.__GetName(RingoObject(Obj))
+        else:
+            Outputter(self, ObjectId, 0)
+
+    @registerOp('ShowProvenance', False)
+    def ShowProvenance(self, ObjectId):
+        print 'Provenance Script:'
+        print '------------------'
+        print self.__GetProvenance(ObjectId)
 
     @registerOp('DumpTableContent', False)
     def DumpTableContent(self, TableId, MaxRows = None):
@@ -360,22 +395,10 @@ class Ringo(object):
 
     @registerOp('GenerateProvenance', False)
     def GenerateProvenance(self, ObjectId, OutFnm):
-        def GetName(Value):
-            if isinstance(Value, basestring):
-                return "'"+Value+"'"
-            try:
-                if Value in self.ObjectNames:
-                    return self.ObjectNames[Value]
-            except:
-                pass
-            if isinstance(Value, tuple):
-                Ret = '('
-                for SubVal in Value:
-                    Ret += GetName(SubVal)+', '
-                Ret = Ret[:-2]+')'
-                return Ret
-            return str(Value)
+        with open(OutFnm, 'w') as file:
+            file.write(self.__GetProvenance(ObjectId))
 
+    def __GetProvenance(self, ObjectId):
         Preamble = ['import sys', 'import ringo', '']
         Lines = []
         Files = []
@@ -394,14 +417,14 @@ class Ringo(object):
             for Arg in Op[3][0]:
                 if SpecialArg == 0:
                     FuncArgs.append('filename'+str(len(Files)))
-                    Files.append(GetName(Arg))
+                    Files.append(self.__GetName(Arg))
                 else:
-                    FuncArgs.append(GetName(Arg))
+                    FuncArgs.append(self.__GetName(Arg))
                 SpecialArg -= 1
             for Arg in Op[3][1]:
-                FuncArgs.append(str(Arg)+'='+GetName(Op[3][1][Arg]))
+                FuncArgs.append(str(Arg)+'='+self.__GetName(Op[3][1][Arg]))
 
-            RetName = GetName(Op[2])
+            RetName = self.__GetName(Op[2])
 
             if Op[1] == 'LoadTableTSV':
                 Schema = Op[3][0][0]
@@ -409,8 +432,8 @@ class Ringo(object):
                 TableSchemaMap = {}
                 for i in xrange(len(Schema)):
                     VariablePair = ('%s_ColName%d' % (RetName, i+1), '%s_ColType%d' % (RetName, i+1))
-                    TableSchemaMap[GetName(Schema[i][0])] = VariablePair[0]
-                    TableSchemaMap[GetName(Schema[i][1])] = VariablePair[1]
+                    TableSchemaMap[self.__GetName(Schema[i][0])] = VariablePair[0]
+                    TableSchemaMap[self.__GetName(Schema[i][1])] = VariablePair[1]
                     SchemaPreamble.append('(%s, %s)' % VariablePair)
                 SchemaPreamble = '[%s]' % str.join(', ', SchemaPreamble)
                 Preamble.append('%s = %s' % (SchemaPreamble, FuncArgs[0]))
@@ -427,7 +450,7 @@ class Ringo(object):
 
             Lines.append(FuncCall)
 
-        FinalName = GetName(RingoObject(ObjectId))
+        FinalName = self.__GetName(RingoObject(ObjectId))
         Lines.append('return '+FinalName)
          
         Script = str.join('\n', Preamble) + '\n\ndef generate(engine,'
@@ -445,10 +468,26 @@ class Ringo(object):
         Script += '    files[i] = sys.argv[i+1]\n'
         Script += FinalName + ' = generate(engine, *files)\n'
 
-        with open(OutFnm, 'w') as file:
-            file.write(Script)
+        return Script
 
-    def __CopyTable(TableId):
+    def __GetName(self, Value):
+        if isinstance(Value, basestring):
+            return "'"+Value+"'"
+        try:
+            if Value in self.ObjectNames:
+                return self.ObjectNames[Value]
+            elif isinstance(Value, RingoObject):
+                return '<#%d>' % Value.Id
+        except:
+            pass
+        if isinstance(Value, tuple):
+            Ret = '('
+            for SubVal in Value:
+                Ret += self.__GetName(SubVal)+', '
+            Ret = Ret[:-2]+')'
+        return str(Value)
+
+    def __CopyTable(self, TableId):
         T = TTable.New(self.Objects[TableId], TId)
         CopyTableId = self.__UpdateObjects(T, Lineage[TableId])
         return CopyTableId
@@ -480,11 +519,54 @@ class Ringo(object):
         for Object in Objects:
             Metadata = [] 
             self.__AddTypeSpecificInfo(self.Objects[Object.Id], Metadata) 
-            Metadata.append(('Last Operation Time', Op[5]))
+
+            Datasets = set()
+            FuncArgs = []
+            Dependencies = set()
+            for Arg in Op[3][0]:
+                FuncArgs.append(self.__GetName(Arg))
+                if isinstance(Arg, RingoObject):
+                    Datasets.update(dict(self.Metadata[Arg.Id])['Datasets'].split(', '))
+                    Dependencies.add(Arg.Id)
+            for Arg in Op[3][1]:
+                Obj = Op[3][1][Arg]
+                FuncArgs.append(str(Arg)+'='+self.__GetName(Obj))
+                if isinstance(Obj, RingoObject):
+                    Datasets.update(dict(self.Metadata[Obj.Id])['Datasets'].split(', '))
+                    Dependencies.add(Arg.Id)
+            if Op[1] == 'LoadTableTSV':
+                Datasets.add(Op[3][0][1])
+            LastCommand = '%s = %s(%s)' % (self.__GetName(Op[2]), Op[1], str.join(', ', FuncArgs))
+            if Object.Id in Dependencies: Dependencies.remove(Object.Id)
+
+            Metadata.append(('Datasets', str.join(', ', Datasets)))
+ 
+            if Object.Id in self.Metadata:
+                OldMeta = dict(self.Metadata[Object.Id])
+                Metadata.append(('Inputs', OldMeta['Inputs']))
+                Metadata.append(('Operation', OldMeta['Operation']))
+                Metadata.append(('Command', OldMeta['Command']))
+                Metadata.append(('Last Modification', LastCommand))
+                self.Dependencies[Object.Id] |= Dependencies
+            else:
+                Metadata.append(('Inputs', str.join(', ', FuncArgs)))
+                Metadata.append(('Operation', Op[1]))
+                Metadata.append(('Command', LastCommand))
+                self.Dependencies[Object.Id] = Dependencies
+
+
+            Metadata.append(('Last Edited', Op[4]))
+            Metadata.append(('Last Operation Time', '%.1fs' % Op[5]))
             TotalTime = 0
             for PrevOpId in self.Lineage[Object.Id]:
                 TotalTime += self.Operations[PrevOpId][5]
-            Metadata.append(('Total Creation Time', TotalTime))
+            Metadata.append(('Total Creation Time', '%.1fs' % TotalTime))
+
+                   
+            Provenance = self.__GetProvenance(Object.Id)
+            Metadata.append(('Provenance Script', '%d lines, %d characters'
+                % (len(str.splitlines(Provenance)), len(Provenance))))
+
             self.Metadata[Object.Id] = Metadata
 
     def __AddTypeSpecificInfo(self, Object, Metadata):
