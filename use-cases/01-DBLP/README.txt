@@ -21,7 +21,7 @@ Usage: python 01-DBLP-snap.py <authors.tsv> <year.tsv> <outputdir>
 
   * Example:
 
-        $ python 01-DBLP-snap.py /dfs/ilfs2/0/ringo/DBLP/authors.tsv /dfs/ilfs2/ringo/DBLP/year.tsv output
+        $ python 01-DBLP-snap.py /dfs/ilfs2/0/ringo/DBLP/authors.tsv /dfs/ilfs2/0/ringo/DBLP/year.tsv output
 
         [load]  Elapsed: 6.59 seconds, Rows: 2734707
         [load year table] Elapsed: 1.26 seconds, Rows: 1039160
