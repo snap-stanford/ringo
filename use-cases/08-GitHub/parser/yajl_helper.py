@@ -1,9 +1,9 @@
 import sys
 import json
-from yajl import *
+import yajl
 
 # Content handler constructs a valid top-level JSON object and calls the processor method to handle the object
-class ContentHandler(YajlContentHandler):
+class ContentHandler(yajl.YajlContentHandler):
    	def __init__(self, processor):
 		self.js = ""    
 		self.stack = []

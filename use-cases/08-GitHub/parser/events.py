@@ -8,9 +8,9 @@ import json
 # Each processor has the events list for debugging. It can be removed later. 
 # Do the jazz. 
 class BaseProcessor:
-	def __init__(self):
-		self.writer = FileWriter()
+	def __init__(self, writer):
 		self.cnt = 0
+		self.writer = writer
 
 	def process(self, js):
 		try:
@@ -30,8 +30,8 @@ class BaseProcessor:
 			print(sys.exc_info())
 
 	def action(self):
-		print("Processed %d relevant events. Commiting changes."%self.cnt)
 		self.writer.commit()
+		return self.cnt
 
 	def __exit__(self, type, value, traceback):
 		self.action()
@@ -208,7 +208,8 @@ class FileWriter:
 		return s
 
 	def commit(self):
-		self.close()
+		for key, val in self.files.iteritems():
+			self.files[key].flush()
 	
 	def close(self):
 		for key, val in self.files.iteritems():

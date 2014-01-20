@@ -34,7 +34,9 @@ def fetch_file(date):
 	
 	os.chdir(os.path.expanduser(data_root))
 	path = "%s/%s/%s"%(date.year, date.month, filename)
-	call(["curl", url, "--create-dirs","-o", path])
+
+	if not os.path.isfile(path):
+		call(["curl", url, "--create-dirs","-o", path])
 
 args = sys.argv[1:]
 
@@ -60,5 +62,6 @@ for arg in args:
 		sys.exit(1)
 
 while date1<date2:
+	print("Fetching %s"%str(date1))
 	fetch_file(date1)
 	date1 = date1 + timedelta(hours=1)
