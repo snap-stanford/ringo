@@ -37,10 +37,10 @@ G = ringo.ToGraph(T, "1_1.Author","1_2.Author")
 t.show("graph")
 
 if not dstfile is None:
-  G.Save(snap.TFOut(dstfile))
+  #G.Save(snap.TFOut(dstfile))
   t.show("save")
 
-diameter = snap.GetBfsEffDiam(G,N_TEST_NODES)
+diameter = ringo.GetBfsEffDiam(G,N_TEST_NODES)
 t.show("diameter (%d test nodes)" % N_TEST_NODES)
 
 print "Diameter: {0:.5f}".format(diameter)
