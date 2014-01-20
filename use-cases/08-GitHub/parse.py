@@ -1,5 +1,6 @@
 '''
-This module parses the json.gz files from GitHub archive and writes the tsv file for each event. The module recursively iteratores over the root directory and parses each json.gz file in the hierarchy. NOTE that it does not assume any file organization structure - all files within the root directory of type *.json.gz will be processed. 
+This module parses the json.gz files from GitHub archive and writes the tsv file for each event. The module recursively iteratores over the root directory and parses each json.gz file in the hierarchy. NOTE that it does not assume any file organization structure - all files within the root directory of type *.json.gz will be processed
+. It creates an offset.cache file in the current directory and ignores all dates in that file - this is done to support rerun in case of intermitten failures. 
 
 Example:
 python parse.py ~/dump

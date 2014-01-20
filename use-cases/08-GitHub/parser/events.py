@@ -172,6 +172,7 @@ class PullRequestProcessor:
 		try:
 			self.userid = obj['actor']
 			self.repo = obj['repository']
+			self.pullid = obj['payload']['pull_request']['id']
 			self.status = obj['payload']['action']
 			self.created_at = obj['created_at']
 		except:
@@ -179,7 +180,7 @@ class PullRequestProcessor:
 			print(sys.exc_info()[0])
 
 	def action(self):
-		self.writer.add_pull(self.userid, self.repo, self.status, self.created_at)
+		self.writer.add_pull(self.userid, self.repo, self.pullid, self.status, self.created_at)
 ###
 ### FileWriter class ###
 ###
@@ -198,7 +199,7 @@ class FileWriter:
 			limit = len(tup)
 
 		for i in range(limit):
-			s += tup[i]
+			s += str(tup[i])
 
 			if i!=limit-1:
 				s += "\t"	
@@ -206,6 +207,15 @@ class FileWriter:
 				s += "\n"
 
 		return s
+
+	def is_clean(self, tup):
+		for it in tup:
+			item = str(it)
+	
+			if len(item.strip())==0 or ('\n' in item) or ('\t' in item):
+				return False
+
+		return True
 
 	def commit(self):
 		for key, val in self.files.iteritems():
@@ -216,33 +226,45 @@ class FileWriter:
 			self.files[key].close()
 
 	def add_followers(self, follows):
-		self.files[Event.FollowEvent].write(self.tsv(follows))
+		if self.is_clean(follows):
+			self.files[Event.FollowEvent].write(self.tsv(follows))
 
 	def add_collab(self, userid, repo, created_at):
 		row = (userid, repo["owner"], repo["name"], created_at) 
-		self.files[Event.MemberEvent].write(self.tsv(row))		
+	
+		if self.is_clean(row):
+			self.files[Event.MemberEvent].write(self.tsv(row))		
 
 	def add_repo(self, repo):
 		language = repo['language'] if 'language' in repo else ""
-
 		row = (repo['owner'], repo['name'], str(repo['watchers']), str(repo['forks']), language, repo['created_at'])
-		self.files[Event.CreateEvent].write(self.tsv(row))
+
+		if self.is_clean(row):	
+			self.files[Event.CreateEvent].write(self.tsv(row))
 
 	def add_fork(self, userid, repo, created_at):
 		row = (userid, repo["owner"], repo["name"], created_at)
-		self.files[Event.ForkEvent].write(self.tsv(row))
+
+		if self.is_clean(row):
+			self.files[Event.ForkEvent].write(self.tsv(row))
 	
 	def add_watch(self, userid, repo, created_at):
 		row = (userid, repo["owner"], repo["name"], created_at)
-		self.files[Event.WatchEvent].write(self.tsv(row))
+
+		if self.is_clean(row):
+			self.files[Event.WatchEvent].write(self.tsv(row))
 	
 	def add_issue(self, userid, repo, created_at):
 		row = (userid, repo["owner"], repo["name"], created_at)
-		self.files[Event.IssuesEvent].write(self.tsv(row))
 
-	def add_pull(self, userid, repo, status, created_at):
-		row = (userid, repo["owner"], repo["name"], status, created_at)
-		self.files[Event.IssuesEvent].write(self.tsv(row))
+		if self.is_clean(row):
+			self.files[Event.IssuesEvent].write(self.tsv(row))
+
+	def add_pull(self, userid, repo, pullid, status, created_at):
+		row = (userid, repo["owner"], repo["name"], pullid, status, created_at)
+
+		if self.is_clean(row):
+			self.files[Event.PullRequestEvent].write(self.tsv(row))
 
 class Event:
 	FollowEvent = 'FollowEvent'
