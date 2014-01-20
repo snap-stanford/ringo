@@ -84,7 +84,7 @@ def main(args):
 				# If FLUSH_LIMIT multiple, write to tsv files
 				if num_processed % FLUSH_LIMIT == 0:
 					print("Committing FileWriter")
-					file_writer.commit()
+					writer.commit()
 
 				# Update date cache
 				f.write(datetime.strftime(date, FORMAT) + "\n")
@@ -92,6 +92,7 @@ def main(args):
 			else:
 				print("Skipping %s due to cache" % date)
 
+	writer.close()
 	f.close()
 	return 0
 
