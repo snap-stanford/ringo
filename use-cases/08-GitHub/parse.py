@@ -13,6 +13,7 @@ import gzip
 from parser.yajl_helper import *
 from parser.events import *
 from datetime import *
+import utils
 
 def parse_inner(data_file, processor):
 	f = None
@@ -43,11 +44,10 @@ def parse(data_file, writer):
 	return 0
 
 CACHE_FILE="offset.cache"
-FORMAT="%Y-%m-%d-%H"
 
 def get_date(filename):
 	sdate = filename.split(".")[0]
-	return datetime.strptime(sdate, FORMAT)
+	return datetime.strptime(sdate, utils.CONSTANTS.FORMAT)
 
 def main(args):	
 	if len(args)<1:
@@ -61,7 +61,7 @@ def main(args):
 
 	try:
 		for line in f.readlines():
-			date_cache[datetime.strptime(line, FORMAT)] = 0
+			date_cache[datetime.strptime(line, utils.CONSTANTS.FORMAT)] = 0
 	except:
 		print("Invalid Date")
 		print(sys.exc_info())
@@ -71,6 +71,7 @@ def main(args):
 	writer = FileWriter()
 
 	for dirpath, subdirs, files in os.walk(root):
+		print dirpath
 		for item in fnmatch.filter(files, "*.json.gz"):
 			date = get_date(item)	
 
@@ -88,7 +89,7 @@ def main(args):
 					writer.commit()
 
 				# Update date cache
-				f.write(datetime.strftime(date, FORMAT) + "\n")
+				f.write(datetime.strftime(date, utils.CONSTANTS.FORMAT) + "\n")
 				f.flush()
 			else:
 				print("Skipping %s due to cache" % date)

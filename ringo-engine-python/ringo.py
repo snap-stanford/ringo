@@ -186,6 +186,19 @@ class Ringo(object):
         print '------------------'
         print self.__GetProvenance(ObjectId)
 
+    @registerOp('GetSchema', False)
+    def GetSchema(self, TableId):
+    	T = self.Objects[TableId]
+	Schema = T.GetSchema()
+	S = []
+
+	for Col in Schema:
+		ColName = Col.Val1.CStr()
+		ColType = Col.Val2
+		S.append((ColName, ColType))
+
+	return S
+
     @registerOp('DumpTableContent', False)
     def DumpTableContent(self, TableId, MaxRows = None):
         T = self.Objects[TableId]
@@ -339,6 +352,18 @@ class Ringo(object):
         for attr in Attrs:
             V.Add(attr)
         T.Order(V, "", snap.TBool(False), snap.TBool(Asc))
+        return RingoObject(TableId)
+
+    @registerOp('ColMax')
+    def ColMax(self, TableId, Attr1, Attr2, ResultAttrName):
+        T = self.Objects[TableId]
+        T.ColMax(Attr1, Attr2, ResultAttrName)
+        return RingoObject(TableId)
+
+    @registerOp('ColMin')
+    def ColMin(self, TableId, Attr1, Attr2, ResultAttrName):
+        T = self.Objects[TableId]
+        T.ColMin(Attr1, Attr2, ResultAttrName)
         return RingoObject(TableId)
 
     # USE CASE 1 OK

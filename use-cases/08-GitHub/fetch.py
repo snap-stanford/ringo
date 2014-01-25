@@ -7,6 +7,7 @@ python fetch.py -date1:2012-10-11-1 -date2:2012-10-11-2 -root:~/dump
 
 import sys
 import os
+import utils
 from datetime import *
 from subprocess import call
 
@@ -14,7 +15,7 @@ ROOT="-root"
 DATE1="-date1"
 DATE2="-date2"
 DELIM=":"
-FORMAT="%Y-%m-%d-%H"
+FORMAT=utils.CONSTANTS.FORMAT
 BASE_URL="http://data.githubarchive.org"
 
 data_root=""
