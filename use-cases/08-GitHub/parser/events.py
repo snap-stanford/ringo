@@ -1,5 +1,6 @@
 import sys
 import json
+import utils
 
 # Processors for various event types
 # Receive json object in string form
@@ -226,42 +227,44 @@ class FileWriter:
 			self.files[key].close()
 
 	def add_followers(self, follows):
+		follows = (follows[0], follows[1], utils.date_to_ticks(follows[2]))
+
 		if self.is_clean(follows):
 			self.files[Event.FollowEvent].write(self.tsv(follows))
 
 	def add_collab(self, userid, repo, created_at):
-		row = (userid, repo["owner"], repo["name"], created_at) 
+		row = (userid, repo["owner"], repo["name"], utils.date_to_ticks(created_at) )
 	
 		if self.is_clean(row):
 			self.files[Event.MemberEvent].write(self.tsv(row))		
 
 	def add_repo(self, repo):
 		language = repo['language'] if 'language' in repo else ""
-		row = (repo['owner'], repo['name'], str(repo['watchers']), str(repo['forks']), language, repo['created_at'])
+		row = (repo['owner'], repo['name'], str(repo['watchers']), str(repo['forks']), language, utils.date_to_ticks(repo['created_at']))
 
 		if self.is_clean(row):	
 			self.files[Event.CreateEvent].write(self.tsv(row))
 
 	def add_fork(self, userid, repo, created_at):
-		row = (userid, repo["owner"], repo["name"], created_at)
+		row = (userid, repo["owner"], repo["name"], utils.date_to_ticks(created_at))
 
 		if self.is_clean(row):
 			self.files[Event.ForkEvent].write(self.tsv(row))
 	
 	def add_watch(self, userid, repo, created_at):
-		row = (userid, repo["owner"], repo["name"], created_at)
+		row = (userid, repo["owner"], repo["name"], utils.date_to_ticks(created_at))
 
 		if self.is_clean(row):
 			self.files[Event.WatchEvent].write(self.tsv(row))
 	
 	def add_issue(self, userid, repo, created_at):
-		row = (userid, repo["owner"], repo["name"], created_at)
+		row = (userid, repo["owner"], repo["name"], utils.date_to_ticks(created_at))
 
 		if self.is_clean(row):
 			self.files[Event.IssuesEvent].write(self.tsv(row))
 
 	def add_pull(self, userid, repo, pullid, status, created_at):
-		row = (userid, repo["owner"], repo["name"], pullid, status, created_at)
+		row = (userid, repo["owner"], repo["name"], pullid, status, utils.date_to_ticks(created_at))
 
 		if self.is_clean(row):
 			self.files[Event.PullRequestEvent].write(self.tsv(row))

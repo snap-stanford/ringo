@@ -312,15 +312,14 @@ class Ringo(object):
             T.SelectAtomic(elements[0], elements[2], Op)
         return RingoObject(TableId)
 
-    # UNTESTED
+    # USE CASE 8 OK
     @registerOp('Project')
     def Project(self, TableId, Columns, InPlace = True):
-        Args = (TableId, Predicate, NewTable)
-        PrepCols = TStrV()
+        PrepCols = snap.TStrV()
         for Col in Columns:
             PrepCols.Add(Col)
 
-        if NewTable:
+        if not InPlace:
             TableId = __CopyTable(TableId)
 
         T = self.Objects[TableId]

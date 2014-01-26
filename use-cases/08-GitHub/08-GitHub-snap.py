@@ -10,6 +10,7 @@ import time
 import snap
 import testutils
 import ringo
+import utils
 
 N_TOP_AUTHORS = 20
 ENABLE_TIMER = True
@@ -72,16 +73,16 @@ ringo = ringo.Ringo()
 
 # Load data
 # >>> authors = ringo.load('authors.tsv')
-S1 = [("userid1", "string"), ("userid2", "string"), ("created_at", "string")]
+S1 = [("userid1", "string"), ("userid2", "string"), ("created_at", "int")]
 Tfollow = ringo.LoadTableTSV(S1, file_cache[TFOLLOW])
 t.show("load follow")
 
 # UserId, Owner of Repo, Name of repo, created_at => (owner, name) uniquely identies a repo
-S2 = [("userid", "string"), ("owner", "string"), ("name", "string"), ("created_at", "string")]
+S2 = [("userid", "string"), ("owner", "string"), ("name", "string"), ("created_at", "int")]
 Tcollab = ringo.LoadTableTSV(S2, file_cache[TCOLLAB])
 t.show("load collab")
 
-S3 = [("userid", "string"), ("owner", "string"), ("name", "string"), ("pullid", "string"), ("status", "string"), ("created_at", "string")]
+S3 = [("userid", "string"), ("owner", "string"), ("name", "string"), ("pullid", "string"), ("status", "string"), ("created_at", "int")]
 Tpull = ringo.LoadTableTSV(S3, file_cache[TPULL])
 t.show("load pull")
 
@@ -91,16 +92,26 @@ t.show("load fork")
 Twatch = ringo.LoadTableTSV(S2, file_cache[TWATCH])
 t.show("load watch")
 
-# Get the merged table
-Tmerge = ringo.Join(Tcollab, Tpull, "owner", "owner")
+# If (u,v) collaborated on the same repository - determined by the owner, name pair,
+# are added as collaborators. 
+#TODO Better column renaming
+Tcollab_merge = ringo.SelfJoin(Tcollab, "owner")
+ringo.Select(Tcollab_merge, "2_1.name = 2_2.name", True)
+Tcollab_merge = ringo.ColMin(Tcollab_merge, "2_1.created_at", "2_2.created_at", "created_at")
+ringo.Project(Tcollab_merge, ("2_1.userid", "2_2.userid", "created_at"))
+t.show("merge collab", Tcollab_merge)
 
-#TODO
-ringo.ColMin(Tmerge, "2.created_at", "3.created_at", "created_at")
-Tmerge = ringo.SelfJoin(Tmerge, "name")
-t.show("collab join pull")
+# If (u,v) worked on the same pull request on the same repository, they are added 
+# as (soft) collaborators. 
+Tpull_merge = ringo.SelfJoin(Tpull, "owner")
+#print ringo.GetSchema(Tpull_merge)
+ringo.Select(Tpull_merge, "3_1.name = 3_2.name", True)
+ringo.Select(Tpull_merge, "3_1.pullid = 3_2.pullid", True)
+Tpull_merge = ringo.ColMin(Tpull_merge, "3_1.created_at", "3_2.created_at", "created_at")
+ringo.Project(Tpull_merge, ("3_1.userid", "3_2.userid", "created_at"))
+t.show("merge pull", Tpull_merge)
 
-# Get the min of the two dates 
-t.show("collab join pull")
+
 
 # Convert to graphs
 # >>> year = ringo.load('year.tsv')
