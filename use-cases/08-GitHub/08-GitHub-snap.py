@@ -12,11 +12,11 @@ import testutils
 import ringo
 import utils
 
-N_TOP_AUTHORS = 20
 ENABLE_TIMER = True
 OUTPUT_TABLE_FILENAME = "table.tsv"
 PAGE_RANK_ATTRIBUTE = "PageRank"
 NODE_ATTR_NAME = "__node_attr"
+
 
 # Table file names 
 TCOLLAB = 'collab.tsv'
@@ -82,7 +82,7 @@ S2 = [("userid", "string"), ("owner", "string"), ("name", "string"), ("created_a
 Tcollab = ringo.LoadTableTSV(S2, file_cache[TCOLLAB])
 t.show("load collab")
 
-S3 = [("userid", "string"), ("owner", "string"), ("name", "string"), ("pullid", "string"), ("status", "string"), ("created_at", "int")]
+S3 = [("userid", "string"), ("owner", "string"), ("name", "string"), ("pullid", "int"), ("status", "string"), ("created_at", "int")]
 Tpull = ringo.LoadTableTSV(S3, file_cache[TPULL])
 t.show("load pull")
 
@@ -95,85 +95,39 @@ t.show("load watch")
 # If (u,v) collaborated on the same repository - determined by the owner, name pair,
 # are added as collaborators. 
 #TODO Better column renaming
+
 Tcollab_merge = ringo.SelfJoin(Tcollab, "owner")
 ringo.Select(Tcollab_merge, "2_1.name = 2_2.name", True)
 Tcollab_merge = ringo.ColMin(Tcollab_merge, "2_1.created_at", "2_2.created_at", "created_at")
 ringo.Project(Tcollab_merge, ("2_1.userid", "2_2.userid", "created_at"))
+ringo.Rename(Tcollab_merge, "2_1.userid", "userid1")
+ringo.Rename(Tcollab_merge, "2_2.userid", "userid2")
 t.show("merge collab", Tcollab_merge)
 
 # If (u,v) worked on the same pull request on the same repository, they are added 
 # as (soft) collaborators. 
 Tpull_merge = ringo.SelfJoin(Tpull, "owner")
-#print ringo.GetSchema(Tpull_merge)
 ringo.Select(Tpull_merge, "3_1.name = 3_2.name", True)
 ringo.Select(Tpull_merge, "3_1.pullid = 3_2.pullid", True)
 Tpull_merge = ringo.ColMin(Tpull_merge, "3_1.created_at", "3_2.created_at", "created_at")
 ringo.Project(Tpull_merge, ("3_1.userid", "3_2.userid", "created_at"))
+ringo.Rename(Tpull_merge, "3_1.userid", "userid1")
+ringo.Rename(Tpull_merge, "3_2.userid", "userid2")
 t.show("merge pull", Tpull_merge)
 
+Tmerge = ringo.UnionAll(Tcollab_merge, Tpull_merge, "collab")
+# Remove self-loops from the table. 
+ringo.Select(Tmerge, "userid1 != userid2")
 
+# Select the base and delta tables from the merged table.
+Tbase = ringo.Select(Tmerge, "created_at >= 10", False, True)
 
-# Convert to graphs
-# >>> year = ringo.load('year.tsv')
-S = snap.Schema()
-S.Add(snap.TStrTAttrPr("Key", snap.atStr))
-S.Add(snap.TStrTAttrPr("Year", snap.atInt))
-year = snap.TTable.LoadSS("2", S, yearFile, context, '\t', snap.TBool(False))
-t.show("load year table", year)
+#TODO: Iterate over the rows and add (userid, owner) edge
+t.show("collab union")
 
-# Select
-# >>> year.select('Year >= 2005')
-year.SelectAtomicIntConst("Year", 2005, snap.GTE)
-t.show("select", year)
+# Convert base table to base graph
+Gbase = ringo.ToGraph(Tbase, "userid1", "userid2")
+t.show("base graph", Gbase)
 
-# Join
-# >>> table = authors.join(year, ['Key'], ['Key'])
-table = authors.Join("Key", year, "Key")
-t.show("join", table)
-
-# Self-join
-# >>> table.selfjoin(table, ['Key'])
-table = table.SelfJoin("Key")
-t.show("join", table)
-
-# Select
-# >>> table.select('Author_1 != Author_2')
-table.SelectAtomic("1_2_1.1.Author", "1_2_2.1.Author", snap.NEQ)
-t.show("select", table)
-
-# Create network
-# >>> table.graph('Author_1', 'Author_2', directed=False)
-table.SetSrcCol("1_2_1.1.Author")
-table.SetDstCol("1_2_2.1.Author")
-graph = table.ToGraph(snap.aaFirst)
-t.show("graph", graph)
-
-# Compute PageRank score
-# >>> pagerank = graph.pageRank('PageRank')
-HT = snap.TIntFltH()
-snap.GetPageRank(graph, HT)
-pagerank = snap.TTable.New("PR", HT, "Author", PAGE_RANK_ATTRIBUTE, context, snap.TBool(True))
-t.show("page rank", pagerank)
-
-# Order by PageRank score (in descending order)
-# >>> pagerank.order(['PageRank'], desc = True)
-V = snap.TStrV()
-V.Add(PAGE_RANK_ATTRIBUTE)
-pagerank.Order(V, "", snap.TBool(False), snap.TBool(False))
-t.show("order", pagerank)
-
-# Normalize PageRank scores so that the top score is 1
-# >>> topPageRank = pagerank.first()['PageRank']
-# >>> pagerank.arith('PageRank / {0}'.format(topPageRank))
-topPageRank = pagerank.BegRI().GetFltAttr("PageRank")
-pagerank.ColDiv("PageRank", topPageRank)
-t.show("division", pagerank)
-
-# Save final table
-# >>> pagerank.save('table.tsv')
-if not dstDir is None:
-  pagerank.SaveSS(os.path.join(dstDir,OUTPUT_TABLE_FILENAME))
-  t.show("save", pagerank)
-
-# Print top authors with their PageRank score
-testutils.dump(pagerank, N_TOP_AUTHORS)
+TPageRank = ringo.PageRank(Gbase)
+ringo.DumpTableContent(TPageRank)

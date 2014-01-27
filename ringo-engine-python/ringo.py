@@ -125,7 +125,7 @@ class Ringo(object):
     @registerOp('LoadTableBinary')
     def LoadTableBinary(self, InFnm):
         SIn = TSIn(InFnm)
-        T = TTable.Load(SIn, Context)
+        T = snap.TTable.Load(SIn, Context)
 
         #T's internal name will not match TId - is this an issue?
         TableId = self.__UpdateObjects(T, [])
@@ -198,6 +198,38 @@ class Ringo(object):
 		S.append((ColName, ColType))
 
 	return S
+    
+    @registerOp('GetRows', False)
+    def Rows(self, TableId, MaxRows = None):
+	T = self.Objects[TableId]
+	S = T.GetSchema()
+        Names = []
+        Types = []
+
+        for i, attr in enumerate(S):
+            Names.append(attr.GetVal1())
+            Types.append(attr.GetVal2())
+
+        RI = T.BegRI()
+        Cnt = 0
+
+        while RI < T.EndRI() and (MaxRows is None or Cnt < MaxRows):
+            Elements = []
+
+            for c,t in zip(Names,Types):
+                if t == snap.atInt:
+                    Elements.append(str(RI.GetIntAttr(c)))
+                elif t == snap.atFlt:
+                    Elements.append(RI.GetFltAttr(c))
+                elif t == snap.atStr:
+                    Elements.append(RI.GetStrAttr(c))
+                else:
+                    raise NotImplementedError("Unsupported column type")
+
+	    yield Elements
+		
+            RI.Next()
+            Cnt += 1
 
     @registerOp('DumpTableContent', False)
     def DumpTableContent(self, TableId, MaxRows = None):
@@ -208,29 +240,18 @@ class Ringo(object):
         Line = ""
         Names = []
         Types = []
+
         for i, attr in enumerate(S):
             Template += "{%d: <%d}" % (i, ColSpace)
             Names.append(attr.GetVal1())
             Types.append(attr.GetVal2())
             Line += "-" * ColSpace
+
         print Template.format(*Names)
         print Line
-        RI = T.BegRI()
-        Cnt = 0
-        while RI < T.EndRI() and (MaxRows is None or Cnt < MaxRows):
-            Elmts = []
-            for c,t in zip(Names,Types):
-                if t == snap.atInt:
-                    Elmts.append(str(RI.GetIntAttr(c)))
-                elif t == snap.atFlt:
-                    Elmts.append("{0:.6f}".format(RI.GetFltAttr(c)))
-                elif t == snap.atStr:
-                    Elmts.append(RI.GetStrAttr(c))
-                else:
-                    raise NotImplementedError("unsupported column type")
-            print Template.format(*Elmts)
-            RI.Next()
-            Cnt += 1
+
+	for row in self.Rows(TableId, MaxRows):
+            print Template.format(*row)
 
     # UNTESTED
     @registerOp('AddLabel')
@@ -269,6 +290,7 @@ class Ringo(object):
     @registerOp('Select')
     def Select(self, TableId, Predicate, InPlace = True, CompConstant = False): 
         Args = (TableId, Predicate, InPlace)
+
         if not InPlace:
             TableId = self.__CopyTable(TableId)
             
@@ -335,6 +357,28 @@ class Ringo(object):
         JoinT = LeftT.Join(LeftAttr, RightT, RightAttr)
         JoinTId = self.__UpdateObjects(JoinT, self.Lineage[LeftTableId] + self.Lineage[RightTableId])
         return RingoObject(JoinTId)
+
+    @registerOp('Union')
+    def Union(self, LeftTableId, RightTableId, TableName):
+	LeftT = self.Objects[LeftTableId]
+	RightT = self.Objects[RightTableId]
+	UnionT = LeftT.Union(RightT, TableName)
+	UnionTId = self.__UpdateObjects(UnionT, self.Lineage[LeftTableId] + self.Lineage[RightTableId])
+	return RingoObject(UnionTId)
+
+    @registerOp('UnionAll')
+    def UnionAll(self, LeftTableId, RightTableId, TableName):
+	LeftT = self.Objects[LeftTableId]
+	RightT = self.Objects[RightTableId]
+	UnionT = LeftT.UnionAll(RightT, TableName)
+	UnionTId = self.__UpdateObjects(UnionT, self.Lineage[LeftTableId] + self.Lineage[RightTableId])
+	return RingoObject(UnionTId)
+
+    @registerOp('Rename')
+    def Rename(self, TableId, Column, NewLabel):
+	T = self.Objects[TableId]
+	T.Rename(Column, NewLabel)
+	return RingoObject(TableId)
 
     # USE CASE 1 OK
     @registerOp('SelfJoin')
@@ -512,13 +556,14 @@ class Ringo(object):
         return str(Value)
 
     def __CopyTable(self, TableId):
-        T = TTable.New(self.Objects[TableId], TId)
-        CopyTableId = self.__UpdateObjects(T, Lineage[TableId])
+        T = snap.TTable.New(self.Objects[TableId], str(TableId))
+        CopyTableId = self.__UpdateObjects(T, self.Lineage[TableId])
         return CopyTableId
 
     def __UpdateObjects(self, Object, Lineage, Id = None):
         if Id is None:
-          Id = self.__GetObjectId()
+		Id = self.__GetObjectId()
+
         self.Objects[Id] = Object 
         self.Lineage[Id] = sorted(list(set(Lineage)))
         return Id
@@ -631,4 +676,7 @@ class Ringo(object):
                         self.ObjectNames[Object[i]] = '%s[%d]' %(Var, i)
 
     def __GetObjectId(self):
-        return 1 if len(self.Objects) == 0 else max(self.Objects) + 1
+	    if len(self.Objects) == 0:
+		    return 1
+
+	    return max(self.Objects) + 1
