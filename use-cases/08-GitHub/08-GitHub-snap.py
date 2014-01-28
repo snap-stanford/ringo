@@ -4,12 +4,10 @@
 
 import sys
 sys.path.append("..")
-sys.path.append("../../ringo-engine-python")
 import os
 import time
 import snap
 import testutils
-import ringo
 import utils
 
 ENABLE_TIMER = True
@@ -25,6 +23,17 @@ TREPO = 'repo.tsv'
 TFOLLOW = 'followers.tsv'
 TWATCH = 'watch.tsv'
 TFORK = 'fork.tsv'
+
+def GetSchema(T):
+	Schema = T.GetSchema()
+	S = []
+
+	for Col in Schema:
+		ColName = Col.Val1.CStr()
+		ColType = Col.Val2
+		S.append((ColName, ColType))
+
+	return S
 
 def get_usage():
 	usage = """Usage: python 08-GitHub-snap.py <root> <outputdir>
@@ -66,68 +75,99 @@ if not dstDir is None:
   except OSError:
     pass
 
-context = snap.TTableContext()
 t = testutils.Timer(ENABLE_TIMER)
+context = snap.TTableContext()
 
-ringo = ringo.Ringo()
-
-# Load data
-# >>> authors = ringo.load('authors.tsv')
-S1 = [("userid1", "string"), ("userid2", "string"), ("created_at", "int")]
-Tfollow = ringo.LoadTableTSV(S1, file_cache[TFOLLOW])
+S1 = snap.Schema()
+S1.Add(snap.TStrTAttrPr("userid1", snap.atStr))
+S1.Add(snap.TStrTAttrPr("userid2", snap.atStr))
+S1.Add(snap.TStrTAttrPr("created_at", snap.atInt))
+Tfollow = snap.TTable.LoadSS("Tfollow", S1, file_cache[TFOLLOW], context, '\t', snap.TBool(False))
 t.show("load follow")
 
-# UserId, Owner of Repo, Name of repo, created_at => (owner, name) uniquely identies a repo
-S2 = [("userid", "string"), ("owner", "string"), ("name", "string"), ("created_at", "int")]
-Tcollab = ringo.LoadTableTSV(S2, file_cache[TCOLLAB])
+S2 = snap.Schema()
+S2.Add(snap.TStrTAttrPr("userid", snap.atStr))
+S2.Add(snap.TStrTAttrPr("owner", snap.atStr))
+S2.Add(snap.TStrTAttrPr("name", snap.atStr))
+S2.Add(snap.TStrTAttrPr("created_at", snap.atInt))
+Tcollab = snap.TTable.LoadSS("Tcollab", S2, file_cache[TCOLLAB], context, '\t', snap.TBool(False))
 t.show("load collab")
 
-S3 = [("userid", "string"), ("owner", "string"), ("name", "string"), ("pullid", "int"), ("status", "string"), ("created_at", "int")]
-Tpull = ringo.LoadTableTSV(S3, file_cache[TPULL])
+S3 = snap.Schema()
+S3.Add(snap.TStrTAttrPr("userid", snap.atStr))
+S3.Add(snap.TStrTAttrPr("owner", snap.atStr))
+S3.Add(snap.TStrTAttrPr("name", snap.atStr))
+S3.Add(snap.TStrTAttrPr("pullid", snap.atInt))
+S3.Add(snap.TStrTAttrPr("status", snap.atStr))
+S3.Add(snap.TStrTAttrPr("created_at", snap.atInt))
+Tpull = snap.TTable.LoadSS("Tpull", S3, file_cache[TPULL], context, '\t', snap.TBool(False))
 t.show("load pull")
-
-Tfork = ringo.LoadTableTSV(S2, file_cache[TFORK])
-t.show("load fork")
-
-Twatch = ringo.LoadTableTSV(S2, file_cache[TWATCH])
-t.show("load watch")
 
 # If (u,v) collaborated on the same repository - determined by the owner, name pair,
 # are added as collaborators. 
 #TODO Better column renaming
+Tcollab_merge = Tcollab.SelfJoin("owner")
+Tcollab_merge.SelectAtomic("Tcollab_1.name", "Tcollab_2.name", snap.EQ)
 
-Tcollab_merge = ringo.SelfJoin(Tcollab, "owner")
-ringo.Select(Tcollab_merge, "2_1.name = 2_2.name", True)
-Tcollab_merge = ringo.ColMin(Tcollab_merge, "2_1.created_at", "2_2.created_at", "created_at")
-ringo.Project(Tcollab_merge, ("2_1.userid", "2_2.userid", "created_at"))
-ringo.Rename(Tcollab_merge, "2_1.userid", "userid1")
-ringo.Rename(Tcollab_merge, "2_2.userid", "userid2")
+# BUGBUG - Commenting this line will mean created_at is not present in Tcollab_merge. 
+# However, the ProjectInPlace will not complain and silently exclude created_at from the
+# result. This leads to the Index:-1 error in SelectAtomicIntConst on created_at later in the code. 
+Tcollab_merge.ColMin("Tcollab_1.created_at", "Tcollab_2.created_at", "created_at")
+
+V = snap.TStrV()
+V.Add("Tcollab_1.userid")
+V.Add("Tcollab_2.userid")
+V.Add("created_at")
+Tcollab_merge.ProjectInPlace(V)
+
+Tcollab_merge.Rename("Tcollab_1.userid", "userid1")
+Tcollab_merge.Rename("Tcollab_2.userid", "userid2")
 t.show("merge collab", Tcollab_merge)
 
 # If (u,v) worked on the same pull request on the same repository, they are added 
 # as (soft) collaborators. 
-Tpull_merge = ringo.SelfJoin(Tpull, "owner")
-ringo.Select(Tpull_merge, "3_1.name = 3_2.name", True)
-ringo.Select(Tpull_merge, "3_1.pullid = 3_2.pullid", True)
-Tpull_merge = ringo.ColMin(Tpull_merge, "3_1.created_at", "3_2.created_at", "created_at")
-ringo.Project(Tpull_merge, ("3_1.userid", "3_2.userid", "created_at"))
-ringo.Rename(Tpull_merge, "3_1.userid", "userid1")
-ringo.Rename(Tpull_merge, "3_2.userid", "userid2")
+Tpull_merge = Tpull.SelfJoin("owner")
+
+Tpull_merge.SelectAtomic("Tpull_1.name", "Tpull_2.name", snap.EQ)
+Tpull_merge.SelectAtomic("Tpull_1.pullid", "Tpull_2.pullid", snap.EQ)
+Tpull_merge.ColMin("Tpull_1.created_at", "Tpull_2.created_at", "created_at")
+
+V = snap.TStrV()
+V.Add("Tpull_1.userid")
+V.Add("Tpull_2.userid")
+V.Add("created_at")
+Tpull_merge.ProjectInPlace(V)
+
+Tpull_merge.Rename("Tpull_1.userid", "userid1")
+Tpull_merge.Rename("Tpull_2.userid", "userid2")
 t.show("merge pull", Tpull_merge)
 
-Tmerge = ringo.UnionAll(Tcollab_merge, Tpull_merge, "collab")
+#BUGBUG: Toggle the two union calls (comment/Uncomment)- Then union method causes another error - NumRows==NumValidRows
+#Tmerge = Tcollab_merge.Union(Tpull_merge, "Tmerge")
+Tmerge = Tcollab_merge.UnionAll(Tpull_merge, "Tmerge")
+
 # Remove self-loops from the table. 
-ringo.Select(Tmerge, "userid1 != userid2")
+Tmerge.SelectAtomic("userid1", "userid2", snap.NEQ)
 
 # Select the base and delta tables from the merged table.
-Tbase = ringo.Select(Tmerge, "created_at >= 10", False, True)
+#Tbase = snap.TTable.New(Tmerge, "Base")
+Tbase = Tmerge
+Tbase.SelectAtomicIntConst("created_at", 10, snap.GTE)
 
-#TODO: Iterate over the rows and add (userid, owner) edge
+#TODO: Union Tbase with collab and pull to include (userid, owner) edge
 t.show("collab union")
 
 # Convert base table to base graph
-Gbase = ringo.ToGraph(Tbase, "userid1", "userid2")
+Tbase.SetSrcCol("userid1")
+Tbase.SetDstCol("userid2")
+Gbase = Tbase.ToGraph(snap.aaFirst)
+
+HT = snap.TIntFltH()
+snap.GetPageRank(Gbase, HT)
+
+pagerank = snap.TTable.New("PR", HT, "Author", PAGE_RANK_ATTRIBUTE, context, snap.TBool(True))
 t.show("base graph", Gbase)
 
-TPageRank = ringo.PageRank(Gbase)
-ringo.DumpTableContent(TPageRank)
+V = snap.TStrV()
+V.Add(PAGE_RANK_ATTRIBUTE)
+pagerank.Order(V, "", snap.TBool(False), snap.TBool(False))
