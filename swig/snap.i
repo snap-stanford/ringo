@@ -21,6 +21,7 @@ Version = "0.8.4r"
 #include "printgraph.h"
 #include "snap_types.h"
 #include "goodgraph.cpp"
+#include "linkpred_swig.h"
 
 %}
 
@@ -600,6 +601,11 @@ Version = "0.8.4r"
 %include "snapswig.h"
 %include "goodgraph.cpp"
 %include "printgraph.h"
+%include "linkpred_swig.h"
+
+%template(GetRndWalkRestart_PUNGraph) GetRndWalkRestart<PUNGraph>;
+%template(GetRndWalkRestart_PNGraph) GetRndWalkRestart<PNGraph>;
+%template(GetRndWalkRestart_PNEANet) GetRndWalkRestart<PNEANet>;
 
 /* Include other SWIG interface types here. */
 
