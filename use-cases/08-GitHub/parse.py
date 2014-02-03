@@ -13,6 +13,7 @@ import gzip
 from parser.yajl_helper import *
 from parser.events import *
 from datetime import *
+import calendar
 import utils
 
 def parse_inner(data_file, processor):
@@ -43,8 +44,6 @@ def parse(data_file, writer):
 	
 	return 0
 
-CACHE_FILE="offset.cache"
-
 def get_date(filename):
 	sdate = filename.split(".")[0]
 	return datetime.strptime(sdate, utils.CONSTANTS.FORMAT)
@@ -55,47 +54,42 @@ def main(args):
 		sys.exit(1)
 	
 	root = os.path.expanduser(args[0])
-	date_cache = {}
-		
-	f = open(CACHE_FILE, "a+")
+	min_ticks = None
 
-	try:
-		for line in f.readlines():
-			date_cache[datetime.strptime(line, utils.CONSTANTS.FORMAT)] = 0
-	except:
-		print("Invalid Date")
-		print(sys.exc_info())
-	
+	if len(args)>1:
+		min_ticks = int(args[1])
+		print("Min Date: %s", str(datetime.fromtimestamp(int(min_ticks))))
+
 	num_processed = 0
 	FLUSH_LIMIT = 30
 	writer = FileWriter()
 
+	file_cache = []
+
 	for dirpath, subdirs, files in os.walk(root):
 		print dirpath
 		for item in fnmatch.filter(files, "*.json.gz"):
-			date = get_date(item)	
+			file_cache.append((dirpath, item))
 
-			if date not in date_cache:
-				path = os.path.join(dirpath, item)
-				cnt = parse(path, writer)
+	file_cache = sorted(file_cache, key= lambda tup: get_date(tup[1]))
 
-				#cnt = 0
-				print("[%s] Processed %d relevant events. Commiting changes."% (date, cnt))
-				num_processed += 1
+	for file in file_cache:
+		dirpath, item = file
+		date = get_date(item)
 
-				# If FLUSH_LIMIT multiple, write to tsv files
-				if num_processed % FLUSH_LIMIT == 0:
-					print("Committing FileWriter")
-					writer.commit()
+		if min_ticks==None or utils.date_to_ticks(date) > min_ticks:
+			path  = os.path.join(dirpath, item)
+			cnt = parse(path, writer)
 
-				# Update date cache
-				f.write(datetime.strftime(date, utils.CONSTANTS.FORMAT) + "\n")
-				f.flush()
-			else:
-				print("Skipping %s due to cache" % date)
+			print("[%s] Processed %d relevant events. Commiting changes."% (date, cnt))
+			num_processed += 1
+
+			# If FLUSH_LIMIT multiple, write to tsv files
+			if num_processed % FLUSH_LIMIT == 0:
+				print("Committing FileWriter")
+				writer.commit()
 
 	writer.close()
-	f.close()
 	return 0
 
 if __name__ == "__main__":

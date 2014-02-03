@@ -9,12 +9,13 @@ import time
 import snap
 import testutils
 import utils
+import random
 
 ENABLE_TIMER = True
-OUTPUT_TABLE_FILENAME = "table.tsv"
 PAGE_RANK_ATTRIBUTE = "PageRank"
 NODE_ATTR_NAME = "__node_attr"
-
+N_TOP_RECOS = 20
+ALPHA=0.3  # Random walk with restart jump probability
 
 # Table file names 
 TCOLLAB = 'collab.tsv'
@@ -36,7 +37,7 @@ def GetSchema(T):
 	return S
 
 def get_usage():
-	usage = """Usage: python 08-GitHub-snap.py <root> <outputdir>
+	usage = """Usage: python 08-GitHub-snap.py <root> <mid_date>
 	  Root directory should have the following files with the exact same names - 
 		  %s - hard collaboration tsv file
 		  %s - pull request tsv file
@@ -44,16 +45,18 @@ def get_usage():
 		  %s - followers tsv file
 		  %s - repository watch tsv file
 		  %s - repository fork tsv file
-  outputdir: output directory"""%(TCOLLAB, TPULL, TREPO, TFOLLOW, TWATCH, TFORK)
+  	 mid_date: Date to separate base and delta graphs."""%(TCOLLAB, TPULL, TREPO, TFOLLOW, TWATCH, TFORK)
+
 	return usage
 
 
-if len(sys.argv) < 2:
+if len(sys.argv) < 3:
   	print(get_usage())
 	sys.exit(1)
 
 root = sys.argv[1]
-dstDir = sys.argv[2] if len(sys.argv) > 2 else None
+mid_date = sys.argv[2]
+mid_ticks = utils.date_to_ticks(mid_date)
 
 file_cache = {TCOLLAB:None, TPULL:None, TREPO:None, TFOLLOW:None, TWATCH:None, TFORK:None}
 
@@ -68,12 +71,6 @@ for key, val in file_cache.iteritems():
 		print(get_usage())
 		sys.exit(1)
 		
-
-if not dstDir is None:
-  try:
-    os.makedirs(dstDir)
-  except OSError:
-    pass
 
 t = testutils.Timer(ENABLE_TIMER)
 context = snap.TTableContext()
@@ -150,9 +147,12 @@ Tmerge = Tcollab_merge.UnionAll(Tpull_merge, "Tmerge")
 Tmerge.SelectAtomic("userid1", "userid2", snap.NEQ)
 
 # Select the base and delta tables from the merged table.
-#Tbase = snap.TTable.New(Tmerge, "Base")
-Tbase = Tmerge
-Tbase.SelectAtomicIntConst("created_at", 10, snap.GTE)
+Tbase = snap.TTable.New(Tmerge, "Base")
+Tdelta = snap.TTable.New(Tmerge, "Delta")
+
+#TODO: Replace 10 with mid-date
+Tbase.SelectAtomicIntConst("created_at", mid_ticks, snap.LTE)
+Tdelta.SelectAtomicIntConst("created_at", mid_ticks, snap.GTE)
 
 #TODO: Union Tbase with collab and pull to include (userid, owner) edge
 t.show("collab union")
@@ -162,12 +162,66 @@ Tbase.SetSrcCol("userid1")
 Tbase.SetDstCol("userid2")
 Gbase = Tbase.ToGraph(snap.aaFirst)
 
-HT = snap.TIntFltH()
-snap.GetPageRank(Gbase, HT)
+Tdelta.SetSrcCol("userid1")
+Tdelta.SetDstCol("userid2")
+Gdelta = Tdelta.ToGraph(snap.aaFirst)
 
-pagerank = snap.TTable.New("PR", HT, "Author", PAGE_RANK_ATTRIBUTE, context, snap.TBool(True))
-t.show("base graph", Gbase)
 
-V = snap.TStrV()
-V.Add(PAGE_RANK_ATTRIBUTE)
-pagerank.Order(V, "", snap.TBool(False), snap.TBool(False))
+NITERS = 20
+total_preck = 0
+
+print("Userid\tPrec@%d\tAverage Index"%(N_TOP_RECOS))
+
+# Random walk with restarts
+# BUGBUG: Returns the same id everytime
+# userid = Gbase.GetRndNId()
+for i in range(NITERS):
+	# Randomly choose a starting node
+	userid = random.choice([node.GetId() for node in Gbase.Nodes()])
+	user = Gbase.GetNI(userid)
+
+	# Perform random walk with restarts on base graph
+	HT = snap.TIntFltH()
+	snap.GetRndWalkRestart_PNEANet(Gbase, ALPHA, userid, HT)
+	HT.SortByDat(False)
+
+	i = 0
+	cnt = 0
+	preck = 0
+	average_index = -1
+
+	# Calculate precision
+	while cnt<N_TOP_RECOS and i<HT.Len():
+		recoid = HT.GetKey(i)
+		pagerank = HT.GetDat(recoid)
+		
+		#print recoid, pagerank
+
+		if recoid!=userid:
+			# If the edge is not in base graph but is present in delta graph, we made an accurate prediction.
+			if not Gbase.IsEdge(userid, recoid) and Gdelta.IsNode(userid) and Gdelta.IsNode(recoid) and (Gdelta.IsEdge(userid, recoid) or Gdelta.IsEdge(recoid, userid)):
+				preck += 1		
+
+			cnt += 1	
+		i+=1
+
+	# Calculate average index
+	try:
+		node = Gdelta.GetNI(userid)
+		edges = [nid for nid in node.GetOutEdges()] + [nid for nid in node.GetInEdges()]
+		index = 0
+
+		for nid in edges:
+			index+= HT.GetKeyId(nid)
+		
+		average_index = index/len(edges)
+	except:
+		# Node not present in delta graph implies no new edges formed
+		pass	
+	
+	total_preck += preck
+	print("%d\t%d\t%f"%(userid, preck, average_index))
+
+	#rank = snap.TTable.New("Rank", HT, "User", PAGE_RANK_ATTRIBUTE, context, snap.TBool(True))
+print("Average Precision@%d = %f" %(N_TOP_RECOS, total_preck/float(NITERS)))
+# testutils.dump(rank)

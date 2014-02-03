@@ -209,7 +209,10 @@ class FileWriter:
 
 		return s
 
-	def is_clean(self, tup):
+	def is_clean(self, tup, k = None):
+		if k!=None and len(tup)!=k:
+			return False
+		
 		for it in tup:
 			item = str(it)
 	
