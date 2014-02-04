@@ -1,5 +1,6 @@
 """
 Test case: Self Join on pull table's string columns.
+Example: python github-join.py /dfs/ilfs2/0/ringo/GitHub/06-15-2012_11-16-2012/pull.tsv
 """
 
 import sys
@@ -14,7 +15,7 @@ ENABLE_TIMER = True
 
 def main(args):
 	if len(args) < 1:
-		print(get_usage())
+		print("python github-join.py <path_to_tsv_file>")
 		sys.exit(1)
 
 	filename = args[0]
