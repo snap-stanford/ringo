@@ -3,6 +3,8 @@ import time
 import inspect
 import hashlib
 import re
+import socket
+import json
 
 class RingoObject(object):
     def __init__(self, Id):
@@ -68,16 +70,15 @@ class Ringo(object):
         self.Objects = {}
         # mapping between ringo objects and their user-given names
         self.ObjectNames = {}
-        # an operation record has the form: <id (int), type (string), result table id, argument list (as used in python interface; ringo objects are used for table arguments), time stamp>
-        self.Operations = [] 
+        # mapping between an id and a record
+        # an operation record has the form: <id (string), type (string), result id, argument list (as used in python interface; ringo objects are used for table arguments), time stamp>
+        self.Operations = {} 
         # mapping between a object (id) and the sequence of operation ids that led to it
         self.Lineage = {}
         # mapping between a object (id) and the list of object ids it depends on
         self.Dependencies = {}
         # mapping between object ids and their metadata (dict)
         self.Metadata = {}
-        # mapping between a object (id) and the ids of the networks that originated from it
-        self.TableToNetworks = {}
 
         self.Context = snap.TTableContext()
 
@@ -109,7 +110,7 @@ class Ringo(object):
                 print "Illegal type %s for attribute %s" % (Col[1], Col[0])
 
         # Load input and create new TTable object
-        TableId = self.__GetObjectId()
+        TableId = self.__GetId(self.Objects)
         T = snap.TTable.LoadSS(str(TableId), S, InFnm, self.Context, SeparatorChar, snap.TBool(HasTitleLine))
         self.__UpdateObjects(T, [], TableId)
         return RingoObject(TableId)
@@ -124,25 +125,67 @@ class Ringo(object):
     # UNTESTED
     @registerOp('LoadTableBinary')
     def LoadTableBinary(self, InFnm):
-        SIn = TSIn(InFnm)
-        T = snap.TTable.Load(SIn, Context)
+        def ConvertJSON(JSON):
+            if isinstance(JSON, dict):
+                return dict([(ConvertJSON(key), ConvertJSON(JSON[key])) for key in JSON])
+            elif isinstance(JSON, list):
+                return [ConvertJSON(value) for value in JSON]
+            elif isinstance(JSON, unicode):
+                return JSON.encode('UTF-8')
+            else
+                return JSON
+        def UnpackObject(self, Packed):
+            ObjectId = Packed['Id']
+            self.ObjectNames[RingoObject(ObjectId)] = Packed['Name']
+            self.Lineage[ObjectId] = Packed['Lineage']
+            self.Dependencies[ObjectId] = Packed['Dependencies']
+            self.Metadata[ObjectId] = Packed['Metadata']
 
-        #T's internal name will not match TId - is this an issue?
-        TableId = self.__UpdateObjects(T, [])
+        with open(InFnm+'.json') as inp:
+            JSON = ConvertJSON(json.load(inp))
+        for OpId in JSON['Operations']:
+            self.Operations[OpId] = JSON['Operations'][OpId]
+        for ObjectId in JSON['Objects']:
+            UnpackObject(self, JSON['Objects'][ObjectId]
+
+        SIn = snap.TFIn(InFnm+'.bin')
+        T = snap.TTable.Load(SIn, Context)
+        self.__UpdateObjects(T, self.Lineage[TableId], JSON['ID'])
         return RingoObject(TableId)
 
     # UNTESTED
     @registerOp('SaveTableBinary')
     def SaveTableBinary(self, TableId, OutFnm):
+        def PackObject(self, ObjectId):
+            Pack = {}
+            Pack['Id'] = ObjectId
+            Pack['Name'] = self.ObjectNames[RingoObject(ObjectId)]
+            Pack['Lineage'] = self.Lineage[ObjectId]
+            pack['Dependencies'] = self.Dependencies[ObjectId]
+            Pack['Metadata'] = self.Metadata[ObjectId]
+            return Pack
+        def AssembleObject(self, ObjectId):
+            Assembled = {ObjectId: PackObject(ObjectId)]
+            for Parent in self.Dependencies[ObjectId]:
+                Assembled.update(AssembleObject(self, Parent))
+            return Assembled
+
+        JSON = {}
+        JSON['Operations'] = dict([(Id, self.Operations[Id]) for Id in self.Lineage[TableId]])
+        JSON['Objects'] = AssembleObject(self, TableId)
+        JSON['ID'] = ObjectId
+        with open(OutFnm+'.json', 'w') as out:
+            json.dump(JSON, out)
+
         T = self.Objects[TableId]
-        SOut = TSOut(OutFnm)
+        SOut = snap.TFOut(OutFnm+'.bin')
         T.Save(SOut)
         return RingoObject(TableId)
 
     @registerOp('TableFromHashMap')
     def TableFromHashMap(self, HashId, ColName1, ColName2, TableIsStrKeys = False):
         HashMap = self.Objects[HashId]
-        TableId = self.__GetObjectId()
+        TableId = self.__GetId(self.Objects)
         T = snap.TTable.TableFromHashMap(str(TableId), HashMap, ColName1, ColName2, self.Context, snap.TBool(TableIsStrKeys))
         self.__UpdateObjects(T, self.Lineage[HashId], TableId)
         return RingoObject(TableId)
@@ -454,7 +497,7 @@ class Ringo(object):
         Graph = self.Objects[GraphId]
         HT = snap.TIntFltH()
         snap.GetPageRank(Graph, HT, C, Eps, MaxIter)
-        TableId = self.__GetObjectId()
+        TableId = self.__GetId(self.Objects)
         # NOTE: The argument snap.atStr only works if NODE_ATTR_NAME is a String attribute of the graph.
         # Some logic is needed to determine the attribute type
         T = snap.TTable.GetFltNodePropertyTable(Graph, str(TableId), HT, self.NODE_ATTR_NAME, snap.atStr, ResultAttrName, self.Context)
@@ -562,7 +605,7 @@ class Ringo(object):
 
     def __UpdateObjects(self, Object, Lineage, Id = None):
         if Id is None:
-		Id = self.__GetObjectId()
+		    Id = self.__GetId(self.Objects)
 
         self.Objects[Id] = Object 
         self.Lineage[Id] = sorted(list(set(Lineage)))
@@ -661,9 +704,9 @@ class Ringo(object):
             Metadata.append(('Number of Elements', Object.Len()))
 
     def __AddOperation(self, OpType, RetVal, Args, Time):
-        OpId = len(self.Operations)
+        OpId = self.__GetId(self.Operations)
         Op = (OpId, OpType, RetVal, Args, time.strftime("%a, %d %b %Y %H:%M:%S"), Time)
-        self.Operations.append(Op)
+        self.Operations[OpId] = Op
         return OpId
 
     def __UpdateNaming(self, Locals):
@@ -675,8 +718,12 @@ class Ringo(object):
                     for i in xrange(len(Object)):
                         self.ObjectNames[Object[i]] = '%s[%d]' %(Var, i)
 
-    def __GetObjectId(self):
-	    if len(self.Objects) == 0:
-		    return 1
-
-	    return max(self.Objects) + 1
+    def __GetId(self, Container):
+        Prefix = socket.gethostname()+'_'+time.strftime("%Y%m%d_%H%M%S")
+        Num = 0
+        while True:
+            Id = Prefix+'_'+str(Num)
+            if Id not in Container:
+                break
+            Num += 1
+        return Id
