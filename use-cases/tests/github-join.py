@@ -32,10 +32,23 @@ def main(args):
 	S.Add(snap.TStrTAttrPr("created_at", snap.atInt))
 	Tpull = snap.TTable.LoadSS("Tpull", S, filename, context, '\t', snap.TBool(False))
 	t.show("load pull")
+	
+	V = snap.TStrV()
+	V.Add("created_at")
+	Tpull.Order(V, "", snap.TBool(False), snap.TBool(True))
 
-	print("Staring Self Join")
+	V.Clr()		
+	V.Add("owner")
+	V.Add("name")
+	V.Add("userid")
+	Tpull.Group(V, "TagId")
+
+	V.Clr()
+	V.Add("TagId")
+	Tpull.Unique(V)
+
 	Tpull_merge = Tpull.SelfJoin("owner")
-	t.show("merge pull", Tpull_merge)
+	print testutils.dump(Tpull_merge)
 
 if __name__=="__main__":
 	main(sys.argv[1:])
