@@ -47,8 +47,35 @@ def main(args):
 	V.Add("TagId")
 	Tpull.Unique(V)
 
+	t.show("Unique")
+
 	Tpull_merge = Tpull.SelfJoin("owner")
-	print testutils.dump(Tpull_merge)
+	t.show("Merge")
+
+	# Things work fine till this point
+	Tpull_merge.SelectAtomic("Tpull_1.name", "Tpull_2.name", snap.EQ)
+	Tpull_merge.SelectAtomic("Tpull_1.pullid", "Tpull_2.pullid", snap.EQ)
+	Tpull_merge.SelectAtomic("Tpull_1.userid", "Tpull_2.userid", snap.NEQ)
+	Tpull_merge.ColMin("Tpull_1.created_at", "Tpull_2.created_at", "created_at")
+
+	V = snap.TStrV()
+	V.Add("Tpull_1.userid")
+	V.Add("Tpull_2.userid")
+	V.Add("created_at")
+	Tpull_merge.ProjectInPlace(V)
+
+	Tpull_merge.Rename("Tpull_1.userid", "userid1")
+	Tpull_merge.Rename("Tpull_2.userid", "userid2")
+
+	# Copy the Tpull_merge to form two graphs - base and delta. Select all rows in base for created_at < x and all dates in delta for created_at > x
+	Tbase = snap.TTable.New(Tpull_merge, "Base")
+	Tdelta = snap.TTable.New(Tpull_merge, "Delta")
+	
+	testutils.dump(Tpull_merge)
+
+	x = 1342026109
+	Tbase.SelectAtomicIntConst("created_at", x, snap.LTE)
+	Tdelta.SelectAtomicIntConst("created_at", x, snap.GTE)
 
 if __name__=="__main__":
 	main(sys.argv[1:])
