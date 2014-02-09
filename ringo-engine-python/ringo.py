@@ -132,8 +132,9 @@ class Ringo(object):
                 return [ConvertJSON(value) for value in JSON]
             elif isinstance(JSON, unicode):
                 return JSON.encode('UTF-8')
-            else
+	    else:
                 return JSON
+
         def UnpackObject(self, Packed):
             ObjectId = Packed['Id']
             self.ObjectNames[RingoObject(ObjectId)] = Packed['Name']
@@ -143,10 +144,12 @@ class Ringo(object):
 
         with open(InFnm+'.json') as inp:
             JSON = ConvertJSON(json.load(inp))
+
         for OpId in JSON['Operations']:
             self.Operations[OpId] = JSON['Operations'][OpId]
+
         for ObjectId in JSON['Objects']:
-            UnpackObject(self, JSON['Objects'][ObjectId]
+            UnpackObject(self, JSON['Objects'][ObjectId])
 
         SIn = snap.TFIn(InFnm+'.bin')
         T = snap.TTable.Load(SIn, Context)
@@ -165,7 +168,7 @@ class Ringo(object):
             Pack['Metadata'] = self.Metadata[ObjectId]
             return Pack
         def AssembleObject(self, ObjectId):
-            Assembled = {ObjectId: PackObject(ObjectId)]
+            Assembled = {ObjectId: PackObject(ObjectId)}
             for Parent in self.Dependencies[ObjectId]:
                 Assembled.update(AssembleObject(self, Parent))
             return Assembled
@@ -467,7 +470,7 @@ class Ringo(object):
         T.AddSrcNodeAttr(SrcV)
         T.AddDstNodeAttr(DstV)
 
-        G = T.ToGraph(snap.aaFirst)
+        G = snap.ToGraph(T, snap.aaFirst)
         GraphId = self.__UpdateObjects(G, self.Lineage[TableId])
         return RingoObject(GraphId)
 

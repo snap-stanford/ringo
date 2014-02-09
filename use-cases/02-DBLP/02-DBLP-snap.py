@@ -59,6 +59,8 @@ t.show("select", year)
 table = authors.Join("Key", year, "Key")
 t.show("join", table)
 
+testutils.dump(table, 2)
+
 # Self-join
 # >>> table.selfjoin(table, ['Key'])
 table = table.SelfJoin("Key")
@@ -73,7 +75,7 @@ t.show("select", table)
 # >>> table.graph('Author_1', 'Author_2', directed=False)
 table.SetSrcCol("1_2_1.1.Author")
 table.SetDstCol("1_2_2.1.Author")
-graph = table.ToGraph(snap.aaFirst)
+graph = snap.ToGraph(table, snap.aaFirst)
 t.show("graph", graph)
 
 # Compute PageRank score

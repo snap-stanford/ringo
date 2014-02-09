@@ -20,7 +20,7 @@ Usage: python 02-DBLP-snap.py <authors.tsv> <year.tsv> <outputdir>
 
   * Example (scores are normalized so that the top score is 1):
 
-        $ python 02-DBLP-snap.py /dfs/ilfs2/0/ringo/DBLP/authors.tsv /dfs/ilfs2/0/ringo/year.tsv output
+        $ python 02-DBLP-snap.py /dfs/ilfs2/0/ringo/DBLP/authors.tsv /dfs/ilfs2/0/ringo/DBLP/year.tsv output
 
         [load authors table]  Elapsed: 6.34 seconds
         [load year table] Elapsed: 1.25 seconds

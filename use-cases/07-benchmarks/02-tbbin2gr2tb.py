@@ -31,7 +31,7 @@ if __name__ == '__main__':
     assert(len(S) >= 2)
     table.SetSrcCol(S[0])
     table.SetDstCol(S[1])
-    graph = table.ToGraph(snap.aaFirst)
+    graph = snap.ToGraph(table, snap.aaFirst)
     t.show("create graph", graph)
     r.show("__creategraph__")
     print "graph type", type(graph)

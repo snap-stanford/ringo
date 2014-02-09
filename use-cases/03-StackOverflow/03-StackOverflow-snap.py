@@ -18,11 +18,12 @@ ENABLE_TIMER = True
 AUTHORITY_ATTRIBUTE = "Authority"
 
 if len(sys.argv) < 2:
-  print """Usage: python 02-DBLP-snap.py <posts.tsv> <tags.tsv> <comments.tsv> <dest.tsv>
+  print """Usage: python 03-StackOverflow-snap.py <posts.tsv> <tags.tsv> <comments.tsv> <dest.tsv>
   posts.tsv: path to posts.tsv file
   tags.tsv: path to tags.tsv file
   comments.tsv: path to comments.tsv file
   dest.tsv: output .tsv file containing expert scores"""
+
   exit(1)
 postsFile = sys.argv[1]
 tagsFile = sys.argv[2]
@@ -64,10 +65,12 @@ t.show("select", tags)
 questions = posts.Join("PostId", tags, "PostId")
 t.show("join", questions)
 
+testutils.dump(questions, 1)
+
 # Project
 # >>> questions.project(['PostId', 'UserId', 'AcceptedAnswerId'], in_place = True)
 V = snap.TStrV()
-V.Add("PostId")
+V.Add("t1.PostId")
 V.Add("t1.UserId")
 V.Add("t1.AcceptedAnswerId")
 questions.ProjectInPlace(V)
@@ -100,7 +103,7 @@ t.show("join", edges)
 # >>> graph = posts.graph('Asker', 'Expert', directed = True)
 edges.SetSrcCol("t1_t2.Asker")
 edges.SetDstCol("t1.Expert")
-graph = edges.ToGraph(snap.aaFirst)
+graph = snap.ToGraph(edges, snap.aaFirst)
 t.show("graph", graph)
 
 # Compute Authority score

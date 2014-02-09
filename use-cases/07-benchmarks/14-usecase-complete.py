@@ -55,7 +55,7 @@ if __name__ == '__main__':
 
     qa.SetSrcCol("2.OwnerUserId")
     qa.SetDstCol("1.OwnerUserId")
-    graph = qa.ToGraph(snap.aaFirst)
+    graph = snap.ToGraph(qa, snap.aaFirst)
     t.show("graph", graph)
     r.show("__graph__")
 

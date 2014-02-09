@@ -47,10 +47,10 @@ def main(args):
 	V.Add("TagId")
 	Tpull.Unique(V)
 
-	t.show("Unique")
+	t.show("Unique", Tpull)
 
 	Tpull_merge = Tpull.SelfJoin("owner")
-	t.show("Merge")
+	t.show("Merge", Tpull_merge)
 
 	# Things work fine till this point
 	Tpull_merge.SelectAtomic("Tpull_1.name", "Tpull_2.name", snap.EQ)

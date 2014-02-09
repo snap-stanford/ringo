@@ -33,11 +33,12 @@ T = ringo.SelfJoin(T, "Key")
 t.show("join")
 
 # TODO: use simpler conventions for column renaming
+print ringo.GetSchema(T)
 G = ringo.ToGraph(T, "1_1.Author","1_2.Author")
 t.show("graph")
 
 if not dstfile is None:
-  #G.Save(snap.TFOut(dstfile))
+  G.Save(snap.TFOut(dstfile))
   t.show("save")
 
 diameter = ringo.GetBfsEffDiam(G,N_TEST_NODES)

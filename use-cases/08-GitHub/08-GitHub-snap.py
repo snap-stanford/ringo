@@ -103,8 +103,23 @@ t.show("load pull")
 # If (u,v) collaborated on the same repository - determined by the owner, name pair,
 # are added as collaborators. 
 #TODO Better column renaming
+V = snap.TStrV()
+V.Add("created_at")
+Tcollab.Order(V, "", snap.TBool(False), snap.TBool(True))
+
+V.Clr()
+V.Add("owner")
+V.Add("name")
+V.Add("userid")
+Tcollab.Group(V, "UserRepoId")
+
+V.Clr()
+V.Add("UserRepoId")
+Tcollab.Unique(V)
+
 Tcollab_merge = Tcollab.SelfJoin("owner")
 Tcollab_merge.SelectAtomic("Tcollab_1.name", "Tcollab_2.name", snap.EQ)
+Tcollab_merge.SelectAtomic("Tcollab_1.userid", "Tcollab_2.userid", snap.NEQ)
 
 # BUGBUG - Commenting this line will mean created_at is not present in Tcollab_merge. 
 # However, the ProjectInPlace will not complain and silently exclude created_at from the
@@ -121,12 +136,29 @@ Tcollab_merge.Rename("Tcollab_1.userid", "userid1")
 Tcollab_merge.Rename("Tcollab_2.userid", "userid2")
 t.show("merge collab", Tcollab_merge)
 
+#testutils.dump(Tcollab_merge, 50)
+
 # If (u,v) worked on the same pull request on the same repository, they are added 
 # as (soft) collaborators. 
+V = snap.TStrV()
+V.Add("created_at")
+Tpull.Order(V, "", snap.TBool(False), snap.TBool(True))
+
+V.Clr()
+V.Add("owner")
+V.Add("name")
+V.Add("userid")
+Tpull.Group(V, "UserRepoId")
+
+V.Clr()
+V.Add("UserRepoId")
+Tpull.Unique(V)
+
 Tpull_merge = Tpull.SelfJoin("owner")
 
 Tpull_merge.SelectAtomic("Tpull_1.name", "Tpull_2.name", snap.EQ)
 Tpull_merge.SelectAtomic("Tpull_1.pullid", "Tpull_2.pullid", snap.EQ)
+Tpull_merge.SelectAtomic("Tpull_1.userid", "Tpull_2.userid", snap.NEQ)
 Tpull_merge.ColMin("Tpull_1.created_at", "Tpull_2.created_at", "created_at")
 
 V = snap.TStrV()
@@ -139,18 +171,16 @@ Tpull_merge.Rename("Tpull_1.userid", "userid1")
 Tpull_merge.Rename("Tpull_2.userid", "userid2")
 t.show("merge pull", Tpull_merge)
 
-#BUGBUG: Toggle the two union calls (comment/Uncomment)- Then union method causes another error - NumRows==NumValidRows
-#Tmerge = Tcollab_merge.Union(Tpull_merge, "Tmerge")
-Tmerge = Tcollab_merge.UnionAll(Tpull_merge, "Tmerge")
-
-# Remove self-loops from the table. 
-Tmerge.SelectAtomic("userid1", "userid2", snap.NEQ)
+# BUGBUG: UnionAll is returning unexpected result at this point
+#Tmerge = Tcollab_merge.UnionAll(Tpull_merge, "Tmerge")
+Tmerge = Tpull_merge
 
 # Select the base and delta tables from the merged table.
 Tbase = snap.TTable.New(Tmerge, "Base")
 Tdelta = snap.TTable.New(Tmerge, "Delta")
 
-#TODO: Replace 10 with mid-date
+testutils.dump(Tmerge)
+
 Tbase.SelectAtomicIntConst("created_at", mid_ticks, snap.LTE)
 Tdelta.SelectAtomicIntConst("created_at", mid_ticks, snap.GTE)
 
@@ -160,12 +190,11 @@ t.show("collab union")
 # Convert base table to base graph
 Tbase.SetSrcCol("userid1")
 Tbase.SetDstCol("userid2")
-Gbase = Tbase.ToGraph(snap.aaFirst)
+Gbase = snap.ToGraph(Tbase, snap.aaFirst)
 
 Tdelta.SetSrcCol("userid1")
 Tdelta.SetDstCol("userid2")
-Gdelta = Tdelta.ToGraph(snap.aaFirst)
-
+Gdelta = snap.ToGraph(Tdelta, snap.aaFirst)
 
 NITERS = 20
 total_preck = 0

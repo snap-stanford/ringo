@@ -74,7 +74,7 @@ if not dstDir is None:
 # TODO: use simpler conventions for column renaming
 table.SetSrcCol("1_2_1.1.Author")
 table.SetDstCol("1_2_2.1.Author")
-graph = table.ToGraph(snap.aaFirst)
+graph = snap.ToGraph(table, snap.aaFirst)
 t.show("graph", graph)
 
 if not dstDir is None:
