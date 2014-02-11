@@ -617,6 +617,7 @@ Version = "0.8.4r"
 /* Graph and network interface */
 %include "pneanet.i"
 %include "pngraph.i"
+%include "pngraphmp.i"
 %include "pungraph.i"
 %include "pgraph.i"
 
