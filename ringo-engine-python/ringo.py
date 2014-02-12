@@ -111,7 +111,7 @@ class Ringo(object):
 
         # Load input and create new TTable object
         TableId = self.__GetId(self.Objects)
-        T = snap.TTable.LoadSS(str(TableId), S, InFnm, self.Context, SeparatorChar, snap.TBool(HasTitleLine))
+        T = snap.TTable.LoadSS(str(len(self.Objects)+1), S, InFnm, self.Context, SeparatorChar, snap.TBool(HasTitleLine))
         self.__UpdateObjects(T, [], TableId)
         return RingoObject(TableId)
         
@@ -123,7 +123,7 @@ class Ringo(object):
         return RingoObject(TableId)
     
     # UNTESTED
-    @registerOp('LoadTableBinary')
+    @registerOp('LoadTableBinary', False)
     def LoadTableBinary(self, InFnm):
         def ConvertJSON(JSON):
             if isinstance(JSON, dict):
@@ -134,16 +134,22 @@ class Ringo(object):
                 return JSON.encode('UTF-8')
 	    else:
                 return JSON
-
         def UnpackObject(self, Packed):
             ObjectId = Packed['Id']
             self.ObjectNames[RingoObject(ObjectId)] = Packed['Name']
             self.Lineage[ObjectId] = Packed['Lineage']
             self.Dependencies[ObjectId] = Packed['Dependencies']
             self.Metadata[ObjectId] = Packed['Metadata']
+        def ObjectDecoder(self, Object):
+            if 'RingoObject' in Object:
+                return RingoObject(Object['Id'])
+            elif 'Set' in Object:
+                return set(Object['Content'])
+            else:
+                return Object
 
         with open(InFnm+'.json') as inp:
-            JSON = ConvertJSON(json.load(inp))
+            JSON = ConvertJSON(json.load(inp, object_hook = lambda obj: RingoObject(obj['Id']) if 'RingoObject' in obj else obj))
 
         for OpId in JSON['Operations']:
             self.Operations[OpId] = JSON['Operations'][OpId]
@@ -152,38 +158,51 @@ class Ringo(object):
             UnpackObject(self, JSON['Objects'][ObjectId])
 
         SIn = snap.TFIn(InFnm+'.bin')
-        T = snap.TTable.Load(SIn, Context)
-        self.__UpdateObjects(T, self.Lineage[TableId], JSON['ID'])
-        return RingoObject(TableId)
+        Obj = getattr(snap, JSON['Type']).Load(SIn, self.Context)
+        ObjId = JSON['ID']
+        self.__UpdateObjects(Obj, self.Lineage[ObjId], ObjId)
+        return RingoObject(ObjId)
 
     # UNTESTED
-    @registerOp('SaveTableBinary')
-    def SaveTableBinary(self, TableId, OutFnm):
+    @registerOp('SaveTableBinary', False)
+    def SaveTableBinary(self, ObjectId, OutFnm):
         def PackObject(self, ObjectId):
             Pack = {}
             Pack['Id'] = ObjectId
             Pack['Name'] = self.ObjectNames[RingoObject(ObjectId)]
             Pack['Lineage'] = self.Lineage[ObjectId]
-            pack['Dependencies'] = self.Dependencies[ObjectId]
+            Pack['Dependencies'] = self.Dependencies[ObjectId]
             Pack['Metadata'] = self.Metadata[ObjectId]
             return Pack
         def AssembleObject(self, ObjectId):
-            Assembled = {ObjectId: PackObject(ObjectId)}
+            Assembled = {ObjectId: PackObject(self,ObjectId)}
             for Parent in self.Dependencies[ObjectId]:
                 Assembled.update(AssembleObject(self, Parent))
             return Assembled
+        def ObjectEncoder(Object):
+            if isinstance(Object, RingoObject):
+                return {'RingoObject':True, 'Id':Object.Id}
+            elif isinstance(Object, dict):
+                return Object
+            elif isinstance(Object, set):
+                return {'Set':True, 'Content':list(Object)}
+            raise TypeError(type(Object))
+
+        Object = self.Objects[ObjectId]
 
         JSON = {}
-        JSON['Operations'] = dict([(Id, self.Operations[Id]) for Id in self.Lineage[TableId]])
-        JSON['Objects'] = AssembleObject(self, TableId)
+        JSON['Operations'] = dict([(Id, self.Operations[Id]) for Id in self.Lineage[ObjectId]])
+        JSON['Objects'] = AssembleObject(self, ObjectId)
         JSON['ID'] = ObjectId
+        if isinstance(Object, snap.PTable):
+            JSON['Type'] = 'TTable'
+        elif isinstance(Object, snap.PNEANet):
+            JSON['Type'] = 'TNEANet'
         with open(OutFnm+'.json', 'w') as out:
-            json.dump(JSON, out)
+            json.dump(JSON, out, default = ObjectEncoder)
 
-        T = self.Objects[TableId]
         SOut = snap.TFOut(OutFnm+'.bin')
-        T.Save(SOut)
-        return RingoObject(TableId)
+        Object.Save(SOut)
 
     @registerOp('TableFromHashMap')
     def TableFromHashMap(self, HashId, ColName1, ColName2, TableIsStrKeys = False):
