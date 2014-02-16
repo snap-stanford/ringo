@@ -1,4 +1,4 @@
-// pngraph.i
+// pngraphmp.i
 // Templates for SNAP TNGraphMP, PNGraphMP
 
 %extend TNGraphMP {
