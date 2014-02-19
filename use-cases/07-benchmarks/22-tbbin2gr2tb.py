@@ -32,9 +32,7 @@ if __name__ == '__main__':
     table.SetSrcCol(S[0])
     table.SetDstCol(S[1])
     for i in xrange(0,1):
-        graph = table.ToPNGraphPar1()
-        #graph = table.ToPNGraphPar()
-        #graph = table.ToPNGraph()
+        graph = snap.ToPNGraphMP(table)
         t.show("create graph", graph)
         r.show("__creategraph__")
 
