@@ -202,3 +202,5 @@ TNGraphEdgeI.GetId = GetId
 %template(PercentMxWcc_PNGraph) PercentMxWcc<PNGraph>;
 %template(PercentMxScc_PNGraph) PercentMxScc<PNGraph>;
 
+// conv.h - PNGraph
+%template(ToGraph_PNGraph) TSnap::ToGraph<PNGraph>;

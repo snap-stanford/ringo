@@ -202,3 +202,5 @@ TUNGraphEdgeI.GetId = GetId
 %template(PercentMxWcc_PUNGraph) PercentMxWcc<PUNGraph>;
 %template(PercentMxScc_PUNGraph) PercentMxScc<PUNGraph>;
 
+// conv.h - PUNGraph
+%template(ToGraph_PUNGraph) TSnap::ToGraph<PUNGraph>;

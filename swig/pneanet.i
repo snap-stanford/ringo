@@ -255,3 +255,5 @@
 %template(PercentMxWcc_PNEANet) PercentMxWcc<PNEANet>;
 %template(PercentMxScc_PNEANet) PercentMxScc<PNEANet>;
 
+// conv.h - PNEANet
+%template(ToNetwork_PNEANet) TSnap::ToNetwork<PNEANet>;

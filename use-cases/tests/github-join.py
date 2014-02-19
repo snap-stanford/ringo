@@ -70,12 +70,12 @@ def main(args):
 	# Copy the Tpull_merge to form two graphs - base and delta. Select all rows in base for created_at < x and all dates in delta for created_at > x
 	Tbase = snap.TTable.New(Tpull_merge, "Base")
 	Tdelta = snap.TTable.New(Tpull_merge, "Delta")
-	
-	testutils.dump(Tpull_merge)
 
-	x = 1342026109
-	Tbase.SelectAtomicIntConst("created_at", x, snap.LTE)
-	Tdelta.SelectAtomicIntConst("created_at", x, snap.GTE)
+	#Tbase.SelectAtomicIntConst("created_at", x, snap.LTE)
+	#Tdelta.SelectAtomicIntConst("created_at", x, snap.GTE)
+
+	G = snap.ToNetwork(snap.PNEANet, Tbase, "userid1", "userid2", snap.aaFirst)
+	t.show("graph", G)
 
 if __name__=="__main__":
 	main(sys.argv[1:])

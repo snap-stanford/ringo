@@ -8,19 +8,19 @@
 Dataset: GitHub
 Input dir: /dfs/ilfs2/0/ringo/GitHub/06-15-2012_11-16-2012
 
-Usage: python 08-GitHub-snap.py <authors.tsv> <delta_date>
+Usage: python 08-GitHub-snap.py <path/to/tsv/files> <mid_date>
 
   * Arguments:
-	  authors.tsv: path to authors.tsv file
-	  year.tsv: path to year.tsv file
-	  outputdir: output directory
-	    The only output file is table.tsv. It stores the list of PageRank scores of authors, sorted in descending order.
+		path/to/tsv/files: Path to the directory that contains the tsv files for
+collab, pull, follow, issues, fork and watch. 
+		mid_date: All edges formed before mid_date are part of the Base Graph,
+while the edges formed afterwards are part of the delta graph (used for
+evaulation). 
 
   * Output: 20 iterations of random walk with restarts for randomly selected nodes and corresponding Precision and Average Index
 
-  * Example (scores are normalized so that the top score is 1):
-
-        $ python 02-DBLP-snap.py /dfs/ilfs2/0/ringo/DBLP/authors.tsv /dfs/ilfs2/0/ringo/year.tsv output
+  * Example:
+        $ python 08-GitHub-snap.py /dfs/ilfs2/0/ringo/GitHub/ 06-15-2013
 
         [load authors table]  Elapsed: 6.34 seconds
         [load year table] Elapsed: 1.25 seconds

@@ -602,7 +602,7 @@ Version = "0.8.4r"
 %include "goodgraph.cpp"
 %include "printgraph.h"
 %include "linkpred_swig.h"
-%include "conv.cpp"
+%include "conv.h"
 
 %template(GetRndWalkRestart_PUNGraph) GetRndWalkRestart<PUNGraph>;
 %template(GetRndWalkRestart_PNGraph) GetRndWalkRestart<PNGraph>;
@@ -617,7 +617,6 @@ Version = "0.8.4r"
 /* Graph and network interface */
 %include "pneanet.i"
 %include "pngraph.i"
-%include "pngraphmp.i"
 %include "pungraph.i"
 %include "pgraph.i"
 
