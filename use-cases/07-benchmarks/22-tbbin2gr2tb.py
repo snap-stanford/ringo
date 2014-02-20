@@ -29,10 +29,8 @@ if __name__ == '__main__':
 
     S = map(lambda x: x.GetVal1(), table.GetSchema())
     assert(len(S) >= 2)
-    table.SetSrcCol(S[0])
-    table.SetDstCol(S[1])
     for i in xrange(0,1):
-        graph = snap.ToPNGraphMP(table)
+        graph = snap.ToGraphMP(snap.PNGraphMP, table, S[0], S[1])
         t.show("create graph", graph)
         r.show("__creategraph__")
 

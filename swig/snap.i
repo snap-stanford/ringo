@@ -621,6 +621,7 @@ Version = "0.8.4r"
 %include "pngraph.i"
 %include "pungraph.i"
 %include "pgraph.i"
+%include "pngraphmp.i"
 
 /* table interface */
 %include "ptable.i"

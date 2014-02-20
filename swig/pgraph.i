@@ -558,7 +558,6 @@ def ToGraph(tspec, *args):
 def ToNetwork(tspec, *args):
     if tspec == PNEANet : return ToNetwork_PNEANet(*args)
     return None
-
 def ConvertGraph(toutspec, tinspec, *args):
     if toutspec == PUNGraph:
         if type(tinspec) == PUNGraph:
