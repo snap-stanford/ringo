@@ -24,6 +24,10 @@
 def GetId(self):
     return (self.GetSrcNId(), self.GetDstNId())
 
+def ToGraphMP(tspec, *args):
+    if tspec == PNGraphMP : return ToGraphMP_PNGraphMP(*args)
+    return None
+
 TNGraphMPEdgeI.GetId = GetId
 %}
 
@@ -38,3 +42,6 @@ TNGraphMPEdgeI.GetId = GetId
 
 // Basic PNGraphMPs
 %template(PNGraphMP) TPt< TNGraphMP >;
+
+// conv.h - PNGraph
+%template(ToGraphMP_PNGraphMP) TSnap::ToGraphMP<PNGraphMP>;
