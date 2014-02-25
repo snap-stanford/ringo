@@ -625,7 +625,6 @@ Version = "0.8.4r"
 
 /* table interface */
 %include "ptable.i"
-%include "predicate.i"
 
 %template(PTable) TPt< TTable >;
 
