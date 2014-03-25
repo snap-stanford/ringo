@@ -135,6 +135,7 @@ Version = "0.8.4r"
 %ignore TVec<PNEANet>::UnionLen;
 %ignore TVec<PNEANet>::GetAddDat;
 %ignore TVec<PNEANet>::GetMxValN;
+%ignore TVec<PNEANet>::CopyUniqueFrom;
 // TODO: maybe the line below could work
 //%rename("regex:/TVec<PNEANet>::(?!(GetVal|operator\[\]|Len))/$ignore/") "";
 
