@@ -31,3 +31,4 @@ if __name__ == '__main__':
     table.SelectAtomicIntConst("Src", 10000, snap.LT, table2)
     t.show("selected < 10K new table", table2)
     r.show("__selectedlt10Knewtable__")
+
