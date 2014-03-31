@@ -59,16 +59,16 @@ t.show("join", t3)
 
 # Join
 # >>> t4 = t3.join(t1, ["AnswerId"], ["PostId"])
-t4 = t3.Join("AnswerId", t1, "PostId")
+t4 = t3.Join("t1.AnswerId", t1, "PostId")
 t.show("join", t4)
 
 # Graph
 # >>> graph = t4.graph("UserId_1", "UserId_2")
-t4.SetSrcCol("t1_t2.t1.UserId")
-t4.SetDstCol("t1.UserId")
-graph = snap.ToGraph(t4, snap.aaFirst) # ToGraphPerGroup should be able to support grouping on string columns!
+#t4.SetSrcCol("t1_t2.t1.UserId")
+#t4.SetDstCol("t1.UserId")
+graph = snap.ToGraph(snap.PNGraph, t4, "t1_t2.t1.UserId", "t1.UserId", snap.aaFirst) # ToGraphPerGroup should be able to support grouping on string columns!
 t.show("graph", graph)
-graph.Dump()
+#graph.Dump()
 
 # Get authority scores
 HTHub = snap.TIntFltH()
