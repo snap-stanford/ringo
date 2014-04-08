@@ -28,6 +28,10 @@ def ToGraphMP(tspec, *args):
     if tspec == PNGraphMP : return ToGraphMP_PNGraphMP(*args)
     return None
 
+def ToGraphMP2(tspec, *args):
+    if tspec == PNGraphMP : return ToGraphMP2_PNGraphMP(*args)
+    return None
+
 TNGraphMPEdgeI.GetId = GetId
 %}
 
@@ -45,3 +49,4 @@ TNGraphMPEdgeI.GetId = GetId
 
 // conv.h - PNGraph
 %template(ToGraphMP_PNGraphMP) TSnap::ToGraphMP<PNGraphMP>;
+%template(ToGraphMP2_PNGraphMP) TSnap::ToGraphMP2<PNGraphMP>;
