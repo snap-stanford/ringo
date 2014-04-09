@@ -53,7 +53,7 @@ if __name__ == '__main__':
     t.show("join", qa)
     r.show("__join__")
 
-    graph = snap.ToGraph(qa,"2.OwnerUserId", "1.OwnerUserId", snap.aaFirst)
+    graph = snap.ToGraph(snap.PUNGraph, qa, "2.OwnerUserId", "1.OwnerUserId", snap.aaFirst)
     t.show("graph", graph)
     r.show("__graph__")
 
