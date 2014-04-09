@@ -1,7 +1,20 @@
 #!/bin/bash
 
+#
+# test script for Ringo benchmarks
+#	- running time about 10 min on madmax3
+#
 # the script verifies that all benchmarks complete successfully
-# on the LiveJournal dataset
+# on the LiveJournal and Stack Overflow datasets
+#
+# input file requirements, files are in /dfs/ilfs2/0/ringo/benchmarks
+#	soc-LiveJournal1-noheader.txt
+#	soc-LiveJournal1_10k.txt
+#	soc-LiveJournal1_all.txt
+#	input/posts_scores.tsv
+#	input/posts_tags.tsv
+#	input/tags.tsv
+#
 
 echo "***" `date` "01 read text table, save binary table ..."
 #
