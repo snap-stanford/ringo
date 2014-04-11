@@ -53,7 +53,7 @@ t3 = ringo.Join(t1, t2, 'PostId', 'PostId')
 t.show("join", t3)
 
 # Join
-t4 = ringo.Join(t3, t1, "AnswerId", "PostId")
+t4 = ringo.Join(t3, t1, "1.AnswerId", "PostId")
 t.show("join", t4)
 
 # Graph
@@ -62,7 +62,6 @@ t.show("graph", graph)
 
 # Get authority scores
 (HTHub, HTAuth) = ringo.GetHits(graph)
-HT = ringo.GetHits(graph)
 t.show("hits", graph)
 
 t5 = ringo.TableFromHashMap(HTAuth, "UserId", "Authority")
