@@ -132,7 +132,7 @@ class Ringo(object):
                 return [ConvertJSON(value) for value in JSON]
             elif isinstance(JSON, unicode):
                 return JSON.encode('UTF-8')
-        else:
+            else:
                 return JSON
         def UnpackObject(self, Packed):
             ObjectId = Packed['Id']
@@ -254,20 +254,20 @@ class Ringo(object):
     @registerOp('GetSchema', False)
     def GetSchema(self, TableId):
         T = self.Objects[TableId]
-    Schema = T.GetSchema()
-    S = []
+        Schema = T.GetSchema()
+        S = []
 
-    for Col in Schema:
-        ColName = Col.Val1.CStr()
-        ColType = Col.Val2
-        S.append((ColName, ColType))
+        for Col in Schema:
+            ColName = Col.Val1.CStr()
+            ColType = Col.Val2
+            S.append((ColName, ColType))
 
-    return S
+        return S
     
     @registerOp('GetRows', False)
     def Rows(self, TableId, MaxRows = None):
-    T = self.Objects[TableId]
-    S = T.GetSchema()
+        T = self.Objects[TableId]
+        S = T.GetSchema()
         Names = []
         Types = []
 
@@ -291,7 +291,7 @@ class Ringo(object):
                 else:
                     raise NotImplementedError("Unsupported column type")
 
-        yield Elements
+            yield Elements
         
             RI.Next()
             Cnt += 1
@@ -315,7 +315,7 @@ class Ringo(object):
         print Template.format(*Names)
         print Line
 
-    for row in self.Rows(TableId, MaxRows):
+        for row in self.Rows(TableId, MaxRows):
             print Template.format(*row)
 
     # UNTESTED
@@ -425,25 +425,25 @@ class Ringo(object):
 
     @registerOp('Union')
     def Union(self, LeftTableId, RightTableId, TableName):
-    LeftT = self.Objects[LeftTableId]
-    RightT = self.Objects[RightTableId]
-    UnionT = LeftT.Union(RightT, TableName)
-    UnionTId = self.__UpdateObjects(UnionT, self.Lineage[LeftTableId] + self.Lineage[RightTableId])
-    return RingoObject(UnionTId)
+        LeftT = self.Objects[LeftTableId]
+        RightT = self.Objects[RightTableId]
+        UnionT = LeftT.Union(RightT, TableName)
+        UnionTId = self.__UpdateObjects(UnionT, self.Lineage[LeftTableId] + self.Lineage[RightTableId])
+        return RingoObject(UnionTId)
 
     @registerOp('UnionAll')
     def UnionAll(self, LeftTableId, RightTableId, TableName):
-    LeftT = self.Objects[LeftTableId]
-    RightT = self.Objects[RightTableId]
-    UnionT = LeftT.UnionAll(RightT, TableName)
-    UnionTId = self.__UpdateObjects(UnionT, self.Lineage[LeftTableId] + self.Lineage[RightTableId])
-    return RingoObject(UnionTId)
+        LeftT = self.Objects[LeftTableId]
+        RightT = self.Objects[RightTableId]
+        UnionT = LeftT.UnionAll(RightT, TableName)
+        UnionTId = self.__UpdateObjects(UnionT, self.Lineage[LeftTableId] + self.Lineage[RightTableId])
+        return RingoObject(UnionTId)
 
     @registerOp('Rename')
     def Rename(self, TableId, Column, NewLabel):
-    T = self.Objects[TableId]
-    T.Rename(Column, NewLabel)
-    return RingoObject(TableId)
+        T = self.Objects[TableId]
+        T.Rename(Column, NewLabel)
+        return RingoObject(TableId)
 
     # USE CASE 1 OK
     @registerOp('SelfJoin')
@@ -476,20 +476,10 @@ class Ringo(object):
 
     # USE CASE 1 OK
     @registerOp('ToGraph')
-    def ToGraph(self, TableId, SrcCol, DstCol):
+    def ToGraph(self, TableId, SrcCol, DstCol, Directed = True):
         T = self.Objects[TableId]
         
-        T.SetSrcCol(SrcCol)
-        T.SetDstCol(DstCol)
-        # TODO: How do we reset attributes when we build several graphs out of the same TTable?
-        SrcV = snap.TStrV()
-        DstV = snap.TStrV()
-        SrcV.Add(SrcCol)
-        DstV.Add(DstCol)
-        T.AddSrcNodeAttr(SrcV)
-        T.AddDstNodeAttr(DstV)
-
-        G = snap.ToGraph(T, SrcCol, DstCol, snap.aaFirst)
+        G = snap.ToGraph(snap.PNGraph if Directed else snap.PUNGraph, T, SrcCol, DstCol, snap.aaFirst)
         GraphId = self.__UpdateObjects(G, self.Lineage[TableId])
         return RingoObject(GraphId)
 
