@@ -9,6 +9,7 @@ import inspect
 import os
 import platform
 import sys
+import numpy
 
 from distutils.core import setup, Extension
 
@@ -133,5 +134,5 @@ setup (name = 'snap',
     version     = pkg_version,
     author      = "snap.stanford.edu",
     description = """SNAP (Stanford Network Analysis Platform) Python""",
-    )
+)
 

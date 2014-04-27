@@ -623,6 +623,7 @@ Version = "0.8.5r"
 %include "pungraph.i"
 %include "pgraph.i"
 %include "pngraphmp.i"
+%include "numpy_swig.i"
 
 /* table interface */
 %include "ptable.i"

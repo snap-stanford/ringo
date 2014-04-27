@@ -40,7 +40,7 @@ snap_wrap.cxx: snap.i snap_types.i tvec.i pneanet.i pungraph.i pngraph.i pgraph.
 	swig $(SWIGFLAGS) -python -c++ -w302,312,317,325,362,383,384,389,401,503,508,509 -O $(SNAPDIRLIST) snap.i
 
 snap_wrap.o: snap_wrap.cxx
-	g++ $(CXXFLAGS) -c snap_wrap.cxx $(SNAPDIRLIST) -I/usr/include/python2.6 -I/usr/include/python2.7
+	g++ $(CXXFLAGS) -c snap_wrap.cxx $(SNAPDIRLIST) -I/usr/include/python2.6 -I/usr/include/python2.7 -I/usr/lib/python2.7/dist-packages/numpy/core/include
 
 Snap.o: 
 	$(CC) $(CXXFLAGS) -c $(SNAPDIR)/Snap.cpp $(SNAPDIRLIST)
