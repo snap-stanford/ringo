@@ -61,39 +61,16 @@ t.show("select", Q)
 A = ringo.Select(P, '1.AnswerId = 0', InPlace = False, CompConstant = True)
 t.show("select", A)
 
-print ringo.DumpTableContent(Q,5)
-print ringo.DumpTableContent(A,5)
+#print ringo.DumpTableContent(Q,5)
+#print ringo.DumpTableContent(A,5)
+#ringo.GenerateProvenance(Q, '06-StackOverflow-paper-autogen-Q.py')
+#ringo.GenerateProvenance(A, '06-StackOverflow-paper-autogen-A.py')
 # Join
-QA = ringo.Join(Q, A, "1.PostId", "1.AnswerId")
+QA = ringo.Join(Q, A, "1.AnswerId", "1.PostId")
 t.show("join", QA)
 
 print ringo.GetSchema(QA)
 # Graph
 graph = ringo.ToGraph(QA, "1.1.UserId", "2.1.UserId")
 t.show("graph", graph)
-#ringo.ShowMetadata(graph)
-
-# # Get authority scores
-# (HTHub, HTAuth) = ringo.GetHits(graph)
-# t.show("hits", graph)
-# ringo.ShowMetadata(HTAuth)
-
-# t5 = ringo.TableFromHashMap(HTAuth, "UserId", "Authority")
-# t.show("authority score", t5)
-
-# # Select top entries
-# #ringo.Select(t5, 'Authority > 0.0', CompConstant = True)
-# #t.show("select", t5)
-
-# # Order by final score (in descending order)
-# ringo.Order(t5, ['Authority'], Asc = False)
-# t.show("order", t5)
-
-# # Save
-# if not dstdir is None:
-#   ringo.SaveTableTSV(t5, os.path.join(dstdir,OUTPUT_TABLE_FILENAME))
-#   t.show("save", t5)
-
-# ringo.DumpTableContent(t5, 20)
-# # ringo.ShowMetadata(t5)
 ringo.GenerateProvenance(graph, '06-StackOverflow-paper-autogen.py')
