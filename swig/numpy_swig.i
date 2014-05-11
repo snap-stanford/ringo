@@ -9,6 +9,8 @@
     import_array();
 %}
 
-%apply (int* ARGOUT_ARRAY1, int DIM1) {(int* IntNumpyVec, int n)}
-%apply (float* ARGOUT_ARRAY1, int DIM1) {(float* FltNumpyVec, int n)}
+%apply (int* ARGOUT_ARRAY1, int DIM1) {(int* IntNumpyVecOut, int n)}
+%apply (float* ARGOUT_ARRAY1, int DIM1) {(float* FltNumpyVecOut, int n)}
+%apply (int* IN_ARRAY1, int DIM1) {(int* IntNumpyVecIn, int n)}
+%apply (float* IN_ARRAY1, int DIM1) {(float* FltNumpyVecIn, int n)}
 %include "numpy.h"
