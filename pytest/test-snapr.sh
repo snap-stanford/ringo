@@ -60,7 +60,7 @@ echo "***" `date` "04 read binary table, select new large table ..."
 # read table from a file with the binary format
 # select rows with the first value > 10000, create new table
 #
-#python 04-tbselgtnewtb.py soc-LiveJournal1.table
+python 04-tbselgtnewtb.py soc-LiveJournal1.table
 RETVAL=$?
 if [ $RETVAL -ne 0 ]; then
     echo "***" `date` "04 ERROR"
