@@ -112,7 +112,7 @@
 %template(GetNodeEcc_PNEANet) TSnap::GetNodeEcc<PNEANet>;
 %template(GetPageRank_PNEANet) TSnap::GetPageRank<PNEANet>;
 %template(GetHits_PNEANet) TSnap::GetHits<PNEANet>;
-#ifdef OPENMP
+#ifdef _OPENMP
 %template(GetPageRankMP1_PNEANet) TSnap::GetPageRankMP1<PNEANet>;
 %template(GetPageRankMP2_PNEANet) TSnap::GetPageRankMP2<PNEANet>;
 %template(GetHitsMP_PNEANet) TSnap::GetHitsMP<PNEANet>;

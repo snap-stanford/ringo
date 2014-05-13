@@ -10,7 +10,8 @@ MakeAll:
 	$(MAKE) -C swig
 
 TestAll:
-	$(MAKE) test -C test
+	#$(MAKE) test -C test
+	$(MAKE) test -C pytest
 
 clean:
 	$(MAKE) clean -C swig

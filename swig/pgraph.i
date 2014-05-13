@@ -132,7 +132,7 @@ def GetPageRank(tspec, *args):
     if type(tspec) == PNGraph : return GetPageRank_PNGraph(tspec, *args)
     if type(tspec) == PNEANet : return GetPageRank_PNEANet(tspec, *args)
     return None
-#ifdef OPENMP
+#ifdef _OPENMP
 def GetPageRankMP1(tspec, *args):
     if type(tspec) == PUNGraph: return GetPageRankMP1_PUNGraph(tspec, *args)
     if type(tspec) == PNGraph : return GetPageRankMP1_PNGraph(tspec, *args)
@@ -269,7 +269,7 @@ def GetHits(tspec, *args):
     if type(tspec) == PNGraph : return GetHits_PNGraph(tspec, *args)
     if type(tspec) == PNEANet : return GetHits_PNEANet(tspec, *args)
     return None
-#ifdef OPENMP
+#ifdef _OPENMP
 def GetHitsMP(tspec, *args):
     if type(tspec) == PUNGraph: return GetHitsMP_PUNGraph(tspec, *args)
     if type(tspec) == PNGraph : return GetHitsMP_PNGraph(tspec, *args)
