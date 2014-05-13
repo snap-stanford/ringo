@@ -15,5 +15,5 @@ TestAll:
 
 clean:
 	$(MAKE) clean -C swig
-	$(MAKE) clean -C test
+	$(MAKE) clean -C pytest
 
