@@ -13,7 +13,7 @@ def intro():
     print "G1: Nodes %d, Edges %d" % (G1.GetNodes(), G1.GetEdges())
 
     # create a directed random graph on 100 nodes and 1k edges
-    G2 = GenRndGnm(PNGraph, 100, 1000)
+    G2 = GenRndGnm(PNGraph, 20, 100)
     print "G2: Nodes %d, Edges %d" % (G2.GetNodes(), G2.GetEdges())
 
     # traverse the nodes

@@ -80,8 +80,7 @@ if [ $RETVAL -ne 0 ]; then
 fi;
 
 echo "***" `date` "attributes.py ..."
-# disabled, since it is not working
-#python attributes.py 
+python attributes.py 
 RETVAL=$?
 if [ $RETVAL -ne 0 ]; then
     echo "***" `date` "ERROR attributes.py"

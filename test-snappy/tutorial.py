@@ -64,7 +64,7 @@ G1.AddEdge(5,1)
 G1.AddEdge(5,32)
 
 # create a directed random graph on 100 nodes and 1k edges
-G2 = snap.GenRndGnm(snap.PNGraph, 100, 1000)
+G2 = snap.GenRndGnm(snap.PNGraph, 20, 100)
 print "G2: Nodes %d, Edges %d" % (G2.GetNodes(), G2.GetEdges())
 
 # traverse the nodes
