@@ -16,5 +16,6 @@ TestAll:
 
 clean:
 	$(MAKE) clean -C swig
+	$(MAKE) clean -C test-snappy
 	$(MAKE) clean -C test-snapr
 
