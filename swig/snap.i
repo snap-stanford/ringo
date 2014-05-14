@@ -194,6 +194,7 @@ Version = "0.8.5r"
 %include "hash.h"
 %include "hashmp.h"
 %include "hashgenericmp.h"
+%include "shash.h"
 %include "kcore.h"
 %include "ggen.h"
 %include "subgraph.h"
@@ -228,6 +229,7 @@ Version = "0.8.5r"
 %template(TIntTrV) TVec<TIntTr>;
 %template(TIntFltKdV) TVec<TIntFltKd>;
 %template(TIntStrPr) TPair<TInt, TStr>;
+%template(TIntIntVV) TVec< TVec< TInt, int >, int >;
 %template(PNEANetV) TVec<PNEANet>;
 
 #if SNAP_ALL
@@ -257,6 +259,7 @@ Version = "0.8.5r"
 %template(TAscFltPr) TPair<TAscFlt, TAscFlt>;
 %template(TFltStrPr) TPair<TFlt, TStr>;
 %template(TAscFltStrPr) TPair<TAscFlt, TStr>;
+%template(TStrIntPr) TPair<TStr, TInt>;
 %template(TStrFltPr) TPair<TStr, TFlt>;
 %template(TStrPr) TPair<TStr, TStr>;
 %template(TStrStrVPr) TPair<TStr, TStrV>;
@@ -325,6 +328,7 @@ Version = "0.8.5r"
 %template(TUInt64V) TVec<TUInt64>;
 %template(TSFltV) TVec<TSFlt>;
 %template(TAscFltV) TVec<TAscFlt>;
+%template(TStrV) TVec<TStr>;
 %template(TChAV) TVec<TChA>;
 %template(TIntQuV) TVec<TIntQu>;
 %template(TFltTrV) TVec<TFltTr>;
@@ -370,6 +374,7 @@ Version = "0.8.5r"
 %template(TAscFltIntPrV) TVec<TAscFltIntPr>;
 %template(TAscFltIntKdV) TVec<TAscFltIntKd>;
 %template(TStrPrV) TVec<TStrPr>;
+%template(TStrIntPrV) TVec<TStrIntPr>;
 %template(TStrFltPrV) TVec<TStrFltPr>;
 %template(TStrIntKdV) TVec<TStrIntKd>;
 %template(TStrFltKdV) TVec<TStrFltKd>;
@@ -574,6 +579,8 @@ Version = "0.8.5r"
 
 // dt.h
 
+%template(TStrV) TVec<TStr, int>;
+
 // cncom.h
 
 %template(TCnComV) TVec<TCnCom>;
@@ -597,6 +604,9 @@ Version = "0.8.5r"
 %template(TStrTAttrPr) TPair< TStr, TAttrType>;
 %template(Schema) TVec< TPair< TStr, TAttrType> >;
 
+%template(TIntSet) THashSet<TInt>;
+%template(TIntHSI) THashSetKeyI <TInt>;
+
 //----------
 
 // SWIG conversion C++ code
@@ -616,6 +626,7 @@ Version = "0.8.5r"
 /* Vector and hash interface */
 %include "tvec.i"
 %include "thash.i"
+%include "thashset.i"
 
 /* Graph and network interface */
 %include "pneanet.i"

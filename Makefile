@@ -11,6 +11,7 @@ MakeAll:
 
 TestAll:
 	#$(MAKE) test -C test
+	$(MAKE) test -C test-snappy
 	$(MAKE) test -C test-snapr
 
 clean:
