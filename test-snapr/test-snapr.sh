@@ -8,14 +8,11 @@
 #
 # input file requirements, files are in "data"
 #	soc-LiveJournal1_small.txt
-
-
-#	soc-LiveJournal1-noheader.txt
-#	soc-LiveJournal1_10k.txt
-#	soc-LiveJournal1_all.txt
-#	input/posts_scores.tsv
-#	input/posts_tags.tsv
-#	input/tags.tsv
+#	soc-LiveJournal1_50.txt
+#	soc-LiveJournal1_450.txt
+#	posts_scores_10k.tsv
+#	posts_tags_10k.tsv
+#	tags_10k.tsv
 #
 
 echo "***" `date` "01 read text table, save binary table ..."

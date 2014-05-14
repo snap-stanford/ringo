@@ -1,6 +1,0 @@
-Class	Area	Quarter	Grade 2011	Grade 2012	Grade 2013	Grades_id
-Machine Learning	AI	Aut	7	8	8	0
-Network Analysis	AI	Aut	8	9	7	1
-Operating Systems	Systems	Aut	6	8	7	2
-Compilers	Systems	Spr	6	9	10	3
-Databases	Systems	Aut	10	8	9	4
