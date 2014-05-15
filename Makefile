@@ -11,9 +11,11 @@ MakeAll:
 
 TestAll:
 	#$(MAKE) test -C test
-	$(MAKE) test -C pytest
+	$(MAKE) test -C test-snappy
+	$(MAKE) test -C test-snapr
 
 clean:
 	$(MAKE) clean -C swig
-	$(MAKE) clean -C test
+	$(MAKE) clean -C test-snappy
+	$(MAKE) clean -C test-snapr
 
