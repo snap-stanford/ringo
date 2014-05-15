@@ -365,7 +365,6 @@ class Ringo(object):
     # UNTESTED
     @registerOp('Unique')
     def Unique(self, TableId, GroupByAttr, InPlace = True):
-        Args = (TableId, GroupByAttr, InPlace)
         if not InPlace:
             TableId = __CopyTable(TableId)
         
@@ -376,7 +375,6 @@ class Ringo(object):
     # UNTESTED
     @registerOp('Unique')
     def Unique(self, TableId, GroupByAttrs, Ordered, InPlace = True):
-        Args = (TableId, GroupByAttr, NewTable)
         Attrs = TStrV()
         for Attr in GroupByAttr:
             Attrs.Add(Attr)
@@ -390,50 +388,134 @@ class Ringo(object):
 
     # USE CASE 2 OK
     @registerOp('Select')
-    def Select(self, TableId, Predicate, InPlace = True, CompConstant = False): 
-        Args = (TableId, Predicate, InPlace)
+    def Select(self, TableId, Predicate, InPlace = True): 
+        def GetOp(OpString):
+            try:
+                Op = {
+                  '=': snap.EQ,
+                  '!=': snap.NEQ,
+                  '<': snap.LT,
+                  '<=': snap.LTE,
+                  '>': snap.GT,
+                  '>=': snap.GTE,
+                  'in': snap.SUBSTR,
+                  'contains': snap.SUPERSTR
+                }[OpString]
+            except KeyError:
+                raise NotImplementedError("Operator %s undefined" % OpString)
+            return Op
+        def GetColType(Schema, ColName):
+            for Col in Schema:
+                if Col.Val1 == ColName:
+                    return Col.Val2
+            raise ValueError("No column with name %s found" % ColName)
+        def IsConstant(Arg):
+            if '0' <= f[0] and f[0] <= '9':
+                return True
+            return f[0] == "'" or f[0] == '"'
+        def Merge(Expression):
+            while '(' in Expression:
+                left = Expression.index('(')
+                right = left+1
+                count = 0
+                while count > 0 or Expression[right] != ')':
+                    if Expression[right] == ')':
+                        count += 1
+                    elif Expression[right] == '(':
+                        count -= 1
+                    right += 1
+                Expression[left:right+1] = Merge(Expression[left+1:right])
+
+            while 'and' in Expression:
+                op = Expression.index('and')
+                Merged = snap.TPredicateNode(snap.AND)
+                Merged.addLeftChild(Expression[op-1])
+                Merged.addRightChild(Expression[op+1])
+                Expression[op-1:op+2] = snap.TPredicate(Merged)
+
+            while 'or' in Expression:
+                op = Expression.index('or')
+                Merged = snap.TPredicateNode(snap.OR)
+                Merged.addLeftChild(Expression[op-1])
+                Merged.addRightChild(Expression[op+1])
+                Expression[op-1:op+2] = snap.TPredicate(Merged)
+
+            if len(Expression) > 1:
+                raise ValueError("Invalid expression - too many operands") 
+            return Expression[0]
+        def ConstructPredicate(elements, Schema):
+            Expression = []
+            i = 0
+            NumParens = 0
+            while i < len(elements):
+                if i > 0:
+                    if elements[i].lower() == 'and':
+                        Expression.append('and')
+                    elif elements[i].lower() == 'or':
+                        Expression.append('or')
+                    else:
+                        raise ValueError("Improper conjuction %s: only AND/OR supported" % elements[i])
+                    i += 1
+
+                while elements[i] == '(':
+                    Expression.append('(')
+                    NumParens += 1
+                    i += 1
+    
+                Left = elements[i]
+                ColType = GetColType(Schema, Left)
+                Op = GetOp(elements[i+1])
+                Right = elements[i+2]
+                if IsConstant(Right):
+                    Args = ()
+                    if ColType == snap.atInt:
+                        Args = (int(Right), 0, "")
+                    elif ColType == snap.atFlt:
+                        Args = (0, float(Right), "")
+                    elif ColType == snap.atStr:
+                        Args = (0, 0, Right[1:-1])
+                    Expression.append(snap.TAtomicPredicate(ColType, snap.TBool(True), Op, Left, "",
+                        *Args))
+                else:
+                    Expression.append(snap.TAtomicPredicate(ColType, snap.TBool(False), Op, Left, Right))
+
+                i += 2
+                while element[i] == ')':
+                    Expression.append(')')
+                    NumParens -= 1
+                    i += 1
+                if NumParens < 0:
+                    raise ValueError("Unbalanced parentheses found")
+                
+            if NumParens !=0:
+                raise ValueError("Unbalanced parentheses found")
+            return Merge(Expression)
 
         if not InPlace:
             TableId = self.__CopyTable(TableId)
             
         # Parse predicate
         elements = Predicate.split()
-        if (len(elements) != 3):
-            raise NotImplementedError('Only predicates of the form "Attr1 <op> Attr2" are supported')
-
+        elements = [j for i in map(lambda s: re.split('(\(|\))', s), elements) for j in i if len(j) > 0]
         T = self.Objects[TableId]
-        OpString = elements[1]
-        try:
-            Op = {
-              '=': snap.EQ,
-              '!=': snap.NEQ,
-              '<': snap.LT,
-              '<=': snap.LTE,
-              '>': snap.GT,
-              '>=': snap.GTE,
-              'in': snap.SUBSTR,
-              'contains': snap.SUPERSTR
-            }[OpString]
-        except KeyError:
-            raise NotImplementedError("Operator %s undefined" % OpString)
-
         Schema = T.GetSchema()
-        ColType = None
-        for Col in Schema:
-            if Col.Val1 == elements[0]:
-                ColType = Col.Val2
-        if ColType is None:
-            raise ValueError("No column with name %s found" % elements[0])
- 
-        if CompConstant:
-            if  ColType == snap.atInt:
-                T.SelectAtomicIntConst(elements[0], int(elements[2]), Op)
-            elif ColType == snap.atFlt:
-                T.SelectAtomicFltConst(elements[0], float(elements[2]), Op)
-            elif ColType == snap.atStr:
-                T.SelectAtomicStrConst(elements[0], str(elements[2]), Op)
+
+        if (len(elements) == 3):
+            Op = GetOp(elements[1])
+    
+            ColType = GetColType(Schema, elements[0])     
+
+            if IsConstant(elements[2]):
+                if  ColType == snap.atInt:
+                    T.SelectAtomicIntConst(elements[0], int(elements[2]), Op)
+                elif ColType == snap.atFlt:
+                    T.SelectAtomicFltConst(elements[0], float(elements[2]), Op)
+                elif ColType == snap.atStr:
+                    T.SelectAtomicStrConst(elements[0], str(elements[2][1:-1]), Op)
+            else:
+                T.SelectAtomic(elements[0], elements[2], Op)
         else:
-            T.SelectAtomic(elements[0], elements[2], Op)
+            T.Select(ConstructPredicate(elements, Schema))
         return RingoObject(TableId, self)
 
     # USE CASE 8 OK
