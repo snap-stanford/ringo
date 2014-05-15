@@ -9,16 +9,16 @@ def generate(engine,filename0, filename1, filename2):
     t2 = engine.LoadTableTSV([(t2_ColName1, t2_ColType1), (t2_ColName2, t2_ColType2)], filename1)
     t2 = engine.Select(t2, 'Tag = python', CompConstant=True)
     t3 = engine.Join(t1, t2, t1_ColName1, t2_ColName1)
-    t4 = engine.Join(t3, t1, 'AnswerId', t1_ColName1)
+    t4 = engine.Join(t3, t1, '1.AnswerId', t1_ColName1)
     graph = engine.ToGraph(t4, '1_2.1.UserId', '1.UserId')
-    (HTHub, HTAuth) = engine.GetHits(graph)
+    engine.GetHits(graph)
     t5 = engine.TableFromHashMap(HTAuth, 'UserId', 'Authority')
     t5 = engine.Order(t5, ['Authority'], Asc=False)
     t5 = engine.SaveTableTSV(t5, filename2)
     return t5
 
 engine = ringo.Ringo()
-files = ['input/posts.tsv', 'input/tags.tsv', './experts.tsv']
+files = ['input/posts.tsv', 'input/tags.tsv', 'experts.tsv/experts.tsv']
 for i in xrange(min(len(files), len(sys.argv)-1)):
     files[i] = sys.argv[i+1]
 t5 = generate(engine, *files)
