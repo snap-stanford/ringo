@@ -1,54 +1,54 @@
     @registerOp('CntInDegNodes', False)
-    def CntInDegNodes(GraphId, NodeInDeg):
+    def CntInDegNodes(self, GraphId, NodeInDeg):
         Graph = self.Objects[GraphId]
         Count = snap.CntInDegNodes(Graph, NodeInDeg)
         return Count
 
     @registerOp('CntOutDegNodes', False)
-    def CntOutDegNodes(GraphId, NodeOutDeg):
+    def CntOutDegNodes(self, GraphId, NodeOutDeg):
         Graph = self.Objects[GraphId]
         Count = snap.CntOutDegNodes(Graph, NodeOutDeg)
         return Count
 
     @registerOp('CntDegNodes', False)
-    def CntDegNodes(GraphId, NodeDeg):
+    def CntDegNodes(self, GraphId, NodeDeg):
         Graph = self.Objects[GraphId]
         Count = snap.CntDegNodes(Graph, NodeDeg)
         return Count
 
     @registerOp('CntNonZNodes', False)
-    def CntNonZNodes(GraphId):
+    def CntNonZNodes(self, GraphId):
         Graph = self.Objects[GraphId]
         Count = snap.CntNonZNodes(Graph)
         return Count
 
     @registerOp('CntEdgesToSet', False)
-    def CntEdgesToSet(GraphId, NId, NodeSetId):
+    def CntEdgesToSet(self, GraphId, NId, NodeSetId):
         Graph = self.Objects[GraphId]
         NodeSet = self.Objects[NodeSetId]
         Count = snap.CntEdgesToSet(Graph, NId, NodeSet)
         return Count
 
     @registerOp('GetMxDegNId', False)
-    def GetMxDegNId(GraphId):
+    def GetMxDegNId(self, GraphId):
         Graph = self.Objects[GraphId]
         NId = snap.GetMxDegNId(Graph)
         return NId
 
     @registerOp('GetMxInDegNId', False)
-    def GetMxInDegNId(GraphId):
+    def GetMxInDegNId(self, GraphId):
         Graph = self.Objects[GraphId]
         NId = snap.GetMxInDegNId(Graph)
         return NId
 
     @registerOp('GetMxOutDegNId', False)
-    def GetMxOutDegNId(GraphId):
+    def GetMxOutDegNId(self, GraphId):
         Graph = self.Objects[GraphId]
         NId = snap.GetMxOutDegNId(Graph)
         return NId
 
     @registerOp('GetInDegCnt')
-    def GetInDegCnt(GraphId):
+    def GetInDegCnt(self, GraphId):
         Graph = self.Objects[GraphId]
         DegToCntV = snap.TIntPrV()
         snap.GetInDegCnt(Graph, DegToCntV)
@@ -56,7 +56,7 @@
         return RingoObject(DegToCntVId, self)
 
     @registerOp('GetOutDegCnt')
-    def GetOutDegCnt(GraphId):
+    def GetOutDegCnt(self, GraphId):
         Graph = self.Objects[GraphId]
         DegToCntV = snap.TIntPrV()
         snap.GetOutDegCnt(Graph, DegToCntV)
@@ -64,7 +64,7 @@
         return RingoObject(DegToCntVId, self)
 
     @registerOp('GetDegCnt')
-    def GetDegCnt(GraphId):
+    def GetDegCnt(self, GraphId):
         Graph = self.Objects[GraphId]
         DegToCntV = snap.TIntPrV()
         snap.GetDegCnt(Graph, DegToCntV)
@@ -72,7 +72,7 @@
         return RingoObject(DegToCntVId, self)
 
     @registerOp('GetDegSeqV')
-    def GetDegSeqV(GraphId):
+    def GetDegSeqV(self, GraphId):
         Graph = self.Objects[GraphId]
         DegV = snap.TIntV()
         snap.GetDegSeqV(Graph, DegV)
@@ -80,7 +80,7 @@
         return RingoObject(DegVId, self)
 
     @registerOp('GetDegSeqV')
-    def GetDegSeqV(GraphId):
+    def GetDegSeqV(self, GraphId):
         Graph = self.Objects[GraphId]
         InDegV = snap.TIntV()
         OutDegV = snap.TIntV()
@@ -90,7 +90,7 @@
         return (RingoObject(InDegVId, self), RingoObject(OutDegVId, self))
 
     @registerOp('GetNodeInDegV')
-    def GetNodeInDegV(GraphId):
+    def GetNodeInDegV(self, GraphId):
         Graph = self.Objects[GraphId]
         NIdInDegV = snap.TIntPrV()
         snap.GetNodeInDegV(Graph, NIdInDegV)
@@ -98,7 +98,7 @@
         return RingoObject(NIdInDegVId, self)
 
     @registerOp('GetNodeOutDegV')
-    def GetNodeOutDegV(GraphId):
+    def GetNodeOutDegV(self, GraphId):
         Graph = self.Objects[GraphId]
         NIdOutDegV = snap.TIntPrV()
         snap.GetNodeOutDegV(Graph, NIdOutDegV)
@@ -106,87 +106,87 @@
         return RingoObject(NIdOutDegVId, self)
 
     @registerOp('CntUniqUndirEdges', False)
-    def CntUniqUndirEdges(GraphId):
+    def CntUniqUndirEdges(self, GraphId):
         Graph = self.Objects[GraphId]
         Count = snap.CntUniqUndirEdges(Graph)
         return Count
 
     @registerOp('CntUniqDirEdges', False)
-    def CntUniqDirEdges(GraphId):
+    def CntUniqDirEdges(self, GraphId):
         Graph = self.Objects[GraphId]
         Count = snap.CntUniqDirEdges(Graph)
         return Count
 
     @registerOp('CntUniqBiDirEdges', False)
-    def CntUniqBiDirEdges(GraphId):
+    def CntUniqBiDirEdges(self, GraphId):
         Graph = self.Objects[GraphId]
         Count = snap.CntUniqBiDirEdges(Graph)
         return Count
 
     @registerOp('CntSelfEdges', False)
-    def CntSelfEdges(GraphId):
+    def CntSelfEdges(self, GraphId):
         Graph = self.Objects[GraphId]
         Count = snap.CntSelfEdges(Graph)
         return Count
 
     @registerOp('GetUnDir')
-    def GetUnDir(GraphId):
+    def GetUnDir(self, GraphId):
         Graph = self.Objects[GraphId]
         Ret = snap.GetUnDir(Graph)
         RetId = self.__UpdateObjects(Ret, self.Lineage[GraphId])
         return RingoObject(RetId, self)
 
     @registerOp('MakeUnDir')
-    def MakeUnDir(GraphId):
+    def MakeUnDir(self, GraphId):
         Graph = self.Objects[GraphId]
         snap.MakeUnDir(Graph)
         return RingoObject(GraphId, self)
 
     @registerOp('AddSelfEdges')
-    def AddSelfEdges(GraphId):
+    def AddSelfEdges(self, GraphId):
         Graph = self.Objects[GraphId]
         snap.AddSelfEdges(Graph)
         return RingoObject(GraphId, self)
 
     @registerOp('DelSelfEdges')
-    def DelSelfEdges(GraphId):
+    def DelSelfEdges(self, GraphId):
         Graph = self.Objects[GraphId]
         snap.DelSelfEdges(Graph)
         return RingoObject(GraphId, self)
 
     @registerOp('DelNodes')
-    def DelNodes(GraphId, NIdVId):
+    def DelNodes(self, GraphId, NIdVId):
         Graph = self.Objects[GraphId]
         NIdV = self.Objects[NIdVId]
         snap.DelNodes(Graph, NIdV)
         return RingoObject(GraphId, self)
 
     @registerOp('DelZeroDegNodes')
-    def DelZeroDegNodes(GraphId):
+    def DelZeroDegNodes(self, GraphId):
         Graph = self.Objects[GraphId]
         snap.DelZeroDegNodes(Graph)
         return RingoObject(GraphId, self)
 
     @registerOp('DelDegKNodes')
-    def DelDegKNodes(GraphId, OutDetK, InDegK):
+    def DelDegKNodes(self, GraphId, OutDetK, InDegK):
         Graph = self.Objects[GraphId]
         snap.DelDegKNodes(Graph, OutDetK, InDegK)
         return RingoObject(GraphId, self)
 
     @registerOp('IsTree', False)
-    def IsTree(GraphId):
+    def IsTree(self, GraphId):
         Graph = self.Objects[GraphId]
         Ret = snap.IsTree(Graph)
         return Ret
 
     @registerOp('GetTreeRootNId')
-    def GetTreeRootNId(GraphId):
+    def GetTreeRootNId(self, GraphId):
         Graph = self.Objects[GraphId]
         NId = snap.GetTreeRootNId(Graph)
         return NId
 
     @registerOp('GetTreeSig')
-    def GetTreeSig(GraphId, RootNId):
+    def GetTreeSig(self, GraphId, RootNId):
         Graph = self.Objects[GraphId]
         Sig = snap.TIntV()
         snap.GetTreeSig(Graph, RootNId, Sig)
@@ -194,7 +194,7 @@
         return RingoObject(SigId, self)
 
     @registerOp('GetTreeSig')
-    def GetTreeSig(GraphId, RootNId):
+    def GetTreeSig(self, GraphId, RootNId):
         Graph = self.Objects[GraphId]
         Sig = snap.TIntV()
         NodeMap = snap.TIntPrV()
@@ -204,7 +204,7 @@
         return (RingoObject(SigId, self), RingoObject(NodeMapId, self))
 
     @registerOp('GetAnf')
-    def GetAnf(GraphId, SrcNId, MxDist, IsDir, NApprox = 32):
+    def GetAnf(self, GraphId, SrcNId, MxDist, IsDir, NApprox = 32):
         Graph = self.Objects[GraphId]
         DistNbrsV = snap.TIntFltKdV()
         snap.GetAnf(Graph, DistNbrsV, SrcNId, MxDist, snap.TBool(IsDir), NApprox)
@@ -212,7 +212,7 @@
         return RingoObject(DistNbrsVId, self)
 
     @registerOp('GetAnf')
-    def GetAnf(GraphId, MxDist, IsDir, NApprox = 32):
+    def GetAnf(self, GraphId, MxDist, IsDir, NApprox = 32):
         Graph = self.Objects[GraphId]
         DistNbrsV = snap.TIntFltKdV()
         snap.GetAnf(Graph, DistNbrsV, MxDist, snap.TBool(IsDir), NApprox)
@@ -220,32 +220,32 @@
         return RingoObject(DistNbrsVId, self)
 
     @registerOp('GetAnfEffDiam', False)
-    def GetAnfEffDiam(GraphId, IsDir, Percentile, NApprox):
+    def GetAnfEffDiam(self, GraphId, IsDir, Percentile, NApprox):
         Graph = self.Objects[GraphId]
         Len = snap.GetAnfEffDiam(Graph, snap.TBool(IsDir), Percentile, NApprox)
         return Len
 
     @registerOp('GetAnfEffDiam', False)
-    def GetAnfEffDiam(GraphId, NRuns = 1, NApprox = -1):
+    def GetAnfEffDiam(self, GraphId, NRuns = 1, NApprox = -1):
         Graph = self.Objects[GraphId]
         Len = snap.GetAnfEffDiam(Graph, NRuns, NApprox)
         return Len
 
     @registerOp('GetBfsTree')
-    def GetBfsTree(GraphId, StartNId, FollowOut, FollowIn):
+    def GetBfsTree(self, GraphId, StartNId, FollowOut, FollowIn):
         Graph = self.Objects[GraphId]
         Tree = snap.GetBfsTree(Graph, StartNId, snap.TBool(FollowOut), snap.TBool(FollowIn))
         TreeId = self.__UpdateObjects(Tree, self.Lineage[GraphId])
         return RingoObject(TreeId, self)
 
     @registerOp('GetSubTreeSz', False)
-    def GetSubTreeSz(GraphId, StartNId, FollowOut, FollowIn):
+    def GetSubTreeSz(self, GraphId, StartNId, FollowOut, FollowIn):
         Graph = self.Objects[GraphId]
         Sizes = snap.GetSubTreeSz(Graph, StartNId, snap.TBool(FollowOut), snap.TBool(FollowIn))
         return Sizes
 
     @registerOp('GetNodesAtHop')
-    def GetNodesAtHop(GraphId, StartNId, Hop, IsDir):
+    def GetNodesAtHop(self, GraphId, StartNId, Hop, IsDir):
         Graph = self.Objects[GraphId]
         NIdV = snap.TIntV()
         Count = snap.GetNodesAtHop(Graph, StartNId, Hop, NIdV, snap.TBool(IsDir))
@@ -253,7 +253,7 @@
         return (RingoObject(NIdVId, self), Count)
 
     @registerOp('GetNodesAtHops')
-    def GetNodesAtHops(GraphId, StartNId, IsDir):
+    def GetNodesAtHops(self, GraphId, StartNId, IsDir):
         Graph = self.Objects[GraphId]
         HopCntV = snap.TIntPrV()
         Count = snap.GetNodesAtHops(Graph, StartNId, HopCntV, snap.TBool(IsDir))
@@ -261,13 +261,13 @@
         return (RingoObject(HopCntVId, self), Count)
 
     @registerOp('GetShortPath', False)
-    def GetShortPath(GraphId, SrcNId, DstNId, IsDir = False):
+    def GetShortPath(self, GraphId, SrcNId, DstNId, IsDir = False):
         Graph = self.Objects[GraphId]
         Len = snap.GetShortPath(Graph, SrcNId, DstNId, snap.TBool(IsDir))
         return Len
 
     @registerOp('GetShortPath')
-    def GetShortPath(GraphId, SrcNId, IsDir = False, MaxDist = snap.TInt.Mx):
+    def GetShortPath(self, GraphId, SrcNId, IsDir = False, MaxDist = snap.TInt.Mx):
         Graph = self.Objects[GraphId]
         NIdToDistH = snap.TIntH()
         Len = snap.GetShortPath(Graph, SrcNId, NIdToDistH, snap.TBool(IsDir), MaxDist)
@@ -275,37 +275,37 @@
         return (RingoObject(NIdToDistHId, self), Len)
 
     @registerOp('GetBfsFullDiam', False)
-    def GetBfsFullDiam(GraphId, NTestNodes, IsDir = False):
+    def GetBfsFullDiam(self, GraphId, NTestNodes, IsDir = False):
         Graph = self.Objects[GraphId]
         Diam = snap.GetBfsFullDiam(Graph, NTestNodes, snap.TBool(IsDir))
         return Diam
 
     @registerOp('GetBfsEffDiam', False)
-    def GetBfsEffDiam(GraphId, NTestNodes, IsDir = False):
+    def GetBfsEffDiam(self, GraphId, NTestNodes, IsDir = False):
         Graph = self.Objects[GraphId]
         Diam = snap.GetBfsEffDiam(Graph, NTestNodes, snap.TBool(IsDir))
         return Diam
 
     @registerOp('GetDegreeCentr', False)
-    def GetDegreeCentr(GraphId, NId):
+    def GetDegreeCentr(self, GraphId, NId):
         Graph = self.Objects[GraphId]
         Centr = snap.GetDegreeCentr(Graph, NId)
         return Centr
 
     @registerOp('GetFarnessCentr', False)
-    def GetFarnessCentr(GraphId, NId):
+    def GetFarnessCentr(self, GraphId, NId):
         Graph = self.Objects[GraphId]
         Centr = snap.GetFarnessCentr(Graph, NId)
         return Centr
 
     @registerOp('GetClosenessCentr', False)
-    def GetClosenessCentr(GraphId, NId):
+    def GetClosenessCentr(self, GraphId, NId):
         Graph = self.Objects[GraphId]
         Centr = snap.GetClosenessCentr(Graph, NId)
         return Centr
 
     @registerOp('GetBetweennessCentr')
-    def GetBetweennessCentr(GraphId, NodeFrac = 1.0):
+    def GetBetweennessCentr(self, GraphId, NodeFrac = 1.0):
         Graph = self.Objects[GraphId]
         NodeBtwH = snap.TIntFltH()
         snap.GetBetweennessCentr(Graph, NodeBtwH, NodeFrac)
@@ -313,7 +313,7 @@
         return RingoObject(NodeBtwHId, self)
 
     @registerOp('GetBetweennessCentr')
-    def GetBetweennessCentr(GraphId, NodeFrac = 1.0):
+    def GetBetweennessCentr(self, GraphId, NodeFrac = 1.0):
         Graph = self.Objects[GraphId]
         NodeBtwH = snap.TIntFltH()
         EdgeBtwH = snap.TIntPrFltH()
@@ -323,7 +323,7 @@
         return (RingoObject(NodeBtwHId, self), RingoObject(EdgeBtwHId, self))
 
     @registerOp('GetEigenVectorCentr')
-    def GetEigenVectorCentr(GraphId, Eps = 1e-4, MaxIter = 100):
+    def GetEigenVectorCentr(self, GraphId, Eps = 1e-4, MaxIter = 100):
         Graph = self.Objects[GraphId]
         NIdEigenH = snap.TIntFltH()
         snap.GetEigenVectorCentr(Graph, NIdEigenH, Eps, MaxIter)
@@ -331,13 +331,13 @@
         return RingoObject(NIdEigenHId, self)
 
     @registerOp('GetNodeEcc', False)
-    def GetNodeEcc(GraphId, NId, IsDir = False):
+    def GetNodeEcc(self, GraphId, NId, IsDir = False):
         Graph = self.Objects[GraphId]
         Ecc = snap.GetNodeEcc(Graph, NId, snap.TBool(IsDir))
         return Ecc
 
     @registerOp('CommunityGirvanNewman')
-    def CommunityGirvanNewman(GraphId):
+    def CommunityGirvanNewman(self, GraphId):
         Graph = self.Objects[GraphId]
         CmtyV = snap.TCnComV()
         Modularity = snap.CommunityGirvanNewman(Graph, CmtyV)
@@ -345,7 +345,7 @@
         return (RingoObject(CmtyVId, self), Modularity)
 
     @registerOp('CommunityCNM')
-    def CommunityCNM(GraphId):
+    def CommunityCNM(self, GraphId):
         Graph = self.Objects[GraphId]
         CmtyV = snap.TCnComV()
         Modularity = snap.CommunityCNM(Graph, CmtyV)
@@ -353,21 +353,21 @@
         return (RingoObject(CmtyVId, self), Modularity)
 
     @registerOp('GetModularity', False)
-    def GetModularity(GraphId, NIdVId, GEdges = -1):
+    def GetModularity(self, GraphId, NIdVId, GEdges = -1):
         Graph = self.Objects[GraphId]
         NIdV = self.Objects[NIdVId]
         Mod = snap.GetModularity(Graph, NIdV, GEdges)
         return Mod
 
     @registerOp('GetEdgesInOut', False)
-    def GetEdgesInOut(GraphId, NIdVId):
+    def GetEdgesInOut(self, GraphId, NIdVId):
         Graph = self.Objects[GraphId]
         NIdV = self.Objects[NIdVId]
         snap.GetEdgesInOut(Graph, NIdV, Ret)
         return Ret
 
     @registerOp('GetBiConSzCnt')
-    def GetBiConSzCnt(GraphId):
+    def GetBiConSzCnt(self, GraphId):
         Graph = self.Objects[GraphId]
         SzCntV = snap.TIntPrV()
         snap.GetBiConSzCnt(Graph, SzCntV)
@@ -375,7 +375,7 @@
         return RingoObject(SzCntVId, self)
 
     @registerOp('GetBiCon')
-    def GetBiCon(GraphId):
+    def GetBiCon(self, GraphId):
         Graph = self.Objects[GraphId]
         BiCnComV = snap.TCnComV()
         snap.GetBiCon(Graph, BiCnComV)
@@ -383,7 +383,7 @@
         return RingoObject(BiCnComVId, self)
 
     @registerOp('GetArtPoints')
-    def GetArtPoints(GraphId):
+    def GetArtPoints(self, GraphId):
         Graph = self.Objects[GraphId]
         ArtNIdV = snap.TIntV()
         snap.GetArtPoints(Graph, ArtNIdV)
@@ -391,7 +391,7 @@
         return RingoObject(ArtNIdVId, self)
 
     @registerOp('GetEdgeBridges')
-    def GetEdgeBridges(GraphId):
+    def GetEdgeBridges(self, GraphId):
         Graph = self.Objects[GraphId]
         EdgeV = snap.TIntPrV()
         snap.GetEdgeBridges(Graph, EdgeV)
@@ -399,7 +399,7 @@
         return RingoObject(EdgeVId, self)
 
     @registerOp('Get1CnComSzCnt')
-    def Get1CnComSzCnt(GraphId):
+    def Get1CnComSzCnt(self, GraphId):
         Graph = self.Objects[GraphId]
         SzCntV = snap.TIntPrV()
         snap.Get1CnComSzCnt(Graph, SzCntV)
@@ -407,7 +407,7 @@
         return RingoObject(SzCntVId, self)
 
     @registerOp('Get1CnCom')
-    def Get1CnCom(GraphId):
+    def Get1CnCom(self, GraphId):
         Graph = self.Objects[GraphId]
         Cn1ComV = snap.TCnComV()
         snap.Get1CnCom(Graph, Cn1ComV)
@@ -415,14 +415,14 @@
         return RingoObject(Cn1ComVId, self)
 
     @registerOp('GetMxBiCon')
-    def GetMxBiCon(GraphId):
+    def GetMxBiCon(self, GraphId):
         Graph = self.Objects[GraphId]
         BiCon = snap.GetMxBiCon(Graph)
         BiConId = self.__UpdateObjects(BiCon, self.Lineage[GraphId])
         return RingoObject(BiConId, self)
 
     @registerOp('GetNodeWcc')
-    def GetNodeWcc(GraphId, NId):
+    def GetNodeWcc(self, GraphId, NId):
         Graph = self.Objects[GraphId]
         CnCom = snap.TIntV()
         snap.GetNodeWcc(Graph, NId, CnCom)
@@ -430,19 +430,19 @@
         return RingoObject(CnComId, self)
 
     @registerOp('IsConnected', False)
-    def IsConnected(GraphId):
+    def IsConnected(self, GraphId):
         Graph = self.Objects[GraphId]
         isCon = snap.IsConnected(Graph)
         return isCon
 
     @registerOp('IsWeaklyConn', False)
-    def IsWeaklyConn(GraphId):
+    def IsWeaklyConn(self, GraphId):
         Graph = self.Objects[GraphId]
         isCon = snap.IsWeaklyConn(Graph)
         return isCon
 
     @registerOp('GetWccSzCnt')
-    def GetWccSzCnt(GraphId):
+    def GetWccSzCnt(self, GraphId):
         Graph = self.Objects[GraphId]
         WccSzzCnt = snap.TIntPrV()
         snap.GetWccSzCnt(Graph, WccSzzCnt)
@@ -450,7 +450,7 @@
         return RingoObject(WccSzzCntId, self)
 
     @registerOp('GetWccs')
-    def GetWccs(GraphId):
+    def GetWccs(self, GraphId):
         Graph = self.Objects[GraphId]
         CnComV = snap.TCnComV()
         snap.GetWccs(Graph, CnComV)
@@ -458,7 +458,7 @@
         return RingoObject(CnComVId, self)
 
     @registerOp('GetSccSzCnt')
-    def GetSccSzCnt(GraphId):
+    def GetSccSzCnt(self, GraphId):
         Graph = self.Objects[GraphId]
         SccSzCnt = snap.TIntPrV()
         snap.GetSccSzCnt(Graph, SccSzCnt)
@@ -466,7 +466,7 @@
         return RingoObject(SccSzCntId, self)
 
     @registerOp('GetSccs')
-    def GetSccs(GraphId):
+    def GetSccs(self, GraphId):
         Graph = self.Objects[GraphId]
         CnComV = snap.TCnComV()
         snap.GetSccs(Graph, CnComV)
@@ -474,38 +474,38 @@
         return RingoObject(CnComVId, self)
 
     @registerOp('GetMxWccSz', False)
-    def GetMxWccSz(GraphId):
+    def GetMxWccSz(self, GraphId):
         Graph = self.Objects[GraphId]
         Size = snap.GetMxWccSz(Graph)
         return Size
 
     @registerOp('GetMxSccSz', False)
-    def GetMxSccSz(GraphId):
+    def GetMxSccSz(self, GraphId):
         Graph = self.Objects[GraphId]
         Size = snap.GetMxSccSz(Graph)
         return Size
 
     @registerOp('GetMxWcc')
-    def GetMxWcc(GraphId):
+    def GetMxWcc(self, GraphId):
         Graph = self.Objects[GraphId]
         Graph = snap.GetMxWcc(Graph)
         GraphId = self.__UpdateObjects(Graph, self.Lineage[GraphId])
         return RingoObject(GraphId, self)
 
     @registerOp('GetMxScc')
-    def GetMxScc(GraphId):
+    def GetMxScc(self, GraphId):
         Graph = self.Objects[GraphId]
         Graph = snap.GetMxScc(Graph)
         GraphId = self.__UpdateObjects(Graph, self.Lineage[GraphId])
         return RingoObject(GraphId, self)
 
     @registerOp('PrintInfo', False)
-    def PrintInfo(GraphId, Desc, OutFNm = "", Fast = True):
+    def PrintInfo(self, GraphId, Desc, OutFNm = "", Fast = True):
         Graph = self.Objects[GraphId]
         snap.PrintInfo(Graph, Desc, OutFNm, snap.TBool(Fast))
 
     @registerOp('GetKCoreNodes')
-    def GetKCoreNodes(GraphId):
+    def GetKCoreNodes(self, GraphId):
         Graph = self.Objects[GraphId]
         CoreIdSzV = snap.TIntPrV()
         Count = snap.GetKCoreNodes(Graph, CoreIdSzV)
@@ -513,7 +513,7 @@
         return (RingoObject(CoreIdSzVId, self), Count)
 
     @registerOp('GetKCoreEdges')
-    def GetKCoreEdges(GraphId):
+    def GetKCoreEdges(self, GraphId):
         Graph = self.Objects[GraphId]
         CoreIdSzV = snap.TIntPrV()
         Count = snap.GetKCoreEdges(Graph, CoreIdSzV)
@@ -521,158 +521,158 @@
         return (RingoObject(CoreIdSzVId, self), Count)
 
     @registerOp('GenRndDegK')
-    def GenRndDegK(Nodes, NodeDeg, NSwitch = 100, Rnd = snap.TInt.Rnd):
+    def GenRndDegK(self, Nodes, NodeDeg, NSwitch = 100, Rnd = snap.TInt.Rnd):
         Graph = snap.GenRndDegK(Nodes, NodeDeg, NSwitch, Rnd)
         GraphId = self.__UpdateObjects(Graph, )
         return RingoObject(GraphId, self)
 
     @registerOp('GenRndPowerLaw')
-    def GenRndPowerLaw(Nodes, PowerExp, ConfModel = True, Rnd = snap.TInt.Rnd):
+    def GenRndPowerLaw(self, Nodes, PowerExp, ConfModel = True, Rnd = snap.TInt.Rnd):
         Graph = snap.GenRndPowerLaw(Nodes, PowerExp, snap.TBool(ConfModel), Rnd)
         GraphId = self.__UpdateObjects(Graph, )
         return RingoObject(GraphId, self)
 
     @registerOp('GenDegSeq')
-    def GenDegSeq(DegSeqVId, Rnd = snap.TInt.Rnd):
+    def GenDegSeq(self, DegSeqVId, Rnd = snap.TInt.Rnd):
         DegSeqV = self.Objects[DegSeqVId]
         Graph = snap.GenDegSeq(DegSeqV, Rnd)
         GraphId = self.__UpdateObjects(Graph, self.Lineage[DegSeqVId])
         return RingoObject(GraphId, self)
 
     @registerOp('GenConfModel')
-    def GenConfModel(GraphId):
+    def GenConfModel(self, GraphId):
         Graph = self.Objects[GraphId]
         Ret = snap.GenConfModel(Graph)
         RetId = self.__UpdateObjects(Ret, self.Lineage[GraphId])
         return RingoObject(RetId, self)
 
     @registerOp('GenRewire')
-    def GenRewire(GraphId, NSwitch = 100, Rnd = snap.TInt.Rnd):
+    def GenRewire(self, GraphId, NSwitch = 100, Rnd = snap.TInt.Rnd):
         Graph = self.Objects[GraphId]
         Ret = snap.GenRewire(Graph, NSwitch, Rnd)
         RetId = self.__UpdateObjects(Ret, self.Lineage[GraphId])
         return RingoObject(RetId, self)
 
     @registerOp('GenPrefAttach')
-    def GenPrefAttach(Nodes, NodeOutDeg, Rnd = snap.TInt.Rnd):
+    def GenPrefAttach(self, Nodes, NodeOutDeg, Rnd = snap.TInt.Rnd):
         Graph = snap.GenPrefAttach(Nodes, NodeOutDeg, Rnd)
         GraphId = self.__UpdateObjects(Graph, )
         return RingoObject(GraphId, self)
 
     @registerOp('GenConfModel')
-    def GenConfModel(GraphId):
+    def GenConfModel(self, GraphId):
         Graph = self.Objects[GraphId]
         Ret = snap.GenConfModel(Graph)
         RetId = self.__UpdateObjects(Ret, self.Lineage[GraphId])
         return RingoObject(RetId, self)
 
     @registerOp('GenGeoPrefAttach')
-    def GenGeoPrefAttach(NumNodes, NumEdges, Beta, Rnd = snap.TInt.Rnd):
+    def GenGeoPrefAttach(self, NumNodes, NumEdges, Beta, Rnd = snap.TInt.Rnd):
         Graph = snap.GenGeoPrefAttach(NumNodes, NumEdges, Beta, Rnd)
         GraphId = self.__UpdateObjects(Graph, )
         return RingoObject(GraphId, self)
 
     @registerOp('GenSmallWorld')
-    def GenSmallWorld(Nodes, NodeOutDeg, RewireProb, Rnd = snap.TInt.Rnd):
+    def GenSmallWorld(self, Nodes, NodeOutDeg, RewireProb, Rnd = snap.TInt.Rnd):
         Graph = snap.GenSmallWorld(Nodes, NodeOutDeg, RewireProb, Rnd)
         GraphId = self.__UpdateObjects(Graph, )
         return RingoObject(GraphId, self)
 
     @registerOp('GenForestFire')
-    def GenForestFire(Nodes, FwdProb, BckProb):
+    def GenForestFire(self, Nodes, FwdProb, BckProb):
         Graph = snap.GenForestFire(Nodes, FwdProb, BckProb)
         GraphId = self.__UpdateObjects(Graph, )
         return RingoObject(GraphId, self)
 
     @registerOp('GenCopyModel')
-    def GenCopyModel(Nodes, Beta, Rnd = snap.TInt.Rnd):
+    def GenCopyModel(self, Nodes, Beta, Rnd = snap.TInt.Rnd):
         Graph = snap.GenCopyModel(Nodes, Beta, Rnd)
         GraphId = self.__UpdateObjects(Graph, )
         return RingoObject(GraphId, self)
 
     @registerOp('GenRMat')
-    def GenRMat(Nodes, Edges, A, B, C, Rnd = snap.TInt.Rnd):
+    def GenRMat(self, Nodes, Edges, A, B, C, Rnd = snap.TInt.Rnd):
         Graph = snap.GenRMat(Nodes, Edges, A, B, C, Rnd)
         GraphId = self.__UpdateObjects(Graph, )
         return RingoObject(GraphId, self)
 
     @registerOp('GenRMatEpinions')
-    def GenRMatEpinions():
+    def GenRMatEpinions(self):
         Graph = snap.GenRMatEpinions()
         GraphId = self.__UpdateObjects(Graph, )
         return RingoObject(GraphId, self)
 
     @registerOp('GenGrid')
-    def GenGrid(GraphTypeId, Rows, Cols, IsDir = True):
+    def GenGrid(self, GraphTypeId, Rows, Cols, IsDir = True):
         GraphType = self.Objects[GraphTypeId]
         Graph = snap.GenGrid(GraphType, Rows, Cols, snap.TBool(IsDir))
         GraphId = self.__UpdateObjects(Graph, self.Lineage[GraphTypeId])
         return RingoObject(GraphId, self)
 
     @registerOp('GenStar')
-    def GenStar(GraphTypeId, Nodes, IsDir = True):
+    def GenStar(self, GraphTypeId, Nodes, IsDir = True):
         GraphType = self.Objects[GraphTypeId]
         Graph = snap.GenStar(GraphType, Nodes, snap.TBool(IsDir))
         GraphId = self.__UpdateObjects(Graph, self.Lineage[GraphTypeId])
         return RingoObject(GraphId, self)
 
     @registerOp('GenCircle')
-    def GenCircle(GraphTypeId, Nodes, OutDegree, IsDir = True):
+    def GenCircle(self, GraphTypeId, Nodes, OutDegree, IsDir = True):
         GraphType = self.Objects[GraphTypeId]
         Graph = snap.GenCircle(GraphType, Nodes, OutDegree, snap.TBool(IsDir))
         GraphId = self.__UpdateObjects(Graph, self.Lineage[GraphTypeId])
         return RingoObject(GraphId, self)
 
     @registerOp('GenFull')
-    def GenFull(GraphTypeId, Nodes):
+    def GenFull(self, GraphTypeId, Nodes):
         GraphType = self.Objects[GraphTypeId]
         Graph = snap.GenFull(GraphType, Nodes)
         GraphId = self.__UpdateObjects(Graph, self.Lineage[GraphTypeId])
         return RingoObject(GraphId, self)
 
     @registerOp('GenTree')
-    def GenTree(GraphTypeId, Fanout, Levels, IsDir = True, ChildPointsToParent = True):
+    def GenTree(self, GraphTypeId, Fanout, Levels, IsDir = True, ChildPointsToParent = True):
         GraphType = self.Objects[GraphTypeId]
         Graph = snap.GenTree(GraphType, Fanout, Levels, snap.TBool(IsDir), snap.TBool(ChildPointsToParent))
         GraphId = self.__UpdateObjects(Graph, self.Lineage[GraphTypeId])
         return RingoObject(GraphId, self)
 
     @registerOp('GenBaraHierar')
-    def GenBaraHierar(GraphTypeId, Levels, IsDir = True):
+    def GenBaraHierar(self, GraphTypeId, Levels, IsDir = True):
         GraphType = self.Objects[GraphTypeId]
         Graph = snap.GenBaraHierar(GraphType, Levels, snap.TBool(IsDir))
         GraphId = self.__UpdateObjects(Graph, self.Lineage[GraphTypeId])
         return RingoObject(GraphId, self)
 
     @registerOp('GenRndGnm')
-    def GenRndGnm(GraphTypeId, Nodes, Edges, IsDir = True, Rnd = snap.TInt.Rnd):
+    def GenRndGnm(self, GraphTypeId, Nodes, Edges, IsDir = True, Rnd = snap.TInt.Rnd):
         GraphType = self.Objects[GraphTypeId]
         Graph = snap.GenRndGnm(GraphType, Nodes, Edges, snap.TBool(IsDir), Rnd)
         GraphId = self.__UpdateObjects(Graph, self.Lineage[GraphTypeId])
         return RingoObject(GraphId, self)
 
     @registerOp('LoadDyNet')
-    def LoadDyNet(FNm):
+    def LoadDyNet(self, FNm):
         Graph = snap.LoadDyNet(FNm)
         GraphId = self.__UpdateObjects(Graph, )
         return RingoObject(GraphId, self)
 
     @registerOp('LoadEdgeList')
-    def LoadEdgeList(GraphTypeId, InFNm, SrcColId, DstColId, Separator):
+    def LoadEdgeList(self, GraphTypeId, InFNm, SrcColId, DstColId, Separator):
         GraphType = self.Objects[GraphTypeId]
         Graph = snap.LoadEdgeList(GraphType, InFNm, SrcColId, DstColId, Separator)
         GraphId = self.__UpdateObjects(Graph, self.Lineage[GraphTypeId])
         return RingoObject(GraphId, self)
 
     @registerOp('LoadEdgeList')
-    def LoadEdgeList(GraphTypeId, InFNm, SrcColId, DstColId):
+    def LoadEdgeList(self, GraphTypeId, InFNm, SrcColId, DstColId):
         GraphType = self.Objects[GraphTypeId]
         Graph = snap.LoadEdgeList(GraphType, InFNm, SrcColId, DstColId)
         GraphId = self.__UpdateObjects(Graph, self.Lineage[GraphTypeId])
         return RingoObject(GraphId, self)
 
     @registerOp('LoadEdgeListStr')
-    def LoadEdgeListStr(GraphTypeId, InFNm, SrcColId, DstColId):
+    def LoadEdgeListStr(self, GraphTypeId, InFNm, SrcColId, DstColId):
         GraphType = self.Objects[GraphTypeId]
         StrToNIdH = snap.TStrIntH()
         Graph = snap.LoadEdgeListStr(GraphType, InFNm, SrcColId, DstColId, StrToNIdH)
@@ -681,21 +681,21 @@
         return (RingoObject(GraphId, self), RingoObject(StrToNIdHId, self))
 
     @registerOp('LoadEdgeListStr')
-    def LoadEdgeListStr(GraphTypeId, InFNm, SrcColId, DstColId):
+    def LoadEdgeListStr(self, GraphTypeId, InFNm, SrcColId, DstColId):
         GraphType = self.Objects[GraphTypeId]
         Graph = snap.LoadEdgeListStr(GraphType, InFNm, SrcColId, DstColId)
         GraphId = self.__UpdateObjects(Graph, self.Lineage[GraphTypeId])
         return RingoObject(GraphId, self)
 
     @registerOp('LoadConnList')
-    def LoadConnList(GraphTypeId, InFNm):
+    def LoadConnList(self, GraphTypeId, InFNm):
         GraphType = self.Objects[GraphTypeId]
         Graph = snap.LoadConnList(GraphType, InFNm)
         GraphId = self.__UpdateObjects(Graph, self.Lineage[GraphTypeId])
         return RingoObject(GraphId, self)
 
     @registerOp('LoadConnListStr')
-    def LoadConnListStr(GraphTypeId, InFNm):
+    def LoadConnListStr(self, GraphTypeId, InFNm):
         GraphType = self.Objects[GraphTypeId]
         StrToNIdH = snap.TStrIntH()
         Graph = snap.LoadConnListStr(GraphType, InFNm, StrToNIdH)
@@ -704,37 +704,37 @@
         return (RingoObject(GraphId, self), RingoObject(StrToNIdHId, self))
 
     @registerOp('LoadPajek')
-    def LoadPajek(GraphTypeId, InFNm):
+    def LoadPajek(self, GraphTypeId, InFNm):
         GraphType = self.Objects[GraphTypeId]
         Graph = snap.LoadPajek(GraphType, InFNm)
         GraphId = self.__UpdateObjects(Graph, self.Lineage[GraphTypeId])
         return RingoObject(GraphId, self)
 
     @registerOp('SaveEdgeList', False)
-    def SaveEdgeList(GraphId, OutFNm, Desc = ""):
+    def SaveEdgeList(self, GraphId, OutFNm, Desc = ""):
         Graph = self.Objects[GraphId]
         snap.SaveEdgeList(Graph, OutFNm, Desc)
 
     @registerOp('SavePajek', False)
-    def SavePajek(GraphId, OutFNm):
+    def SavePajek(self, GraphId, OutFNm):
         Graph = self.Objects[GraphId]
         snap.SavePajek(Graph, OutFNm)
 
     @registerOp('SavePajek', False)
-    def SavePajek(GraphId, OutFNm, NIdColorHId):
+    def SavePajek(self, GraphId, OutFNm, NIdColorHId):
         Graph = self.Objects[GraphId]
         NIdColorH = self.Objects[NIdColorHId]
         snap.SavePajek(Graph, OutFNm, NIdColorH)
 
     @registerOp('SavePajek', False)
-    def SavePajek(GraphId, OutFNm, NIdColorHId, NIdLabelHId):
+    def SavePajek(self, GraphId, OutFNm, NIdColorHId, NIdLabelHId):
         Graph = self.Objects[GraphId]
         NIdColorH = self.Objects[NIdColorHId]
         NIdLabelH = self.Objects[NIdLabelHId]
         snap.SavePajek(Graph, OutFNm, NIdColorH, NIdLabelH)
 
     @registerOp('SavePajek', False)
-    def SavePajek(GraphId, OutFNm, NIdColorHId, NIdLabelHId, EIdColorHId):
+    def SavePajek(self, GraphId, OutFNm, NIdColorHId, NIdLabelHId, EIdColorHId):
         Graph = self.Objects[GraphId]
         NIdColorH = self.Objects[NIdColorHId]
         NIdLabelH = self.Objects[NIdLabelHId]
@@ -742,24 +742,24 @@
         snap.SavePajek(Graph, OutFNm, NIdColorH, NIdLabelH, EIdColorH)
 
     @registerOp('SaveMatlabSparseMtx', False)
-    def SaveMatlabSparseMtx(GraphId, OutFNm):
+    def SaveMatlabSparseMtx(self, GraphId, OutFNm):
         Graph = self.Objects[GraphId]
         snap.SaveMatlabSparseMtx(Graph, OutFNm)
 
     @registerOp('SaveGViz', False)
-    def SaveGViz(GraphId, OutFNm, Desc, NIdLabelHId):
+    def SaveGViz(self, GraphId, OutFNm, Desc, NIdLabelHId):
         Graph = self.Objects[GraphId]
         NIdLabelH = self.Objects[NIdLabelHId]
         snap.SaveGViz(Graph, OutFNm, Desc, NIdLabelH)
 
     @registerOp('SaveGViz', False)
-    def SaveGViz(GraphId, OutFNm, Desc, NodeLabels, NIdColorHId):
+    def SaveGViz(self, GraphId, OutFNm, Desc, NodeLabels, NIdColorHId):
         Graph = self.Objects[GraphId]
         NIdColorH = self.Objects[NIdColorHId]
         snap.SaveGViz(Graph, OutFNm, Desc, snap.TBool(NodeLabels), NIdColorH)
 
     @registerOp('GetSngVals')
-    def GetSngVals(GraphId, SngVals):
+    def GetSngVals(self, GraphId, SngVals):
         Graph = self.Objects[GraphId]
         SngValV = snap.TFltV()
         snap.GetSngVals(Graph, SngVals, SngValV)
@@ -767,7 +767,7 @@
         return RingoObject(SngValVId, self)
 
     @registerOp('GetSngVec')
-    def GetSngVec(GraphId):
+    def GetSngVec(self, GraphId):
         Graph = self.Objects[GraphId]
         LeftSV = snap.TFltV()
         RightSV = snap.TFltV()
@@ -777,7 +777,7 @@
         return (RingoObject(LeftSVId, self), RingoObject(RightSVId, self))
 
     @registerOp('GetEigVals')
-    def GetEigVals(GraphId, EigVals):
+    def GetEigVals(self, GraphId, EigVals):
         Graph = self.Objects[GraphId]
         EigValV = snap.TFltV()
         snap.GetEigVals(Graph, EigVals, EigValV)
@@ -785,7 +785,7 @@
         return RingoObject(EigValVId, self)
 
     @registerOp('GetEigVec')
-    def GetEigVec(GraphId):
+    def GetEigVec(self, GraphId):
         Graph = self.Objects[GraphId]
         EigVecV = snap.TFltV()
         snap.GetEigVec(Graph, EigVecV)
@@ -793,7 +793,7 @@
         return RingoObject(EigVecVId, self)
 
     @registerOp('GetInvParticipRate')
-    def GetInvParticipRate(GraphId, EigVecs, TimeLimit):
+    def GetInvParticipRate(self, GraphId, EigVecs, TimeLimit):
         Graph = self.Objects[GraphId]
         EigValIprV = snap.TFltPrV()
         snap.GetInvParticipRate(Graph, EigVecs, TimeLimit, EigValIprV)
@@ -801,97 +801,97 @@
         return RingoObject(EigValIprVId, self)
 
     @registerOp('DrawGViz')
-    def DrawGViz(GraphId, LayoutId, PItFNm, Desc, NodeLabelHId):
+    def DrawGViz(self, GraphId, LayoutId, PItFNm, Desc, NodeLabelHId):
         Graph = self.Objects[GraphId]
         Layout = self.Objects[LayoutId]
         NodeLabelH = self.Objects[NodeLabelHId]
         snap.DrawGViz(Graph, Layout, PItFNm, Desc, NodeLabelH)
 
     @registerOp('DrawGViz')
-    def DrawGViz(GraphId, LayoutId, PItFNm, Desc = "", NodeLabels = False, NIdColorH = snap.TIntStrH()):
+    def DrawGViz(self, GraphId, LayoutId, PItFNm, Desc = "", NodeLabels = False, NIdColorH = snap.TIntStrH()):
         Graph = self.Objects[GraphId]
         Layout = self.Objects[LayoutId]
         snap.DrawGViz(Graph, Layout, PItFNm, Desc, snap.TBool(NodeLabels), NIdColorH)
 
     @registerOp('GetKCore')
-    def GetKCore(GraphId, K):
+    def GetKCore(self, GraphId, K):
         Graph = self.Objects[GraphId]
         Core = snap.GetKCore(Graph, K)
         CoreId = self.__UpdateObjects(Core, self.Lineage[GraphId])
         return RingoObject(CoreId, self)
 
     @registerOp('PlotEigValRank', False)
-    def PlotEigValRank(GraphId, EigVals, FNmPref, DescStr = ""):
+    def PlotEigValRank(self, GraphId, EigVals, FNmPref, DescStr = ""):
         Graph = self.Objects[GraphId]
         snap.PlotEigValRank(Graph, EigVals, FNmPref, DescStr)
 
     @registerOp('PlotEigValDistr', False)
-    def PlotEigValDistr(GraphId, EigVals, FNmPref, DescStr = ""):
+    def PlotEigValDistr(self, GraphId, EigVals, FNmPref, DescStr = ""):
         Graph = self.Objects[GraphId]
         snap.PlotEigValDistr(Graph, EigVals, FNmPref, DescStr)
 
     @registerOp('PlotInvParticipRat', False)
-    def PlotInvParticipRat(GraphId, EigVecs, TimeLimit, FNmPref, DescStr = ""):
+    def PlotInvParticipRat(self, GraphId, EigVecs, TimeLimit, FNmPref, DescStr = ""):
         Graph = self.Objects[GraphId]
         snap.PlotInvParticipRat(Graph, EigVecs, TimeLimit, FNmPref, DescStr)
 
     @registerOp('PlotSngValRank', False)
-    def PlotSngValRank(GraphId, SngVals, FNmPref, DescStr = ""):
+    def PlotSngValRank(self, GraphId, SngVals, FNmPref, DescStr = ""):
         Graph = self.Objects[GraphId]
         snap.PlotSngValRank(Graph, SngVals, FNmPref, DescStr)
 
     @registerOp('PlotSngValDistr', False)
-    def PlotSngValDistr(GraphId, SngVals, FNmPref, DescStr = ""):
+    def PlotSngValDistr(self, GraphId, SngVals, FNmPref, DescStr = ""):
         Graph = self.Objects[GraphId]
         snap.PlotSngValDistr(Graph, SngVals, FNmPref, DescStr)
 
     @registerOp('PlotSngVec', False)
-    def PlotSngVec(GraphId, FNmPref, DescStr = ""):
+    def PlotSngVec(self, GraphId, FNmPref, DescStr = ""):
         Graph = self.Objects[GraphId]
         snap.PlotSngVec(Graph, FNmPref, DescStr)
 
     @registerOp('PlotInDegDistr', False)
-    def PlotInDegDistr(GraphId, FNmPref, DescStr = "", PlotCCdf = False, PowerFit = False):
+    def PlotInDegDistr(self, GraphId, FNmPref, DescStr = "", PlotCCdf = False, PowerFit = False):
         Graph = self.Objects[GraphId]
         snap.PlotInDegDistr(Graph, FNmPref, DescStr, snap.TBool(PlotCCdf), snap.TBool(PowerFit))
 
     @registerOp('PlotOutDegDistr', False)
-    def PlotOutDegDistr(GraphId, FNmPref, DescStr = "", PlotCCdf = False, PowerFit = False):
+    def PlotOutDegDistr(self, GraphId, FNmPref, DescStr = "", PlotCCdf = False, PowerFit = False):
         Graph = self.Objects[GraphId]
         snap.PlotOutDegDistr(Graph, FNmPref, DescStr, snap.TBool(PlotCCdf), snap.TBool(PowerFit))
 
     @registerOp('PlotWccDistr', False)
-    def PlotWccDistr(GraphId, FNmPref, DescStr = ""):
+    def PlotWccDistr(self, GraphId, FNmPref, DescStr = ""):
         Graph = self.Objects[GraphId]
         snap.PlotWccDistr(Graph, FNmPref, DescStr)
 
     @registerOp('PlotSccDistr', False)
-    def PlotSccDistr(GraphId, FNmPref, DescStr = ""):
+    def PlotSccDistr(self, GraphId, FNmPref, DescStr = ""):
         Graph = self.Objects[GraphId]
         snap.PlotSccDistr(Graph, FNmPref, DescStr)
 
     @registerOp('PlotClustCf', False)
-    def PlotClustCf(GraphId, FNmPref, DescStr = ""):
+    def PlotClustCf(self, GraphId, FNmPref, DescStr = ""):
         Graph = self.Objects[GraphId]
         snap.PlotClustCf(Graph, FNmPref, DescStr)
 
     @registerOp('PlotHops', False)
-    def PlotHops(GraphId, FNmPref, DescStr = "", IsDir = False, NApprox = 32):
+    def PlotHops(self, GraphId, FNmPref, DescStr = "", IsDir = False, NApprox = 32):
         Graph = self.Objects[GraphId]
         snap.PlotHops(Graph, FNmPref, DescStr, snap.TBool(IsDir), NApprox)
 
     @registerOp('PlotShortPathDistr', False)
-    def PlotShortPathDistr(GraphId, FNmPref, DescStr = "", TestNodes = snap.TInt.Mx):
+    def PlotShortPathDistr(self, GraphId, FNmPref, DescStr = "", TestNodes = snap.TInt.Mx):
         Graph = self.Objects[GraphId]
         snap.PlotShortPathDistr(Graph, FNmPref, DescStr, TestNodes)
 
     @registerOp('PlotKCoreNodes', False)
-    def PlotKCoreNodes(GraphId, FNmPref, DescStr = ""):
+    def PlotKCoreNodes(self, GraphId, FNmPref, DescStr = ""):
         Graph = self.Objects[GraphId]
         snap.PlotKCoreNodes(Graph, FNmPref, DescStr)
 
     @registerOp('PlotKCoreEdges', False)
-    def PlotKCoreEdges(GraphId, FNmPref, DescStr = ""):
+    def PlotKCoreEdges(self, GraphId, FNmPref, DescStr = ""):
         Graph = self.Objects[GraphId]
         snap.PlotKCoreEdges(Graph, FNmPref, DescStr)
 

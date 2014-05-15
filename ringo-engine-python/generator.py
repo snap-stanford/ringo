@@ -29,7 +29,7 @@ with open(sys.argv[1], 'r') as in_file:
             out += ')\n'
 
             snap_args = []
-            ringo_in = []
+            ringo_in = ['self']
             snap_obj = set()
             ringo_out = []
             ret = ''
