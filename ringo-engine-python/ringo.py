@@ -1383,19 +1383,19 @@ class Ringo(object):
         return (RingoObject(CoreIdSzVId, self), Count)
 
     @registerOp('GenRndDegK')
-    def GenRndDegK(self, Nodes, NodeDeg, NSwitch = 100, Rnd = snap.TInt.Rnd):
+    def GenRndDegK(self, Nodes, NodeDeg, NSwitch = 100, Rnd = snap.TRnd()):
         Graph = snap.GenRndDegK(Nodes, NodeDeg, NSwitch, Rnd)
         GraphId = self.__UpdateObjects(Graph, )
         return RingoObject(GraphId, self)
 
     @registerOp('GenRndPowerLaw')
-    def GenRndPowerLaw(self, Nodes, PowerExp, ConfModel = True, Rnd = snap.TInt.Rnd):
+    def GenRndPowerLaw(self, Nodes, PowerExp, ConfModel = True, Rnd = snap.TRnd()):
         Graph = snap.GenRndPowerLaw(Nodes, PowerExp, snap.TBool(ConfModel), Rnd)
         GraphId = self.__UpdateObjects(Graph, )
         return RingoObject(GraphId, self)
 
     @registerOp('GenDegSeq')
-    def GenDegSeq(self, DegSeqVId, Rnd = snap.TInt.Rnd):
+    def GenDegSeq(self, DegSeqVId, Rnd = snap.TRnd()):
         DegSeqV = self.Objects[DegSeqVId]
         Graph = snap.GenDegSeq(DegSeqV, Rnd)
         GraphId = self.__UpdateObjects(Graph, self.Lineage[DegSeqVId])
@@ -1409,14 +1409,14 @@ class Ringo(object):
         return RingoObject(RetId, self)
 
     @registerOp('GenRewire')
-    def GenRewire(self, GraphId, NSwitch = 100, Rnd = snap.TInt.Rnd):
+    def GenRewire(self, GraphId, NSwitch = 100, Rnd = snap.TRnd()):
         Graph = self.Objects[GraphId]
         Ret = snap.GenRewire(Graph, NSwitch, Rnd)
         RetId = self.__UpdateObjects(Ret, self.Lineage[GraphId])
         return RingoObject(RetId, self)
 
     @registerOp('GenPrefAttach')
-    def GenPrefAttach(self, Nodes, NodeOutDeg, Rnd = snap.TInt.Rnd):
+    def GenPrefAttach(self, Nodes, NodeOutDeg, Rnd = snap.TRnd()):
         Graph = snap.GenPrefAttach(Nodes, NodeOutDeg, Rnd)
         GraphId = self.__UpdateObjects(Graph, )
         return RingoObject(GraphId, self)
@@ -1429,13 +1429,13 @@ class Ringo(object):
         return RingoObject(RetId, self)
 
     @registerOp('GenGeoPrefAttach')
-    def GenGeoPrefAttach(self, NumNodes, NumEdges, Beta, Rnd = snap.TInt.Rnd):
+    def GenGeoPrefAttach(self, NumNodes, NumEdges, Beta, Rnd = snap.TRnd()):
         Graph = snap.GenGeoPrefAttach(NumNodes, NumEdges, Beta, Rnd)
         GraphId = self.__UpdateObjects(Graph, )
         return RingoObject(GraphId, self)
 
     @registerOp('GenSmallWorld')
-    def GenSmallWorld(self, Nodes, NodeOutDeg, RewireProb, Rnd = snap.TInt.Rnd):
+    def GenSmallWorld(self, Nodes, NodeOutDeg, RewireProb, Rnd = snap.TRnd()):
         Graph = snap.GenSmallWorld(Nodes, NodeOutDeg, RewireProb, Rnd)
         GraphId = self.__UpdateObjects(Graph, )
         return RingoObject(GraphId, self)
@@ -1447,13 +1447,13 @@ class Ringo(object):
         return RingoObject(GraphId, self)
 
     @registerOp('GenCopyModel')
-    def GenCopyModel(self, Nodes, Beta, Rnd = snap.TInt.Rnd):
+    def GenCopyModel(self, Nodes, Beta, Rnd = snap.TRnd()):
         Graph = snap.GenCopyModel(Nodes, Beta, Rnd)
         GraphId = self.__UpdateObjects(Graph, )
         return RingoObject(GraphId, self)
 
     @registerOp('GenRMat')
-    def GenRMat(self, Nodes, Edges, A, B, C, Rnd = snap.TInt.Rnd):
+    def GenRMat(self, Nodes, Edges, A, B, C, Rnd = snap.TRnd()):
         Graph = snap.GenRMat(Nodes, Edges, A, B, C, Rnd)
         GraphId = self.__UpdateObjects(Graph, )
         return RingoObject(GraphId, self)
@@ -1507,7 +1507,7 @@ class Ringo(object):
         return RingoObject(GraphId, self)
 
     @registerOp('GenRndGnm')
-    def GenRndGnm(self, GraphTypeId, Nodes, Edges, IsDir = True, Rnd = snap.TInt.Rnd):
+    def GenRndGnm(self, GraphTypeId, Nodes, Edges, IsDir = True, Rnd = snap.TRnd()):
         GraphType = self.Objects[GraphTypeId]
         Graph = snap.GenRndGnm(GraphType, Nodes, Edges, snap.TBool(IsDir), Rnd)
         GraphId = self.__UpdateObjects(Graph, self.Lineage[GraphTypeId])
