@@ -84,6 +84,8 @@ with open(sys.argv[1], 'r') as in_file:
             out += '\t\t%ssnap.%s(%s)\n' % (ret, method, str.join(', ', snap_args))
 
             lineage = str.join(' + ', lineage)
+            if len(lineage) == 0:
+                lineage = "[]"
             for l in method_postfix:
                 out += l % lineage
 
