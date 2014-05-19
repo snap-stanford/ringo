@@ -26,6 +26,14 @@ class RingoObject(object):
         Obj = self.__GetSnapObj()
         return Obj.__contains__(elem)
 
+    def __getitem__(self, key):
+        Obj = self.__GetSnapObj()
+        return Obj.__getitem__(key)
+
+    def __setitem__(self, key, item):
+        Obj = self.__GetSnapObj()
+        Obj.__setitem__(key, item)
+
     def __getattr__(self, name):
         Obj = self.__GetSnapObj()
         if hasattr(Obj, name):
@@ -1756,4 +1764,12 @@ class Ringo(object):
     def PlotKCoreEdges(self, GraphId, FNmPref, DescStr = ""):
         Graph = self.Objects[GraphId]
         snap.PlotKCoreEdges(Graph, FNmPref, DescStr)
+
+    @registerOp('ConvertGraph')
+    def ConvertGraph(self, GraphTypeId, InGraphId, RenumberNodes = False):
+        GraphType = self.Objects[GraphTypeId]
+        InGraph = self.Objects[InGraphId]
+        OutGraph = snap.ConvertGraph(GraphType, InGraph, snap.TBool(RenumberNodes))
+        OutGraphId = self.__UpdateObjects(OutGraph, self.Lineage[GraphTypeId] + self.Lineage[InGraphId])
+        return RingoObject(OutGraphId, self)
 

@@ -142,3 +142,4 @@ PlotHops				provenance=False	Graph,PGraph,I,Y	FNmPref,string,I,N			DescStr,strin
 PlotShortPathDistr		provenance=False	Graph,PGraph,I,Y	FNmPref,string,I,N			DescStr,string,I,N,""	TestNodes,int,I,N,snap.TInt.Mx
 PlotKCoreNodes			provenance=False	Graph,PGraph,I,Y	FNmPref,string,I,N			DescStr,string,I,N,""
 PlotKCoreEdges			provenance=False	Graph,PGraph,I,Y	FNmPref,string,I,N			DescStr,string,I,N,""
+ConvertGraph			provenance=True		OutGraph,PGraph,R,Y	GraphType,Type,I,Y			InGraph,PGraph,I,Y		RenumberNodes,bool,I,N,False
