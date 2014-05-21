@@ -1,0 +1,114 @@
+#
+# The script verifies that all benchmarks complete successfully
+# on a small subset of LiveJournal and StackOverflow
+#
+# Input file requirements, files are in "data/":
+#   soc-LiveJournal1_small.txt
+#   soc-LiveJournal1_50.txt
+#   soc-LiveJournal1_450.txt
+#   posts_scores_10k.tsv
+#   posts_tags_10k.tsv
+#   tags_10k.tsv
+#
+# Add test commands to this file, with two lines per test case: 
+# 1. A one line description of the test, enclosed in " "
+# 2. The shell command along with arguments
+#
+
+# read input text file with 2 columns and build a table with 2 integer columns
+# save table to file in the binary format
+"01 read text table, save binary table"
+python 01-tbtxt2bin.py data/soc-LiveJournal1_small.txt soc-LiveJournal1.table
+
+# read table from a file with the binary format
+# create a graph from the table
+# create table from the graph
+"02 read binary table, create graph, convert to table"
+python 02-tbbin2gr2tb.py soc-LiveJournal1.table
+
+# read table from a file with the binary format
+# select rows with the first value < 10000, create new table
+"03 read binary table, select new small table"
+python 03-tbselltnewtb.py soc-LiveJournal1.table
+
+# read table from a file with the binary format
+# select rows with the first value > 10000, create new table
+"04 read binary table, select new large table"
+python 04-tbselgtnewtb.py soc-LiveJournal1.table
+
+# read table from a file with the binary format
+# select rows with the first value < 10000, in place
+"05 read binary table, select in-place small table"
+python 05-tbselltinplace.py soc-LiveJournal1.table
+
+# read table from a file with the binary format
+# select rows with the first value > 10000, in place
+"06 read binary table, select in-place large table"
+python 06-tbselgtinplace.py soc-LiveJournal1.table
+
+# read two column table t1 from a file with the binary format
+# read one column table t2 from a file with the text format format
+# join t2 and t1 on first columns
+"07-1 read binary table and text table, small join"
+python 07-join.py soc-LiveJournal1.table data/soc-LiveJournal1_50.txt
+
+# read two column table t1 from a file with the binary format
+# read one column table t2 from a file with the text format format
+# join t2 and t1 on first columns
+"07-2 read binary table and text table, large join"
+python 07-join.py soc-LiveJournal1.table data/soc-LiveJournal1_450.txt
+
+# reads the posts table from the Stackoverflow dataset, and for
+# each user, computes the sum of the scores of this user's posts
+"08 read text StackOverflow table, sum user scores"
+python 08-groupaggr.py data/posts_scores_10k.tsv
+
+# reads the posts table form the StackOverflow dataset, and
+# for each post finds the next post by the same user in chronological order
+"09 read text StackOverflow table, find next user posts"
+python 09-isnextk.py data/posts_scores_10k.tsv
+
+# NOTE, this comment might be incorrect in the documentation
+# reads the posts table form the StackOverflow dataset, and
+# for each post, finds the next post by the same user in chronological order
+"10 read text StackOverflow table, find next user posts"
+python 10-graphseq.py data/posts_scores_10k.tsv
+
+# reads the post table from the StackOverflow dataset, and creates
+# a graph for each topic, where in each graph, a user A points to a
+# user B if A accepted at least one answer from B
+"11 read text StackOverflow table, create graph of accepted answers"
+python 11-graphgroup.py data/posts_scores_10k.tsv data/tags_10k.tsv
+
+# reads the post table from the StackOverflow dataset, creates a
+# graph where user A points to user B if A accepted at least one
+# answer from B for a question about Python, computes the PageRank
+# score of each user in this graph, and saves the scores to a file
+"12 read text StackOverflow table, compute Python experts 1"
+python 12-usecase.py data/posts_tags_10k.tsv out.bin
+
+# same as 12-usecase.py, except that a table of "questions"
+# and a table of "answers" are explicitly created before joining
+"14 read text StackOverflow table, compute Python experts 2"
+python 14-usecase-complete.py data/posts_tags_10k.tsv out.bin
+
+# read input text file with two columns and build a PNGraph
+# save PNGraph to file in the binary format
+"50 read text table, create PNGraph, save binary graph"
+python 50-grtxt2bin.py data/soc-LiveJournal1_small.txt soc-LiveJournal1.graph
+
+# read PNGraph from a file with the binary format
+# calculate pagerank
+"51 read binary PNGraph, compute pagerank"
+python 51-grpagerank.py soc-LiveJournal1.graph
+
+# read input text file with two columns and build a PNEANet
+# save PNEANet to file in the binary format
+"52 read text table, create PNEANet, save binary graph"
+python 52-nettxt2bin.py data/soc-LiveJournal1_small.txt soc-LiveJournal1.net
+
+# read PNEANet from a file with the binary format
+# calculate pagerank
+"53 read binary PNEANet, compute pagerank"
+python 53-netpagerank.py soc-LiveJournal1.net
+
