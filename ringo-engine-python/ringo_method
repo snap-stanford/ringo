@@ -363,7 +363,7 @@
     def GetEdgesInOut(self, GraphId, NIdVId):
         Graph = self.Objects[GraphId]
         NIdV = self.Objects[NIdVId]
-        snap.GetEdgesInOut(Graph, NIdV, Ret)
+        Ret = snap.GetEdgesInOut(Graph, NIdV)
         return Ret
 
     @registerOp('GetBiConSzCnt')
@@ -503,6 +503,12 @@
     def PrintInfo(self, GraphId, Desc, OutFNm = "", Fast = True):
         Graph = self.Objects[GraphId]
         snap.PrintInfo(Graph, Desc, OutFNm, snap.TBool(Fast))
+
+    @registerOp('GetTriads', False)
+    def GetTriads(self, GraphId, SampleNodes = -1):
+        Graph = self.Objects[GraphId]
+        NumTri = snap.GetTriads(Graph, SampleNodes)
+        return NumTri
 
     @registerOp('GetKCoreNodes')
     def GetKCoreNodes(self, GraphId):
@@ -902,4 +908,100 @@
         OutGraph = snap.ConvertGraph(GraphType, InGraph, snap.TBool(RenumberNodes))
         OutGraphId = self.__UpdateObjects(OutGraph, self.Lineage[GraphTypeId] + self.Lineage[InGraphId])
         return RingoObject(OutGraphId, self)
+
+    @registerOp('ConvertESubGraph')
+    def ConvertESubGraph(self, GraphTypeId, InGraphId, EIdVId, RenumberNodes = False):
+        GraphType = self.Objects[GraphTypeId]
+        InGraph = self.Objects[InGraphId]
+        EIdV = self.Objects[EIdVId]
+        Graph = snap.ConvertESubGraph(GraphType, InGraph, EIdV, snap.TBool(RenumberNodes))
+        GraphId = self.__UpdateObjects(Graph, self.Lineage[GraphTypeId] + self.Lineage[InGraphId] + self.Lineage[EIdVId])
+        return RingoObject(GraphId, self)
+
+    @registerOp('ConvertSubgraph')
+    def ConvertSubgraph(self, GraphTypeId, InGraphId, NIdVId, RenumberNodes = False):
+        GraphType = self.Objects[GraphTypeId]
+        InGraph = self.Objects[InGraphId]
+        NIdV = self.Objects[NIdVId]
+        Graph = snap.ConvertSubgraph(GraphType, InGraph, NIdV, snap.TBool(RenumberNodes))
+        GraphId = self.__UpdateObjects(Graph, self.Lineage[GraphTypeId] + self.Lineage[InGraphId] + self.Lineage[NIdVId])
+        return RingoObject(GraphId, self)
+
+    @registerOp('GetClustCf')
+    def GetClustCf(self, GraphId, SampleNodes = -1):
+        Graph = self.Objects[GraphId]
+        DegToCCfV = snap.TFltPrV()
+        Ret = snap.GetClustCf(Graph, DegToCCfV, SampleNodes)
+        DegToCCfVId = self.__UpdateObjects(DegToCCfV, self.Lineage[GraphId])
+        return (RingoObject(DegToCCfVId, self), Ret)
+
+    @registerOp('GetClustCf', False)
+    def GetClustCf(self, GraphId, SampleNodes = -1):
+        Graph = self.Objects[GraphId]
+        Ret = snap.GetClustCf(Graph, SampleNodes)
+        return Ret
+
+    @registerOp('GetCmnNbrs')
+    def GetCmnNbrs(self, GraphId, NId1, NId2):
+        Graph = self.Objects[GraphId]
+        NbrV = snap.TIntV()
+        Ret = snap.GetCmnNbrs(Graph, NId1, NId2, NbrV)
+        NbrVId = self.__UpdateObjects(NbrV, self.Lineage[GraphId])
+        return (RingoObject(NbrVId, self), Ret)
+
+    @registerOp('GetESubGraph')
+    def GetESubGraph(self, InGraphId, EIdVId):
+        InGraph = self.Objects[InGraphId]
+        EIdV = self.Objects[EIdVId]
+        Graph = snap.GetESubGraph(InGraph, EIdV)
+        GraphId = self.__UpdateObjects(Graph, self.Lineage[InGraphId] + self.Lineage[EIdVId])
+        return RingoObject(GraphId, self)
+
+    @registerOp('GetNodeClustCf', False)
+    def GetNodeClustCf(self, GraphId, NId):
+        Graph = self.Objects[GraphId]
+        Ret = snap.GetNodeClustCf(Graph, NId)
+        return Ret
+
+    @registerOp('GetNodeClustCf')
+    def GetNodeClustCf(self, GraphId):
+        Graph = self.Objects[GraphId]
+        NIdCCfH = snap.TIntFltH()
+        snap.GetNodeClustCf(Graph, NIdCCfH)
+        NIdCCfHId = self.__UpdateObjects(NIdCCfH, self.Lineage[GraphId])
+        return RingoObject(NIdCCfHId, self)
+
+    @registerOp('GetNodeTriads', False)
+    def GetNodeTriads(self, GraphId, NId):
+        Graph = self.Objects[GraphId]
+        Ret = snap.GetNodeTriads(Graph, NId)
+        return Ret
+
+    @registerOp('GetRndESubGraph')
+    def GetRndESubGraph(self, InGraphId, NumEdges):
+        InGraph = self.Objects[InGraphId]
+        Graph = snap.GetRndESubGraph(InGraph, NumEdges)
+        GraphId = self.__UpdateObjects(Graph, self.Lineage[InGraphId])
+        return RingoObject(GraphId, self)
+
+    @registerOp('GetRndSubGraph')
+    def GetRndSubGraph(self, InGraphId, NumNodes):
+        InGraph = self.Objects[InGraphId]
+        Graph = snap.GetRndSubGraph(InGraph, NumNodes)
+        GraphId = self.__UpdateObjects(Graph, self.Lineage[InGraphId])
+        return RingoObject(GraphId, self)
+
+    @registerOp('GetTriadEdges', False)
+    def GetTriadEdges(self, GraphId, SampleEdges):
+        Graph = self.Objects[GraphId]
+        Ret = snap.GetTriadEdges(Graph, SampleEdges)
+        return Ret
+
+    @registerOp('GetTriadParticip')
+    def GetTriadParticip(self, GraphId):
+        Graph = self.Objects[GraphId]
+        TriadCntV = snap.TIntPrV()
+        snap.GetTriadParticip(Graph, TriadCntV)
+        TriadCntVId = self.__UpdateObjects(TriadCntV, self.Lineage[GraphId])
+        return RingoObject(TriadCntVId, self)
 
