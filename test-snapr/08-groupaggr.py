@@ -34,7 +34,7 @@ if __name__ == '__main__':
 
     V = snap.TStrV()
     V.Add("OwnerUserId")
-    table.Aggregate(V, snap.aaSum, "Score-1", "Sum-1")
+    table.Aggregate(V, snap.aaSum, "Score", "Sum")
     t.show("group_aggregate", table)
     r.show("__group_aggregate__")
 
