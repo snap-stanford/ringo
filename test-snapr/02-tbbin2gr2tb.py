@@ -35,6 +35,6 @@ if __name__ == '__main__':
     r.show("__creategraph__")
     print "graph type", type(graph)
 
-    table2 = snap.TTable.GetEdgeTable(graph, "1", context)
+    table2 = snap.TTable.GetEdgeTable(graph, context)
     t.show("table from graph", table2)
     r.show("__tablefromgraph__")

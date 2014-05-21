@@ -31,14 +31,14 @@ if __name__ == '__main__':
     schema.Add(snap.TStrTAttrPr("AcceptedAnswerId", snap.atInt))
     schema.Add(snap.TStrTAttrPr("CreationDate", snap.atInt))
     schema.Add(snap.TStrTAttrPr("Score", snap.atInt))
-    posts = snap.TTable.LoadSS("1", schema, postsfile, context, "\t", snap.TBool(False))
+    posts = snap.TTable.LoadSS(schema, postsfile, context, "\t", snap.TBool(False))
     t.show("load posts text", posts)
     r.show("__loadpoststext__")
 
     S = snap.Schema()
     S.Add(snap.TStrTAttrPr("PostId", snap.atInt))
     S.Add(snap.TStrTAttrPr("Tag", snap.atStr))
-    tags = snap.TTable.LoadSS("2", S, tagsfile, context, '\t', snap.TBool(False))
+    tags = snap.TTable.LoadSS(S, tagsfile, context, '\t', snap.TBool(False))
     t.show("load tags text", tags)
     r.show("__loadtagstext__")
 
@@ -46,13 +46,13 @@ if __name__ == '__main__':
     t.show("join", table)
     r.show("__join__")
 
-    table = table.Join("1.AcceptedAnswerId", posts, "Id")
+    table = table.Join("AcceptedAnswerId", posts, "Id")
     t.show("join", table)
     r.show("__join__")
 
-    table.SetSrcCol("1_2.1.OwnerUserId")
-    table.SetDstCol("1.OwnerUserId")
-    gseq = table.ToGraphPerGroup("1_2.2.Tag", snap.aaFirst)
+    table.SetSrcCol("OwnerUserId-1")
+    table.SetDstCol("OwnerUserId-2")
+    gseq = table.ToGraphPerGroup("Tag", snap.aaFirst)
     t.show("graphseq", gseq)
     r.show("__graphseq__")
 

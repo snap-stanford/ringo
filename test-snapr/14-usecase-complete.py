@@ -32,11 +32,11 @@ if __name__ == '__main__':
     schema.Add(snap.TStrTAttrPr("CreationDate", snap.atInt))
     schema.Add(snap.TStrTAttrPr("Score", snap.atInt))
     schema.Add(snap.TStrTAttrPr("Tag", snap.atStr))
-    table = snap.TTable.LoadSS("1", schema, srcfile, context, "\t", snap.TBool(False))
+    table = snap.TTable.LoadSS(schema, srcfile, context, "\t", snap.TBool(False))
     t.show("load posts text", table)
     r.show("__loadpoststext__")
 
-    questions = snap.TTable.New("2", table.GetSchema(), context)
+    questions = snap.TTable.New(table.GetSchema(), context)
     table.SelectAtomicStrConst("Tag", "python", snap.EQ, questions)
     t.show("select tag = 'python'", questions)
     r.show("__selecttagpython__")
@@ -53,13 +53,13 @@ if __name__ == '__main__':
     t.show("join", qa)
     r.show("__join__")
 
-    graph = snap.ToGraph(snap.PUNGraph, qa, "2.OwnerUserId", "1.OwnerUserId", snap.aaFirst)
+    graph = snap.ToGraph(snap.PUNGraph, qa, "OwnerUserId-2", "OwnerUserId-1", snap.aaFirst)
     t.show("graph", graph)
     r.show("__graph__")
 
     PRankH = snap.TIntFltH()
     snap.GetPageRank(graph, PRankH,  0.85, 1e-4, 100)
-    prtable = snap.TTable.New("PR", PRankH, "UserId", "PageRank", context, snap.TBool(True))
+    prtable = snap.TTable.New(PRankH, "UserId", "PageRank", context, snap.TBool(True))
     t.show("pagerank", prtable)
     r.show("__pagerank__")
 

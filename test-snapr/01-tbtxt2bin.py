@@ -28,7 +28,7 @@ if __name__ == '__main__':
     schema = snap.Schema()
     schema.Add(snap.TStrTAttrPr("Src", snap.atInt))
     schema.Add(snap.TStrTAttrPr("Dst", snap.atInt))
-    table = snap.TTable.LoadSS("1", schema, srcfile, context, "\t", snap.TBool(False))
+    table = snap.TTable.LoadSS(schema, srcfile, context, "\t", snap.TBool(False))
     t.show("load text", table)
     r.show("__loadtext__")
 

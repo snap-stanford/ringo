@@ -31,7 +31,7 @@ if __name__ == '__main__':
     schema.Add(snap.TStrTAttrPr("AcceptedAnswerId", snap.atInt))
     schema.Add(snap.TStrTAttrPr("CreationDate", snap.atInt))
     schema.Add(snap.TStrTAttrPr("Score", snap.atInt))
-    table = snap.TTable.LoadSS("1", schema, srcfile, context, "\t", snap.TBool(False))
+    table = snap.TTable.LoadSS(schema, srcfile, context, "\t", snap.TBool(False))
     t.show("load text", table)
     r.show("__loadtext__")
 
@@ -39,9 +39,9 @@ if __name__ == '__main__':
     t.show("join", table)
     r.show("__join__")
 
-    table.SetSrcCol("1_1.OwnerUserId")
-    table.SetDstCol("1_2.OwnerUserId")
-    gseq = table.ToGraphSequence("1_1.CreationDate", snap.aaFirst, WINDOW_SIZE, WINDOW_SIZE)
+    table.SetSrcCol("OwnerUserId-1")
+    table.SetDstCol("OwnerUserId-2")
+    gseq = table.ToGraphSequence("CreationDate-1", snap.aaFirst, WINDOW_SIZE, WINDOW_SIZE)
     t.show("graphseq", gseq)
     r.show("__graphseq__")
 

@@ -28,13 +28,13 @@ if __name__ == '__main__':
     schema.Add(snap.TStrTAttrPr("AcceptedAnswerId", snap.atInt))
     schema.Add(snap.TStrTAttrPr("CreationDate", snap.atStr))
     schema.Add(snap.TStrTAttrPr("Score", snap.atInt))
-    table = snap.TTable.LoadSS("1", schema, srcfile, context, "\t", snap.TBool(False))
+    table = snap.TTable.LoadSS(schema, srcfile, context, "\t", snap.TBool(False))
     t.show("load text", table)
     r.show("__loadtext__")
 
     V = snap.TStrV()
     V.Add("OwnerUserId")
-    table.Aggregate(V, snap.aaSum, "Score", "Sum")
+    table.Aggregate(V, snap.aaSum, "Score-1", "Sum-1")
     t.show("group_aggregate", table)
     r.show("__group_aggregate__")
 

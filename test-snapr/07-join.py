@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
     schema = snap.Schema()
     schema.Add(snap.TStrTAttrPr("Index", snap.atInt))
-    t2 = snap.TTable.LoadSS("2", schema, srcfile2, context, "\t", snap.TBool(False))
+    t2 = snap.TTable.LoadSS(schema, srcfile2, context, "\t", snap.TBool(False))
     t.show("load text", t2)
     r.show("__loadtext__")
 
