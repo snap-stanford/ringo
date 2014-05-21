@@ -34,6 +34,10 @@ class RingoObject(object):
         Obj = self.__GetSnapObj()
         Obj.__setitem__(key, item)
 
+    def __len__(self):
+        Obj = self.__GetSnapObj()
+        return len(Obj)
+
     def __getattr__(self, name):
         Obj = self.__GetSnapObj()
         if hasattr(Obj, name):
