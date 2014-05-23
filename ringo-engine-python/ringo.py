@@ -90,6 +90,10 @@ class RingoObject(object):
     def __GetSnapObj(self):
         return self.Ringo.Objects[self.Id]
 
+# A utility function to determine if two names are an alias for the same table attribute        
+def colNamesEqual(name1, name2):
+	return snap.TTable.NormalizeColName(name1) == snap.TTable.NormalizeColName(name2) 
+
 class Ringo(object):
     NODE_ATTR_NAME = "__node_attr"
     EDGE_SRC_ATTR_NAME = "__edge_src_attr"
@@ -130,7 +134,7 @@ class Ringo(object):
             Id = self.__UpdateObjects(Obj, [])
             return RingoObject(Id, self)
             
-        raise AttributeError
+        raise AttributeError  
         
     # Use case:
     # S = [('name','string'), ('age','int'), ('weight','float')]
@@ -410,13 +414,13 @@ class Ringo(object):
             return Op
         def GetColType(Schema, ColName):
             for Col in Schema:
-                if Col.Val1 == ColName:
+                if colNamesEqual(Col.Val1.CStr(), ColName):
                     return Col.Val2
             raise ValueError("No column with name %s found" % ColName)
         def IsConstant(Arg):
-            if '0' <= f[0] and f[0] <= '9':
+            if '0' <= Arg[0] and Arg[0] <= '9':
                 return True
-            return f[0] == "'" or f[0] == '"'
+            return Arg[0] == "'" or Arg[0] == '"'
         def Merge(Expression):
             while '(' in Expression:
                 left = Expression.index('(')
@@ -503,7 +507,7 @@ class Ringo(object):
         elements = [j for i in map(lambda s: re.split('(\(|\))', s), elements) for j in i if len(j) > 0]
         T = self.Objects[TableId]
         Schema = T.GetSchema()
-
+        
         if (len(elements) == 3):
             Op = GetOp(elements[1])
     
