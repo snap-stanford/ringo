@@ -61,5 +61,5 @@ Transform PageRank output to a table object
 Order the table by score
 Save table to output file
 
-Use: python usecase so_posts.tsv
+Use: python usecase.py so_posts.tsv
 	
