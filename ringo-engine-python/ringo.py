@@ -534,7 +534,7 @@ class Ringo(object):
             PrepCols.Add(Col)
 
         if not InPlace:
-            TableId = __CopyTable(TableId)
+            TableId = self.__CopyTable(TableId)
 
         T = self.Objects[TableId]
         T.ProjectInPlace(PrepCols)
@@ -550,18 +550,18 @@ class Ringo(object):
         return RingoObject(JoinTId, self)
 
     @registerOp('Union')
-    def Union(self, LeftTableId, RightTableId, TableName):
+    def Union(self, LeftTableId, RightTableId):
         LeftT = self.Objects[LeftTableId]
         RightT = self.Objects[RightTableId]
-        UnionT = LeftT.Union(RightT, TableName)
+        UnionT = LeftT.Union(RightT)
         UnionTId = self.__UpdateObjects(UnionT, self.Lineage[LeftTableId] + self.Lineage[RightTableId])
         return RingoObject(UnionTId, self)
 
     @registerOp('UnionAll')
-    def UnionAll(self, LeftTableId, RightTableId, TableName):
+    def UnionAll(self, LeftTableId, RightTableId):
         LeftT = self.Objects[LeftTableId]
         RightT = self.Objects[RightTableId]
-        UnionT = LeftT.UnionAll(RightT, TableName)
+        UnionT = LeftT.UnionAll(RightT)
         UnionTId = self.__UpdateObjects(UnionT, self.Lineage[LeftTableId] + self.Lineage[RightTableId])
         return RingoObject(UnionTId, self)
 
@@ -634,13 +634,11 @@ class Ringo(object):
 
         Graph = self.Objects[GraphId]
         HT = snap.TIntFltH()
+        # Which version of PageRank is called ?
         snap.GetPageRank(Graph, HT, C, Eps, MaxIter)
         TableId = self.__GetId(self.Objects)
-        # NOTE: The argument snap.atStr only works if NODE_ATTR_NAME is a String attribute of the graph.
-        # Some logic is needed to determine the attribute type
-        T = snap.TTable.GetFltNodePropertyTable(Graph, str(TableId), HT, self.NODE_ATTR_NAME, snap.atStr, ResultAttrName, self.Context)
-        self.__UpdateObjects(T, self.Lineage[GraphId], TableId)
-        return RingoObject(TableId, self)
+        HTId = self.__UpdateObjects(HT, self.Lineage[GraphId])
+        return RingoObject(HTId, self)
 
     @registerOp('GenerateProvenance', False)
     def GenerateProvenance(self, ObjectId, OutFnm):
@@ -1584,7 +1582,8 @@ class Ringo(object):
         Graph = snap.LoadPajek(GraphType, InFNm)
         GraphId = self.__UpdateObjects(Graph, self.Lineage[GraphTypeId])
         return RingoObject(GraphId, self)
-
+	
+	# Save graph to Text file
     @registerOp('SaveEdgeList', False)
     def SaveEdgeList(self, GraphId, OutFNm, Desc = ""):
         Graph = self.Objects[GraphId]
