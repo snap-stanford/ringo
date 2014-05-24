@@ -23,22 +23,25 @@ with an entry for each question post + all the tags associated with that post.
 Scripts:
 =======
 parseStackOverflowXml.py (taken from Martin and slightly modified):
-	Parses the xml file to a tsv file. I replace all text field values with a constant string "a".
-	Feel free to modify it if you want to keep string values / map them to integers..
-	In the script you can define a list of size parameters. For every such parameter Sz, the 
-	script would generate a TSV file generated from the first Sz post records ("posts_<Sz>.test.tsv").
+	Parses the xml file to a tsv file. I replace all text field values with a constant 
+	string "a". Feel free to modify it if you want to keep string values / map them to 
+	integers.. In the script you can define a list of size parameters. 
+	For every such parameter Sz, the script would generate a TSV file generated from the 
+	first Sz post records ("posts_<Sz>.test.tsv").
 	The entire dataset consists of 15,838,934 post records.
 	
 processPosts.py:
 	Takes the output of parseStackOverflowXml.py and projects it to the following schema:
 	posts(Id, PostTypeId, AcceptedAnswerId, OwnerUserId, Body)
-	Use: python processPosts.py input output - e.g. python processPosts.py posts_1000.test.tsv posts_1000.tsv
+	Use: python processPosts.py input output 
+	- e.g. python processPosts.py posts_1000.test.tsv posts_1000.tsv
 
 joinPostsTags.py: 
-	Takes a the output of processPosts.py (i.e. all posts - without tags) and tags.tsv (question ids + tags)
-	and produces a file 'so_posts.tsv' with all posts (see note) including tags - i.e. 
-	posts(Id, PostTypeId, AcceptedAnswerId, OwnerUserId, Body, Tag)
-	Use: python joinPostsTags.py posts_input tags_input - e.g. python joinPostsTags.py posts_1000.tsv tags.tsv
+	Takes a the output of processPosts.py (i.e. all posts - without tags) and tags.tsv 
+	(question ids + tags) and produces a file 'so_posts.tsv' with all posts (see note) 
+	including tags - i.e. posts(Id, PostTypeId, AcceptedAnswerId, OwnerUserId, Body, Tag)
+	Use: python joinPostsTags.py posts_input tags_input 
+	- e.g. python joinPostsTags.py posts_1000.tsv tags.tsv
 	
 	Note: 'so_posts.tsv' will contain all question posts and all accepted answers posts, 
 	with a record (row) for each tag of each such post. Posts which are answers
