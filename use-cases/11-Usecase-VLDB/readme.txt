@@ -45,7 +45,9 @@ joinPostsTags.py:
 	
 	Note: 'so_posts.tsv' will contain all question posts and all accepted answers posts, 
 	with a record (row) for each tag of each such post. Posts which are answers
-	that were not accepted are lost.
+	that were not accepted are lost. Question posts will appear at the beginning of the 
+	file, and accepted answer posts will appear at the end of the file. In addition, the
+	script removes posts with a missing user id.
 	
 Part 2:
 ========

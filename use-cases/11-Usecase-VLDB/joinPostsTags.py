@@ -8,6 +8,7 @@ S_posts = [('Id','int'), ('PostTypeId','int'), ('AcceptedAnswerId','int'), ('Own
 S_tags = [('Id','int'), ('Tag','string')]
 
 posts = ringo.LoadTableTSV(S_posts, posts_file)
+ringo.Select(posts, 'OwnerUserId > 0')
 #print ringo.ringo.DumpTableContent(posts) # buggy...
 q_tags = ringo.LoadTableTSV(S_tags, tags_file)
 QT = ringo.Join(posts, q_tags, "Id", "Id")
