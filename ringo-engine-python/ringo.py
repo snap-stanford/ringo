@@ -190,11 +190,13 @@ class Ringo(object):
                 return RingoObject(Object['Id'])
             elif 'Set' in Object:
                 return set(Object['Content'])
+            elif 'Ringo' in Object:
+                return self
             else:
                 return Object
 
         with open(InFnm+'.json') as inp:
-            JSON = ConvertJSON(json.load(inp, object_hook = lambda obj: RingoObject(obj['Id']) if 'RingoObject' in obj else obj))
+            JSON = ConvertJSON(json.load(inp, object_hook = lambda obj: RingoObject(obj['Id'], self) if 'RingoObject' in obj else obj))
 
         for OpId in JSON['Operations']:
             self.Operations[OpId] = JSON['Operations'][OpId]
@@ -231,6 +233,8 @@ class Ringo(object):
                 return Object
             elif isinstance(Object, set):
                 return {'Set':True, 'Content':list(Object)}
+            elif isinstance(Object, Ringo):
+                return {'Ringo':True}
             raise TypeError(type(Object))
 
         Object = self.Objects[ObjectId]
