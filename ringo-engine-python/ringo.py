@@ -383,7 +383,7 @@ class Ringo(object):
     @registerOp('Unique')
     def Unique(self, TableId, GroupByAttr, InPlace = True):
         if not InPlace:
-            TableId = __CopyTable(TableId)
+            TableId = self.__CopyTable(TableId)
         
         T = self.Objects[TableId]
         T.Unique(GroupByAttr)
@@ -397,7 +397,7 @@ class Ringo(object):
             Attrs.Add(Attr)
 
         if not InPlace:
-            TableId = __CopyTable(TableId)
+            TableId = self.__CopyTable(TableId)
 
         T = self.Objects[TableId]
         T.Unique(Attrs, Ordered)
@@ -589,7 +589,10 @@ class Ringo(object):
         return RingoObject(JoinTId, self)
 
     @registerOp('Order')
-    def Order(self, TableId, Attrs, Asc = False):
+    def Order(self, TableId, Attrs, Asc = False, InPlace = True):
+        if not InPlace:
+            TableId = self.__CopyTable(TableId)
+
         T = self.Objects[TableId]
         V = snap.TStrV()
         for attr in Attrs:
