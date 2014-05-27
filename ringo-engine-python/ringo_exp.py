@@ -513,7 +513,7 @@ class Ringo(object):
             
         # Parse predicate
         elements = Predicate.split()
-        elements = [j for i in map(lambda s: re.split('(\(|\))', s), elements) for j in i if len(j) > 0]
+        elements = [j for i in map(lambda s: re.split('(\W*)', s), elements) for j in i if len(j) > 0]
         T = self.Objects[TableId]
         Schema = T.GetSchema()
         
