@@ -6,6 +6,8 @@ all: MakeAll
 
 test: TestAll
 
+dist: MakeAll Setup
+
 MakeAll:
 	$(MAKE) -C swig
 
@@ -20,4 +22,7 @@ clean:
 	$(MAKE) clean -C test-snappy
 	$(MAKE) clean -C test-snapr
 	$(MAKE) clean -C test-ringo
+	$(MAKE) clean -C setup
 
+Setup:
+	$(MAKE) dist -C setup
