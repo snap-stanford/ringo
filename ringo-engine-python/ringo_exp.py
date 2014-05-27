@@ -168,8 +168,8 @@ class Ringo(object):
         return RingoObject(TableId, self)
     
     # UNTESTED
-    @registerOp('LoadTableBinary', False)
-    def LoadTableBinary(self, InFnm):
+    @registerOp('LoadBinary', False)
+    def LoadBinary(self, InFnm):
         def ConvertJSON(JSON):
             if isinstance(JSON, dict):
                 return dict([(ConvertJSON(key), ConvertJSON(JSON[key])) for key in JSON])
@@ -211,8 +211,8 @@ class Ringo(object):
         return RingoObject(ObjId, self)
 
     # UNTESTED
-    @registerOp('SaveTableBinary', False)
-    def SaveTableBinary(self, ObjectId, OutFnm):
+    @registerOp('SaveBinary', False)
+    def SaveBinary(self, ObjectId, OutFnm):
         def PackObject(self, ObjectId):
             Pack = {}
             Pack['Id'] = ObjectId
