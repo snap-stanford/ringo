@@ -15,5 +15,4 @@ TestAll:
 	python ringo-test.py
 
 clean:
-	rm -f *.pyc *.so snap.py *.bin *.graph *.net *.table *.txt
-
+	rm -f *.pyc *.so snap.py *.bin *.graph *.net *.table
