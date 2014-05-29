@@ -24,6 +24,11 @@
 def GetId(self):
     return (self.GetSrcNId(), self.GetDstNId())
 
+TNGraphMPEdgeI.GetId = GetId
+%}
+
+#ifdef _OPENMP
+%pythoncode %{
 def ToGraphMP(tspec, *args):
     if tspec == PNGraphMP : return ToGraphMP_PNGraphMP(*args)
     return None
@@ -31,9 +36,9 @@ def ToGraphMP(tspec, *args):
 def ToGraphMP2(tspec, *args):
     if tspec == PNGraphMP : return ToGraphMP2_PNGraphMP(*args)
     return None
-
-TNGraphMPEdgeI.GetId = GetId
 %}
+#endif
+
 
 
 // Basic Undirected Graphs
@@ -48,5 +53,7 @@ TNGraphMPEdgeI.GetId = GetId
 %template(PNGraphMP) TPt< TNGraphMP >;
 
 // conv.h - PNGraph
+#ifdef _OPENMP
 %template(ToGraphMP_PNGraphMP) TSnap::ToGraphMP<PNGraphMP>;
 %template(ToGraphMP2_PNGraphMP) TSnap::ToGraphMP2<PNGraphMP>;
+#endif
