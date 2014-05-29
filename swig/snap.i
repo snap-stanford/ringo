@@ -634,7 +634,9 @@ Version = "0.8.5r"
 %include "pungraph.i"
 %include "pgraph.i"
 %include "pngraphmp.i"
+#ifndef NONUMPY
 %include "numpy_swig.i"
+#endif
 
 /* table interface */
 %include "ptable.i"

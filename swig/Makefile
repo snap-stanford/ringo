@@ -18,17 +18,17 @@ UNAME := $(shell uname)
 
 ifeq ($(UNAME), Linux)
   # Linux flags
-  SWIGFLAGS += -D_CMPWARN -D__stdcall -DSW_SNAPPY -D_OPENMP
+  SWIGFLAGS += -D_CMPWARN -D__stdcall -DSW_SNAPPY -D_OPENMP -DNONUMPY
   CXXFLAGS += -fPIC -D__STDC_LIMIT_MACROS -DSW_SNAPPY -fopenmp
   LDFLAGS += -shared -fopenmp
 else ifeq ($(UNAME), Darwin)
   # OS X flags
-  SWIGFLAGS += -D_CMPWARN -D__stdcall -DSW_SNAPPY
+  SWIGFLAGS += -D_CMPWARN -D__stdcall -DSW_SNAPPY -DNONUMPY
   CXXFLAGS += -DSW_SNAPPY
   LDFLAGS += -lpython -dynamiclib
 else ifeq ($(shell uname -o), Cygwin)
   # Cygwin flags
-  SWIGFLAGS += -D_CMPWARN -D__stdcall -DSW_SNAPPY
+  SWIGFLAGS += -D_CMPWARN -D__stdcall -DSW_SNAPPY -DNONUMPY
   CXXFLAGS += -shared -D__STDC_LIMIT_MACROS -DSW_SNAPPY
   LIBS += -lpython2.6
 endif
