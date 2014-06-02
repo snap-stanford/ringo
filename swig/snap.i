@@ -632,9 +632,11 @@ Version = "0.8.5r"
 %include "pneanet.i"
 %include "pngraph.i"
 %include "pungraph.i"
-%include "pgraph.i"
 %include "pngraphmp.i"
+%include "pgraph.i"
+#ifndef NONUMPY
 %include "numpy_swig.i"
+#endif
 
 /* table interface */
 %include "ptable.i"

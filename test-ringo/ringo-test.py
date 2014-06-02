@@ -483,7 +483,6 @@ class SnapPythonTest(unittest.TestCase):
         results = ringo.IsTree(self.NetTree)
         self.assertEqual(expected_results, results)
 
-    ''' primitive type error
     def test_GetTreeRootNId(self):
         # Directed Graph
         root_id = ringo.GetTreeRootNId(self.DirTree)
@@ -492,7 +491,6 @@ class SnapPythonTest(unittest.TestCase):
         # Network
         root_id = ringo.GetTreeRootNId(self.NetTree)
         self.assertEqual(0, root_id)
-    '''
 
     def test_GetBfsTree(self):
         start_node = 0
@@ -533,7 +531,6 @@ class SnapPythonTest(unittest.TestCase):
         exp_results = [40, 40, 3]
         self.assertEqual(exp_results, results)
 
-    ''' primitive types
     def test_GetNodesAtHop(self):
         # Directed Graph
         NodeVec, num_nodes = ringo.GetNodesAtHop(self.DirGraphStar, 0, 1, True)
@@ -577,7 +574,6 @@ class SnapPythonTest(unittest.TestCase):
             else:
                 self.assertEqual(1, pair.Val1())
                 self.assertEqual(self.num_nodes-1, pair.Val2())
-		'''
 
     def test_GetDegreeCentr(self):
         # Undirected Graph
@@ -649,7 +645,6 @@ class SnapPythonTest(unittest.TestCase):
             self.assertEqual(value, NIdAuthH[item])
         '''
 
-    ''' primitive type
     def test_CommunityGirvanNewman(self):
         exp_val = 0.010151451527112903
         Graph = ringo.GenPrefAttach(100, 10)
@@ -660,7 +655,6 @@ class SnapPythonTest(unittest.TestCase):
         gnutellaUndir = ringo.ConvertGraph(ringo.PUNGraph, self.gnutella)
         Vcc, modularity = ringo.CommunityCNM(gnutellaUndir)
         self.assertAlmostEqual(0.4647213330572384, modularity)
-		'''
 
     def test_GetModularity(self):
         V = ringo.ConstructTIntV()
@@ -1005,7 +999,6 @@ class SnapPythonTest(unittest.TestCase):
         self.checkPrintInfoOutput("test.txt", ["description", '10', '90', '0', '0', '0', '10'])
         os.system('rm test.txt')
 
-    ''' primitive type
     def test_GetKCoreNodes(self):
         # Directed Graph
         CoreN, result = ringo.GetKCoreNodes(self.DirGraphStar)
@@ -1031,7 +1024,6 @@ class SnapPythonTest(unittest.TestCase):
         # Network
         CoreN, result = ringo.GetKCoreEdges(self.NetStar)
         self.assertEqual(2, result)
-		'''
 
     def test_GenDegSeq(self):
         DegSeqV = ringo.ConstructTIntV()
@@ -2187,7 +2179,6 @@ class SnapPythonTest(unittest.TestCase):
         self.assertTrue(result >= 0)
 		'''
 		
-    ''' primitive type error
     def test_GetShortPath(self):
         # Directed Graph
         Graph = ringo.GenFull(ringo.PNGraph, 10)
@@ -2207,19 +2198,18 @@ class SnapPythonTest(unittest.TestCase):
     def test_GetShortPath2(self):
         # Directed Graph
         Graph = ringo.GenFull(ringo.PNGraph, 10)
-        H, result = ringo.GetShortPath(Graph, 0, H)
+        H, result = ringo.GetShortPath(Graph, 0)
         self.assertEqual(1, result)
 
         # Undirected Graph
         Graph = ringo.GenFull(ringo.PUNGraph, 10)
-        H, result = ringo.GetShortPath(Graph, 0, H)
+        H, result = ringo.GetShortPath(Graph, 0)
         self.assertEqual(1, result)
 
         # Network
         Graph = ringo.GenFull(ringo.PNEANet, 10)
-        H, result = ringo.GetShortPath(Graph, 0, H)
+        H, result = ringo.GetShortPath(Graph, 0)
         self.assertEqual(1, result)
-		'''
 
     def test_GetBfsFullDiam(self):
         # Directed Graph

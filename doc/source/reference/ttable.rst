@@ -1810,39 +1810,247 @@ Return value:
 
 *********************************************************************
 
-.. function:: ToGraphPerGroup()
-
-To Be Documented
-
-*********************************************************************
-
-.. function:: ToGraphPerGroupIterator()
-
-To Be Documented
-
-*********************************************************************
-
 .. function:: ToGraphSequence(SplitAttr, AggrPolicy, WindowSize, JumpSize, StartVal, EndVal)
 
-To Be Documented
+Returns a sequence of graphs created from the table, where partitioning is based on values of column SplitAttr and windows are specified by JumpSize and WindowSize.
+
+Parameters:
+
+- *SplitAttr*: TStr (input)
+
+  The table attribute on which rows should be split.
+  
+  Only integer attributes supported.
+
+- *AggrPolicy*: TAttrAggr (input)
+
+  The policy for aggregating node attribute values.
+  
+  If a node appears in multiple rows of the table (i.e. it has more than one edge), the node attribute values will be aggregated over multiple rows into a single value using this policy.
+
+- *WindowSize*: TInt (input)
+
+  The table will be split on the values of the attribute SplitAttr, with partitions of size WindowSize.
+
+- *JumpSize*: TInt (input)
+
+  The table will be split on the values of the attribute SplitAttr, with partitions spaced at distance of JumpSize.
+
+  Setting JumpSize = WindowSize will give disjoint windows.
+
+  Setting JumpSize < WindowSize will give sliding windows.
+
+  Setting JumpSize > WindowSize will drop certain rows (currently not supported).
+
+  Setting JumpSize = 0 will give expanding windows (i.e. starting at 0 and ending at i*WindowSize).
+
+- *StartVal*: TInt (input)
+
+  To set the range of values of SplitAttr to be considered, use StartVal and EndVal (inclusive).
+
+  If StartVal == TInt.Mn (default), then the buckets will start from the min value of SplitAttr in the table. 
+
+- *EndVal*: TInt (input)
+
+  To set the range of values of SplitAttr to be considered, use StartVal and EndVal (inclusive).
+
+  If EndVal == TInt.Mx (default), then the buckets will end at the max value of SplitAttr in the table. 
+
+Return value:
+
+- TVec<PNEANet>
+
+  A sequence of graphs
 
 *********************************************************************
 
-.. function:: ToGraphSequenceIterator()
+.. function:: ToVarGraphSequence(SplitAttr, AggrPolicy, SplitIntervals)
 
-To Be Documented
+Returns a sequence of graphs created from the table, where partitioning is based on values of column SplitAttr and intervals specified by SplitIntervals.
+
+Parameters:
+
+- *SplitAttr*: TStr (input)
+
+  The table attribute on which rows should be split.
+  
+  Only integer attributes supported.
+
+- *AggrPolicy*: TAttrAggr (input)
+
+  The policy for aggregating node attribute values.
+  
+  If a node appears in multiple rows of the table (i.e. it has more than one edge), the node attribute values will be aggregated over multiple rows into a single value using this policy.
+
+- *SplitIntervals*: TIntPrV (input)
+
+  A vector of pairs of indices that are used as the start and end SplitAttr attribute values for each partition of the table.
+
+Return value:
+
+- TVec<PNEANet>
+
+  A sequence of graphs
 
 *********************************************************************
 
-.. function:: ToVarGraphSequence()
+.. function:: ToGraphPerGroup(GroupAttr, AggrPolicy)
 
-To Be Documented
+Returns a sequence of graphs created from the table, where partitioning is based on the group mappings specified by values of attribute GroupAttr.
+
+Parameters: 
+
+- *GroupAttr*: TStr (input)
+
+  The table attribute which denotes the group ids (obtained from a previous TTable::Group() function call).
+
+- *AggrPolicy*: TAttrAggr (input)
+
+  The policy for aggregating node attribute values.
+  
+  If a node appears in multiple rows of the table (i.e. it has more than one edge), the node attribute values will be aggregated over multiple rows into a single value using this policy.
+
+Return value:
+
+- TVec<PNEANet>
+
+  A sequence of graphs
+
+*********************************************************************
+
+.. function:: ToGraphSequenceIterator(SplitAttr, AggrPolicy, WindowSize, JumpSize, StartVal, EndVal)
+
+Similar to ToGraphSequence, but instead of returning the sequence of graphs, returns the first graph in the sequence. To iterate over the sequence, use TTable::NextGraphIterator and TTable::IsLastGraphOfSequence.
+
+Calls to TTable::NextGraphIterator() will generate graphs one at a time. This is beneficial when the entire graph sequence cannot fit in memory.
+
+Parameters:
+
+- *SplitAttr*: TStr (input)
+
+  The table attribute on which rows should be split.
+  
+  Only integer attributes supported.
+
+- *AggrPolicy*: TAttrAggr (input)
+
+  The policy for aggregating node attribute values.
+  
+  If a node appears in multiple rows of the table (i.e. it has more than one edge), the node attribute values will be aggregated over multiple rows into a single value using this policy.
+
+- *WindowSize*: TInt (input)
+
+  The table will be split on the values of the attribute SplitAttr, with partitions of size WindowSize.
+
+- *JumpSize*: TInt (input)
+
+  The table will be split on the values of the attribute SplitAttr, with partitions spaced at distance of JumpSize.
+
+  Setting JumpSize = WindowSize will give disjoint windows.
+
+  Setting JumpSize < WindowSize will give sliding windows.
+
+  Setting JumpSize > WindowSize will drop certain rows (currently not supported).
+
+  Setting JumpSize = 0 will give expanding windows (i.e. starting at 0 and ending at i*WindowSize).
+
+- *StartVal*: TInt (input)
+
+  To set the range of values of SplitAttr to be considered, use StartVal and EndVal (inclusive).
+
+  If StartVal == TInt.Mn (default), then the buckets will start from the min value of SplitAttr in the table. 
+
+- *EndVal*: TInt (input)
+
+  To set the range of values of SplitAttr to be considered, use StartVal and EndVal (inclusive).
+
+  If EndVal == TInt.Mx (default), then the buckets will end at the max value of SplitAttr in the table. 
+
+Return value:
+
+- PNEANet
+
+  The first graph of the resulting graph sequence
 
 *********************************************************************
 
 .. function:: ToVarGraphSequenceIterator()
 
-To Be Documented
+Similar to ToVarGraphSequence, but instead of returning the sequence of graphs, returns the first graph in the sequence. To iterate over the sequence, use TTable::NextGraphIterator and TTable::IsLastGraphOfSequence.
+
+Calls to TTable::NextGraphIterator() will generate graphs one at a time. This is beneficial when the entire graph sequence cannot fit in memory.
+
+Parameters:
+
+- *SplitAttr*: TStr (input)
+
+  The table attribute on which rows should be split.
+  
+  Only integer attributes supported.
+
+- *AggrPolicy*: TAttrAggr (input)
+
+  The policy for aggregating node attribute values.
+  
+  If a node appears in multiple rows of the table (i.e. it has more than one edge), the node attribute values will be aggregated over multiple rows into a single value using this policy.
+
+- *SplitIntervals*: TIntPrV (input)
+
+  A vector of pairs of indices that are used as the start and end SplitAttr attribute values for each partition of the table.
+
+Return value:
+
+- PNEANet
+
+  The first graph of the resulting graph sequence
+
+*********************************************************************
+
+.. function:: ToGraphPerGroupIterator()
+
+Similar to ToGraphPerGroupSequence, but instead of returning the entire sequence of graphs, returns the first graph in the sequence. To iterate over the sequence, use TTable::NextGraphIterator and TTable::IsLastGraphOfSequence.
+
+Calls to TTable::NextGraphIterator() will generate graphs one at a time. This is beneficial when the entire graph sequence cannot fit in memory.
+
+Parameters: 
+
+- *GroupAttr*: TStr (input)
+
+  The table attribute which denotes the group ids (obtained from a previous TTable::Group() function call).
+
+- *AggrPolicy*: TAttrAggr (input)
+
+  The policy for aggregating node attribute values.
+  
+  If a node appears in multiple rows of the table (i.e. it has more than one edge), the node attribute values will be aggregated over multiple rows into a single value using this policy.
+
+Return value:
+
+- PNEANet
+
+  The first graph of the resulting graph sequence
+
+*********************************************************************
+
+.. function:: NextGraphIterator()
+
+Returns the next graph in the sequence defined by one of the TTable::ToGraph*Iterator functions. Calls to this function must be preceded by a single call to one of the above TTable::ToGraph*Iterator functions.
+
+Return value:
+
+- PNEANet
+
+  The next graph of the resulting graph sequence
+
+*********************************************************************
+
+.. function:: IsLastGraphOfSequence()
+
+Checks if the graph sequence defined by one of the TTable::ToGraph*Iterator functions has been completely iterated over. Calls to this function must be preceded by a single call to one of the above TTable::ToGraph*Iterator functions.
+
+Return value:
+
+- TBool
 
 *********************************************************************
 

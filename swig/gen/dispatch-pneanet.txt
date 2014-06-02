@@ -89,7 +89,10 @@ PNEANet	GetKCoreEdges
 PNEANet	PrintInfo
 PNEANet	GetNodeEcc
 PNEANet	GetPageRank
+PNEANet	GetPageRankMP1
+PNEANet	GetPageRankMP2
 PNEANet	GetHits
+PNEANet	GetHitsMP
 PNEANet	PlotInDegDistr
 PNEANet	PlotOutDegDistr
 PNEANet	PlotWccDistr
@@ -103,3 +106,4 @@ PNEANet	GetSubGraph
 PNEANet	GetESubGraph
 PNEANet	GetRndSubGraph
 PNEANet	GetRndESubGraph
+PNEANet	CountTriangles

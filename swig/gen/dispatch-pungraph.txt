@@ -89,7 +89,10 @@ PUNGraph	GetKCoreEdges
 PUNGraph	PrintInfo
 PUNGraph	GetNodeEcc
 PUNGraph	GetPageRank
+PUNGraph	GetPageRankMP1
+PUNGraph	GetPageRankMP2
 PUNGraph	GetHits
+PUNGraph	GetHitsMP
 PUNGraph	PlotInDegDistr
 PUNGraph	PlotOutDegDistr
 PUNGraph	PlotWccDistr
@@ -103,3 +106,4 @@ PUNGraph	GetSubGraph
 PUNGraph	GetESubGraph
 PUNGraph	GetRndSubGraph
 PUNGraph	GetRndESubGraph
+PUNGraph	CountTriangles
