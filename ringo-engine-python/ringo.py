@@ -679,9 +679,9 @@ class Ringo(object):
             Op = self.Operations[OpId] 
 
             SpecialArg = -1
-            if Op[1] == 'LoadTableTSV' or Op[1] == 'SaveTableTSV' or Op[1] == 'SaveTableBinary':
+            if Op[1] == 'LoadTableTSV' or Op[1] == 'SaveTableTSV' or Op[1] == 'Save':
                 SpecialArg = 1
-            elif Op[1] == 'LoadTableBinary':
+            elif Op[1] == 'Load':
                 SpecialArg = 0
 
             FuncArgs = []
