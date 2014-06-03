@@ -7,29 +7,31 @@ import socket
 import json
 import types
 
+def inspectStack(ringo, stackFrameOffset):
+    locals = inspect.getouterframes(inspect.currentframe())[1+stackFrameOffset][0].f_locals
+    ringo_locals = dict((var, locals[var]) for var in locals if isinstance(locals[var], RingoObject))
+    for var in locals:
+        if isinstance(locals[var], tuple):
+            all_ringo = True
+            for tuple_elem in locals[var]:
+                if not isinstance(tuple_elem, RingoObject):
+                    all_ringo = False
+            if all_ringo == True: ringo_locals[var] = locals[var]
+
+    ringo._Ringo__UpdateNaming(ringo_locals)
+
 """
 Decorator used to automate the registration of TTable operations
 """
 def registerOp(opName, trackOp = True, stackFrameOffset = 0):
     def decorator(func):
         def wrapper(*args, **kwargs):
-            unpack_args = [arg.Id if isinstance(arg, RingoObject) else arg for arg in args]
-
-            #If this is changed, GetHits must also be changed
-            locals = inspect.getouterframes(inspect.currentframe())[1+stackFrameOffset][0].f_locals
-            ringo_locals = dict((var, locals[var]) for var in locals if isinstance(locals[var], RingoObject))
-            for var in locals:
-                if isinstance(locals[var], tuple):
-                    all_ringo = True
-                    for tuple_elem in locals[var]:
-                        if not isinstance(tuple_elem, RingoObject):
-                            all_ringo = False
-                    if all_ringo == True: ringo_locals[var] = locals[var]
-
             ringo = args[0]
             if isinstance(ringo, RingoObject):
                 ringo = ringo.Ringo
-            ringo._Ringo__UpdateNaming(ringo_locals)
+            inspectStack(ringo, stackFrameOffset+1)
+
+            unpack_args = [arg.Id if isinstance(arg, RingoObject) else arg for arg in args]
 
             start_time = time.time()
             RetVal = func(*unpack_args, **kwargs)
@@ -75,15 +77,17 @@ class RingoObject(object):
 
     def __getattr__(self, name):
         Obj = self.__GetSnapObj()
+        if hasattr(self.Ringo, name):
+            inspectStack(self.Ringo, 1)
+            def wrapper(*args, **kwargs):
+                return getattr(self.Ringo, name)(self, *args, **kwargs)
+            return wrapper
         if hasattr(Obj, name):
             def wrapper(*args, **kwargs):
                 def func(self, *args, **kwargs):
-                    return getattr(Obj, name)(*args, **kwargs)
+                    Ret = getattr(Obj, name)(*args, **kwargs)
+
                 return registerOp(name, stackFrameOffset=1)(func)(self, *args, **kwargs)
-            return wrapper
-        if hasattr(self.Ringo, name):
-            def wrapper(*args, **kwargs):
-                return getattr(self.Ringo, name)(self, *args, **kwargs)
             return wrapper
         raise AttributeError
 
@@ -132,6 +136,8 @@ class Ringo(object):
         if hasattr(snap, name) and type(getattr(snap,name)) == types.TypeType:
             Obj = getattr(snap, name)
             Id = self.__UpdateObjects(Obj, [])
+            Ret = RingoObject(Id, self)
+            self.__UpdateNaming({self.__GetName(self) + '.' + name: Ret})
             return RingoObject(Id, self)
             
         raise AttributeError  
@@ -167,9 +173,8 @@ class Ringo(object):
         T.SaveSS(OutFnm)
         return RingoObject(TableId, self)
     
-    # UNTESTED
-    @registerOp('LoadTableBinary', False)
-    def LoadTableBinary(self, InFnm):
+    @registerOp('Load', False)
+    def Load(self, InFnm):
         def ConvertJSON(JSON):
             if isinstance(JSON, dict):
                 return dict([(ConvertJSON(key), ConvertJSON(JSON[key])) for key in JSON])
@@ -185,9 +190,9 @@ class Ringo(object):
             self.Lineage[ObjectId] = Packed['Lineage']
             self.Dependencies[ObjectId] = Packed['Dependencies']
             self.Metadata[ObjectId] = Packed['Metadata']
-        def ObjectDecoder(self, Object):
+        def ObjectDecoder(Object):
             if 'RingoObject' in Object:
-                return RingoObject(Object['Id'])
+                return RingoObject(Object['Id'], self)
             elif 'Set' in Object:
                 return set(Object['Content'])
             elif 'Ringo' in Object:
@@ -196,7 +201,7 @@ class Ringo(object):
                 return Object
 
         with open(InFnm+'.json') as inp:
-            JSON = ConvertJSON(json.load(inp, object_hook = lambda obj: RingoObject(obj['Id'], self) if 'RingoObject' in obj else obj))
+            JSON = ConvertJSON(json.load(inp, object_hook = ObjectDecoder))
 
         for OpId in JSON['Operations']:
             self.Operations[OpId] = JSON['Operations'][OpId]
@@ -205,14 +210,17 @@ class Ringo(object):
             UnpackObject(self, JSON['Objects'][ObjectId])
 
         SIn = snap.TFIn(InFnm+'.bin')
-        Obj = getattr(snap, JSON['Type']).Load(SIn, self.Context)
+        if JSON['Type'] == 'TTable':
+            Obj = getattr(snap, JSON['Type']).Load(SIn, self.Context)
+        else:
+            Obj = getattr(snap, JSON['Type']).Load(SIn)
         ObjId = JSON['ID']
         self.__UpdateObjects(Obj, self.Lineage[ObjId], ObjId)
         return RingoObject(ObjId, self)
 
     # UNTESTED
-    @registerOp('SaveTableBinary', False)
-    def SaveTableBinary(self, ObjectId, OutFnm):
+    @registerOp('Save', False)
+    def Save(self, ObjectId, OutFnm):
         def PackObject(self, ObjectId):
             Pack = {}
             Pack['Id'] = ObjectId
@@ -513,11 +521,15 @@ class Ringo(object):
             
         # Parse predicate
         elements = Predicate.split()
-        elements = [j for i in map(lambda s: re.split('(\W*)', s), elements) for j in i if len(j) > 0]
+
+        special = ['\(', '\)', '=', '!', '<', '>']
+        pat = '((?:%s)*)' % '|'.join(special)
+        elements = [j for i in map(lambda s: re.split(pat, s), elements) for j in i if len(j) > 0]
+
         T = self.Objects[TableId]
         Schema = T.GetSchema()
         
-        if (len(elements) == 3 or len(elements) == 5):
+        if (len(elements) == 3):
             Op = GetOp(elements[1])
     
             ColType = GetColType(Schema, elements[0])     
@@ -528,7 +540,7 @@ class Ringo(object):
                 elif ColType == snap.atFlt:
                     T.SelectAtomicFltConst(elements[0], float(elements[2]), Op)
                 elif ColType == snap.atStr:
-                    T.SelectAtomicStrConst(elements[0], str(elements[3]), Op)
+                    T.SelectAtomicStrConst(elements[0], str(elements[2][1:-1]), Op)
             else:
                 T.SelectAtomic(elements[0], elements[2], Op)
         else:
@@ -689,7 +701,7 @@ class Ringo(object):
             if isinstance(Callee, RingoObject):
                 Callee = self.__GetName(Callee)
             else:
-                Callee = 'engine'
+                Callee = self.__GetName(self)
             FuncCall = '%s.%s(%s)' % (Callee, Op[1], str.join(', ', FuncArgs))
             if RetName != str(Op[2]):
                 FuncCall = RetName+' = '+FuncCall
@@ -699,7 +711,7 @@ class Ringo(object):
         FinalName = self.__GetName(RingoObject(ObjectId, self))
         Lines.append('return '+FinalName)
          
-        Script = str.join('\n', Preamble) + '\n\ndef generate(engine'
+        Script = str.join('\n', Preamble) + '\n\ndef generate(' + self.__GetName(self)
         for x in xrange(len(Files)):
             Script += ', filename'+str(x)
         Script += '):\n'
@@ -707,17 +719,19 @@ class Ringo(object):
         for Line in Lines:
             Script += '    '+Line+'\n'
 
-        Script += '\nengine = ringo.Ringo()\n'
+        Script += '\n%s = ringo.Ringo()\n' % self.__GetName(self)
         Script += 'files = [%s]\n' % str.join(', ', Files)
         Script += 'for i in xrange(min(len(files), len(sys.argv)-1)):\n'
         Script += '    files[i] = sys.argv[i+1]\n'
-        Script += FinalName + ' = generate(engine, *files)\n'
+        Script += FinalName + ' = generate(%s, *files)\n' % self.__GetName(self)
 
         return Script
 
     def __GetName(self, Value):
         if isinstance(Value, basestring):
             return "'"+Value+"'"
+        if isinstance(Value, Ringo):
+            return "engine"
         try:
             if Value in self.ObjectNames:
                 return self.ObjectNames[Value]
