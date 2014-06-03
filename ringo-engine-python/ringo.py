@@ -99,11 +99,6 @@ def colNamesEqual(name1, name2):
 	return snap.TTable.NormalizeColName(name1) == snap.TTable.NormalizeColName(name2) 
 
 class Ringo(object):
-    NODE_ATTR_NAME = "__node_attr"
-    EDGE_SRC_ATTR_NAME = "__edge_src_attr"
-    EDGE_DST_ATTR_NAME = "__edge_dst_attr"
-
-    dataTypes = ['int', 'float', 'string']
     def __init__(self):
         # mapping between object ids and snap objects
         self.Objects = {}
@@ -139,6 +134,10 @@ class Ringo(object):
             Ret = RingoObject(Id, self)
             self.__UpdateNaming({self.__GetName(self) + '.' + name: Ret})
             return RingoObject(Id, self)
+
+        #For enums
+        if hasattr(snap, name) and type(getattr(snap, name)) == types.IntType:
+            return getattr(snap, name)
             
         raise AttributeError  
         
