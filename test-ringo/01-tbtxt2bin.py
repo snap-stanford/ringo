@@ -29,6 +29,8 @@ if __name__ == '__main__':
     t.show("load text")
     r.show("__loadtext__")
 
-    ringo.SaveTableBinary(table, dstfile)
+    ringo.Save(table, dstfile)
     t.show("save bin")
     r.show("__savebin__")
+
+    table.GenerateProvenance('provenance_scripts/01.py')

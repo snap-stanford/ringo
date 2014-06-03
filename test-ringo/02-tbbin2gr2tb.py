@@ -21,16 +21,18 @@ if __name__ == '__main__':
     t = testutils.Timer()
     r = testutils.Resource()
     
-    table = ringo.LoadTableBinary(srcfile)
+    table = ringo.Load(srcfile)
     t.show("load bin")
     r.show("__loadbin__")
 
     S = map(lambda x: x[0], ringo.GetSchema(table))
     assert(len(S) >= 2)
 
-    G = ringo.ToGraph(table, S[0], S[1])
+    G = ringo.ToGraph(ringo.PNGraph, table, S[0], S[1])
     t.show("create graph")
     r.show("__creategraph__")
-    # Ringo? table2 = snap.TTable.GetEdgeTable(graph, context)
+    #table2 = ringo.GetEdgeTable(G)
     t.show("table from graph")
     r.show("__tablefromgraph__")
+
+    G.GenerateProvenance('provenance_scripts/02.py')

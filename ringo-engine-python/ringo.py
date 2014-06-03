@@ -85,7 +85,7 @@ class RingoObject(object):
         if hasattr(Obj, name):
             def wrapper(*args, **kwargs):
                 def func(self, *args, **kwargs):
-                    Ret = getattr(Obj, name)(*args, **kwargs)
+                    return getattr(Obj, name)(*args, **kwargs)
 
                 return registerOp(name, stackFrameOffset=1)(func)(self, *args, **kwargs)
             return wrapper
@@ -138,7 +138,7 @@ class Ringo(object):
         #For enums
         if hasattr(snap, name) and type(getattr(snap, name)) == types.IntType:
             return getattr(snap, name)
-            
+
         raise AttributeError  
         
     # Use case:
@@ -625,10 +625,14 @@ class Ringo(object):
 
     # USE CASE 1 OK
     @registerOp('ToGraph')
-    def ToGraph(self, TableId, SrcCol, DstCol, Directed = True):
+    def ToGraph(self, GraphTypeId, TableId, SrcCol, DstCol, Directed = True):
+        GraphType = self.Objects[GraphTypeId]
         T = self.Objects[TableId]
         
-        G = snap.ToGraph(snap.PNGraph if Directed else snap.PUNGraph, T, SrcCol, DstCol, snap.aaFirst)
+        if hasattr(snap, 'ToGraphMP'):
+            G = snap.ToGraphMP(GraphType, T, SrcCol, DstCol)
+        else:
+            G = snap.ToGraph(GraphType, T, SrcCol, DstCol, snap.aaFirst)
         GraphId = self.__UpdateObjects(G, self.Lineage[TableId])
         return RingoObject(GraphId, self)
 
@@ -662,6 +666,13 @@ class Ringo(object):
         TableId = self.__GetId(self.Objects)
         HTId = self.__UpdateObjects(HT, self.Lineage[GraphId])
         return RingoObject(HTId, self)
+
+    @registerOp('GetEdgeTable')
+    def GetEdgeTable(self, GraphId):
+        Graph = self.Objects[GraphId]
+        Table = snap.TTable.GetEdgeTable(Graph, self.Context)
+        TableId = self.__UpdateObjects(Table, self.Lineage[GraphId])
+        return RingoObject(TableId, self)
 
     @registerOp('GenerateProvenance', False)
     def GenerateProvenance(self, ObjectId, OutFnm):
