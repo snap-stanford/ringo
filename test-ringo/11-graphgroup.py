@@ -24,7 +24,7 @@ if __name__ == '__main__':
     t = testutils.Timer()
     r = testutils.Resource()
 
-    S = [("Id", "int"), ("OwnerUserId", "int"), ("AcceptedAnswerId", "int"), ("CreationDate", "string"), ("Score", "int")]
+    S = [("Id", "int"), ("OwnerUserId", "int"), ("AcceptedAnswerId", "int"), ("CreationDate", "int"), ("Score", "int")]
     posts = ringo.LoadTableTSV(S, postsfile)
     t.show("load posts text")
     r.show("__loadpoststext__")
@@ -42,6 +42,8 @@ if __name__ == '__main__':
     t.show("join")
     r.show("__join__")
     
+    table2.SetSrcCol("OwnerUserId-1")
+    table2.SetDstCol("OwnerUserId-2")
     gseq = table2.ToGraphPerGroup("Tag", snap.aaFirst)
     t.show("graphseq", gseq)
     r.show("__graphseq__")

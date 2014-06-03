@@ -24,7 +24,7 @@ if __name__ == '__main__':
     t = testutils.Timer()
     r = testutils.Resource()
 
-    S = [("Id", "int"), ("OwnerUserId", "int"), ("AcceptedAnswerId", "int"), ("CreationDate", "string"), ("Score", "int")]
+    S = [("Id", "int"), ("OwnerUserId", "int"), ("AcceptedAnswerId", "int"), ("CreationDate", "int"), ("Score", "int")]
     table = ringo.LoadTableTSV(S, srcfile)
     t.show("load text")
     r.show("__loadtext__")
@@ -33,6 +33,8 @@ if __name__ == '__main__':
     t.show("join")
     r.show("__join__")
 
-    gseq = table2.ToGraphSequence("CreationDate-1", snap.aaFirst, WINDOW_SIZE, WINDOW_SIZE)
+    table2.SetSrcCol("OwnerUserId-1")
+    table2.SetDstCol("OwnerUserId-2")
+    gseq = table2.ToGraphSequence("CreationDate", snap.aaFirst, WINDOW_SIZE, WINDOW_SIZE)
     t.show("graphseq", gseq)
     r.show("__graphseq__")
