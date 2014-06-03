@@ -29,7 +29,7 @@ if __name__ == '__main__':
     t.show("load posts text")
     .show("__loadpoststext__")
 
-    questions = ringo.Select(table, "Tag = python", False)
+    questions = ringo.Select(table, "Tag = 'python'", False)
     t.show("selected tag = 'python'")
     r.show("__selectedtagpython__")
   

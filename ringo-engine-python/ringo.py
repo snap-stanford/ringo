@@ -517,7 +517,7 @@ class Ringo(object):
         T = self.Objects[TableId]
         Schema = T.GetSchema()
         
-        if (len(elements) == 3):
+        if (len(elements) == 3 or len(elements) == 5):
             Op = GetOp(elements[1])
     
             ColType = GetColType(Schema, elements[0])     
@@ -528,7 +528,7 @@ class Ringo(object):
                 elif ColType == snap.atFlt:
                     T.SelectAtomicFltConst(elements[0], float(elements[2]), Op)
                 elif ColType == snap.atStr:
-                    T.SelectAtomicStrConst(elements[0], str(elements[2][1:-1]), Op)
+                    T.SelectAtomicStrConst(elements[0], str(elements[3]), Op)
             else:
                 T.SelectAtomic(elements[0], elements[2], Op)
         else:
