@@ -4,7 +4,6 @@ Tables
 A Table in SNAP is represented by the class :class:`TTable`.
 
 TTable
-========
 
 .. class:: TTable()
 
@@ -237,20 +236,81 @@ Return value:
 
 .. function:: BegRI()
 
-To Be Documented
+Gets an iterator to the first valid row of the table.
+
+Parameters:
+
+- None
+
+Return value:
+
+- TRowIterator
 
 *********************************************************************
 
 .. function:: BegRIWR()
 
-To Be Documented
+Gets an iterator to remove the first valid row.
+
+Parameters:
+
+- None
+
+Return value:
+
+- TRowIterator
 
 *********************************************************************
 
-.. function:: Classify()
-.. function:: ClassifyAtomic()
+.. function:: Classify(Predicate, LabelAttr, PositiveLabel, NegativeLabel)
 
-To Be Documented
+Adds a label attribute with positive labels on selected rows and negative 
+labels on the rest.
+
+Parameters:
+
+-  *Predicate*: snap.TPredicate (input)
+
+  Rows are selected according to this predicate.
+
+-  *LabelAttr*: snap.TStr (input)
+
+-  *PositiveLabel*: snap.TInt (input)
+
+-  *NegativeLabel*: snap.TInt (input)
+
+Return value:
+
+- None
+
+*********************************************************************
+
+.. function:: ClassifyAtomic(Attr1, Attr2, Cmp, LabelAttr, PositiveLabel,
+                             NegativeLabel)
+
+Adds a label attribute with positive labels on selected rows and negative 
+labels on the rest.
+
+Parameters:
+
+-  *Attr1*: snap.TStr (input)
+
+-  *Attr2*: snap.TStr (input)
+
+-  *Cmp*: snap.TPredComp (input)
+
+  Atomic compare operator over *Attr1* and *Attr2*. Rows are selected
+  according to the result of this comparison.
+
+-  *LabelAttr*: snap.TStr (input)
+
+-  *PositiveLabel*: snap.TInt (input)
+
+-  *NegativeLabel*: snap.TInt (input)
+
+Return value:
+
+- None
 
 *********************************************************************
 
@@ -444,12 +504,6 @@ Parameters:
 Return value:
 
 - None
-
-*********************************************************************
-
-.. function:: ColGenericOp
-
-REMOVE ?
 
 *********************************************************************
 
@@ -732,19 +786,43 @@ Return value:
 
 .. function:: EndRI()
 
-To Be Documented
+Gets an iterator to the last valid row of the table.
+
+Parameters:
+
+- None
+
+Return value:
+
+- TRowIterator
 
 *********************************************************************
 
 .. function:: EndRIWR()
 
-To Be Documented
+Gets an iterator to remove the last valid row.
+
+Parameters:
+
+- None
+
+Return value:
+
+- TRowIterator
 
 *********************************************************************
 
-.. function:: GetColType()
+.. function:: GetColType(Attr)
 
-To Be Documented
+Gets type of an attribute.
+
+Parameters:
+
+-  *Attr*: snap.TStr (input)
+
+Return value:
+
+- TAttrType object representing the attribute type
 
 *********************************************************************
 
@@ -896,9 +974,19 @@ Return value:
 
 *********************************************************************
 
-.. function:: GetFltValAtRowIdx()
+.. function:: GetFltValAtRowIdx(ColIdx, RowIdx)
 
-To Be Documented
+Gets the value of the float column at index *ColIdx* at row *RowIdx*.
+
+Parameters:
+
+-  *ColIdx*: snap.TInt (input)
+
+-  *RowIdx*: snap.TInt (input)
+
+Return value:
+
+- snap.TFlt
 
 *********************************************************************
 
@@ -918,9 +1006,19 @@ Return value:
 
 *********************************************************************
 
-.. function:: GetIntValAtRowIdx()
+.. function:: GetIntValAtRowIdx(ColIdx, RowIdx)
 
-To Be Documented
+Gets the value of the integer column at index *ColIdx* at row *RowIdx*.
+
+Parameters:
+
+-  *ColIdx*: snap.TInt (input)
+
+-  *RowIdx*: snap.TInt (input)
+
+Return value:
+
+- snap.TInt
 
 *********************************************************************
 
@@ -942,9 +1040,25 @@ Return value:
 
 *********************************************************************
 
-.. function:: GetMapHitsIterator()
+.. function:: GetMapHitsIterator(GraphSeq, Context, MaxIter)
 
-To Be Documented
+Computes a sequence of Hits tables for a graph sequence. 
+
+Parameters:
+
+- *GraphSeq*: snap.TVec<snap.PNEANet>
+
+  Graph sequence vector
+
+- *Context*: snap.TTableContext
+
+- *MaxIter*: int [default: 20]
+
+Returns:
+
+- snap.TTableIterator
+
+  Iterator over sequence of Hits tables.
 
 *********************************************************************
 
@@ -1119,12 +1233,6 @@ Return value:
 
 *********************************************************************
 
-.. function:: InitIds()
-
-NO NEED?
-
-*********************************************************************
-
 .. function:: Intersection(Table)
 .. function:: Intersection(PTable)
 
@@ -1142,12 +1250,6 @@ Return value:
 - snap.PTable
 
   Table representing the intersection.
-
-*********************************************************************
-
-.. function:: IsNextK()
-
-To Be Documented
 
 *********************************************************************
 
@@ -1244,18 +1346,6 @@ Return value:
 - snap.PTable
 
   Table representing the 'minus'.
-
-*********************************************************************
-
-.. function:: New()
-
-To Be Documented
-
-*********************************************************************
-
-.. function:: NextGraphIterator()
-
-To Be Documented
 
 *********************************************************************
 
@@ -1381,9 +1471,23 @@ Return value:
 
 *********************************************************************
 
-.. function:: Rename()
+.. function:: Rename(Attr, NewAttr)
 
-To Be Documented
+Renames an attribute in a table.
+
+Parameters:
+
+-  *Attr*: snap.TStr (input)
+
+  Attribute which is being renamed.
+
+-  *NewAttr*: snap.TStr (input)
+
+  New name of attribute.
+
+Return value:
+
+- None
 
 *********************************************************************
 
@@ -1472,12 +1576,6 @@ Parameters:
 Return value:
 
 - None
-
-*********************************************************************
-
-.. function:: SelectAtomicConst()
-
-To Be Documented
 
 *********************************************************************
 
@@ -1589,15 +1687,34 @@ Return value:
 
 *********************************************************************
 
-.. function:: SelfSimJoin()
+.. function:: SelfSimJoin(Attrs, DistColAttr, SimType, Threshold)
 
-To Be Documented
+Performs a self sim-join on a table.
 
-*********************************************************************
+Performs join if the distance between two rows is less than the 
+specified threshold.
 
-.. function:: SelfSimJoinPerGroup()
+Parameters:
 
-To Be Documented
+- *Attrs*: Snap.TStrV (input)
+
+  Attribute vector for computing distance between rows.
+
+- *DistColAttr*: Snap.TStr (input)
+
+  Attribute representing distance between rows in new table
+
+- *SimType*: Snap.TSimType (input)
+
+  Distance metric
+
+- *Threshold*: Snap.TFlt (input)
+
+Return value:
+
+- snap.PTable
+
+  Joint table.
 
 *********************************************************************
 
@@ -1673,15 +1790,15 @@ specified threshold.
 
 Parameters:
 
-- *Attr1*: Snap.TStr (input)
+- *Attr1*: Snap.TStrV (input)
 
-  Attribute corresponding to current table
+  Attribute vector corresponding to current table
 
 - *Table*: snap.TTable (input)
 
-- *Attr2*: Snap.TStr (input)
+- *Attr2*: Snap.TStrV (input)
 
-  Attribute corresponding to passed table
+  Attribute vector corresponding to passed table
 
 - *DistColAttr*: Snap.TStr (input)
 
@@ -2095,12 +2212,6 @@ Return value:
 - snap.PTable
 
   Table representing the union.
-
-*********************************************************************
-
-.. function:: UnionAllInPlace()
-
-To Be Documented
 
 *********************************************************************
 

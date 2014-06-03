@@ -1,4 +1,4 @@
-Welcome to Snap.py!
+Welcome to Ringo!
 ===================
 
 Contents:
