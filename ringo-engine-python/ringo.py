@@ -629,8 +629,8 @@ class Ringo(object):
         GraphType = self.Objects[GraphTypeId]
         T = self.Objects[TableId]
         
-        if hasattr(snap, 'ToGraphMP'):
-            G = snap.ToGraphMP(GraphType, T, SrcCol, DstCol)
+        if hasattr(snap, 'ToGraphMP') and GraphType is snap.PNGraph:
+            G = snap.ToGraphMP(snap.PNGraphMP, T, SrcCol, DstCol)
         else:
             G = snap.ToGraph(GraphType, T, SrcCol, DstCol, snap.aaFirst)
         GraphId = self.__UpdateObjects(G, self.Lineage[TableId])
