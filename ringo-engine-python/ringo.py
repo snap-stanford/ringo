@@ -655,14 +655,17 @@ class Ringo(object):
 
     # USE CASE 2 OK
     @registerOp('PageRank')
-    def PageRank(self, GraphId, ResultAttrName = 'PageRank', AddToNetwork = False, C = 0.85, Eps = 1e-4, MaxIter = 100):
+    def PageRank(self, GraphId, AddToNetwork = False, C = 0.85, Eps = 1e-4, MaxIter = 100):
         if AddToNetwork:
             raise NotImplementedError()
 
         Graph = self.Objects[GraphId]
         HT = snap.TIntFltH()
         # Which version of PageRank is called ?
-        snap.GetPageRank(Graph, HT, C, Eps, MaxIter)
+        if hasattr(snap, 'GetPageRankMP1'):
+            snap.GetPageRankMP1(Graph, HT, C, Eps, MaxIter)
+        else:
+            snap.GetPageRank(Graph, HT, C, Eps, MaxIter)
         TableId = self.__GetId(self.Objects)
         HTId = self.__UpdateObjects(HT, self.Lineage[GraphId])
         return RingoObject(HTId, self)
