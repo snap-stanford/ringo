@@ -22,19 +22,12 @@ with an entry for each question post + all the tags associated with that post.
 
 Scripts:
 =======
-parseStackOverflowXml.py (taken from Martin and slightly modified):
-	Parses the xml file to a tsv file. I replace all text field values with a constant 
-	string "a". Feel free to modify it if you want to keep string values / map them to 
-	integers.. In the script you can define a list of size parameters. 
-	For every such parameter Sz, the script would generate a TSV file generated from the 
-	first Sz post records ("posts_<Sz>.test.tsv").
-	The entire dataset consists of 15,838,934 post records.
-	
-processPosts.py:
-	Takes the output of parseStackOverflowXml.py and projects it to the following schema:
-	posts(Id, PostTypeId, AcceptedAnswerId, OwnerUserId, Body)
-	Use: python processPosts.py input output 
-	- e.g. python processPosts.py posts_1000.test.tsv posts_1000.tsv
+parseSO_fast.py:
+	Parses the xml file to a tsv file. The maximal number of records to parse is defined
+	as a global variable 'limit' in the script. The output is a tsv file 'posts_<limit>.tsv'
+	with the following schema: posts(Id, PostTypeId, AcceptedAnswerId, OwnerUserId, Body)
+	The entire posts.xml (July 2012 version) dataset consists of 10,338,371 post records.
+	Use: python parseSO_fast.py posts.xml
 
 joinPostsTags.py: 
 	Takes a the output of processPosts.py (i.e. all posts - without tags) and tags.tsv 
