@@ -196,6 +196,17 @@ Return value:
 
 - None
 
+Code snippet showing example usage: ::
+
+  # Groups rows of table on attribute "Quarter"
+  # Aggregates values in each group on attribute "Units"
+  # Creates a new column, "Sum", to store the result
+  
+  GroupBy = snap.TStrV()
+  GroupBy.Add("Quarter")
+
+  table.Aggregate(GroupBy, snap.aaSum, "Units", "Sum")
+
 *********************************************************************
 
 .. function:: AggregateCols(AggrAttrs, AggOp, ResAttr)
@@ -231,6 +242,18 @@ Parameters:
 Return value:
 
 - None
+
+Code snippet showing example usage: ::
+
+  # Finds mean over three attributes for each row in the table
+  # Creates a new column, "Mean Score", to store the result
+  
+  AggrCols = snap.TStrV()
+  AggrCols.Add("Score 1")
+  AggrCols.Add("Score 2")
+  AggrCols.Add("Score 3")
+  
+  table.AggregateCols(AggrCols, snap.aaMean, "Mean Score")
 
 *********************************************************************
 
@@ -283,6 +306,18 @@ Return value:
 
 - None
 
+Code snippet showing example usage: ::
+
+  # Adds a column to the table, with values depending on whether
+  # predicate is satisfied for the row
+
+  # Construct the predicate object
+  predicate = snap.TPredicate()
+  ...
+
+  # Classify
+  table.ClassifyAtomic(predicate, "Dir", 1, -1)
+
 *********************************************************************
 
 .. function:: ClassifyAtomic(Attr1, Attr2, Cmp, LabelAttr, PositiveLabel,
@@ -304,6 +339,8 @@ Parameters:
 
 -  *LabelAttr*: snap.TStr (input)
 
+  Attribute corresponding to the integer column to be added to the table.
+
 -  *PositiveLabel*: snap.TInt (input)
 
 -  *NegativeLabel*: snap.TInt (input)
@@ -311,6 +348,13 @@ Parameters:
 Return value:
 
 - None
+
+Code snippet showing example usage: ::
+
+  # Adds a column, "Dir", to the table with values 1 and -1
+  # according to whether "Src" > "Dst" for each row
+
+  table.ClassifyAtomic("Src", "Dst", snap.GT, "Dir", 1, -1)
 
 *********************************************************************
 
@@ -370,6 +414,14 @@ Parameters:
 Return value:
 
 - None
+
+Code snippet showing example usage: ::
+
+  # Add attributes "A" and "B" and store the result in "C"
+  table.ColAdd("A", "B", "C")
+
+  # Add the value 5 to attribute "A" for every row
+  table.ColAdd("A", 5, "", snap.TBool(False))
 
 *********************************************************************
 
@@ -505,6 +557,11 @@ Return value:
 
 - None
 
+Code snippet showing example usage: ::
+
+  # Divide "A" by "B" and store the result in "C"
+  table.ColDiv("A", "B", "C")
+
 *********************************************************************
 
 .. function:: ColMax(Attr1, Attr2, ResAttr)
@@ -536,6 +593,11 @@ Return value:
 
 - None
 
+Code snippet showing example usage: ::
+
+  # Find the max of "A" by "B" and store the result in "C"
+  table.ColMax("A", "B", "C")
+
 *********************************************************************
 
 .. function:: ColMin(Attr1, Attr2, ResAttr)
@@ -566,6 +628,11 @@ Parameters:
 Return value:
 
 - None
+
+Code snippet showing example usage: ::
+
+  # Find the min of "A" by "B" and store the result in "C"
+  table.ColMin("A", "B", "C")
 
 *********************************************************************
 
@@ -626,6 +693,11 @@ Return value:
 
 - None
 
+Code snippet showing example usage: ::
+
+  # Mod "A" with "B" and store the result in "C"
+  table.ColMod("A", "B", "C")
+
 *********************************************************************
 
 .. function:: ColMul(Attr1, Attr2, ResAttr)
@@ -684,6 +756,12 @@ Parameters:
 Return value:
 
 - None
+
+Code snippet showing example usage: ::
+
+  # Multiply "A" and "B" and store the result in "C"
+  table.ColMul("A", "B", "C")
+
 
 *********************************************************************
 
@@ -744,6 +822,11 @@ Return value:
 
 - None
 
+Code snippet showing example usage: ::
+
+  # Subtract "B" from "A" and store the result in "C"
+  table.ColSub("A", "B", "C")
+
 *********************************************************************
 
 .. function:: Count(Attr, ResAttr)
@@ -768,19 +851,11 @@ Return value:
 
 - None
 
-*********************************************************************
+Code snippet showing example usage: ::
 
-.. function:: Defrag()
-
-Releases memory for deleted rows in the table.
-
-Parameters:
-
-- None
-
-Return value:
-
-- None
+  # Counts number of rows in the table with the same value at "Src", 
+  # for each row
+  table.Count("Src", "Count")
 
 *********************************************************************
 
@@ -823,6 +898,12 @@ Parameters:
 Return value:
 
 - TAttrType object representing the attribute type
+
+Code snippet showing example usage: ::
+
+  # Returns type of a column
+  # either snap.atInt, snap.atFlt, snap.atStr
+  table.GetColType("Src")
 
 *********************************************************************
 
@@ -1231,6 +1312,17 @@ Return value:
 
 - None
 
+Code snippet showing example usage: ::
+
+  # Groups table on pair of attributes "Quarter", "Units"
+  # Creates a new column, "GroupCol", to store the result
+  
+  GroupBy = snap.TStrV()
+  GroupBy.Add("Quarter")
+  GroupBy.Add("Units")
+
+  table.Group(GroupBy, "GroupCol")
+
 *********************************************************************
 
 .. function:: Intersection(Table)
@@ -1250,6 +1342,13 @@ Return value:
 - snap.PTable
 
   Table representing the intersection.
+
+Code snippet showing example usage: ::
+
+  # Returns a new table representing the intersection of t1 and t2
+  # Schema of t1 and t2 should match
+  
+  t3 = t1.Intersection(t2)
 
 *********************************************************************
 
@@ -1279,6 +1378,12 @@ Return value:
 
   Joint table.
 
+Code snippet showing example usage: ::
+
+  # Performs a join on attribute "Src" of t1 and "Dst" of t2
+  
+  t3 = t1.Join("Src", t2, "Dst")
+
 *********************************************************************
 
 .. function:: Load(SIn, Context)
@@ -1296,6 +1401,18 @@ Parameters:
 Return value:
 
 - snap.PTable
+
+Code snippet showing example usage: ::
+
+  # Loads a table saved in a file in binary format
+  # This may be faster than loading it from a text file
+
+  import snap
+
+  context = snap.TTableContext()
+  srcfile = "table.bin"
+
+  table = snap.TTable.Load(snap.TFIn(srcfile), context)
 
 *********************************************************************
 
@@ -1327,6 +1444,24 @@ Return value:
 
 - snap.PTable
 
+Code snippet showing example usage: ::
+
+  # Loads a table from a text file
+  # Text file contains two tab separated integers on each line
+
+  import snap
+
+  context = snap.TTableContext()
+
+  schema = snap.Schema()
+  schema.Add(snap.TStrTAttrPr("Src", snap.atInt))
+  schema.Add(snap.TStrTAttrPr("Dst", snap.atInt))
+
+  srcfile = "table.txt"
+
+  table = snap.TTable.LoadSS(schema, srcfile, context, "\t", snap.TBool(False))
+  
+
 *********************************************************************
 
 .. function:: Minus(Table)
@@ -1346,6 +1481,13 @@ Return value:
 - snap.PTable
 
   Table representing the 'minus'.
+
+Code snippet showing example usage: ::
+
+  # Returns a new table representing t1 - t2
+  # Schema of t1 and t2 should match
+  
+  t3 = t1.Minus(t2)
 
 *********************************************************************
 
@@ -1376,6 +1518,16 @@ Return value:
 
 - None
 
+Code snippet showing example usage: ::
+
+  # Finds rank of each row in the table for the ordering ("Src", "Dst")
+  # Stores result in a new column, "Res"
+  
+  OrderBy = snap.TStrV()
+  OrderBy.Add("Src")
+  OrderBy.Add("Dst")
+  table.Order(OrderBy, "Res")
+
 *********************************************************************
 
 .. function:: Project(ProjectAttrs)
@@ -1391,6 +1543,16 @@ Parameters:
 Return value:
 
 - snap.PTable
+
+Code snippet showing example usage: ::
+
+  # Projects the attributes "Quarter" and "Grade" in t1
+  # Returns a new table, t2, containing the projection
+  
+  Attrs = snap.TStrV()
+  Attrs.Add("Quarter")
+  Attrs.Add("Grade")
+  t2 = t1.Project(Attrs)
 
 *********************************************************************
 
@@ -1408,6 +1570,16 @@ Parameters:
 Return value:
 
 - None
+
+Code snippet showing example usage: ::
+
+  # Projects the attributes "Quarter" and "Grade" in t1
+  # Projection happens in place, t1 is modified
+
+  Attrs = snap.TStrV()
+  Attrs.Add("Quarter")
+  Attrs.Add("Grade")
+  t2 = t1.Project(Attrs)
 
 *********************************************************************
 
@@ -1429,6 +1601,13 @@ Return value:
 
 - None
 
+Code snippet showing example usage: ::
+
+  # Reads values of all rows for float attribute "Average", into V
+
+  V = snap.TFltV()
+  table.ReadFltCol("Average", V)
+
 *********************************************************************
 
 .. function:: ReadIntCol(Attr, Result)
@@ -1448,6 +1627,13 @@ Parameters:
 Return value:
 
 - None
+
+Code snippet showing example usage: ::
+
+  # Reads values of all rows for integer attribute "Score", into V
+
+  V = snap.TIntV()
+  table.ReadIntCol("Score", V)
 
 *********************************************************************
 
@@ -1469,6 +1655,13 @@ Return value:
 
 - None
 
+Code snippet showing example usage: ::
+
+  # Reads values of all rows for string attribute "Name", into V
+
+  V = snap.TStrV()
+  table.ReadStrCol("Name", V)
+
 *********************************************************************
 
 .. function:: Rename(Attr, NewAttr)
@@ -1489,11 +1682,11 @@ Return value:
 
 - None
 
-*********************************************************************
+Code snippet showing example usage: ::
 
-.. function:: Save(SOut)
+  # Renames attribute Attr to NewAttr 
 
-Saves table schema and content into an output stream (in binary).
+  table.Rename("Attr", "NewAttr")
 
 *********************************************************************
 
@@ -1511,6 +1704,13 @@ Return value:
 
 - None
 
+Code snippet showing example usage: ::
+
+  # Saves a table to a file in binary format
+  # This may be faster than saving it in text format
+
+  table.SaveBin("out.bin")
+
 *********************************************************************
 
 .. function:: SaveSS(OutFNm)
@@ -1526,6 +1726,12 @@ Parameters:
 Return value:
 
 - None
+
+Code snippet showing example usage: ::
+
+  # Saves a table to a text file
+
+  table.SaveSS("out.txt")
 
 *********************************************************************
 
@@ -1626,6 +1832,13 @@ Parameters:
 Return value:
 
 - None
+
+Code snippet showing example usage: ::
+
+  # Selects rows of table with Src <= 10 into table2
+  
+  table2 = snap.TTable.New(table.GetSchema(), snap.TTableContext())
+  table.SelectAtomicIntConst("Src", 10, snap.LTE, table2)
 
 *********************************************************************
 
@@ -2191,6 +2404,13 @@ Return value:
 
   Table representing the union.
 
+Code snippet showing example usage: ::
+
+  # Returns a new table representing the union of t1 and t2
+  # Schema of t1 and t2 should match
+  
+  t3 = t1.Union(t2)
+
 *********************************************************************
 
 .. function:: UnionAll(Table)
@@ -2219,7 +2439,7 @@ Return value:
 
 Removes rows with duplicate values across the given attributes.
 
-Modifies current table.
+Modifies table in place.
 
 Parameters:
 
@@ -2234,3 +2454,13 @@ Parameters:
 Return value:
 
 - None
+
+Code snippet showing example usage: ::
+
+  # Keeps exactly one row corresponding to every ("Quarter", "Units") pair
+
+  Attrs = snap.TStrV()
+  Attrs.Add("Quarter")
+  Attrs.Add("Units")
+
+  table.Unique(Attrs, snap.TBool(True))
