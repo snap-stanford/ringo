@@ -149,14 +149,14 @@ class Ringo(object):
     @registerOp('LoadTableTSV')
     def LoadTableTSV(self, Schema, InFnm, SeparatorChar = '\t', HasTitleLine = False):
         # prepare parameters to call TTable::LoadSS
-        S = snap.Schema()  # How should this be written ?
+        S = snap.Schema()
         for Col in Schema:
             if Col[1] == 'int':
-                S.Add(snap.TStrTAttrPr(Col[0], snap.atInt))  # tentative TTable interface syntax...
+                S.Add(snap.TStrTAttrPr(Col[0], snap.atInt))
             elif Col[1] == 'float':
-                S.Add(snap.TStrTAttrPr(Col[0], snap.atFlt))  # tentative TTable interface syntax...
+                S.Add(snap.TStrTAttrPr(Col[0], snap.atFlt))
             elif Col[1] == 'string':
-                S.Add(snap.TStrTAttrPr(Col[0], snap.atStr))  # tentative TTable interface syntax...
+                S.Add(snap.TStrTAttrPr(Col[0], snap.atStr))
             else:
                 print "Illegal type %s for attribute %s" % (Col[1], Col[0])
 
@@ -972,8 +972,8 @@ class Ringo(object):
         DegVId = self.__UpdateObjects(DegV, self.Lineage[GraphId])
         return RingoObject(DegVId, self)
 
-    @registerOp('GetDegSeqV')
-    def GetDegSeqV(self, GraphId):
+    @registerOp('GetDegSeqV2')
+    def GetDegSeqV2(self, GraphId):
         Graph = self.Objects[GraphId]
         InDegV = snap.TIntV()
         OutDegV = snap.TIntV()
@@ -1086,8 +1086,8 @@ class Ringo(object):
         SigId = self.__UpdateObjects(Sig, self.Lineage[GraphId])
         return RingoObject(SigId, self)
 
-    @registerOp('GetTreeSig')
-    def GetTreeSig(self, GraphId, RootNId):
+    @registerOp('GetTreeSig2')
+    def GetTreeSig2(self, GraphId, RootNId):
         Graph = self.Objects[GraphId]
         Sig = snap.TIntV()
         NodeMap = snap.TIntPrV()
@@ -1104,8 +1104,8 @@ class Ringo(object):
         DistNbrsVId = self.__UpdateObjects(DistNbrsV, self.Lineage[GraphId])
         return RingoObject(DistNbrsVId, self)
 
-    @registerOp('GetAnf')
-    def GetAnf(self, GraphId, MxDist, IsDir, NApprox = 32):
+    @registerOp('GetAnf2')
+    def GetAnf2(self, GraphId, MxDist, IsDir, NApprox = 32):
         Graph = self.Objects[GraphId]
         DistNbrsV = snap.TIntFltKdV()
         snap.GetAnf(Graph, DistNbrsV, MxDist, snap.TBool(IsDir), NApprox)
@@ -1118,8 +1118,8 @@ class Ringo(object):
         Len = snap.GetAnfEffDiam(Graph, snap.TBool(IsDir), Percentile, NApprox)
         return Len
 
-    @registerOp('GetAnfEffDiam', False)
-    def GetAnfEffDiam(self, GraphId, NRuns = 1, NApprox = -1):
+    @registerOp('GetAnfEffDiam2', False)
+    def GetAnfEffDiam2(self, GraphId, NRuns = 1, NApprox = -1):
         Graph = self.Objects[GraphId]
         Len = snap.GetAnfEffDiam(Graph, NRuns, NApprox)
         return Len
@@ -1159,8 +1159,8 @@ class Ringo(object):
         Len = snap.GetShortPath(Graph, SrcNId, DstNId, snap.TBool(IsDir))
         return Len
 
-    @registerOp('GetShortPath')
-    def GetShortPath(self, GraphId, SrcNId, IsDir = False, MaxDist = snap.TInt.Mx):
+    @registerOp('GetShortPath2')
+    def GetShortPath2(self, GraphId, SrcNId, IsDir = False, MaxDist = snap.TInt.Mx):
         Graph = self.Objects[GraphId]
         NIdToDistH = snap.TIntH()
         Len = snap.GetShortPath(Graph, SrcNId, NIdToDistH, snap.TBool(IsDir), MaxDist)
@@ -1205,8 +1205,8 @@ class Ringo(object):
         NodeBtwHId = self.__UpdateObjects(NodeBtwH, self.Lineage[GraphId])
         return RingoObject(NodeBtwHId, self)
 
-    @registerOp('GetBetweennessCentr')
-    def GetBetweennessCentr(self, GraphId, NodeFrac = 1.0):
+    @registerOp('GetBetweennessCentr2')
+    def GetBetweennessCentr2(self, GraphId, NodeFrac = 1.0):
         Graph = self.Objects[GraphId]
         NodeBtwH = snap.TIntFltH()
         EdgeBtwH = snap.TIntPrFltH()
@@ -1458,8 +1458,8 @@ class Ringo(object):
         GraphId = self.__UpdateObjects(Graph, [])
         return RingoObject(GraphId, self)
 
-    @registerOp('GenConfModel')
-    def GenConfModel(self, GraphId):
+    @registerOp('GenConfModel2')
+    def GenConfModel2(self, GraphId):
         Graph = self.Objects[GraphId]
         Ret = snap.GenConfModel(Graph)
         RetId = self.__UpdateObjects(Ret, self.Lineage[GraphId])
@@ -1563,8 +1563,8 @@ class Ringo(object):
         GraphId = self.__UpdateObjects(Graph, self.Lineage[GraphTypeId])
         return RingoObject(GraphId, self)
 
-    @registerOp('LoadEdgeList')
-    def LoadEdgeList(self, GraphTypeId, InFNm, SrcColId, DstColId):
+    @registerOp('LoadEdgeList2')
+    def LoadEdgeList2(self, GraphTypeId, InFNm, SrcColId, DstColId):
         GraphType = self.Objects[GraphTypeId]
         Graph = snap.LoadEdgeList(GraphType, InFNm, SrcColId, DstColId)
         GraphId = self.__UpdateObjects(Graph, self.Lineage[GraphTypeId])
@@ -1579,8 +1579,8 @@ class Ringo(object):
         StrToNIdHId = self.__UpdateObjects(StrToNIdH, self.Lineage[GraphTypeId])
         return (RingoObject(GraphId, self), RingoObject(StrToNIdHId, self))
 
-    @registerOp('LoadEdgeListStr')
-    def LoadEdgeListStr(self, GraphTypeId, InFNm, SrcColId, DstColId):
+    @registerOp('LoadEdgeListStr2')
+    def LoadEdgeListStr2(self, GraphTypeId, InFNm, SrcColId, DstColId):
         GraphType = self.Objects[GraphTypeId]
         Graph = snap.LoadEdgeListStr(GraphType, InFNm, SrcColId, DstColId)
         GraphId = self.__UpdateObjects(Graph, self.Lineage[GraphTypeId])
@@ -1608,8 +1608,7 @@ class Ringo(object):
         Graph = snap.LoadPajek(GraphType, InFNm)
         GraphId = self.__UpdateObjects(Graph, self.Lineage[GraphTypeId])
         return RingoObject(GraphId, self)
-	
-	# Save graph to Text file
+
     @registerOp('SaveEdgeList', False)
     def SaveEdgeList(self, GraphId, OutFNm, Desc = ""):
         Graph = self.Objects[GraphId]
@@ -1620,21 +1619,21 @@ class Ringo(object):
         Graph = self.Objects[GraphId]
         snap.SavePajek(Graph, OutFNm)
 
-    @registerOp('SavePajek', False)
-    def SavePajek(self, GraphId, OutFNm, NIdColorHId):
+    @registerOp('SavePajek2', False)
+    def SavePajek2(self, GraphId, OutFNm, NIdColorHId):
         Graph = self.Objects[GraphId]
         NIdColorH = self.Objects[NIdColorHId]
         snap.SavePajek(Graph, OutFNm, NIdColorH)
 
-    @registerOp('SavePajek', False)
-    def SavePajek(self, GraphId, OutFNm, NIdColorHId, NIdLabelHId):
+    @registerOp('SavePajek3', False)
+    def SavePajek3(self, GraphId, OutFNm, NIdColorHId, NIdLabelHId):
         Graph = self.Objects[GraphId]
         NIdColorH = self.Objects[NIdColorHId]
         NIdLabelH = self.Objects[NIdLabelHId]
         snap.SavePajek(Graph, OutFNm, NIdColorH, NIdLabelH)
 
-    @registerOp('SavePajek', False)
-    def SavePajek(self, GraphId, OutFNm, NIdColorHId, NIdLabelHId, EIdColorHId):
+    @registerOp('SavePajek4', False)
+    def SavePajek4(self, GraphId, OutFNm, NIdColorHId, NIdLabelHId, EIdColorHId):
         Graph = self.Objects[GraphId]
         NIdColorH = self.Objects[NIdColorHId]
         NIdLabelH = self.Objects[NIdLabelHId]
@@ -1652,8 +1651,8 @@ class Ringo(object):
         NIdLabelH = self.Objects[NIdLabelHId]
         snap.SaveGViz(Graph, OutFNm, Desc, NIdLabelH)
 
-    @registerOp('SaveGViz', False)
-    def SaveGViz(self, GraphId, OutFNm, Desc, NodeLabels, NIdColorHId):
+    @registerOp('SaveGViz2', False)
+    def SaveGViz2(self, GraphId, OutFNm, Desc, NodeLabels, NIdColorHId):
         Graph = self.Objects[GraphId]
         NIdColorH = self.Objects[NIdColorHId]
         snap.SaveGViz(Graph, OutFNm, Desc, snap.TBool(NodeLabels), NIdColorH)
@@ -1707,8 +1706,8 @@ class Ringo(object):
         NodeLabelH = self.Objects[NodeLabelHId]
         snap.DrawGViz(Graph, Layout, PItFNm, Desc, NodeLabelH)
 
-    @registerOp('DrawGViz')
-    def DrawGViz(self, GraphId, LayoutId, PItFNm, Desc = "", NodeLabels = False, NIdColorH = snap.TIntStrH()):
+    @registerOp('DrawGViz2')
+    def DrawGViz2(self, GraphId, LayoutId, PItFNm, Desc = "", NodeLabels = False, NIdColorH = snap.TIntStrH()):
         Graph = self.Objects[GraphId]
         Layout = self.Objects[LayoutId]
         snap.DrawGViz(Graph, Layout, PItFNm, Desc, snap.TBool(NodeLabels), NIdColorH)
@@ -1829,8 +1828,8 @@ class Ringo(object):
         DegToCCfVId = self.__UpdateObjects(DegToCCfV, self.Lineage[GraphId])
         return (RingoObject(DegToCCfVId, self), Ret)
 
-    @registerOp('GetClustCf', False)
-    def GetClustCf(self, GraphId, SampleNodes = -1):
+    @registerOp('GetClustCf2', False)
+    def GetClustCf2(self, GraphId, SampleNodes = -1):
         Graph = self.Objects[GraphId]
         Ret = snap.GetClustCf(Graph, SampleNodes)
         return Ret
@@ -1857,8 +1856,8 @@ class Ringo(object):
         Ret = snap.GetNodeClustCf(Graph, NId)
         return Ret
 
-    @registerOp('GetNodeClustCf')
-    def GetNodeClustCf(self, GraphId):
+    @registerOp('GetNodeClustCf2')
+    def GetNodeClustCf2(self, GraphId):
         Graph = self.Objects[GraphId]
         NIdCCfH = snap.TIntFltH()
         snap.GetNodeClustCf(Graph, NIdCCfH)

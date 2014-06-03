@@ -13,6 +13,8 @@ if len(sys.argv) != 3:
     print "Invalid syntax, should be %s [input] [output]" % sys.argv[0]
     sys.exit()
 
+method_names = {}
+
 with open(sys.argv[1], 'r') as in_file:
     with open(sys.argv[2], 'w') as out_file:
         for line in in_file.readlines():
@@ -21,6 +23,11 @@ with open(sys.argv[1], 'r') as in_file:
                 continue
             args = [j for j in line.split('\t') if len(j.strip())>0]
             method = args[0]
+            if method in method_names:
+                method_names[method] += 1
+                method += str(method_names[method])
+            else:
+                method_names[method] = 1
 
             provenance = parse_flags(args[1])['provenance']
             out = "\t@registerOp('%s'" % method
@@ -81,7 +88,7 @@ with open(sys.argv[1], 'r') as in_file:
 
             out += '\tdef %s(%s):\n' % (method, str.join(', ', ringo_in))
             out += method_prefix
-            out += '\t\t%ssnap.%s(%s)\n' % (ret, method, str.join(', ', snap_args))
+            out += '\t\t%ssnap.%s(%s)\n' % (ret, args[0], str.join(', ', snap_args))
 
             lineage = str.join(' + ', lineage)
             if len(lineage) == 0:
