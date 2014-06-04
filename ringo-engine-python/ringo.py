@@ -217,7 +217,6 @@ class Ringo(object):
         self.__UpdateObjects(Obj, self.Lineage[ObjId], ObjId)
         return RingoObject(ObjId, self)
 
-    # UNTESTED
     @registerOp('Save', False)
     def Save(self, ObjectId, OutFnm):
         def PackObject(self, ObjectId):
@@ -264,6 +263,22 @@ class Ringo(object):
 
         SOut = snap.TFOut(OutFnm+'.bin')
         Object.Save(SOut)
+
+    @registerOp('Import', False)
+    def Import(self, Object):
+        start_time = time.time()
+        ObjId = self.__UpdateObjects(Object, [])
+        Ret = RingoObject(ObjId, self)
+        end_time = time.time()
+
+        InFnm = 'Import_' + ObjId
+        self.__UpdateOperation('Load', Ret, [[InFnm], {}], end_time - start_time, self)
+        self.Save(ObjId, InFnm)
+        return Ret
+
+    @registerOp('Export', False)
+    def Export(self, ObjId):
+        return self.Objects[ObjId]
 
     @registerOp('TableFromHashMap')
     def TableFromHashMap(self, HashId, ColName1, ColName2, TableIsStrKeys = False):
@@ -715,6 +730,7 @@ class Ringo(object):
                 Callee = self.__GetName(Callee)
             else:
                 Callee = self.__GetName(self)
+
             FuncCall = '%s.%s(%s)' % (Callee, Op[1], str.join(', ', FuncArgs))
             if RetName != str(Op[2]):
                 FuncCall = RetName+' = '+FuncCall
