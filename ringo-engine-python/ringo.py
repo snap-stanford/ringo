@@ -875,6 +875,18 @@ class Ringo(object):
             Metadata.append(('Type', 'Network'))
             Metadata.append(('Number of Nodes', Object.GetNodes()))
             Metadata.append(('Number of Edges', Object.GetEdges()))
+        elif isinstance(Object, snap.PUNGraph):
+            Metadata.append(('Type', 'Undirected Graph'))
+            Metadata.append(('Number of Nodes', Object.GetNodes()))
+            Metadata.append(('Number of Edges', Object.GetEdges()))
+        elif isinstance(Object, snap.PNGraph):
+            Metadata.append(('Type', 'Directed Graph'))
+            Metadata.append(('Number of Nodes', Object.GetNodes()))
+            Metadata.append(('Number of Edges', Object.GetEdges()))
+        elif isinstance(Object, snap.PNGraphMP):
+            Metadata.append(('Type', 'Parallel Directed Graph'))
+            Metadata.append(('Number of Nodes', Object.GetNodes()))
+            Metadata.append(('Number of Edges', Object.GetEdges()))
         elif str(type(Object))[-3] == 'H':
             Metadata.append(('Type', 'HashMap'))
             Metadata.append(('Number of Elements', Object.Len()))
