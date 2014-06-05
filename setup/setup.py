@@ -99,7 +99,7 @@ for p in sys.path:
 #
 
 setup (
-    name         = 'ringo-stanford',
+    name         = 'ringo',
     py_modules   = ["snap", "ringo"],
     data_files   = [(user_install, [obj_name])],
     version      = pkg_version,
