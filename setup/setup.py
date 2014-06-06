@@ -14,21 +14,9 @@ from distutils.core import setup, Extension
 
 #
 #   determine package parameters:
-#       snap-py version, python version, os version, architecture
+#       ringo version, python version, os version, architecture
 #
-ringo_version = "0.0.1"
-snappy_version = "0.7"
-
-# snap-py version
-snap_version = "dev"
-try:
-    f = open("Version","r")
-    content = f.read()
-    f.close()
-    w = content.split("-")
-    snap_version = w[1].strip()
-except:
-    pass
+ringo_version = "0.1"
 
 # python version
 python_version = "py" + str(sys.version_info[0]) + "." + str(sys.version_info[1])
@@ -83,8 +71,7 @@ arch = "i386"
 if uname[4] == "x86_64"  or  uname[4] == "i686"  or  uname[4] == "AMD64":
     arch = "x64"
 
-pkg_version = "-".join([ringo_version, snappy_version, snap_version,
-                        os_version, arch, python_version])
+pkg_version = "-".join([ringo_version, os_version, arch, python_version])
 
 #print "pkg_version", pkg_version
 #print "obj_name", obj_name
@@ -112,13 +99,13 @@ for p in sys.path:
 #
 
 setup (
-    name         = 'ringo-stanford',
+    name         = 'ringo',
     py_modules   = ["snap", "ringo"],
     data_files   = [(user_install, [obj_name])],
     version      = pkg_version,
     author       = "snap.stanford.edu",
     author_email ='snap-discuss@googlegroups.com',
-    url          ='https://testpypi.python.org/pypi/ringo-stanford',
-    license      ='LICENSE.txt',
+    url          ='http://snap.stanford.edu/ringo',
+    #license      ='LICENSE.txt',
     description  = """Next generation graph processing platform"""
     )
