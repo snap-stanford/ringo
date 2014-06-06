@@ -1598,34 +1598,34 @@ class Ringo(object):
         return RingoObject(GraphId, self)
 
     @registerOp('LoadEdgeList')
-    def LoadEdgeList(self, GraphTypeId, InFNm, SrcColId, DstColId, Separator):
+    def LoadEdgeList(self, GraphTypeId, InFNm, SrcColId, DstColId):
         GraphType = self.Objects[GraphTypeId]
-        Graph = snap.LoadEdgeList(GraphType, InFNm, SrcColId, DstColId, Separator)
+        Graph = snap.LoadEdgeList(GraphType, InFNm, SrcColId, DstColId)
         GraphId = self.__UpdateObjects(Graph, self.Lineage[GraphTypeId])
         return RingoObject(GraphId, self)
 
     @registerOp('LoadEdgeList2')
-    def LoadEdgeList2(self, GraphTypeId, InFNm, SrcColId, DstColId):
+    def LoadEdgeList2(self, GraphTypeId, InFNm, SrcColId, DstColId, Separator):
         GraphType = self.Objects[GraphTypeId]
-        Graph = snap.LoadEdgeList(GraphType, InFNm, SrcColId, DstColId)
+        Graph = snap.LoadEdgeList(GraphType, InFNm, SrcColId, DstColId, Separator)
         GraphId = self.__UpdateObjects(Graph, self.Lineage[GraphTypeId])
         return RingoObject(GraphId, self)
 
     @registerOp('LoadEdgeListStr')
     def LoadEdgeListStr(self, GraphTypeId, InFNm, SrcColId, DstColId):
         GraphType = self.Objects[GraphTypeId]
+        Graph = snap.LoadEdgeListStr(GraphType, InFNm, SrcColId, DstColId)
+        GraphId = self.__UpdateObjects(Graph, self.Lineage[GraphTypeId])
+        return RingoObject(GraphId, self)
+
+    @registerOp('LoadEdgeListStr2')
+    def LoadEdgeListStr2(self, GraphTypeId, InFNm, SrcColId, DstColId):
+        GraphType = self.Objects[GraphTypeId]
         StrToNIdH = snap.TStrIntH()
         Graph = snap.LoadEdgeListStr(GraphType, InFNm, SrcColId, DstColId, StrToNIdH)
         GraphId = self.__UpdateObjects(Graph, self.Lineage[GraphTypeId])
         StrToNIdHId = self.__UpdateObjects(StrToNIdH, self.Lineage[GraphTypeId])
         return (RingoObject(GraphId, self), RingoObject(StrToNIdHId, self))
-
-    @registerOp('LoadEdgeListStr2')
-    def LoadEdgeListStr2(self, GraphTypeId, InFNm, SrcColId, DstColId):
-        GraphType = self.Objects[GraphTypeId]
-        Graph = snap.LoadEdgeListStr(GraphType, InFNm, SrcColId, DstColId)
-        GraphId = self.__UpdateObjects(Graph, self.Lineage[GraphTypeId])
-        return RingoObject(GraphId, self)
 
     @registerOp('LoadConnList')
     def LoadConnList(self, GraphTypeId, InFNm):
