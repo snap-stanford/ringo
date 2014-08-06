@@ -57,3 +57,4 @@ def ToGraphMP2(tspec, *args):
 %template(ToGraphMP_PNGraphMP) TSnap::ToGraphMP<PNGraphMP>;
 %template(ToGraphMP2_PNGraphMP) TSnap::ToGraphMP2<PNGraphMP>;
 #endif
+

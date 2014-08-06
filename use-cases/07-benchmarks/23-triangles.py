@@ -23,7 +23,15 @@ if __name__ == '__main__':
     t.show("load graph", g)
     r.show("__loadbin__")
 
-    cnt = snap.CountTriangles(snap.PNGraph, g)
+    # original implementation
+    cnt = snap.CountTriangles(g)
     print cnt
     t.show("triangles")
     r.show("__triangles__")
+
+    # latest implementation
+    #cnt = snap.GetTriangleCnt(g)
+    #print cnt
+    #t.show("triangles")
+    #r.show("__triangles__")
+

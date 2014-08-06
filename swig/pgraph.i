@@ -4,7 +4,7 @@
 %pythoncode %{
 
 #
-# dispatch table for instantiated polymorphic SNAP templates
+# BELOW INCLUDE out-*.txt
 #
 
 def LoadPajek(tspec, *args):
@@ -194,9 +194,9 @@ def PlotSccDistr(tspec, *args):
     if type(tspec) == PNGraphMP: return PlotSccDistr_PNGraphMP(tspec, *args)
     return None
 def CountTriangles(tspec, *args):
-    if type(tspec) == PUNGraph: return CountTriangles_PUNGraph(tspec, *args)
+    #if type(tspec) == PUNGraph: return CountTriangles_PUNGraph(tspec, *args)
     if type(tspec) == PNGraph : return CountTriangles_PNGraph(tspec, *args)
-    if type(tspec) == PNEANet : return CountTriangles_PNEANet(tspec, *args)
+    #if type(tspec) == PNEANet : return CountTriangles_PNEANet(tspec, *args)
     if type(tspec) == PNGraphMP: return CountTriangles_PNGraphMP(tspec, *args)
     return None
 def IsWeaklyConn(tspec, *args):
@@ -535,6 +535,12 @@ def CntOutDegNodes(tspec, *args):
     if type(tspec) == PNEANet : return CntOutDegNodes_PNEANet(tspec, *args)
     if type(tspec) == PNGraphMP: return CntOutDegNodes_PNGraphMP(tspec, *args)
     return None
+def GetTriangleCnt(tspec, *args):
+    if type(tspec) == PUNGraph: return GetTriangleCnt_PUNGraph(tspec, *args)
+    if type(tspec) == PNGraph : return GetTriangleCnt_PNGraph(tspec, *args)
+    if type(tspec) == PNEANet : return GetTriangleCnt_PNEANet(tspec, *args)
+    if type(tspec) == PNGraphMP: return GetTriangleCnt_PNGraphMP(tspec, *args)
+    return None
 def GetOutDegCnt(tspec, *args):
     if type(tspec) == PUNGraph: return GetOutDegCnt_PUNGraph(tspec, *args)
     if type(tspec) == PNGraph : return GetOutDegCnt_PNGraph(tspec, *args)
@@ -661,17 +667,11 @@ def GetTriads(tspec, *args):
     if type(tspec) == PNEANet : return GetTriads_PNEANet(tspec, *args)
     if type(tspec) == PNGraphMP: return GetTriads_PNGraphMP(tspec, *args)
     return None
-def CountTriangles(tspec, *args):
-    if tspec == PNGraph : return CountTriangles_PNGraph(*args)
-    return None
-def ToGraph(tspec, *args):
-    if tspec == PUNGraph: return ToGraph_PUNGraph(*args)
-    if tspec == PNGraph : return ToGraph_PNGraph(*args)
-    if tspec == PNGraphMP : return ToGraph_PNGraphMP(*args)
-    return None
-def ToNetwork(tspec, *args):
-    if tspec == PNEANet : return ToNetwork_PNEANet(*args)
-    return None
+
+#
+# BELOW INCLUDE disp-custom.py
+#
+
 def ConvertGraph(toutspec, tinspec, *args):
     if toutspec == PUNGraph:
         if type(tinspec) == PUNGraph:

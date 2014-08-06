@@ -107,6 +107,7 @@ PUNGraph	GetESubGraph
 PUNGraph	GetRndSubGraph
 PUNGraph	GetRndESubGraph
 PUNGraph	CountTriangles
+PUNGraph	GetTriangles
 PNGraph	LoadEdgeList
 PNGraph	LoadEdgeListStr
 PNGraph	LoadConnList
@@ -216,6 +217,7 @@ PNGraph	GetESubGraph
 PNGraph	GetRndSubGraph
 PNGraph	GetRndESubGraph
 PNGraph	CountTriangles
+PNGraph	GetTriangles
 PNEANet	LoadEdgeList
 PNEANet	LoadEdgeListStr
 PNEANet	LoadConnList
@@ -325,6 +327,7 @@ PNEANet	GetESubGraph
 PNEANet	GetRndSubGraph
 PNEANet	GetRndESubGraph
 PNEANet	CountTriangles
+PNEANet	GetTriangles
 PNGraphMP	LoadEdgeList
 PNGraphMP	LoadEdgeListStr
 PNGraphMP	LoadConnList
@@ -434,3 +437,4 @@ PNGraphMP	GetESubGraph
 PNGraphMP	GetRndSubGraph
 PNGraphMP	GetRndESubGraph
 PNGraphMP	CountTriangles
+PNGraphMP	GetTriangles

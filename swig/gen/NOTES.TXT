@@ -2,7 +2,7 @@
 # generate the Python dispatch table
 #
 
-# add new functions to types.txt
+# MANUAL, IN EDITOR add new functions to types.txt
 
 # generate flist.txt
 cat types.txt | grep -v "^#" | cut -f 2 > flist.txt
@@ -20,10 +20,10 @@ cat dispatch-pungraph.txt dispatch-pngraph.txt dispatch-pneanet.txt dispatch-png
 python gendispatch.py types.txt dispatch.txt > out-20130807.txt
 
 # include output out-20130807.txt in ../pgraph.i
-# include custom dispatch table disp-custom.py ../pgraph.i
+# include custom dispatch table disp-custom.py in ../pgraph.i
 
 #
-# generate the SWIG type templates
+# generate the SWIG type templates for TVec, THash, ...
 #
 
 # get typedefs from SNAP code

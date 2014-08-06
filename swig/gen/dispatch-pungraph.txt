@@ -107,3 +107,4 @@ PUNGraph	GetESubGraph
 PUNGraph	GetRndSubGraph
 PUNGraph	GetRndESubGraph
 PUNGraph	CountTriangles
+PUNGraph	GetTriangles
