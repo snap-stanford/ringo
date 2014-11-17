@@ -20,7 +20,7 @@ if __name__ == '__main__':
     t = testutils.Timer()
     r = testutils.Resource()
 
-    table = ringo.LoadTableBinary(srcfile)
+    table = ringo.Load(srcfile)
     t.show("load bin")
     r.show("__loadbin__")
 
