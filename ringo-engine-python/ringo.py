@@ -99,7 +99,7 @@ def colNamesEqual(name1, name2):
 	return snap.TTable.NormalizeColName(name1) == snap.TTable.NormalizeColName(name2) 
 
 class Ringo(object):
-    def __init__(self):
+    def __init__(self, parallel = True):
         # mapping between object ids and snap objects
         self.Objects = {}
         # mapping between ringo objects and their user-given names
@@ -115,6 +115,10 @@ class Ringo(object):
         self.Metadata = {}
 
         self.Context = snap.TTableContext()
+#         if parallel:
+#             snap.TTable.SetMP(1)
+#         else:
+#             snap.TTable.SetMP(0)
 
     def __getattr__(self, name):
         match = re.match('Construct(\w*)', name)
@@ -139,7 +143,10 @@ class Ringo(object):
         if hasattr(snap, name) and type(getattr(snap, name)) == types.IntType:
             return getattr(snap, name)
 
-        raise AttributeError  
+        raise AttributeError 
+        
+    def IsParallel(self):
+        return (snap.TTable.GetMP() > 0)
         
     # Use case:
     # S = [('name','string'), ('age','int'), ('weight','float')]
@@ -876,7 +883,7 @@ class Ringo(object):
     def __AddTypeSpecificInfo(self, Object, Metadata):
         if isinstance(Object, snap.PTable):
             Metadata.append(('Type', 'Table'))
-            Metadata.append(('Number of Rows', Object.GetNumRows()))
+            Metadata.append(('Number of Rows', Object.GetNumValidRows()))
             Schema = []
             for attr in Object.GetSchema():
                 Schema.append(attr.GetVal1())
