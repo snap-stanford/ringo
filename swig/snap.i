@@ -107,6 +107,7 @@ Version = "0.8.5r"
 %ignore TVec<PNEANet>::AddUnique;
 %ignore TVec<PNEANet>::SearchBack;
 %ignore TVec<PNEANet>::SearchBin;
+%ignore TVec<PNEANet>::SearchBinLeft;
 %ignore TVec<PNEANet>::SearchForw;
 %ignore TVec<PNEANet>::SearchVForw;
 %ignore TVec<PNEANet>::Merge;
