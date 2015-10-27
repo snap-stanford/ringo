@@ -786,6 +786,13 @@ def ConvertESubGraph(toutspec, tinspec, *args):
         if type(tinspec) == PNGraphMP:
             return ConvertESubGraph_PNGraphMP_PNGraphMP(tinspec, *args)
     return None
+def ToNetwork(tspec, *args):
+    if tspec == PNEANet : return ToNetwork_PNEANet(*args)
+    return None
+def ToGraph(tspec, *args):
+    if tspec == PUNGraph: return ToGraph_PUNGraph(*args)
+    if tspec == PNGraph : return ToGraph_PNGraph(*args)
+    return None
 
 #
 # generators for nodes and edges

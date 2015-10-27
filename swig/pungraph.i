@@ -206,3 +206,4 @@ TUNGraphEdgeI.GetId = GetId
 
 // conv.h - PUNGraph
 %template(ToGraph_PUNGraph) TSnap::ToGraph<PUNGraph>;
+

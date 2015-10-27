@@ -9,6 +9,7 @@
 grep -e '^$\|^\s*#' -v test-snapr.txt | sed 's/^\"//;s/\"$//' | while read line1; do
     read line2
     echo "***" `date` "$line1 ..."
+    echo "***" executing "$line2 ..."
     $line2
     RETVAL=$?
     if [ $RETVAL -ne 0 ]; then
