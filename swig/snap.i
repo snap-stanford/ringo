@@ -177,34 +177,44 @@ Version = "0.8.5r"
 //%include "tm.h"
 %include "ut.h"
 
-// SNAP Library
-// snap-core
+// SNAP
+// libs
 %include "gbase.h"
+%include "util.h"
+%include "predicate.h"
+
+// representations
+%include "hash.h"
+%include "hashmp.h"
+%include "hashgenericmp.h"
+%include "shash.h"
+%include "graph.h"
+%include "graphmp.h"
+%include "network.h"
+%include "networkmp.h"
+%include "table.h"
+
+// algorithms
 %include "alg.h"
 %include "anf.h"
 %include "bfsdfs.h"
 %include "centr.h"
 %include "cmty.h"
 %include "cncom.h"
-%include "ff.h"
-%include "graph.h"
-%include "network.h"
+%include "coreper.h"
+%include "flow.h"
+%include "gstat.h"
 %include "gsvd.h"
-%include "gio.h"
 %include "gviz.h"
-%include "hash.h"
-%include "hashmp.h"
-%include "hashgenericmp.h"
-%include "shash.h"
 %include "kcore.h"
-%include "ggen.h"
-%include "subgraph.h"
-%include "util.h"
-%include "triad.h"
 %include "statplot.h"
+%include "subgraph.h"
+%include "triad.h"
 
-%include "predicate.h"
-%include "table.h"
+// generators
+%include "ggen.h"
+%include "ff.h"
+%include "gio.h"
 
 //%template(Schema) TVec< TPair< TStr, TAttrType> >;
 //%template(Schema) TVec< TPair< TStr, TAttrType_> >;
@@ -646,3 +656,4 @@ Version = "0.8.5r"
 
 // note for operator renaming
 // %rename(Add) Vector3::operator +;
+
