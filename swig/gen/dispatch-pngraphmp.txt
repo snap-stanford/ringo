@@ -89,8 +89,8 @@ PNGraphMP	GetKCoreEdges
 PNGraphMP	PrintInfo
 PNGraphMP	GetNodeEcc
 PNGraphMP	GetPageRank
-PNGraphMP	GetPageRankMP1
-PNGraphMP	GetPageRankMP2
+PNGraphMP	GetPageRank_v1
+PNGraphMP	GetPageRankMP
 PNGraphMP	GetHits
 PNGraphMP	GetHitsMP
 PNGraphMP	PlotInDegDistr

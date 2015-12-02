@@ -163,6 +163,12 @@ def GetPageRank(tspec, *args):
     if type(tspec) == PNEANet : return GetPageRank_PNEANet(tspec, *args)
     if type(tspec) == PNGraphMP: return GetPageRank_PNGraphMP(tspec, *args)
     return None
+def GetPageRank_v1(tspec, *args):
+    if type(tspec) == PUNGraph: return GetPageRank_v1_PUNGraph(tspec, *args)
+    if type(tspec) == PNGraph : return GetPageRank_v1_PNGraph(tspec, *args)
+    if type(tspec) == PNEANet : return GetPageRank_v1_PNEANet(tspec, *args)
+    if type(tspec) == PNGraphMP: return GetPageRank_v1_PNGraphMP(tspec, *args)
+    return None
 def CntInDegNodes(tspec, *args):
     if type(tspec) == PUNGraph: return CntInDegNodes_PUNGraph(tspec, *args)
     if type(tspec) == PNGraph : return CntInDegNodes_PNGraph(tspec, *args)
@@ -259,17 +265,11 @@ def GetLen2Paths(tspec, *args):
     if type(tspec) == PNEANet : return GetLen2Paths_PNEANet(tspec, *args)
     if type(tspec) == PNGraphMP: return GetLen2Paths_PNGraphMP(tspec, *args)
     return None
-def GetPageRankMP2(tspec, *args):
-    if type(tspec) == PUNGraph: return GetPageRankMP2_PUNGraph(tspec, *args)
-    if type(tspec) == PNGraph : return GetPageRankMP2_PNGraph(tspec, *args)
-    if type(tspec) == PNEANet : return GetPageRankMP2_PNEANet(tspec, *args)
-    if type(tspec) == PNGraphMP: return GetPageRankMP2_PNGraphMP(tspec, *args)
-    return None
-def GetPageRankMP1(tspec, *args):
-    if type(tspec) == PUNGraph: return GetPageRankMP1_PUNGraph(tspec, *args)
-    if type(tspec) == PNGraph : return GetPageRankMP1_PNGraph(tspec, *args)
-    if type(tspec) == PNEANet : return GetPageRankMP1_PNEANet(tspec, *args)
-    if type(tspec) == PNGraphMP: return GetPageRankMP1_PNGraphMP(tspec, *args)
+def GetPageRankMP(tspec, *args):
+    if type(tspec) == PUNGraph: return GetPageRankMP_PUNGraph(tspec, *args)
+    if type(tspec) == PNGraph : return GetPageRankMP_PNGraph(tspec, *args)
+    if type(tspec) == PNEANet : return GetPageRankMP_PNEANet(tspec, *args)
+    if type(tspec) == PNGraphMP: return GetPageRankMP_PNGraphMP(tspec, *args)
     return None
 def PrintInfo(tspec, *args):
     if type(tspec) == PUNGraph: return PrintInfo_PUNGraph(tspec, *args)

@@ -89,8 +89,8 @@ PNEANet	GetKCoreEdges
 PNEANet	PrintInfo
 PNEANet	GetNodeEcc
 PNEANet	GetPageRank
-PNEANet	GetPageRankMP1
-PNEANet	GetPageRankMP2
+PNEANet	GetPageRank_v1
+PNEANet	GetPageRankMP
 PNEANet	GetHits
 PNEANet	GetHitsMP
 PNEANet	PlotInDegDistr

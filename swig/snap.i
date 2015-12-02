@@ -6,7 +6,7 @@
 #define SNAP_ALL 0
 
 %pythoncode %{
-Version = "0.8.5r"
+Version = "2.0.1-dev"
 %}
 
 %module snap
@@ -59,6 +59,8 @@ Version = "0.8.5r"
 %ignore TNGraph::GetEI(int const&) const;
 %ignore TUNGraph::GetEI(int const&) const;
 %ignore TNEANet::GetEI(int const&) const;
+%ignore TDirNet::GetEI(int const&) const;
+%ignore TUndirNet::GetEI(int const&) const;
 
 %ignore TVec<TVec<TInt, int>, int>::Add;
 %ignore TVec<TVec<TInt, int>, int>::AddMerged;
@@ -186,7 +188,6 @@ Version = "0.8.5r"
 // representations
 %include "hash.h"
 %include "hashmp.h"
-%include "hashgenericmp.h"
 %include "shash.h"
 %include "graph.h"
 %include "graphmp.h"

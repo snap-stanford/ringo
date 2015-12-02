@@ -4,7 +4,7 @@
 # 
 
 # set the path to your SNAP directory here
-GITDIR = ../../snapr
+GITDIR = ../../snap-dev
 
 # include compilation parameters
 include $(GITDIR)/Makefile.config

@@ -111,10 +111,10 @@
 // centr.h - PNEANet
 %template(GetNodeEcc_PNEANet) TSnap::GetNodeEcc<PNEANet>;
 %template(GetPageRank_PNEANet) TSnap::GetPageRank<PNEANet>;
+%template(GetPageRank_v1_PNEANet) TSnap::GetPageRank_v1<PNEANet>;
 %template(GetHits_PNEANet) TSnap::GetHits<PNEANet>;
 #ifdef _OPENMP
-%template(GetPageRankMP1_PNEANet) TSnap::GetPageRankMP1<PNEANet>;
-%template(GetPageRankMP2_PNEANet) TSnap::GetPageRankMP2<PNEANet>;
+%template(GetPageRankMP_PNEANet) TSnap::GetPageRankMP<PNEANet>;
 %template(GetHitsMP_PNEANet) TSnap::GetHitsMP<PNEANet>;
 #endif
 

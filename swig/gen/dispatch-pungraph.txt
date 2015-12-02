@@ -89,8 +89,8 @@ PUNGraph	GetKCoreEdges
 PUNGraph	PrintInfo
 PUNGraph	GetNodeEcc
 PUNGraph	GetPageRank
-PUNGraph	GetPageRankMP1
-PUNGraph	GetPageRankMP2
+PUNGraph	GetPageRank_v1
+PUNGraph	GetPageRankMP
 PUNGraph	GetHits
 PUNGraph	GetHitsMP
 PUNGraph	PlotInDegDistr
