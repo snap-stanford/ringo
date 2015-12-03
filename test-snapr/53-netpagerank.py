@@ -31,7 +31,7 @@ if __name__ == '__main__':
     #   GetPageRankMP2() parallel, optimized
     #snap.GetPageRank(g, PRankH,  0.85, 1e-4, 100)
     #snap.GetPageRankMP1(g, PRankH,  0.85, 1e-4, 100)
-    snap.GetPageRankMP2(g, PRankH,  0.85, 1e-4, 100)
+    snap.GetPageRankMP(g, PRankH,  0.85, 1e-4, 100)
     t.show("pagerank", g)
     r.show("__pagerank__")
 
