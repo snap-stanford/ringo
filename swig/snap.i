@@ -6,7 +6,7 @@
 #define SNAP_ALL 0
 
 %pythoncode %{
-Version = "2.0.1-dev"
+Version = "2.0.3-dev"
 %}
 
 %module snap
@@ -41,7 +41,8 @@ Version = "2.0.1-dev"
 %ignore TChA::LoadXml;
 %ignore TMem::LoadXml;
 
-%ignore GetStr;
+%ignore TInt::GetStr;
+%ignore TPair::GetStr;
 
 %ignore TFInOut;
 %ignore TFRnd;
