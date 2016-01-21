@@ -1,13 +1,10 @@
 Proposed Features
-Apr 21, 2014
 
+- port Ringo to Mac Os X 10.11.3
 - Add the iterator methods Nodes() and Edges() to the reference text
-
 - Remove AddNode(NodeI) from the reference text
-
 - Convenience methods for graph density and for reversing a directed graph
   (I took a look at the C++ version manual and they don't exist there either)
-
 - A python egg to be able to install the module locally (like with
   easy_install --user with pypi packages)
 
