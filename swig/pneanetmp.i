@@ -38,6 +38,6 @@ TNEANetMPEdgeI.GetId = GetId
 // End Basic Directed Graphs
 
 // Basic PNEANetMPs
-%template(PNEANetMP) TPt< PNEANetMP >;
+%template(PNEANetMP) TPt< TNEANetMP >;
 
 
