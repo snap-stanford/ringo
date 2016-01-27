@@ -646,8 +646,8 @@ Version = "2.0.3-dev"
 %include "pngraph.i"
 %include "pungraph.i"
 %include "pngraphmp.i"
-%include "pgraph.i"
 %include "pneanetmp.i"
+%include "pgraph.i"
 #ifndef NONUMPY
 %include "numpy_swig.i"
 #endif
