@@ -27,6 +27,18 @@ def GetId(self):
 TNEANetMPEdgeI.GetId = GetId
 %}
 
+#ifdef _OPENMP
+%pythoncode %{
+def ToNetworkMP(tspec, *args):
+    if tspec == PNEANetMP : return ToNetworkMP_PNEANetMP(*args)
+    return None
+
+def ToNetworkMP2(tspec, *args):
+    if tspec == PNEANetMP : return ToNetworkMP2_PNEANetMP(*args)
+    return None
+%}
+#endif
+
 
 
 // Basic Undirected Graphs
@@ -39,5 +51,9 @@ TNEANetMPEdgeI.GetId = GetId
 
 // Basic PNEANetMPs
 %template(PNEANetMP) TPt< TNEANetMP >;
-
+// conv.h - PNGraph
+#ifdef _OPENMP
+%template(ToNetworkMP_PNEANetMP) TSnap::ToNetworkMP<PNEANetMP>;
+%template(ToNetworkMP2_PNEANetMP) TSnap::ToNetworkMP2<PNEANetMP>;
+#endif
 
