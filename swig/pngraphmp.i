@@ -29,12 +29,12 @@ TNGraphMPEdgeI.GetId = GetId
 
 #ifdef _OPENMP
 %pythoncode %{
-def ToGraphMP(tspec, *args):
-    if tspec == PNGraphMP : return ToGraphMP_PNGraphMP(*args)
+def ToGraphMP3(tspec, *args):
+    if tspec == PNGraphMP : return ToGraphMP3_PNGraphMP(*args)
     return None
 
-def ToGraphMP2(tspec, *args):
-    if tspec == PNGraphMP : return ToGraphMP2_PNGraphMP(*args)
+def ToGraphMP(tspec, *args):
+    if tspec == PNGraphMP : return ToGraphMP_PNGraphMP(*args)
     return None
 %}
 #endif
@@ -55,6 +55,6 @@ def ToGraphMP2(tspec, *args):
 // conv.h - PNGraph
 #ifdef _OPENMP
 %template(ToGraphMP_PNGraphMP) TSnap::ToGraphMP<PNGraphMP>;
-%template(ToGraphMP2_PNGraphMP) TSnap::ToGraphMP2<PNGraphMP>;
+%template(ToGraphMP3_PNGraphMP) TSnap::ToGraphMP3<PNGraphMP>;
 #endif
 
