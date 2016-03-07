@@ -1032,6 +1032,8 @@ PNEANet.Save = Save
 TModeNet.Nodes = MMNodes
 TModeNet.Edges = Edges
 
+PMMNet.Save = Save
+
 PUNGraph.Nodes = Nodes
 PUNGraph.Edges = Edges
 PUNGraph.Clr = Clr
