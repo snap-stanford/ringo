@@ -359,8 +359,8 @@ private:
   TModeNet::TNodeI NI;
 public:
   TModeNetNodeI() : NI() { }
-  TModeNetNodeI(const TNEANet::TNodeI& NodeI) : NI(NodeI) { }
-  TModeNetNodeI& operator = (const TNEANet::TNodeI& NodeI) { NI = NodeI; return *this; }
+  TModeNetNodeI(const TModeNet::TNodeI& NodeI) : NI(NodeI) { }
+  TModeNetNodeI& operator = (const TModeNet::TNodeI& NodeI) { NI = NodeI; return *this; }
   /// Increment iterator.
   TModeNetNodeI& operator++ (int) { NI++; return *this; }
   TModeNetNodeI& Next() { NI++; return *this; }
@@ -391,7 +391,7 @@ public:
 /// Edge iterator. Only forward iteration (operator++) is supported.
 class TModeNetEdgeI {
 private:
-  TModeNet::TEdgeI EI;
+  TNEANet::TEdgeI EI;
 public:
   TModeNetEdgeI() : EI() { }
   TModeNetEdgeI(const TNEANet::TEdgeI& EdgeI) : EI(EdgeI) { }

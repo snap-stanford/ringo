@@ -193,6 +193,7 @@ Version = "2.0.3-dev"
 %include "graph.h"
 %include "graphmp.h"
 %include "network.h"
+%include "mmnet.h"
 %include "networkmp.h"
 %include "table.h"
 
@@ -643,6 +644,7 @@ Version = "2.0.3-dev"
 
 /* Graph and network interface */
 %include "pneanet.i"
+%include "tmodenet.i"
 %include "pngraph.i"
 %include "pungraph.i"
 %include "pngraphmp.i"
