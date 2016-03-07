@@ -1,4 +1,4 @@
-// pngraphmp.i
+// pneanetmp.i
 // Templates for SNAP TNEANetMP, PNEANetMP
 
 %extend TNEANetMP {

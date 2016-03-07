@@ -1045,6 +1045,9 @@ TUNGraphNodeI.GetInEdges = GetInEdges
 TNEANetNodeI.GetOutEdges = GetOutEdges
 TNEANetNodeI.GetInEdges = GetInEdges
 
+TModeNetNodeI.GetOutEdges = GetOutEdges
+TModeNetNodeI.GetInEdges = GetInEdges
+
 TNGraphMPNodeI.GetOutEdges = GetOutEdges
 TNGraphMPNodeI.GetInEdges = GetInEdges
 
