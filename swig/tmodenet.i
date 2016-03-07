@@ -13,3 +13,6 @@
           return TModeNetNodeI($self->GetMMNI(NId));
         }
 };
+
+// conv.h
+%template(LoadMode_TModeNet) TSnap::LoadMode<TModeNet>;

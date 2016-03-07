@@ -33,3 +33,5 @@
   
 };
 
+// conv.h
+%template(LoadCrossNet_TCrossNet) TSnap::LoadCrossNet<TCrossNet>;
