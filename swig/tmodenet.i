@@ -11,14 +11,14 @@
 */
 
 %extend TModeNet {
-        TModeNetNodeI BegNI() {
-          return TModeNetNodeI($self->BegNI());
+        TModeNetNodeI BegMMNI() {
+          return TModeNetNodeI($self->BegMMNI());
         }
-        TModeNetNodeI EndNI() {
-          return TModeNetNodeI($self->EndNI());
+        TModeNetNodeI EndMMNI() {
+          return TModeNetNodeI($self->EndMMNI());
         }
-        TModeNetNodeI GetNI(const int &NId) {
-          return TModeNetNodeI($self->GetNI(NId));
+        TModeNetNodeI GetMMNI(const int &NId) {
+          return TModeNetNodeI($self->GetMMNI(NId));
         }
 
   
@@ -29,7 +29,7 @@
           return TModeNetEdgeI($self->EndEI());
         }
   
-        TModeNetAIntI BegNAIntI(const TStr& attr) {
+/*        TModeNetAIntI BegNAIntI(const TStr& attr) {
           return TModeNetAIntI($self->BegNAIntI(attr));
         }
         TModeNetAIntI EndNAIntI(const TStr& attr) {
@@ -70,5 +70,5 @@
         TModeNetAFltI EndEAFltI(const TStr& attr) {
           return TModeNetAFltI($self->EndEAFltI(attr));
         }
-  
+  */
 };
