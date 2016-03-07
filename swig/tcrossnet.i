@@ -4,31 +4,10 @@
 
 %extend TCrossNet {
         TCrossNetEdgeI BegEI() {
-          return TCrossNetEdgeI($self->BegEI());
+          return TCrossNetEdgeI($self->BegEdgeI());
         }
         TCrossNetEdgeI EndEI() {
-          return TCrossNetEdgeI($self->EndEI());
-        }
-  
-        TCrossNetAIntI BegNAIntI(const TStr& attr) {
-          return TCrossNetAIntI($self->BegNAIntI(attr));
-        }
-        TCrossNetAIntI EndNAIntI(const TStr& attr) {
-          return TCrossNetAIntI($self->EndNAIntI(attr));
-        }
-  
-        TCrossNetAStrI BegNAStrI(const TStr& attr) {
-          return TCrossNetAStrI($self->BegNAStrI(attr));
-        }
-        TCrossNetAStrI EndNAStrI(const TStr& attr) {
-          return TCrossNetAStrI($self->EndNAStrI(attr));
-        }
-  
-        TCrossNetAFltI BegNAFltI(const TStr& attr) {
-          return TCrossNetAFltI($self->BegNAFltI(attr));
-        }
-        TCrossNetAFltI EndNAFltI(const TStr& attr) {
-          return TCrossNetAFltI($self->EndNAFltI(attr));
+          return TCrossNetEdgeI($self->EndEdgeI());
         }
   
         TCrossNetAIntI BegEAIntI(const TStr& attr) {
