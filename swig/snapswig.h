@@ -409,3 +409,95 @@ public:
   /// Gets destination of an edge. Since the graph is undirected this is the node with greater ID of the edge endpoints.
   int GetDstNId() const { return EI.GetDstNId(); }
 };
+
+/// Edge iterator. Only forward iteration (operator++) is supported.
+class TCrossNetEdgeI {
+private:
+  TCrossNet::TCrossEdgeI EI;
+public:
+  TCrossNetEdgeI() : EI() { }
+  TCrossNetEdgeI(const TCrossNet::TCrossEdgeI& EdgeI) : EI(EdgeI) { }
+  TCrossNetEdgeI& operator = (const TCrossNet::TCrossEdgeI& EdgeI)
+                            { EI = EdgeI; return *this; }
+  /// Increment iterator.
+  TCrossNetEdgeI& operator++ (int) { EI++; return *this; }
+  TCrossNetEdgeI& Next() { EI++; return *this; }
+  bool operator < (const TCrossNetEdgeI& EdgeI) const { return EI < EdgeI.EI; }
+  bool operator == (const TCrossNetEdgeI& EdgeI) const { return EI == EdgeI.EI; }
+  /// Gets edge ID. Always returns -1 since only edges in multigraphs have explicit IDs.
+  int GetId() const { return EI.GetId(); }
+  /// Gets the source of an edge. Since the graph is undirected this is the node with smaller ID of the edge endpoints.
+  int GetSrcNId() const { return EI.GetSrcNId(); }
+  /// Gets destination of an edge. Since the graph is undirected this is the node with greater ID of the edge endpoints.
+  int GetDstNId() const { return EI.GetDstNId(); }
+};
+
+/// Node/Edge Attr iterator. Iterate through all node for one attr value.
+class TCrossNetAIntI {
+private:
+  TCrossNet::TAIntI IntAI;
+public:
+  TCrossNetAIntI() : IntAI() { }
+  TCrossNetAIntI(const TIntVecIter& HIter, TStr attribute,
+               const TCrossNet* GraphPt) :
+              IntAI(HIter, attribute, GraphPt) { }
+  TCrossNetAIntI(const TCrossNet::TAIntI& I) : IntAI(I) { }
+  TCrossNetAIntI& operator = (const TCrossNetAIntI& I)
+              { IntAI = I.IntAI; return *this; }
+  TCrossNetAIntI& Next() { IntAI++; return *this; }
+  bool operator < (const TCrossNetAIntI& I) const { return IntAI < I.IntAI; }
+  bool operator == (const TCrossNetAIntI& I) const { return IntAI == I.IntAI; }
+  /// Returns an attribute of the node.
+  int GetDat() const { return IntAI.GetDat().Val; }
+  /// Returns true if node or edge has been deleted.
+  bool IsDeleted() const { return IntAI.IsDeleted(); };
+  TCrossNetAIntI& operator++(int) { IntAI++; return *this; }
+//  friend class TCrossNet;
+};
+
+/// Node/Edge Attr iterator. Iterate through all node for one attr value.
+class TCrossNetAStrI {
+private:
+  TCrossNet::TAStrI StrAI;
+public:
+  TCrossNetAStrI() : StrAI() { }
+  TCrossNetAStrI(const TStrVecIter& HIter, TStr attribute,
+               const TCrossNet* GraphPt) :
+  StrAI(HIter, attribute, GraphPt) { }
+  TCrossNetAStrI(const TCrossNet::TAStrI& I) : StrAI(I) { }
+  TCrossNetAStrI& operator = (const TCrossNetAStrI& I)
+  { StrAI = I.StrAI; return *this; }
+  TCrossNetAStrI& Next() { StrAI++; return *this; }
+  bool operator < (const TCrossNetAStrI& I) const { return StrAI < I.StrAI; }
+  bool operator == (const TCrossNetAStrI& I) const { return StrAI == I.StrAI; }
+  /// Returns an attribute of the node.
+  char * GetDat() const { return StrAI.GetDat().CStr(); }
+  /// Returns true if node or edge has been deleted.
+  bool IsDeleted() const { return StrAI.IsDeleted(); };
+  TCrossNetAStrI& operator++(int) { StrAI++; return *this; }
+  //  friend class TCrossNet;
+};
+
+
+/// Node/Edge Attr iterator. Iterate through all node for one attr value.
+class TCrossNetAFltI {
+private:
+  TCrossNet::TAFltI FltAI;
+public:
+  TCrossNetAFltI() : FltAI() { }
+  TCrossNetAFltI(const TFltVecIter& HIter, TStr attribute,
+               const TCrossNet* GraphPt) :
+  FltAI(HIter, attribute, GraphPt) { }
+  TCrossNetAFltI(const TCrossNet::TAFltI& I) : FltAI(I) { }
+  TCrossNetAFltI& operator = (const TCrossNetAFltI& I)
+  { FltAI = I.FltAI; return *this; }
+  TCrossNetAFltI& Next() { FltAI++; return *this; }
+  bool operator < (const TCrossNetAFltI& I) const { return FltAI < I.FltAI; }
+  bool operator == (const TCrossNetAFltI& I) const { return FltAI == I.FltAI; }
+  /// Returns an attribute of the node.
+  double GetDat() const { return FltAI.GetDat().Val; }
+  /// Returns true if node or edge has been deleted.
+  bool IsDeleted() const { return FltAI.IsDeleted(); };
+  TCrossNetAFltI& operator++(int) { FltAI++; return *this; }
+  //  friend class TCrossNet;
+};

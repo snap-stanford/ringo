@@ -645,6 +645,7 @@ Version = "2.0.3-dev"
 /* Graph and network interface */
 %include "pneanet.i"
 %include "tmodenet.i"
+%include "tcrossnet.i"
 %include "pngraph.i"
 %include "pungraph.i"
 %include "pngraphmp.i"

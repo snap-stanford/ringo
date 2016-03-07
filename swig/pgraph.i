@@ -990,6 +990,17 @@ def GetInEdges(self):
         yield self.GetInNId(e)
 
 #
+# generators for nodes and edges
+#
+
+# iterate through all the nodes
+def MMNodes(self):
+    NI = self.BegMMNI()
+    while NI < self.EndMMNI():
+        yield NI
+        NI.Next()
+
+#
 # redefine some methods to use T... class not P... class
 #
 
@@ -1011,6 +1022,9 @@ PNEANet.Edges = Edges
 PNEANet.Clr = Clr
 PNEANet.Empty = Empty
 PNEANet.Save = Save
+
+TModeNet.Nodes = MMNodes
+TModeNet.Edges = Edges
 
 PUNGraph.Nodes = Nodes
 PUNGraph.Edges = Edges
