@@ -505,42 +505,42 @@ public:
 
 
 
-class TModeNetI {
+class TMMNetModeNetI {
 private:
   TMMNet::TModeNetI NI;
 public:
- TModeNetI() : ModeNetHI(), Graph(NULL) { }
-  TModeNetI() : NI() { }
-  TModeNetI(const TMMNet::TModeNetI& NodeI) : NI(NodeI) { }
-  TModeNetI& operator = (const TMMNet::TModeNetI& NodeI) { NI = NodeI; return *this; }
+  TMMNetModeNetI() : NI() { }
+  TMMNetModeNetI(const TMMNet::TModeNetI& NodeI) : NI(NodeI) { }
+  TMMNetModeNetI& operator = (const TMMNet::TModeNetI& NodeI) { NI = NodeI; return *this; }
   /// Increment iterator.
-  TModeNetI& operator++ (int) { NI++; return *this; }
-  TModeNetI& Next() { NI++; return *this; }
+  TMMNetModeNetI& operator++ (int) { NI++; return *this; }
+  TMMNetModeNetI& Next() { NI++; return *this; }
 
-  bool operator < (const TModeNetI& NodeI) const { return NI < NodeI.NI; }
-  bool operator == (const TModeNetI& NodeI) const { return NI == NodeI.NI; }
+  bool operator < (const TMMNetModeNetI& NodeI) const { return NI < NodeI.NI; }
+  bool operator == (const TMMNetModeNetI& NodeI) const { return NI == NodeI.NI; }
   /// Returns ID of the current node.
-  int GetModeId() const { return NI.GetModeId(); }
+  int GetModeId() { return NI.GetModeId(); }
   TModeNet& GetModeNet() { return NI.GetModeNet(); }
 };
 
 
 
 /// Edge iterator. Only forward iteration (operator++) is supported.
-class TCrossNetI {
+class TMMNetCrossNetI {
 private:
   TMMNet::TCrossNetI EI;
 public:
-  TCrossNetI() : EI() { }
-  TCrossNetI(const TMMNet::TCrossNetI& EdgeI) : EI(EdgeI) { }
-  TCrossNetI& operator = (const TMMNet::TCrossNetI& EdgeI)
+  TMMNetCrossNetI() : EI() { }
+  TMMNetCrossNetI(const TMMNet::TCrossNetI& EdgeI) : EI(EdgeI) { }
+  TMMNetCrossNetI& operator = (const TMMNet::TCrossNetI& EdgeI)
                             { EI = EdgeI; return *this; }
   /// Increment iterator.
-  TCrossNetI& operator++ (int) { EI++; return *this; }
-  TCrossNetI& Next() { EI++; return *this; }
-  bool operator < (const TCrossNetI& EdgeI) const { return EI < EdgeI.EI; }
-  bool operator == (const TCrossNetI& EdgeI) const { return EI == EdgeI.EI; }
+  TMMNetCrossNetI& operator++ (int) { EI++; return *this; }
+  TMMNetCrossNetI& Next() { EI++; return *this; }
+  bool operator < (const TMMNetCrossNetI& EdgeI) const { return EI < EdgeI.EI; }
+  bool operator == (const TMMNetCrossNetI& EdgeI) const { return EI == EdgeI.EI; }
   /// Gets edge ID. Always returns -1 since only edges in multigraphs have explicit IDs.
-  int GetId() const { return EI.GetId(); }
+  int GetCrossId() { return EI.GetCrossId(); }
+  TCrossNet& GetCrossNet() { return EI.GetCrossNet(); }
 
 };

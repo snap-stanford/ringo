@@ -3,25 +3,25 @@
 //
 
 %extend TMMNet {
-        TModeNetI BegModeNetI() {
-          return TModeNetI($self->BegModeNetI());
+        TMMNetModeNetI BegModeNetI() {
+          return TMMNetModeNetI($self->BegModeNetI());
         }
-        TModeNetI EndModeNetI() {
-          return TModeNetI($self->EndModeNetI());
+        TMMNetModeNetI EndModeNetI() {
+          return TMMNetModeNetI($self->EndModeNetI());
         }
-        TModeNetI GetModeNetI(const int &NId) {
-          return TModeNetI($self->GetModeNetI(NId));
+        TMMNetModeNetI GetModeNetI(const int &NId) {
+          return TMMNetModeNetI($self->GetModeNetI(NId));
         }
 
   
-        TCrossNetI BegCrossNetI() {
-          return TCrossNetI ($self->BegCrossNetI());
+        TMMNetCrossNetI BegCrossNetI() {
+          return TMMNetCrossNetI ($self->BegCrossNetI());
         }
-        TCrossNetI EndCrossNetI() {
-          return TCrossNetI ($self->EndCrossNetI());
+        TMMNetCrossNetI EndCrossNetI() {
+          return TMMNetCrossNetI ($self->EndCrossNetI());
         }
-        TCrossNetI GetCrossNetI(const int &CId) {
-          return TCrossNetI ($self->GetCrossNetI(CId));
+        TMMNetCrossNetI GetCrossNetI(const int &CId) {
+          return TMMNetCrossNetI ($self->GetCrossNetI(CId));
         }
   
 };
