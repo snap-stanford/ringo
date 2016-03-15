@@ -960,12 +960,6 @@ def ToGraph(tspec, *args):
     if tspec == PUNGraph: return ToGraph_PUNGraph(*args)
     if tspec == PNGraph : return ToGraph_PNGraph(*args)
     return None
-def LoadMode(tspec, *args):
-    if tspec == TModeNet : return LoadMode_TModeNet(*args)
-    return None
-def LoadCrossNet(tspec, *args):
-    if tspec == TCrossNet : return LoadCrossNet_TCrossNet(*args)
-    return None
 
 #
 # generators for nodes and edges
