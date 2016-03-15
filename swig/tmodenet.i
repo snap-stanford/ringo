@@ -14,5 +14,3 @@
         }
 };
 
-// conv.h
-%template(LoadMode_TModeNet) TSnap::LoadMode<TModeNet>;
