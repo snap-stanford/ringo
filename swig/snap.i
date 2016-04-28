@@ -184,7 +184,6 @@ Version = "2.0.3-dev"
 // libs
 %include "gbase.h"
 %include "util.h"
-%include "predicate.h"
 
 // representations
 %include "hash.h"
