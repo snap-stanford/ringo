@@ -14,6 +14,7 @@ Contents:
    generators
    io
    ttable
+   multimodal
    degree
    edges
    manipulation
