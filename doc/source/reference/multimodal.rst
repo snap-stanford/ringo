@@ -1,7 +1,7 @@
 Multimodal Networks
 ````````````````````
 
-Multimodal networks in SNAP are represented by :class:`TMMNet`, which consist of modes, which are of class :class:`TModeNet`, and the links between them, which are of :class:`TCrossNet`.
+Multimodal networks in SNAP are represented by :class:`TMMNet`, which consist of modes, which are of class :class:`TModeNet`, and the links between them, which are of class :class:`TCrossNet`.
 
 The idea is that a multimodal network is a heterogeneous network where each node belongs to a particular mode, and edges belong to a particular cross net (that is, a particular kind of interaction between two modes). For example, in a biological dataset, genes, diseases and drugs might be the modes, and disease-disease interactions, disease-gene interactions and gene-drug interactions might be the links, or crossnets. To represent this in SNAP, we would build a :class:`TModeNet` for each mode -- each :class:`TModeNet` would contain only the nodes belonging to that mode. Next, we would build a :class:`TCrossNet` for every kind of link between modes. All edges should be added to the appropriate :class:`TCrossNet`. Note that there can be a :class:`TCrossNet` for links from the same mode to itself, and that there can be multiple :class:`TCrossNet` objects linking the same pair of modes (for example, in a multimodal social network dataset with a mode corresponding to users, and another corresponding to photos, there can be one :class:`TCrossNet` connecting users to photos they took, and another connecting users to photos they are tagged in).
 
