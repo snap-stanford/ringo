@@ -9,7 +9,7 @@ The :class:`TMMNet` class allows the construction of such multimodal networks in
 
 MMNets can be loaded from a :class:`TTable`, using functions :func:`LoadModeNetToNet` and :func:`LoadCrossNetToNet`.
 
-A :class:`TMMNet` can also be converted into a :class:`TNEANet`, using the :meth:`~multimodal.TMMNet.ToNetwork` method (documented below), after which all the SNAP algorithms that work on regular networks can be run on it.
+A :class:`TMMNet` can also be converted into a :class:`TNEANet`, using the :meth:`~multimodal.TMMNet.ToNetwork` method (documented below), after which all the SNAP algorithms that work on regular networks can be run on it. The method allows us to specify exactly which crossnets we want to include in the network, so that we can simply pull out the subgraph of interest to us.
 
 The following code shows example usage of :class:`TMMNet` to construct a toy multimodal network. (All the methods used in this example are documented in detail below.) ::
 
