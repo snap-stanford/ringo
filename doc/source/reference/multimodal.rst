@@ -1,5 +1,10 @@
+Multimodal Networks
+````````````````````
+
+Multimodal networks in SNAP are represented by :class:`TMMNet`s, which consist of modes, which are :class:`TModeNet`s, and the edges between them, which are :class:`TCrossNet`s.
+
 TModeNet
-=======
+=========
 
 .. class:: TModeNet()
            TModeNet(ModeId)
@@ -113,7 +118,7 @@ TModeNetNodeI
 
 
 TCrossNet
-=======
+==========
 
 .. class:: TCrossNet()
            TCrossNet(SrcModeId, DstModeId, CrossNetId)
@@ -353,45 +358,26 @@ TCrossNetAIntI, TCrossNetAFltI, TCrossNetAStrI
         Returns true if the attribute has been deleted.
 
 
-TNEANet
+TMMNet
 =======
 
-.. class:: TNEANet()
-           TNEANet(Nodes, Edges)
-           TNEANet(Graph)
+.. class:: TMMNet()
+           TMMNet(Graph)
 
-   Returns a new directed multigraph with node and edge attributes.
-   If no parameters are provided,
-   an empty graph is created. If *Nodes* and *Edges* are specified, space
-   is preallocated for *Nodes* nodes and *Edges* edges. If *Graph* is specified,
-   the new graph is a copy of the input graph.
+   Returns a new directed multimodal network, consisting of different modes and the
+   edges between them.
 
-   Nodes have IDs, which are arbitrary non-negative integers. Edges have IDs.
-   There can be more than one directed edge from one source node to
-   a destination node. Self loops (one per node) are allowed as well as
-   multiple (parallel) edges. Nodes and edges can have attributes/data
-   associated with them. The attributes can be added dynamically at runtime.
-   The directed multigraph data structure is implemented using sorted
-   adjacency lists. This means adding a node takes constant time, while
-   adding an edge takes linear time (since adjacency list is kept sorted)
-   in the node degree. Accessing arbitrary node takes constant time and
-   accessing any edge takes logarithmic time in the node degree.
-   The attributes are organized in a columnar store, where each attribute
-   column is defined for all the nodes or edges in the network. 
+   Modes have user-specified names and SNAP-assigned integer IDs, which are
+   arbitrary non-negative integers. Cross-nets, which store the edges between
+   two modes, also have user-specified names and SNAP-assigned integer IDs. Cross-nets
+   are, by default, directed but can also be undirected. The same source mode can be
+   used as the destination mode for a given cross-net. 
 
-   Methods for :class:`TNEANet` are presented in two groups. The first
-   group of methods deal with graph structure which includes nodes and edges.
-   The second group of methods deal with node and edge attributes.
+   :class:`TMMNet` provides iterators for fast traversal of modes and cross-nets.
+   Iterator classes are :class:`TMMNetModeNetI` for iterating over modes and
+   :class:`TMMNetCrossNetI` for iterating over edges.
 
-   :class:`TNEANet` provides iterators for fast traversal of nodes, edges
-   and attributes.
-   Iterator classes are :class:`TNEANetNodeI` for iterating over nodes,
-   :class:`TNEANetEdgeI` for iterating over edges, and
-   :class:`TNEANetAIntI`, :class:`TNEANetAFltI`, :class:`TNEANetAStrI`
-   for iterating over integer, float or string attributes, respectively.
-   Attribute iterators can operate over attributes for nodes or edges.
-
-   :class:`TNEANet` methods for graph structure are the following:
+   :class:`TMMNet` methods are the following:
 
      .. describe:: New()
 
