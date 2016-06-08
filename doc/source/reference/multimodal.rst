@@ -547,7 +547,7 @@ TMMNet
 
         Returns the name of the crossnet with id *CrossId*.
 
-     .. describe:: GetCrossNetByName(CrossName
+     .. describe:: GetCrossNetByName(CrossName)
                    GetCrossNetById(CrossId)
 
         Returns a reference to the crossnet with name *CrossName* or id *CrossId*,
