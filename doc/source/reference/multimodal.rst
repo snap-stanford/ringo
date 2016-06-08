@@ -9,6 +9,8 @@ The :class:`TMMNet` class allows the construction of such multimodal networks in
 
 MMNets can be loaded from a :class:`TTable`, using functions :func:`LoadModeNetToNet` and :func:`LoadCrossNetToNet`.
 
+An :class:`TMMNet` can also be converted into a :class:`TNEANet`, using the :meth:`~multimodal.TMMNet.ToNetwork` method (documented below), after which all the SNAP algorithms that work on regular networks can be run on it.
+
 The following code shows example usage of :class:`TMMNet` to construct a toy multimodal network. (All the methods used in this example are documented in detail below.) ::
 
     import snap
@@ -545,11 +547,22 @@ TMMNet
 
         Returns the name of the crossnet with id *CrossId*.
 
-     .. describe:: GetCrossNetByName(CrossName)
+     .. describe:: GetCrossNetByName(CrossName
                    GetCrossNetById(CrossId)
 
         Returns a reference to the crossnet with name *CrossName* or id *CrossId*,
         respectively, in the multimodal network.
+
+     .. describe:: ToNetwork(TIntV& CrossNetTypes, TIntStrStrTrV& NodeAttrMap, TIntStrStrTrV& EdgeAttrMap)
+
+        Converts the MMNet to a :class:`TNEANet` (which flattens out the multimodal nature of the network), adding only
+        the crossnets (and corresponding modenets) whose ids are specified in the vector of integer ids, CrossNetTypes.
+
+        As attribute names can collide (since different modes can have the same attribute name in a TMMNet, but can't
+        anymore once it is converted to a TNEANet), two attribute maps are passed, one for modes and one for crossnets.
+        Each attribute map is passed as a vector of triples. Each triple has the mode id, the attribute name in the
+        TMMNet, and the attribute name to be used in the newly created TNEANet.
+
 
 TMMNetModeNetI
 ==============

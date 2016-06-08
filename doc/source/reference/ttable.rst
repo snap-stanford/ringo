@@ -2,6 +2,104 @@ Tables
 `````````````````````````
 A Table in SNAP is represented by the class :class:`TTable`.
 
+Tables in SNAP are designed to provide fast performance at scale, and to effortlessly handle datasets containing hundreds of millions of rows. They can be saved and loaded to disk in a binary format using the provided methods; loading from and saving to binary is orders of magnitude faster than using a text representation of the table.
+
+A :class:`TTable` can store integers, floats and strings in its entries. For performance reasons, strings are mapped to a unique integer, and the :class:`TTable` stores only the integer which maps to the string. Each :class:`TTable` object has an associated :class:`TTableContext` which stores the mapping from integers to strings, and back, and can be used when the string corresponding to an integer needs to be retrieved. (Note: many :class:`TTable` objects can share the same context; this is often useful, for example, to ensure that equivalent strings in different tables are treated as equivalent in SNAP.)
+
+A :class:`TTable` object consists of multiple columns, each column being an integer, string or float. This is defined by the table's Schema. A schema is simply a vector of pairs of TStr and TAttrType. (Note: TAttrType represents the type of the column. Currently supported values are snap.atInt, snap.atFlt and snap.atStr.) Each entry in the schema has the name of the column, and the attribute type.
+
+Once the schema is defined, the columns of the table are defined. Now, the data is stored in rows, with each row containing an entry for each column. It is possible to iterate over the data by row, using the :class:`TRowIterator` class (see documentation below for details).
+
+:class:`TTable` also provides functionality for doing various kinds of joins (using the :meth:`Join` method), groupings (using the :meth:`Aggregate`) method, selection and projection (using the :meth:`Select` and :meth:`Project` methods), as well as sorting (using the :meth:`Order` method). 
+
+In order to quickly retrieve elements by value, it also allows the user to construct indexes on a column (using :meth:`RequestIndexInt`, :meth:`RequestIndexFlt` and :meth:`RequestIndexStrMap`. Note that unless these functions are explicitly called, the default is to not create any indexes.)
+
+It is very easy to load a :class:`TTable` from a text-file in spreadsheet (tab-separated or comma-separated) format using the static :meth:`LoadSS` method.
+
+Tables can be easily converted to SNAP graph classes using the provided functionality in the :func:`ToNetwork` functions.
+
+The following code snippets highlight some of the common operations done using :class:`TTable` objects. The methods and functions used are documented in more detail below.
+
+This code snippet shows how to load a :class:`TTable` object from a tab-separated file containing one integer, one float and two string columns, and then save the object to disk in binary format::
+
+    import snap
+
+    context = snap.TTableContext()
+    filename = "/path/to/input.tsv"
+    
+    schema = snap.Schema()
+    schema.Add(snap.TStrTAttrPr("Col1", snap.atInt))
+    schema.Add(snap.TStrTAttrPr("Col2", snap.atFlt))
+    schema.Add(snap.TStrTAttrPr("Col3", snap.atStr))
+    schema.Add(snap.TStrTAttrPr("Col4", snap.atStr))
+
+    table = snap.TTable.LoadSS(schema, filename, context, "\t", snap.TBool(False))
+
+    outfile = "/path/to/output.bin"
+    FOut = snap.TFOut(outfile)
+    table.save(FOut)
+    FOut.Flush()
+
+The saved table can now be loaded from binary using::
+
+    import snap
+    context = snap.TTableContext()
+
+    outfile = "/path/to/output.bin"
+    FIn = snap.TFIn(outfile)
+    table = snap.TTable.Load(FIn, context)
+
+Note that loading and saving from binary is over ten times faster than loading the raw text file.
+
+Next, we present a slightly more involved example. Let's say we have an authorship table for academic papers, *PapAuthT* where each row has a PaperID and an AuthorID. (Thus, if paper P1 was written by A1, A2 and A3, and paper P2 by authors A2, we would have four rows in our :class:`TTable`, with data (P1, A1), (P1, A2) and (P1, A3), and (P2, A2).) Further, let's say we have the citation count of each paper in a separate table, *PapCitT*, which has columns PaperID and CitCount. Assuming that these tables have already been loaded into :class:`TTable` objects with appropriate schema, the following code shows how to perform various useful operations on these tables::
+    
+    # Assuming that PapAuthT and PapCitT are already loaded into TTable objects with columns as described above.
+
+    # First, let's say we want to count the number of papers written by an author. We use Aggregate
+    # with the operation, snap.aaCount.
+
+    # This counts the number of elements with a particular value of the attributes in GroupBy
+    # (namely, AuthorID), and puts the count in a new column called "CountAuthPapers".
+    # Note that for the aggregation operation snap.aaCount, the third argument is irrelevant.
+    GroupBy = snap.TStrV()
+    GroupBy.Add("AuthorID")
+    PapAuthT.Aggregate(GroupBy, snap.aaCount, "AuthorID", "CountAuthPapers", snap.TBool(False))
+
+    # To keep only one row for each author, we can use the TTable.Unique() method as PapAuthT.Unique("AuthorID")
+    # which will remove all rows with duplicate values of AuthorID.
+
+    # Next, let's say we want to compute the total number of citations each author has.
+    # This is the sum of the citations of all the papers the author wrote.
+    # However, the citation info is in PapCitT. Hence, we must join it to this table now.
+
+    # Joins these two tables, merging rows which have the same PaperID in both.
+    # Now, each row has a PaperID, AuthorID and a CitCount
+    PapAuthCitJoinT = PapAuthT.Join("PaperID", PapCitT, "PaperID")
+
+    # We now aggregate the citation counts by author, summing them all up to get the
+    # total number of citations.
+    GroupBy = snap.TStrV()
+    GroupBy.Add("AuthorID")
+    PapAuthCitJoinT.Aggregate(GroupBy, snap.aaSum, "CitCount", "TotalAuthCits", snap.TBool(False))
+
+    # Now, we have the total number of citations by each author in a new column
+    # TotalAuthCits. We can now keep just the relevant columns, and drop duplicate rows
+    # with the same author ID.
+
+    ProjectCols = snap.TStrV()
+    ProjectCols.Add("AuthorID")
+    ProjectCols.Add("TotalAuthCits")
+    AuthCitT = PapAuthCitJoinT.Project(ProjectCols)
+    AuthCitT.Unique("AuthorID")
+
+
+    # We can also sort the authors in decreasing order of total citations.
+    OrderBy = snap.TStrV() # The TTable.Order method sorts using the values of
+                           # the columns in OrderBy, in lexicographic order.
+    OrderBy.Add("TotalAuthCits")
+    AuthCitT.Order(OrderBy, "", snap.TBool(False), snap.TBool(False))
+
+
 TTable
 ======
 
@@ -598,6 +696,41 @@ TTable
          Removes rows with duplicate values across the given attributes in *Attrs*.
          If *Ordered* is True, values across attributes are treated as an ordered pair.
 
+
+      .. describe:: GetIntRowIdxByVal(const TStr& ColName, const TInt& Val)
+
+         Gets a vector containing the indices of rows containing Val in int column ColName.
+         Uses an index if it has been requested explicitly; else, it loops over all the rows.
+         Be sure to request an index using :meth:`RequestIndexInt` first if you will call this multiple times.
+
+      .. describe:: GetStrRowIdxByMap(const TStr& ColName, const TInt& Map)
+
+         Gets a vector containing the indices of rows containing the integer Map (which maps to a string) in str column ColName.
+         Uses an index if it has been requested explicitly; else, it loops over all the rows.
+         Be sure to request an index using :meth:`RequestIndexStrMap` first if you will call this multiple times.
+
+      .. describe:: GetFltRowIdxByVal(const TStr& ColName, const TFlt& Val)
+
+         Gets a vector containing the indices of rows containing Val in flt column ColName.
+         Uses an index if it has been requested explicitly; else, it loops over all the rows.
+         Be sure to request an index using :meth:`RequestIndexFlt` first if you will call this multiple times.
+
+      .. describe:: RequestIndexInt(const TStr& ColName)
+        
+         Creates a hash-based index for int column ColName, so that the rows containing a particular
+         value can be retrieved efficiently. Used by :meth:`GetIntRowIdxByVal`
+
+      .. describe:: RequestIndexFlt(const TStr& ColName)
+        
+         Creates a hash-based index for float column ColName, so that the rows containing a particular
+         value can be retrieved efficiently. Used by :meth:`GetFltRowIdxByVal`
+
+      .. describe:: RequestIndexStrMap(const TStr& ColName)
+        
+         Creates a hash-based index for string column ColName, using the integer mappings,
+         so that the rows containing a particular value can be retrieved efficiently. 
+         Used by :meth:`GetStrRowIdxByMap`
+
 TAtomicPredicate
 =================
 
@@ -687,6 +820,12 @@ TTableContext
 
    Returns an context object. A :class:`TTableContext` provides the execution context for a
    :class:`TTable`. The context is loaded in binary from *SIn*, if it is provided.
+
+   The Context is primarily used to handle strings. It maps strings in the table to a unique integer.
+   To support fast operations, the :class:`TTable` objects store only the corresponding integer for all strings.
+   When a program needs to retrive the string value, it does so by using the provided method's in the table's
+   :class:`TTableContext`.
+
 
    Below is a list of functions supported by the :class:`TTableContext` class:
 
@@ -925,6 +1064,3 @@ TTableIterator
       .. describe:: HasNext()
 
          Checks if iterator has reached end of the sequence.
-
-
-
