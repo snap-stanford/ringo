@@ -1,7 +1,11 @@
 Multimodal Networks
 ````````````````````
 
-Multimodal networks in SNAP are represented by :class:`TMMNet`s, which consist of modes, which are :class:`TModeNet`s, and the edges between them, which are :class:`TCrossNet`s.
+Multimodal networks in SNAP are represented by :class:`TMMNet`, which consist of modes, which are of class :class:`TModeNet`, and the links between them, which are of :class:`TCrossNet`.
+
+The idea is that a multimodal network is a heterogeneous network where each node belongs to a particular mode, and edges belong to a particular cross net (that is, a particular kind of interaction between two modes). For example, in a biological dataset, genes, diseases and drugs might be the modes, and disease-disease interactions, disease-gene interactions and gene-drug interactions might be the links, or crossnets. To represent this in SNAP, we would build a :class:`TModeNet` for each mode -- each :class:`TModeNet` would contain only the nodes belonging to that mode. Next, we would build a :class:`TCrossNet` for every kind of link between modes. All edges should be added to the appropriate :class:`TCrossNet`. Note that there can be a :class:`TCrossNet` for links from the same mode to itself, and that there can be multiple :class:`TCrossNet` objects linking the same pair of modes (for example, in a multimodal social network dataset with a mode corresponding to users, and another corresponding to photos, there can be one :class:`TCrossNet` connecting users to photos they took, and another connecting users to photos they are tagged in).
+
+The :class:`TMMNet` class allows the construction of such multimodal networks in a modular fashion -- the user adds the corresponding instances of :class:`TModeNet`, specifying a name for each mode, and then adds the edges by adding instances of :class:`TCrossNet`, specifying the name of the cross net and the modes which it links. (:class:`TCrossNet` supports both undirected and directed multi-edges.)
 
 TModeNet
 =========
@@ -20,7 +24,7 @@ TModeNet
    the new graph is a copy of the input graph. *ModeId* provides the integer id
    for the mode the :class:`TModeNet` represents.
 
-   In general, :class:`TModeNet`s should not be created directly and instead should
+   In general, a :class:`TModeNet` should not be created directly and instead should
    be added to a multimodal network using the :class:`TMMNet` method :meth:`AddModeNet`.
 
    :class:`TModeNet` inherits from :class:`TNEANet` and therefore has all
@@ -50,7 +54,7 @@ TModeNet
 
 
 TModeNetNodeI
-============
+=============
 
 .. class:: TModeNetNodeI()
 
@@ -291,7 +295,7 @@ TCrossNet
         has been deleted.
 
 TCrossNetEdgeI
-============
+==============
 
 .. class:: TCrossNetEdgeI()
 
@@ -331,7 +335,7 @@ TCrossNetEdgeI
          Returns whether the edge is directed.
 
 TCrossNetAIntI, TCrossNetAFltI, TCrossNetAStrI
-========================================
+==============================================
 
 .. class:: TCrossNetAIntI()
            TCrossNetAFltI()
@@ -476,7 +480,7 @@ TMMNet
         respectively, in the multimodal network.
 
 TMMNetModeNetI
-============
+==============
 
 .. class:: TMMNetModeNetI()
 
@@ -504,7 +508,7 @@ TMMNetModeNetI
         Returns a reference to the current mode.
 
 TMMNetCrossNetI
-============
+===============
 
 .. class:: TMMNetCrossNetI()
 
