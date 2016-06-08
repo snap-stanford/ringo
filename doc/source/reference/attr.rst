@@ -1,8 +1,10 @@
 Sparse Attributes
 ``````````````````
 
-SNAP offers the following wrapper classes for handling sparse attributes: :class:`TAttr` for
+SNAP offers the following classes for handling sparse attributes: :class:`TAttr` for
 when keys are integers and :class:`TAttrPair` for when keys are a pair of integers.
+These classes use hash tables to organize and store integer, float, and string
+attributes.
 
 **NOTE:** Sparse attributes are still under development in python. 
 
@@ -32,13 +34,13 @@ TAttr
         Clears the contents of the attribute map. 
 
      .. describe:: AddSAttrDat(Id, AttrName, Val)
-     			   AddSAttrDat(Id, AttrId, Val)
+                   AddSAttrDat(Id, AttrId, Val)
 
         Adds attribute with name *AttrName* or attribtue id *AttrId* for the given 
         integer id *Id*. *Val* can be an int, float, or string.
 
      .. describe:: GetSAttrDat(Id, AttrName, Val)
-     			   GetSAttrDat(Id, AttrId, Val)
+                   GetSAttrDat(Id, AttrId, Val)
 
         Gets attribute with name *AttrName* or attribute id *AttrId* for the given 
         integer id *Id*. Resulting value is stored in *Val*.
@@ -58,7 +60,7 @@ TAttr
         *AttrType* should be one of IntType, FltType, or StrType.
 
      .. describe:: GetIdVSAttr(AttrName, IdV)
-     			   GetIdVSAttr(AttrId, IdV)
+                   GetIdVSAttr(AttrId, IdV)
 
         Get a list of all ids that have an attribute with name *AttrName* or id 
         *AttrId*.
@@ -102,13 +104,13 @@ TAttrPair
         Clears the contents of the attribute map. 
 
      .. describe:: AddSAttrDat(Id, AttrName, Val)
-     			   AddSAttrDat(Id, AttrId, Val)
+                   AddSAttrDat(Id, AttrId, Val)
 
         Adds attribute with name *AttrName* or attribtue id *AttrId* for the given 
         integer pair id *Id*. *Val* can be an int, float, or string.
 
      .. describe:: GetSAttrDat(Id, AttrName, Val)
-     			   GetSAttrDat(Id, AttrId, Val)
+                   GetSAttrDat(Id, AttrId, Val)
 
         Gets attribute with name *AttrName* or attribute id *AttrId* for the given 
         integer pair id *Id*. Resulting value is stored in *Val*.
@@ -128,7 +130,7 @@ TAttrPair
         id *Id*. *AttrType* should be one of IntType, FltType, or StrType.
 
      .. describe:: GetIdVSAttr(AttrName, IdV)
-     			   GetIdVSAttr(AttrId, IdV)
+                   GetIdVSAttr(AttrId, IdV)
 
         Get a list of all ids that have an attribute with name *AttrName* or id 
         *AttrId*.
