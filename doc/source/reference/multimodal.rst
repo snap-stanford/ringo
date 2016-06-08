@@ -7,6 +7,78 @@ The idea is that a multimodal network is a heterogeneous network where each node
 
 The :class:`TMMNet` class allows the construction of such multimodal networks in a modular fashion -- the user adds the corresponding instances of :class:`TModeNet`, specifying a name for each mode, and then adds the edges by adding instances of :class:`TCrossNet`, specifying the name of the cross net and the modes which it links. (:class:`TCrossNet` supports both undirected and directed multi-edges.)
 
+MMNets can be loaded from a :class:`TTable`, using functions :func:`LoadModeNetToNet` and :func:`LoadCrossNetToNet`.
+
+The following code shows example usage of :class:`TMMNet` to construct a toy multimodal network. (All the methods used in this example are documented in detail below.) ::
+
+    import snap
+    
+    mmnet = snap.TMMNet.New()
+
+    # Create a new modenet
+    mmnet.AddModeNet("TestMode1")
+
+    # Add a crossnet which has directed links from TestMode1 to itself.
+    mmnet.AddCrossNet("TestMode1", "TestMode1", "TestCross1", snap.TBool(True))
+
+    # Add a crossnet which has undirected links from TestMode1 to itself.
+    mmnet.AddCrossNet("TestMode1", "TestMode1", "TestCross2", snap.TBool(False))
+
+    # Add a second mode
+    mmnet.AddModeNet("TestMode2")
+
+    # Add a directed, and then an undirected crossnet from TestMode1 to TestMode2.
+    mmnet.AddCrossNet("TestMode1", "TestMode2", "TestCross3", snap.TBool(True))   
+    mmnet.AddCrossNet("TestMode1", "TestMode2", "TestCross4", snap.TBool(False))   
+
+    # Get the mode net objects, and add nodes to them.
+    modenet1 = mmnet.GetModeNetByName("TestMode1")
+    modenet2 = mmnet.GetModeNetByName("TestMode2")
+    for i in range(1000):
+        modenet1.AddNode(i)
+        modenet2.AddNode(i*2)
+    
+    # Get the cross net objects, and add edges to them.
+    crossnet1 = mmnet.GetCrossNetByName("TestCross1")
+    crossnet2 = mmnet.GetCrossNetByName("TestCross2")
+    crossnet3 = mmnet.GetCrossNetByName("TestCross3")
+    crossnet4 = mmnet.GetCrossNetByName("TestCross4")
+    for i in range(1000):
+        crossnet1.AddEdge(i, (i+1)%1000, i)
+        crossnet2.AddEdge((i+5)%1000, i, i)
+        crossnet3.AddEdge(i, (i%1000)*2, i)
+        crossnet4.AddEdge((i+5)%1000, (i%1000)*2, i)
+
+    # Iterate over modes
+    modeneti = mmnet.BegModeNetI()
+    while modeneti < mmnet.EndModeNetI():
+        print modeneti.GetModeName()
+        modeneti.Next()
+
+    # Iterate over crossnets
+    crossneti = mmnet.BegCrossNetI()
+    while crossneti < mmnet.EndCrossNetI():
+        print crossneti.GetCrossName()
+        crossneti.Next()
+
+    # Get a subgraph
+    crossnets = snap.TStrV()
+    crossnets.add("TestCross1")
+    sub_mmnet = mmnet.GetSubgraphByCrossNet(crossnets)
+
+    # Convert to TNEANet
+
+    crossnetids = snap.TIntV()
+    crossnetids.Add(mmnet.GetCrossId("TestCross1"))
+    crossnetids.Add(mmnet.GetCrossId("TestCross2"))
+    crossnetids.Add(mmnet.GetCrossId("TestCross3"))
+
+    # These are mappings consisting of triples of (modeid, old attribute name, new attribute name)
+    nodeattrmapping = snap.TIntStrStrTrV()
+    edgeattrmapping = snap.TIntStrStrTrV()
+    
+    pneanet = mmnet.ToNetwork(crossnetids, nodeattrmapping, edgeattrmapping)
+
 TModeNet
 =========
 
@@ -28,7 +100,7 @@ TModeNet
    be added to a multimodal network using the :class:`TMMNet` method :meth:`AddModeNet`.
 
    :class:`TModeNet` inherits from :class:`TNEANet` and therefore has all
-   the same method. In addition, it has the following multimodal related functions:
+   the same methods. In addition, it has the following multimodal related functions:
 
      .. describe:: GetCrossNetNames(Names)
 

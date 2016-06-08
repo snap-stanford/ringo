@@ -9,6 +9,7 @@ Contents:
    introduction
    basic
    composite
+   conv
    streams
    graphs
    generators
