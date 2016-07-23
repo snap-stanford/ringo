@@ -184,7 +184,6 @@ Version = "2.0.3-dev"
 // libs
 %include "gbase.h"
 %include "util.h"
-%include "predicate.h"
 
 // representations
 %include "hash.h"
@@ -193,8 +192,10 @@ Version = "2.0.3-dev"
 %include "graph.h"
 %include "graphmp.h"
 %include "network.h"
+%include "mmnet.h"
 %include "networkmp.h"
 %include "table.h"
+%include "attr.h"
 
 // algorithms
 %include "alg.h"
@@ -643,8 +644,13 @@ Version = "2.0.3-dev"
 
 /* Graph and network interface */
 %include "pneanet.i"
+%include "tmodenet.i"
+%include "tcrossnet.i"
+%include "pmmnet.i"
 %include "pngraph.i"
 %include "pungraph.i"
+%include "pdirnet.i"
+%include "pundirnet.i"
 %include "pngraphmp.i"
 %include "pneanetmp.i"
 %include "pgraph.i"

@@ -508,6 +508,11 @@ TStrV.__setitem__ = setitem
 TStrV.__iter__ = itervec
 TStrV.__len__ = len
 TStrV.__delitem__ = delitem
+TIntStrStrTrV.__getitem__ = getitem
+TIntStrStrTrV.__setitem__ = setitem
+TIntStrStrTrV.__iter__ = itervec
+TIntStrStrTrV.__len__ = len
+TIntStrStrTrV.__delitem__ = delitem
 %}
 #endif
 

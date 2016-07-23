@@ -9,11 +9,13 @@ Contents:
    introduction
    basic
    composite
+   conv
    streams
    graphs
    generators
    io
    ttable
+   multimodal
    degree
    edges
    manipulation
