@@ -106,5 +106,4 @@ PNGraphMP	GetSubGraph
 PNGraphMP	GetESubGraph
 PNGraphMP	GetRndSubGraph
 PNGraphMP	GetRndESubGraph
-PNGraphMP	CountTriangles
-PNGraphMP	GetTriangles
+PNGraphMP	GetTriangleCnt

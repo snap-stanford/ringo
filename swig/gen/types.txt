@@ -113,5 +113,4 @@ __func__	GetSubGraph
 __func__	GetESubGraph
 __func__	GetRndSubGraph
 __func__	GetRndESubGraph
-__func__	CountTriangles
 __func__	GetTriangleCnt

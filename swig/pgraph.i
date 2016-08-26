@@ -295,15 +295,6 @@ def PlotSccDistr(tspec, *args):
     if type(tspec) == PNGraphMP: return PlotSccDistr_PNGraphMP(tspec, *args)
     if type(tspec) == PNEANetMP : return PlotSccDistr_PNEANetMP(tspec, *args)
     return None
-def CountTriangles(tspec, *args):
-    #if type(tspec) == PUNGraph: return CountTriangles_PUNGraph(tspec, *args)
-    #if type(tspec) == PUndirNet: return CountTriangles_PUndirNet(tspec, *args)
-    #if type(tspec) == PDirNet: return CountTriangles_PDirNet(tspec, *args)
-    if type(tspec) == PNGraph : return CountTriangles_PNGraph(tspec, *args)
-    #if type(tspec) == PNEANet : return CountTriangles_PNEANet(tspec, *args)
-    #if type(tspec) == PNEANetMP : return CountTriangles_PNEANetMP(tspec, *args)
-    if type(tspec) == PNGraphMP: return CountTriangles_PNGraphMP(tspec, *args)
-    return None
 def IsWeaklyConn(tspec, *args):
     if type(tspec) == PUNGraph: return IsWeaklyConn_PUNGraph(tspec, *args)
     if type(tspec) == PUndirNet: return IsWeaklyConn_PUndirNet(tspec, *args)

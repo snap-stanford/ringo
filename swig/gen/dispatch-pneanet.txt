@@ -106,5 +106,4 @@ PNEANet	GetSubGraph
 PNEANet	GetESubGraph
 PNEANet	GetRndSubGraph
 PNEANet	GetRndESubGraph
-PNEANet	CountTriangles
-PNEANet	GetTriangles
+PNEANet	GetTriangleCnt

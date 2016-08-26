@@ -167,7 +167,6 @@ TUndirNetEdgeI.GetId = GetId
 %template(GetTriadEdges_PUndirNet) TSnap::GetTriadEdges<PUndirNet>;
 %template(GetNodeTriads_PUndirNet) TSnap::GetNodeTriads<PUndirNet>;
 %template(GetTriadParticip_PUndirNet) TSnap::GetTriadParticip<PUndirNet>;
-#%template(CountTriangles_PUndirNet) TSnap::CountTriangles<PUndirNet>;
 %template(GetTriangleCnt_PUndirNet) TSnap::GetTriangleCnt<PUndirNet>;
 
 %template(GetCmnNbrs_PUndirNet) TSnap::GetCmnNbrs<PUndirNet>;

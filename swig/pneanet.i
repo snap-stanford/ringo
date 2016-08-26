@@ -220,7 +220,6 @@
 %template(GetTriadEdges_PNEANet) TSnap::GetTriadEdges<PNEANet>;
 %template(GetNodeTriads_PNEANet) TSnap::GetNodeTriads<PNEANet>;
 %template(GetTriadParticip_PNEANet) TSnap::GetTriadParticip<PNEANet>;
-#%template(CountTriangles_PNEANet) TSnap::CountTriangles<PNEANet>;
 %template(GetTriangleCnt_PNEANet) TSnap::GetTriangleCnt<PNEANet>;
 
 %template(GetCmnNbrs_PNEANet) TSnap::GetCmnNbrs<PNEANet>;

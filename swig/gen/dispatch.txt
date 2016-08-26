@@ -89,8 +89,8 @@ PUNGraph	GetKCoreEdges
 PUNGraph	PrintInfo
 PUNGraph	GetNodeEcc
 PUNGraph	GetPageRank
-PUNGraph	GetPageRankMP1
-PUNGraph	GetPageRankMP2
+PUNGraph	GetPageRank_v1
+PUNGraph	GetPageRankMP
 PUNGraph	GetHits
 PUNGraph	GetHitsMP
 PUNGraph	PlotInDegDistr
@@ -106,8 +106,7 @@ PUNGraph	GetSubGraph
 PUNGraph	GetESubGraph
 PUNGraph	GetRndSubGraph
 PUNGraph	GetRndESubGraph
-PUNGraph	CountTriangles
-PUNGraph	GetTriangles
+PUNGraph	GetTriangleCnt
 PNGraph	LoadEdgeList
 PNGraph	LoadEdgeListStr
 PNGraph	LoadConnList
@@ -199,8 +198,8 @@ PNGraph	GetKCoreEdges
 PNGraph	PrintInfo
 PNGraph	GetNodeEcc
 PNGraph	GetPageRank
-PNGraph	GetPageRankMP1
-PNGraph	GetPageRankMP2
+PNGraph	GetPageRank_v1
+PNGraph	GetPageRankMP
 PNGraph	GetHits
 PNGraph	GetHitsMP
 PNGraph	PlotInDegDistr
@@ -216,8 +215,7 @@ PNGraph	GetSubGraph
 PNGraph	GetESubGraph
 PNGraph	GetRndSubGraph
 PNGraph	GetRndESubGraph
-PNGraph	CountTriangles
-PNGraph	GetTriangles
+PNGraph	GetTriangleCnt
 PNEANet	LoadEdgeList
 PNEANet	LoadEdgeListStr
 PNEANet	LoadConnList
@@ -309,8 +307,8 @@ PNEANet	GetKCoreEdges
 PNEANet	PrintInfo
 PNEANet	GetNodeEcc
 PNEANet	GetPageRank
-PNEANet	GetPageRankMP1
-PNEANet	GetPageRankMP2
+PNEANet	GetPageRank_v1
+PNEANet	GetPageRankMP
 PNEANet	GetHits
 PNEANet	GetHitsMP
 PNEANet	PlotInDegDistr
@@ -326,8 +324,7 @@ PNEANet	GetSubGraph
 PNEANet	GetESubGraph
 PNEANet	GetRndSubGraph
 PNEANet	GetRndESubGraph
-PNEANet	CountTriangles
-PNEANet	GetTriangles
+PNEANet	GetTriangleCnt
 PNGraphMP	LoadEdgeList
 PNGraphMP	LoadEdgeListStr
 PNGraphMP	LoadConnList
@@ -419,8 +416,8 @@ PNGraphMP	GetKCoreEdges
 PNGraphMP	PrintInfo
 PNGraphMP	GetNodeEcc
 PNGraphMP	GetPageRank
-PNGraphMP	GetPageRankMP1
-PNGraphMP	GetPageRankMP2
+PNGraphMP	GetPageRank_v1
+PNGraphMP	GetPageRankMP
 PNGraphMP	GetHits
 PNGraphMP	GetHitsMP
 PNGraphMP	PlotInDegDistr
@@ -436,5 +433,4 @@ PNGraphMP	GetSubGraph
 PNGraphMP	GetESubGraph
 PNGraphMP	GetRndSubGraph
 PNGraphMP	GetRndESubGraph
-PNGraphMP	CountTriangles
-PNGraphMP	GetTriangles
+PNGraphMP	GetTriangleCnt

@@ -167,7 +167,6 @@ TUNGraphEdgeI.GetId = GetId
 %template(GetTriadEdges_PUNGraph) TSnap::GetTriadEdges<PUNGraph>;
 %template(GetNodeTriads_PUNGraph) TSnap::GetNodeTriads<PUNGraph>;
 %template(GetTriadParticip_PUNGraph) TSnap::GetTriadParticip<PUNGraph>;
-#%template(CountTriangles_PUNGraph) TSnap::CountTriangles<PUNGraph>;
 %template(GetTriangleCnt_PUNGraph) TSnap::GetTriangleCnt<PUNGraph>;
 
 %template(GetCmnNbrs_PUNGraph) TSnap::GetCmnNbrs<PUNGraph>;

@@ -168,7 +168,6 @@ TDirNetEdgeI.GetId = GetId
 %template(GetTriadEdges_PDirNet) TSnap::GetTriadEdges<PDirNet>;
 %template(GetNodeTriads_PDirNet) TSnap::GetNodeTriads<PDirNet>;
 %template(GetTriadParticip_PDirNet) TSnap::GetTriadParticip<PDirNet>;
-%template(CountTriangles_PDirNet) TSnap::CountTriangles<PDirNet>;
 %template(GetTriangleCnt_PDirNet) TSnap::GetTriangleCnt<PDirNet>;
 
 %template(GetCmnNbrs_PDirNet) TSnap::GetCmnNbrs<PDirNet>;
